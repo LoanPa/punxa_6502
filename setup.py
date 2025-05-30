@@ -12,7 +12,7 @@ with open("README.md", "r") as fh:
 
                          
 setup(
-    name='py4hw',
+    name='punxa_6502',
     version='2025.1',
     author='David Castells-Rufas',
     author_email='david.castells@uab.cat',
