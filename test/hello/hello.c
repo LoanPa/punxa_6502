@@ -1,7 +1,7 @@
 #include <stdio.h> // For basic printf, if you implement putchar
 #include <stdint.h> // For fixed-width integer types
 
-#define UART_BASE = 0xE000
+#define UART_BASE  0xE000
 
 #define UART_DR 0   # Receive Data Register / Transmit Data Register
 #define UART_SR 1   # Status Register
