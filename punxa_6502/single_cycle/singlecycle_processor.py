@@ -19,6 +19,7 @@ class SingleCycle6502(py4hw.Logic):
          self.nmi = self.addIn('nmi', nmi)
          
          self.mem = self.addInterfaceSource('memory', memory)
+         self.reset_address = resetAddress
          self.pc = resetAddress
          
          self.X = 0
@@ -40,7 +41,8 @@ class SingleCycle6502(py4hw.Logic):
         next(self.co)
         
     def run(self):
-        yield from self.fetchResetAddress()
+        if (self.reset_address == 0):
+            yield from self.fetchResetAddress()
         
         while (True):
             pc = self.pc
