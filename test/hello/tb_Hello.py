@@ -46,6 +46,7 @@ def buildHw():
     global hw
     global cpu
     global mem
+    global uart
     
     hw = py4hw.HWSystem()
     
@@ -110,6 +111,13 @@ def buildHw():
                 else:
                     memory.writeByte(ea, data[i])    
                     
+    # Load symbols
+    symbols = punxa.readSymbols('hello.map')
+    
+    for symbol, add in symbols:
+        cpu.symbols[add] = symbol
+    
+    
     #for i in range(len(data)):
     #    memory.writeByte(i, data[i])
     #    if (i % 16 == 0):
