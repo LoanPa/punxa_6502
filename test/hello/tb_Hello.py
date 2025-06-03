@@ -57,14 +57,21 @@ def buildHw():
     mem_base = 0
     
     port_c = punxa.MemoryInterface(hw, 'port_c', mem_width, 16)
-    port_m = punxa.MemoryInterface(hw, 'port_m', mem_width, 22)
+    port_m = punxa.MemoryInterface(hw, 'port_m', mem_width, 12)
+    port_u = punxa.MemoryInterface(hw, 'port_u', mem_width, 2)
+    
+    serial = punxa.SerialInterface(hw, 'serial')
     
     memory = punxa.SparseMemory(hw, 'main_memory', mem_width, 32, port_m, mem_base=mem_base)
+    
+    uart = punxa.Uart6551(hw, 'uart', port_u, reset, serial)
+    
+    UART_BASE = 0xE000
     
     bus = punxa.MultiplexedBus(hw, 'bus', port_c, [(port_m, mem_base),
                                           #(port_t, test_base),
                                           #(port_d, 0x01BFF00000),
-                                          #(port_u, UART_BASE),
+                                          (port_u, UART_BASE),
                                           #(port_p, 0xFFF1100000),
                                           #(port_l, 0xFFF1020000)
                                           ])
@@ -73,8 +80,8 @@ def buildHw():
     cpu = punxa.SingleCycle6502(hw, 'cpu', port_c, reset, irq, nmi, 0)
     
     
-    memory.reallocArea(0, 0x1000)
-    memory.reallocArea(0xFFF0, 0x10)
+    memory.reallocArea(0, 0x1000) # 4 KB
+    #memory.reallocArea(0xFFF0, 0x10)
     
     parser = ParseHexFile('hello.ihx')
         
@@ -85,12 +92,35 @@ def buildHw():
         
         if (linetype == 0x00):
             for i in range(len(data)):
-                memory.writeByte(address+i, data[i])    
+                ea = address+i # effective address
+                
+                
+                if (ea == 0xFFFA):
+                    nmi_lo = data[i]
+                elif (ea == 0xFFFB):
+                    nmi_hi = data[i]
+                elif (ea == 0xFFFC):
+                    reset_lo = data[i]
+                elif (ea == 0xFFFD):
+                    reset_hi = data[i]
+                elif (ea == 0xFFFE):
+                    irq_lo = data[i]
+                elif (ea == 0xFFFF):
+                    irq_hi = data[i]
+                else:
+                    memory.writeByte(ea, data[i])    
+                    
     #for i in range(len(data)):
     #    memory.writeByte(i, data[i])
     #    if (i % 16 == 0):
     #        print(f'\nwriting {i:04X} =', end='')
     #    print(f'{data[i]:02X} ', end='')
+    
+    cpu.nmi_address = (nmi_hi << 8) | nmi_lo
+    cpu.reset_address = (reset_hi << 8) | reset_lo
+    cpu.irq = (irq_hi << 8) | irq_lo
+    
+    cpu.pc = cpu.reset_address
     
     print()
     
