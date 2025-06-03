@@ -7,43 +7,57 @@
 #include <stdint.h>
 #pragma preproc_asm +
 
+#include "test_macros.h"
+
 // Memory locations
 #define TEST_ZP      0x20    // Zero page location
 #define TEST_ABS     0x1000  // Absolute location
+#define TEST_ABS_ST  0x1002  // Absolute location
 #define TEST_ABS_X   0x1100  // Absolute,X location
 #define TEST_ABS_Y   0x1200  // Absolute,Y location
+
 #define TEST_IND_X   0x30    // Indirect,X location
 #define TEST_IND_Y   0x40    // Indirect,Y location
 #define TEST_RESULT  0x2000  // Where to write test result
-#define TEST_CURRENT 0x2010  // Current test number
-#define TEST_STATUS  0x2011  // 0 = running, 1 = passed, 0xFF = failed
+#define TEST_NUM     0x60    // Current test number
+#define TEST_STATUS  0x2004  // 0 = running, 1 = passed, 0xFF = failed
 
-#define ACTUAL      0x50
-#define ADDR        0x51
+#define TEST_VARS      0x50
 
 // Global variables in zero page
 __at (TEST_ZP) uint8_t zp_var;
 __at (TEST_ZP+1) uint8_t zp_var2;
+__at (TEST_ZP+2) uint8_t zp_store;
+__at (TEST_ZP+3) uint8_t zp_store2;
 __at (TEST_IND_X) uint8_t ind_x_addr_lo;
 __at (TEST_IND_X+1) uint8_t ind_x_addr_hi;
+__at (TEST_IND_X+2) uint8_t ind_store_lo;
+__at (TEST_IND_X+3) uint8_t ind_store_hi;
+
 __at (TEST_IND_Y) uint8_t ind_y_addr_lo;
 __at (TEST_IND_Y+1) uint8_t ind_y_addr_hi;
 
-__at (ACTUAL) uint8_t actual;
-__at (ADDR) uint16_t addr;
+__at (TEST_VARS+0)  uint8_t actual;
+__at (TEST_VARS+1)  uint8_t flags;
+__at (TEST_VARS+2)  uint16_t addr;
 
 // Variables in absolute memory
 __at (TEST_ABS) uint8_t abs_var;
+__at (TEST_ABS_ST) uint8_t abs_store;
+__at (TEST_ABS_ST+1) uint8_t abs_store2;
 __at (TEST_ABS_X) uint8_t abs_x_var;
+__at (TEST_ABS_X+1) uint8_t abs_x_var2;
 __at (TEST_ABS_Y) uint8_t abs_y_var;
+__at (TEST_ABS_Y+1) uint8_t abs_y_var2;
 
 // Test results
 __at (TEST_RESULT) uint8_t test_result;
-__at (TEST_CURRENT) uint8_t current_test;
+__at (TEST_NUM) uint16_t test_num;
 __at (TEST_STATUS) uint8_t test_status;
 
 // Function prototypes
-void test_load_store(void);
+void test_load(void);
+void test_store(void);
 void test_arithmetic(void);
 void test_logical(void);
 void test_shift_rotate(void);
@@ -52,18 +66,16 @@ void test_flags(void);
 void test_stack(void);
 void test_jump_subroutine(void);
 void test_misc(void);
-void test_failed(uint8_t test_num);
-void test_passed(uint8_t test_num);
-void verify_a(uint8_t expected, uint8_t test_num);
-void verify_x(uint8_t expected, uint8_t test_num);
-void verify_y(uint8_t expected, uint8_t test_num);
-void verify_mem(uint16_t paddr, uint8_t expected, uint8_t test_num);
-void verify_zp(uint8_t paddr, uint8_t expected, uint8_t test_num);
+void test_failed(void);
+void test_passed(void);
+void verify(uint8_t expected);
+void verify_mem(uint16_t paddr, uint8_t expected);
+void verify_zp(uint8_t paddr, uint8_t expected);
 
 void main(void) {
     // Initialize test status
     test_status = 0;
-    current_test = 0;
+    test_num = 0;
     
     // Initialize indirect addressing pointers
     ind_x_addr_lo = (TEST_ABS_X & 0xFF);
@@ -80,7 +92,8 @@ void main(void) {
     abs_y_var = 0x33;
     
     // Run all test categories
-    test_load_store();
+    test_load();
+    test_store();
     test_arithmetic();
     test_logical();
     test_shift_rotate();
@@ -98,58 +111,48 @@ void main(void) {
 }
 
 // Mark a test as failed and halt
-void test_failed(uint8_t test_num) 
+void test_failed(void) 
 {
     test_result = 0xCA;
     test_status = 0xFF;
-    current_test = test_num;
+
     while(1); // Halt on failure
 }
 
 // Mark a test as passed
-void test_passed(uint8_t test_num) 
+void test_passed(void) 
 {
     test_result = 0xBE;
-    current_test = test_num;
+    test_num++;
 }
+
 
 // Verify accumulator value
-void verify_a(uint8_t expected, uint8_t test_num) 
+void verify(uint8_t expected) 
+{    
+    if (actual != expected) 
+        test_failed(); 
+    else
+        test_passed();
+}
+
+
+void verify_flags(uint8_t expected, uint8_t ef) 
 {
-    __asm
-    sta _actual
-    __endasm;
     
-    if (actual != expected) {
-        test_failed(test_num);
-    }
+    if (actual != expected) 
+        test_failed(); 
+    else if (ef != (flags & FLAGS_MASK)) 
+        test_failed();
+    else
+        test_passed();
 }
 
-// Verify X register value
-void verify_x(uint8_t expected, uint8_t test_num) {
-    __asm
-    stx _actual
-    __endasm;
-    
-    if (actual != expected) {
-        test_failed(test_num);
-    }
-}
 
-// Verify Y register value
-void verify_y(uint8_t expected, uint8_t test_num) {
-    __asm
-    sty _actual
-    __endasm;
-    
-    if (actual != expected) {
-        test_failed(test_num);
-    }
-}
 
 // Verify memory value
-void verify_mem(uint16_t paddr, uint8_t expected, uint8_t test_num) {
-
+void verify_mem(uint16_t paddr, uint8_t expected)
+{
     addr = paddr;
     
     __asm
@@ -157,138 +160,301 @@ void verify_mem(uint16_t paddr, uint8_t expected, uint8_t test_num) {
     sta _actual        
     __endasm;
     
-    if (actual != expected) {
-        test_failed(test_num);
-    }
+    ASSERT_EQ();
 }
 
 // Verify zero page value
-void verify_zp(uint8_t paddr, uint8_t expected, uint8_t test_num) {
-    verify_mem(paddr, expected, test_num);
+void verify_zp(uint8_t paddr, uint8_t expected) 
+{
+    verify_mem(paddr, expected);
 }
 
-void test_load_store(void) 
+
+         
+void test_load(void) 
 {
-    uint8_t test_num = 0;
-    
     // Initialize test offsets
     __asm
     ldx #0x10
     ldy #0x20
     __endasm;
     
-    // 1. Immediate - LDA #
-    __asm lda #0x55 __endasm;
-    verify_a(0x55, test_num++);
+    // 1. Immediate  #
+    TEST_LDA(#0x55, #0x00, #0x00, #0x55);  // 0x01
+    TEST_LDX(#0x00, #0x56, #0x00, #0x56);  // 0x02
+    TEST_LDY(#0x00, #0x00, #0x57, #0x57);  // 0x03
     
+        
     // 2. Zero Page - LDA zp
-    __asm lda _zp_var __endasm;
-    verify_a(0x42, test_num++);
+    TEST_LDA(_zp_var, #0x00, #0x00, #0x42); // 0x04
+    TEST_LDX(#0x00, _zp_var, #0x00, #0x42); // 0x05
+    TEST_LDY(#0x00, #0x00, _zp_var, #0x42); // 0x06
     
     // 3. Zero Page,X - LDA zp,X
-    __asm lda _zp_var,x __endasm;
-    verify_a(0x42, test_num++);
+    zp_var2 = 0x43;
+    TEST_LDA_X(_zp_var, #0x01, #0x00, #0x43); // 0x07
     
-    // 4. Absolute - LDA abs
-    __asm lda _abs_var __endasm;
-    verify_a(0x11, test_num++);
+    zp_var2 = 0x53;
+    TEST_LDY_X(#0x00, #0x01, _zp_var, #0x53);   // 0x08
+    
+    // 4. Absolute 
+    TEST_LDA(_abs_var, #0x00, #0x00, #0x11);        // 0x09
+    TEST_LDX(#0x00, _abs_var, #0x00, #0x11);        // 0x0A
+    TEST_LDY(#0x00, #0x00, _abs_var, #0x11);        // 0x0B
     
     // 5. Absolute,X - LDA abs,X (with offset)
-    __asm lda _abs_x_var,x __endasm;
-    verify_a(0x22, test_num++);
+    abs_x_var2 = 0x23;
+    TEST_LDA_X(_abs_x_var, #0x01, #0x01, #0x23);    // 0x0C
+    TEST_LDY_X(#0x00, #0x01, _abs_x_var, #0x23);    // 0x0D
     
     // 6. Absolute,Y - LDA abs,Y (with offset)
-    __asm lda _abs_y_var,y __endasm;
-    verify_a(0x33, test_num++);
+    __asm 
+    ldy #00
+    lda _abs_y_var,y
+    sta _actual
+    __endasm; 
+    verify(0x33); // 0x0E
+
+    __asm
+    ldy #00
+    ldx _abs_y_var,y
+    stx _actual
+    __endasm; 
+    verify(0x33); // 0x0F
     
     // 7. (Indirect,X) - LDA (ind,X)
-    __asm lda (_ind_x_addr_lo),x __endasm;
-    verify_a(0x22, test_num++);
+    LDA_IND_X(_ind_x_addr_lo, 0);
+    __asm
+    sta _actual
+    __endasm; 
+    verify(0x22); // 0x10
     
     // 8. (Indirect),Y - LDA (ind),Y
-    __asm lda (_ind_y_addr_lo),y __endasm;
-    verify_a(0x33, test_num++);
+    abs_y_var = 0x33;
+    LDA_IND_Y(_ind_y_addr_lo, 0);
+    __asm 
+    sta _actual
+    __endasm; 
+    verify(0x33); // 0x11
     
     // 9. Zero Page,Y - LDX zp,Y (special case)
-    __asm ldx _zp_var,y __endasm;
-    verify_x(0x42, test_num++);
-    
-    // 10. STA variants (same addressing modes)
     __asm 
-    lda #0xAA
-    sta _zp_var
-    sta _zp_var,x
-    sta _abs_var
-    sta _abs_var,x
-    sta _abs_var,y
-    sta (_ind_x_addr_lo),x
-    sta (_ind_y_addr_lo),y
-    __endasm;
-    verify_zp(TEST_ZP, 0xAA, test_num++);
-    verify_mem(TEST_ABS, 0xAA, test_num++);
-    
-    // 11. STX variants
-    __asm
-    ldx #0xBB
-    stx _zp_var
-    stx _zp_var,y  // Zero Page,Y
-    stx _abs_var
-    __endasm;
-    
-    // 12. STY variants
-    __asm
-    ldy #0xCC
-    sty _zp_var
-    sty _zp_var,x  // Zero Page,X
-    sty _abs_var
-    __endasm;
-    
-    // Verify all stores
-    verify_zp(TEST_ZP, 0xCC, test_num++);
-    verify_mem(TEST_ABS, 0xBB, test_num++);
+    ldy #0
+    ldx _zp_var,y 
+    stx _actual
+    __endasm; 
+    verify(0x42); // 0x12    
 }
+
+void test_store(void)
+{
+    // 1. Zero Page
+    __asm
+        lda #0xAA
+        sta _zp_store
+    __endasm;
+    verify_mem(zp_store, 0xAA); // 0x13
+
+    __asm
+        ldx #0xBB
+        stx _zp_store
+    __endasm;
+    verify_mem(zp_store, 0xBB); // 0x14
+
+    __asm
+        ldy #0xCC
+        sty _zp_store
+    __endasm;
+    verify_mem(zp_store, 0xCC); // 0x15
+    
+    // 2. Zero Page X STA zp,X
+    __asm
+        lda #0xDD
+        ldx #0x01
+        sta _zp_store,x
+    __endasm;
+    verify_mem(zp_store2, 0xDD); // 0x16
+
+    __asm
+        ldy #0xEE
+        ldx #0x01
+        sty _zp_store,x
+    __endasm;
+    verify_mem(zp_store2, 0xEE); // 0x17
+    
+    // 3. Zero Page Y STX zp,Y
+    __asm
+        ldx #0xFF
+        ldy #0x01
+        stx _zp_store,y
+    __endasm;
+    verify_mem(zp_store2, 0xFF);    // 0x18
+    
+    // 4. Absolute  STA abs
+    __asm
+        lda #0x11
+        sta _abs_store
+    __endasm;
+    verify_mem(abs_store, 0x11);    // 0x19
+
+    __asm
+        ldx #0x22
+        stx _abs_store
+    __endasm;
+    verify_mem(abs_store, 0x22);    // 0x1A
+
+    __asm
+        ldy #0x33
+        sty _abs_store
+    __endasm;
+    verify_mem(abs_store, 0x33);    // 0x1B
+    
+    // 5. Absolute , X
+    __asm
+        lda #0x44
+        ldx #0x01
+        sta _abs_store,x
+    __endasm;
+    verify_mem(abs_store2, 0x44);   // 0x1C
+
+    
+    // 6. Absolute , Y STA abs,Y
+    __asm
+        lda #0x66
+        ldy #0x01
+        sta _abs_store,y
+    __endasm;
+    verify_mem(abs_store2, 0x66);   // 0x1D
+    
+    // 7. Indirect, X STA (ind,X)
+    __asm
+        lda #0x88
+        ldx #0x01
+        sta (_ind_store_lo),x
+    __endasm;
+    verify_mem(ind_store_hi, 0x88);  // 0x1E
+
+    // 8. Indirect, Y STA (ind),Y
+    __asm
+        lda #0x99
+        ldy #0x01
+        sta (_ind_store_lo),y
+    __endasm;
+    verify_mem(ind_store_hi, 0x99);  // 0x1F        
+}
+
 
 void test_arithmetic(void) 
 {
+    // flags = FLAGS(n,z,d,c,v) 
+    
+    // ---- ADC (Add with Carry) ----
+    // 1. Immediate
+    TEST_ADC(#0x01, #0x02, 0x03, 0, 0, 0, 0, 0);    // 0x20
+    TEST_ADC(#0x7F, #0x01, 0x80, 1, 0, 0, 0, 1);    // 0x21
+    
+    // 2. Zero Page
+    TEST_ADC(#0x10, _zp_var, 0x52, 0, 0, 0, 0, 0);  // 0x22
+    
+    // 3. Zero Page,X
+    zp_var2 = 0x42;
+    TEST_ADCX(#0x10, _zp_var, #0x01, 0x52, 0, 0, 0, 0, 0);  // 0x23
 
-    uint8_t test_num = 16; // Start from test 16
+    // 4. Absolute
+    TEST_ADC(#0x10, _abs_var, 0x21, 0, 0, 0, 0, 0);         // 0x24
     
-    // Test 16: ADC Immediate
+    // 5. Absolute,X
+    abs_x_var2 = 0x22;
+    TEST_ADCX(#0x10,  _abs_x_var, #0x01, 0x32, 0, 0, 0, 0, 0);  // 0x25
+    
+    // 6. Absolute,Y
+    abs_y_var2 = 0x33;
+    TEST_ADCY(#0x10, _abs_y_var, #0x01, 0x43, 0, 0, 0, 0, 0);   // 0x26
+    
+    // 7. (Indirect,X)
     __asm
-    lda #0x10
-    clc
-    adc #0x20
+        clc
+        lda #0x10
     __endasm;
-    
-    verify_a(0x30, test_num);
-    test_passed(test_num++);
-    
-    // Test 17: ADC with carry
+        ADC_IND_X(_ind_x_addr_lo, 0);
     __asm
-    lda #0x10
-    sec
-    adc #0x20
+        sta _actual
     __endasm;
-    verify_a(0x31, test_num);
-    test_passed(test_num++);
+    SAVE_FLAGS();
+    verify_flags(0x32, FLAGS(0, 0, 0, 0, 0));                   // 0x27
     
-    // Test 18: SBC Immediate
+    // 8. (Indirect),Y
     __asm
-    lda #0x30
-    sec
-    sbc #0x10
+        clc
+        lda #0x10
     __endasm;
-    verify_a(0x20, test_num);
-    test_passed(test_num++);
-    
-    // Test 19: SBC with borrow
+        ADC_IND_Y(_ind_y_addr_lo, 0)
     __asm
-    lda #0x30
-    clc
-    sbc #0x10
-    __endasm;    
-    verify_a(0x1F, test_num);
-    test_passed(test_num++);
+        sta _actual
+    __endasm;
+    SAVE_FLAGS();
+    verify_flags(0x43, FLAGS(0, 0, 0, 0, 0));                   // 0x28
+    
+    // Test carry flag behavior
+    __asm
+        sec             // Set carry first
+        lda #0xFF
+        adc #0x01       // 0xFF + 0x01 + 1(carry) = 0x01 (N=0, Z=0, C=1, V=0)
+        sta _actual
+    __endasm;
+    SAVE_FLAGS();
+    verify_flags(0x01, FLAGS(0, 0, 0, 1, 0));                   // 0x29
+    
+    // Test decimal mode (BCD arithmetic)
+    __asm
+        sed             // Set decimal mode
+        clc
+        lda #0x19
+        adc #0x01       // 19 + 1 = 20 in BCD (0x20)
+        sta _actual
+    __endasm;
+    SAVE_FLAGS();
+    __asm 
+        cld             // Clear decimal mode
+    __endasm;
+    verify_flags(0x20, FLAGS(0, 0, 1, 0, 0));                   // 0x2A
+         
+    // flags = FLAGS(n,z,d,c,v) 
+             
+    // ---- SBC (Subtract with Carry) ----
+    // 1. Immediate
+    TEST_SBC(#0x03, #0x01, 0x02, 0, 0, 0, 1, 0);                // 0x2B
+    TEST_SBC(#0x80, #0x01, 0x7F, 0, 0, 0, 1, 1);                // 0x2C
+    TEST_SBC(#0x00, #0x01, 0xFF, 1, 0, 0, 0, 0);                // 0x2D
+    
+    // 2. Zero Page
+    TEST_SBC(#0x10, _zp_var, 0xCE, 1, 0, 0, 0, 0);              // 0x2E
+    
+    // 3. Zero Page,X
+    zp_var2 = 0x12;
+    TEST_SBCX(#0x10, _zp_var, #0x01, 0xFE, 1, 0, 0, 0, 0);  // 0x23
+
+    // 4. Absolute
+    TEST_SBC(#0x10, _abs_var, 0xFF, 1, 0, 0, 0, 0);         // 0x24
+    
+    // 5. Absolute,X
+    abs_x_var2 = 0x22;
+    TEST_SBCX(#0x10,  _abs_x_var, #0x01, 0xEE, 1, 0, 0, 0, 0);  // 0x25
+    
+    // 6. Absolute,Y
+    abs_y_var2 = 0x33;
+    TEST_SBCY(#0x10, _abs_y_var, #0x01, 0xDD, 1, 0, 0, 0, 0);   // 0x26
+                
+    // ---- INC/DEC (Memory) ----
+    // 1. Immediate not supported
+    // 2. Zero Page
+    TEST_INC(_zp_var, 0x43, 0, 0, 0, 0, 0);              // 0x27
+    TEST_DEC(_zp_var, 0x42, 0, 0, 0, 0, 0);              // 0x28
+
+    // ---- INX/DEX (X Register) ----
+
+    // ---- INY/DEY (Y Register) ----
+
     
 }
 
