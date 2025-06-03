@@ -18,6 +18,8 @@ class SerialInterface(py4hw.Interface):
 
 class Uart6551(py4hw.Logic):
     
+    UART_TDR = 0
+    
     def __init__(self, parent, name:str, memory:punxa_6502.MemoryInterface, 
                  reset, serial:SerialInterface):
         super().__init__(parent, name)
@@ -27,8 +29,22 @@ class Uart6551(py4hw.Logic):
         self.mem = self.addInterfaceSink('memory', memory)
         self.serial = self.addInterfaceSource('serial', serial)
         
+        self.console = ''
+        
     def clock(self):
-        pass
+        
+        if (self.mem.read.get()):
+            # print('UART READ')
+            pass
+        
+        if (self.mem.write.get()):
+            add = self.mem.address.get()
+            wdata = self.mem.write_data.get()
+            
+            if (add == self.UART_TDR):
+                self.console += chr(wdata)
+            else:
+                print(f'\nUART WRITE add {add:04X} = {wdata:02X}'  )
     
 #     Receive Data Register (RDR) / Transmit Data Register (TDR)
 
