@@ -292,23 +292,35 @@ class SingleCycle6502(py4hw.Logic):
             self.C = (self.A >= w) & 1
             self.Z = (self.A == w) & 1
             self.N = (cmp >> 7) & 1
-            print(f'CMP {ws}\t--> C={self.C} N={self.N} Z={self.Z}')
+            print(f'CMP {ws}\t--> {ms}C={self.C} N={self.N} Z={self.Z}')
         elif (op == 'CPY'):
             cmp = (self.Y - w) & 0xFF
             self.C = (self.Y >= w) & 1
             self.Z = (self.Y == w) & 1
             self.N = (cmp >> 7) & 1
             print(f'CPY {ws}\t--> C={self.C} N={self.N} Z={self.Z}')
+        elif (op == 'DEC'):
+            R = w - 1;
+            self.N = R >> 7
+            self.Z = (R == 0) & 1
+            yield from self.memoryWrite(add, R)
+            print(f'DEC \t\t--> {ms} [{add:04X}]={R:02X} N={self.N} Z={self.Z}')
         elif (op == 'DEX'):
             self.X = (self.X - 1) & 0xFF
             self.N = self.X >> 7
-            self.Z = (self.X & 1) ^ 1
+            self.Z = (self.X == 0) & 1
             print(f'DEX \t\t--> X={self.X:02X} N={self.N} Z={self.Z}')            
         elif (op == 'DEY'):
             self.Y = (self.Y - 1) & 0xFF
             self.N = self.Y >> 7
-            self.Z = (self.Y & 1) ^ 1
+            self.Z = (self.Y == 0) & 1
             print(f'DEX \t\t--> Y={self.Y:02X} N={self.N} Z={self.Z}')            
+        elif (op == 'INC'):
+            R = w + 1;
+            self.N = R >> 7
+            self.Z = (R == 0) & 1
+            yield from self.memoryWrite(add, R)
+            print(f'INC \t\t--> {ms} [{add:04X}]={R:02X} N={self.N} Z={self.Z}')
         elif (op == 'INX'):
             self.X = (self.X + 1) & 0xFF
             self.N = self.X >> 7
