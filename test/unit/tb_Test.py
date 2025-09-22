@@ -72,4 +72,4 @@ def buildHw():
     print()
     
     
-buildHw()
+buildHw('sc')
