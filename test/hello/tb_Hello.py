@@ -9,6 +9,8 @@ import py4hw
 
 import punxa_6502 as punxa
 
+from punxa_6502.interactive_commands import *
+
 class ParseHexFile:
     def __init__(self, filename):
         self.n = 0
@@ -42,11 +44,16 @@ class ParseHexFile:
             
         return record_type, address, data_bytes
 
-def buildHw():
+def buildHw(arch):
+    # arch selects the architecture of the processor
+    # 'sc' means single cycle
+    # 'mc' means multi cycle
     global hw
     global cpu
     global mem
     global uart
+    
+    import punxa_6502.interactive_commands as cmd
     
     hw = py4hw.HWSystem()
     
@@ -78,7 +85,6 @@ def buildHw():
                                           ])
     
     
-    cpu = punxa.SingleCycle6502(hw, 'cpu', port_c, reset, irq, nmi, 0)
     
     
     memory.reallocArea(0, 0x1000) # 4 KB
@@ -111,11 +117,6 @@ def buildHw():
                 else:
                     memory.writeByte(ea, data[i])    
                     
-    # Load symbols
-    symbols = punxa.readSymbols('hello.map')
-    
-    for symbol, add in symbols:
-        cpu.symbols[add] = symbol
     
     
     #for i in range(len(data)):
@@ -124,13 +125,45 @@ def buildHw():
     #        print(f'\nwriting {i:04X} =', end='')
     #    print(f'{data[i]:02X} ', end='')
     
-    cpu.nmi_address = (nmi_hi << 8) | nmi_lo
-    cpu.reset_address = (reset_hi << 8) | reset_lo
-    cpu.irq = (irq_hi << 8) | irq_lo
-    
-    cpu.pc = cpu.reset_address
-    
-    print()
     
     
-buildHw()
+    if (arch == 'sc'):
+        cpu = punxa.SingleCycle6502(hw, 'cpu', port_c, reset, irq, nmi, 0)
+        
+        cpu.nmi_address = (nmi_hi << 8) | nmi_lo
+        cpu.reset_address = (reset_hi << 8) | reset_lo
+        cpu.irq = (irq_hi << 8) | irq_lo
+        
+        cpu.pc = cpu.reset_address
+        
+    elif (arch == 'mc'):
+        cpu = punxa.MultiCycle6502(hw, 'cpu', port_c, reset, irq, nmi, (reset_hi << 8) | reset_lo)
+    
+    
+    # Load symbols
+    symbols = punxa.readSymbols('hello.map')
+    
+    for symbol, add in symbols:
+        cpu.symbols[add] = symbol
+    
+    
+    cmd._ci_mem = memory
+    cmd._ci_cpu = cpu
+
+    if (arch == 'mc'):
+        global wvf
+        watch = py4hw.debug.getInterfaceWires(port_c)
+        watch.extend( py4hw.debug.getPorts(cpu.children['datapath'].children['alu']))
+        #watch.extend( py4hw.debug.getPorts(cpu.children['PC']))
+        #watch.extend( py4hw.debug.getPorts(cpu.children['SP']))
+        #watch.extend( py4hw.debug.getPorts(cpu.children['control']))
+        #watch.extend( py4hw.debug.getPorts(cpu.children['select_b']))
+        #watch.extend( py4hw.debug.getPorts(cpu.children['PC_lo']))
+        #watch.extend( py4hw.debug.getPorts(cpu.children['Y']))
+        #watch.extend( py4hw.debug.getPorts(cpu.children['C']))
+        #watch.extend( py4hw.debug.getPorts(cpu.children['Z']))
+        wvf = py4hw.Waveform(hw, 'wvf', watch)
+    
+buildHw('mc')    
+
+rtl = py4hw.VerilogGenerator(hw)
