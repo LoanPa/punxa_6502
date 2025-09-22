@@ -271,6 +271,20 @@ _OPCODE_MAP[0xFD] = ('SBC', ADDRESSING_ABSOLUTEX)
 _OPCODE_MAP[0xFE] = ('INC', ADDRESSING_ABSOLUTEX)
 # 0xFF is illegal/undocumented
 
+OPERAND_SIZE_MAP = {ADDRESSING_IMPLIED : 0, 
+              ADDRESSING_ACCUMULATOR: 0,
+              ADDRESSING_IMMEDIATE: 1,
+              ADDRESSING_ZEROPAGE: 1,
+              ADDRESSING_ZEROPAGEX: 1,
+              ADDRESSING_ZEROPAGEY: 1,
+              ADDRESSING_ABSOLUTE: 2,
+              ADDRESSING_ABSOLUTEX: 2,
+              ADDRESSING_ABSOLUTEY: 2,
+              ADDRESSING_INDIRECT: 2,
+              ADDRESSING_INDIRECTX: 1,
+              ADDRESSING_INDIRECTY: 1,
+              ADDRESSING_RELATIVE: 1,
+              }    
 
 def ins_to_str(op_code):
     """
