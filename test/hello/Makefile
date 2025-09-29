@@ -1,5 +1,8 @@
 all: hello.bin
 
+clean:
+	rm -f hello.ihx
+
 hello.ihx: hello.c
 	sdcc -mmos6502 hello.c
 
