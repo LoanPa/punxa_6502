@@ -1,0 +1,54 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _moduint.s - routine for remainder of 16 bit unsigned division
+                                      3 ;
+                                      4 ;   Copyright (C) 2022, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module _moduint
+                                     30 
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl __moduint
+                                     35 	
+                                     36 ;--------------------------------------------------------
+                                     37 ; local aliases
+                                     38 ;--------------------------------------------------------
+                                     39 	.define res "___SDCC_m6502_ret0"
+                                     40 	.define div "__moduint_PARM_2"
+                                     41 	.define rem "___SDCC_m6502_ret2"
+                                     42 	.define s1  "___SDCC_m6502_ret4"
+                                     43 	.define s2  "___SDCC_m6502_ret5"
+                                     44 
+                                     45 ;--------------------------------------------------------
+                                     46 ; code
+                                     47 ;--------------------------------------------------------
+                                     48 	.area CODE
+                                     49 	
+      000000                         50 __moduint:
+      000000 20r00r00         [ 6]   51 	jsr 	___udivmod16
+      000003 A5*00            [ 3]   52 	lda	*rem+0
+      000005 A6*01            [ 3]   53 	ldx	*rem+1
+      000007 60               [ 6]   54 	rts	

@@ -1,0 +1,147 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _mullong.s - routine for multiplication of 32 bit (unsigned) long
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module _mullong
+                                     30 
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl __mullong_PARM_2
+                                     35 	.globl __mullong_PARM_1
+                                     36 	.globl __mullong
+                                     37 
+                                     38 ;--------------------------------------------------------
+                                     39 ; overlayable function parameters in zero page
+                                     40 ;--------------------------------------------------------
+                                     41 	.area	OSEG    (PAG, OVR)
+      000000                         42 __mullong_PARM_1:
+      000000                         43 	.ds 4
+      000004                         44 __mullong_PARM_2:
+      000004                         45 	.ds 4
+                                     46 
+                                     47 ;--------------------------------------------------------
+                                     48 ; local aliases
+                                     49 ;--------------------------------------------------------
+                                     50 	.define res0 "___SDCC_m6502_ret0"
+                                     51 	.define res1 "___SDCC_m6502_ret1"
+                                     52 	.define res2 "___SDCC_m6502_ret2"
+                                     53 	.define res3 "___SDCC_m6502_ret3"
+                                     54 
+                                     55 ;--------------------------------------------------------
+                                     56 ; code
+                                     57 ;--------------------------------------------------------
+                                     58 	.area CODE
+                                     59 
+      000000                         60 __mullong:
+      000000 A2 00            [ 2]   61 	ldx     #0
+      000002 86*00            [ 3]   62 	stx     *res0
+      000004 86*00            [ 3]   63 	stx     *res1
+      000006 86*00            [ 3]   64 	stx     *res2
+                                     65 ;	stx	*res3
+                                     66 
+      000008 A0 08            [ 2]   67 	ldy     #8
+      00000A                         68 loop0:
+      00000A 46*00            [ 5]   69 	lsr	*__mullong_PARM_1+0
+      00000C 90 17            [ 4]   70 	bcc	skip0
+      00000E 18               [ 2]   71 	clc
+      00000F A5*00            [ 3]   72 	lda	*res0
+      000011 65*04            [ 3]   73 	adc	*__mullong_PARM_2+0
+      000013 85*00            [ 3]   74 	sta	*res0
+      000015 A5*00            [ 3]   75 	lda	*res1
+      000017 65*05            [ 3]   76 	adc	*__mullong_PARM_2+1
+      000019 85*00            [ 3]   77 	sta	*res1
+      00001B A5*00            [ 3]   78 	lda	*res2
+      00001D 65*06            [ 3]   79 	adc	*__mullong_PARM_2+2
+      00001F 85*00            [ 3]   80 	sta	*res2
+                                     81 ;	lda	*res3
+      000021 8A               [ 2]   82 	txa
+      000022 65*07            [ 3]   83 	adc	*__mullong_PARM_2+3
+      000024 AA               [ 2]   84 	tax
+                                     85 ;	sta	*res3
+      000025                         86 skip0:
+      000025 06*04            [ 5]   87 	asl	*__mullong_PARM_2+0
+      000027 26*05            [ 5]   88 	rol	*__mullong_PARM_2+1
+      000029 26*06            [ 5]   89 	rol	*__mullong_PARM_2+2
+      00002B 26*07            [ 5]   90 	rol	*__mullong_PARM_2+3
+      00002D 88               [ 2]   91 	dey
+      00002E D0 DA            [ 4]   92 	bne	loop0
+                                     93 
+      000030 A0 08            [ 2]   94         ldy     #8
+      000032                         95 loop1:
+      000032 46*01            [ 5]   96 	lsr 	*__mullong_PARM_1+1
+      000034 90 11            [ 4]   97 	bcc 	skip1
+      000036 18               [ 2]   98 	clc
+      000037 A5*00            [ 3]   99 	lda 	*res1
+      000039 65*05            [ 3]  100 	adc	*__mullong_PARM_2+1
+      00003B 85*00            [ 3]  101 	sta 	*res1
+      00003D A5*00            [ 3]  102 	lda 	*res2
+      00003F 65*06            [ 3]  103 	adc 	*__mullong_PARM_2+2
+      000041 85*00            [ 3]  104 	sta 	*res2
+                                    105 ;	lda 	*res3
+      000043 8A               [ 2]  106 	txa
+      000044 65*07            [ 3]  107 	adc	*__mullong_PARM_2+3
+                                    108 ;	sta 	*res3
+      000046 AA               [ 2]  109 	tax
+      000047                        110 skip1:
+      000047 06*05            [ 5]  111 	asl	*__mullong_PARM_2+1
+      000049 26*06            [ 5]  112 	rol	*__mullong_PARM_2+2
+      00004B 26*07            [ 5]  113 	rol	*__mullong_PARM_2+3
+      00004D 88               [ 2]  114 	dey
+      00004E D0 E2            [ 4]  115 	bne	loop1
+                                    116     
+      000050 A0 08            [ 2]  117 	ldy	#8
+      000052                        118 loop2:
+      000052 46*02            [ 5]  119 	lsr	*__mullong_PARM_1+2
+      000054 90 0B            [ 4]  120 	bcc	skip2
+      000056 18               [ 2]  121 	clc
+      000057 A5*00            [ 3]  122 	lda	*res2
+      000059 65*06            [ 3]  123 	adc	*__mullong_PARM_2+2
+      00005B 85*00            [ 3]  124 	sta	*res2
+      00005D 8A               [ 2]  125 	txa
+      00005E 65*07            [ 3]  126 	adc	*__mullong_PARM_2+3
+      000060 AA               [ 2]  127 	tax
+      000061                        128 skip2:
+      000061 06*06            [ 5]  129 	asl	*__mullong_PARM_2+2
+      000063 26*07            [ 5]  130 	rol	*__mullong_PARM_2+3
+      000065 88               [ 2]  131 	dey
+      000066 D0 EA            [ 4]  132 	bne loop2
+                                    133 
+      000068 8A               [ 2]  134 	txa
+      000069                        135 loop3:
+      000069 46*03            [ 5]  136 	lsr 	*__mullong_PARM_1+3
+      00006B 90 03            [ 4]  137 	bcc 	skip3
+      00006D 18               [ 2]  138 	clc
+      00006E 65*07            [ 3]  139 	adc 	*__mullong_PARM_2+3
+      000070                        140 skip3:
+      000070 06*07            [ 5]  141 	asl 	*__mullong_PARM_2+3
+      000072 D0 F5            [ 4]  142 	bne 	loop3
+                                    143 
+      000074 85*00            [ 3]  144 	sta 	*res3
+      000076 A6*00            [ 3]  145   	ldx	*res1
+      000078 A5*00            [ 3]  146   	lda	*res0
+      00007A 60               [ 6]  147 	rts

@@ -1,0 +1,126 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module memalignment
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _memalignment
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'memalignment'
+                                     64 ;------------------------------------------------------------
+                                     65 ;p             Allocated to registers a x 
+                                     66 ;ip            Allocated to registers a x 
+                                     67 ;sloc0         Allocated to stack - sp +1 +2 
+                                     68 ;------------------------------------------------------------
+                                     69 ;	../memalignment.c: 33: size_t memalignment(const void *p)
+                                     70 ;	genLabel
+                                     71 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     72 ;	-----------------------------------------
+                                     73 ;	 function memalignment
+                                     74 ;	-----------------------------------------
+                                     75 ;	Register assignment is optimal.
+                                     76 ;	Stack space usage: 2 bytes.
+      000000                         77 _memalignment:
+                                     78 ;	  adjustStack : cycles stk:6  incdec:14  adc:24
+      000000 48               [ 3]   79 	pha
+      000001 48               [ 3]   80 	pha
+                                     81 ;	Raw cost for generated ic 1 : (2, 6.000000) count=1.000000
+                                     82 ;	genReceive
+                                     83 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     84 ;	../memalignment.c: 35: intptr_t ip = (intptr_t)p;
+                                     85 ;	genCast
+                                     86 ;	genCopy
+                                     87 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                     88 ;	../memalignment.c: 36: return(ip & -ip);
+                                     89 ;	genUminus
+      000002 48               [ 3]   90 	pha
+      000003 49 FF            [ 2]   91 	eor	#0xff
+      000005 18               [ 2]   92 	clc
+      000006 69 01            [ 2]   93 	adc	#0x01
+      000008 86*00            [ 3]   94 	stx	*(REGTEMP+0)
+      00000A BA               [ 2]   95 	tsx
+      00000B 9D 02 01         [ 5]   96 	sta	0x102,x
+      00000E A6*00            [ 3]   97 	ldx	*(REGTEMP+0)
+      000010 A9 00            [ 2]   98 	lda      #0x00
+      000012 E5*00            [ 3]   99 	sbc	*(REGTEMP+0)
+      000014 BA               [ 2]  100 	tsx
+      000015 9D 03 01         [ 5]  101 	sta	0x103,x
+      000018 68               [ 4]  102 	pla
+                                    103 ;	Raw cost for generated ic 5 : (25, 41.000000) count=1.000000
+                                    104 ;	genAnd
+      000019 3D 02 01         [ 5]  105 	and	0x102,x
+      00001C 85*00            [ 3]  106 	sta	*(REGTEMP+0)
+      00001E 8A               [ 2]  107 	txa
+      00001F 3D 03 01         [ 5]  108 	and	0x103,x
+      000022 AA               [ 2]  109 	tax
+                                    110 ;	Raw cost for generated ic 6 : (12, 18.000000) count=1.000000
+                                    111 ;	genRet
+                                    112 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    113 ;	genLabel
+                                    114 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    115 ;	../memalignment.c: 37: }
+                                    116 ;	genEndFunction
+                                    117 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000023 68               [ 4]  118 	pla
+      000024 68               [ 4]  119 	pla
+      000025 A5*00            [ 3]  120 	lda	*(REGTEMP+0)
+      000027 60               [ 6]  121 	rts
+                                    122 ;	Raw cost for generated ic 9 : (7, 20.000000) count=1.000000
+                                    123 	.area CODE
+                                    124 	.area RODATA
+                                    125 	.area XINIT
+                                    126 	.area CABS    (ABS)

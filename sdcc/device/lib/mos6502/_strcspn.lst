@@ -1,0 +1,171 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module _strcspn
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _strchr
+                                     27 	.globl _strcspn_PARM_2
+                                     28 	.globl _strcspn
+                                     29 ;--------------------------------------------------------
+                                     30 ; ZP ram data
+                                     31 ;--------------------------------------------------------
+                                     32 	.area ZP      (PAG)
+      000000                         33 _strcspn_count_10000_28:
+      000000                         34 	.ds 2
+      000002                         35 _strcspn_sloc0_1_0:
+      000002                         36 	.ds 2
+                                     37 ;--------------------------------------------------------
+                                     38 ; overlayable items in ram
+                                     39 ;--------------------------------------------------------
+                                     40 ;--------------------------------------------------------
+                                     41 ; uninitialized external ram data
+                                     42 ;--------------------------------------------------------
+                                     43 	.area BSS
+      000000                         44 _strcspn_PARM_2:
+      000000                         45 	.ds 2
+                                     46 ;--------------------------------------------------------
+                                     47 ; absolute external ram data
+                                     48 ;--------------------------------------------------------
+                                     49 	.area DABS    (ABS)
+                                     50 ;--------------------------------------------------------
+                                     51 ; initialized external ram data
+                                     52 ;--------------------------------------------------------
+                                     53 	.area DATA
+                                     54 ;--------------------------------------------------------
+                                     55 ; global & static initialisations
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _CODE
+                                     58 	.area GSINIT
+                                     59 	.area GSFINAL
+                                     60 	.area GSINIT
+                                     61 ;--------------------------------------------------------
+                                     62 ; Home
+                                     63 ;--------------------------------------------------------
+                                     64 	.area _CODE
+                                     65 	.area _CODE
+                                     66 ;--------------------------------------------------------
+                                     67 ; code
+                                     68 ;--------------------------------------------------------
+                                     69 	.area CODE
+                                     70 ;------------------------------------------------------------
+                                     71 ;Allocation info for local variables in function 'strcspn'
+                                     72 ;------------------------------------------------------------
+                                     73 ;count         Allocated with name '_strcspn_count_10000_28'
+                                     74 ;ch            Allocated to registers x 
+                                     75 ;sloc0         Allocated with name '_strcspn_sloc0_1_0'
+                                     76 ;control       Allocated with name '_strcspn_PARM_2'
+                                     77 ;string        Allocated to registers 
+                                     78 ;------------------------------------------------------------
+                                     79 ;	../_strcspn.c: 31: size_t strcspn ( const char * string, const char * control )
+                                     80 ;	genLabel
+                                     81 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     82 ;	-----------------------------------------
+                                     83 ;	 function strcspn
+                                     84 ;	-----------------------------------------
+                                     85 ;	Register assignment is optimal.
+                                     86 ;	Stack space usage: 0 bytes.
+      000000                         87 _strcspn:
+                                     88 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     89 ;	genReceive
+      000000 85*02            [ 3]   90 	sta	*_strcspn_sloc0_1_0
+      000002 86*03            [ 3]   91 	stx	*(_strcspn_sloc0_1_0 + 1)
+                                     92 ;	Raw cost for generated ic 2 : (4, 6.000000) count=1.000000
+                                     93 ;	../_strcspn.c: 36: while (ch = *string) {
+                                     94 ;	genAssign
+                                     95 ;	genAssignLit
+      000004 A0 00            [ 2]   96 	ldy	#0x00
+      000006 84*00            [ 3]   97 	sty	*_strcspn_count_10000_28
+      000008 84*01            [ 3]   98 	sty	*(_strcspn_count_10000_28 + 1)
+                                     99 ;	Raw cost for generated ic 33 : (6, 8.000000) count=1.000000
+                                    100 ;	genLabel
+      00000A                        101 00104$:
+                                    102 ;	Raw cost for generated ic 4 : (0, 0.000000) count=2.285713
+                                    103 ;	genPointerGet
+      00000A A0 00            [ 2]  104 	ldy	#0x00
+      00000C B1*02            [ 6]  105 	lda	[*_strcspn_sloc0_1_0],y
+                                    106 ;	Raw cost for generated ic 6 : (4, 7.000000) count=2.285713
+                                    107 ;	genAssign
+                                    108 ;	genCopy
+      00000E AA               [ 2]  109 	tax
+                                    110 ;	Raw cost for generated ic 7 : (1, 2.000000) count=2.285713
+                                    111 ;	genIfx
+      00000F C9 00            [ 2]  112 	cmp	#0x00
+                                    113 ;	genIfxJump : z
+      000011 F0 22            [ 4]  114 	beq	00106$
+                                    115 ;	Raw cost for generated ic 8 : (7, 7.600000) count=2.285713
+                                    116 ;	../_strcspn.c: 37: if (strchr(control,ch))
+                                    117 ;	genAssign
+                                    118 ;	genCopy
+      000013 86*00            [ 3]  119 	stx	*_strchr_PARM_2
+                                    120 ;	Raw cost for generated ic 12 : (2, 3.000000) count=1.714284
+                                    121 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.714284
+                                    122 ;	genCall
+                                    123 ;	genSend
+      000015 AEr01r00         [ 4]  124 	ldx	(_strcspn_PARM_2 + 1)
+      000018 ADr00r00         [ 4]  125 	lda	_strcspn_PARM_2
+      00001B 20r00r00         [ 6]  126 	jsr	_strchr
+                                    127 ;	assignResultValue
+                                    128 ;	Raw cost for generated ic 13 : (9, 14.000000) count=1.714284
+                                    129 ;	genIfx
+      00001E C9 00            [ 2]  130 	cmp	#0x00
+                                    131 ;	genIfxJump : z
+      000020 D0 13            [ 4]  132 	bne	00106$
+      000022 E0 00            [ 2]  133 	cpx	#0x00
+      000024 D0 0F            [ 4]  134 	bne	00106$
+                                    135 ;	Raw cost for generated ic 14 : (11, 12.200000) count=1.714284
+                                    136 ;	../_strcspn.c: 40: count++;
+                                    137 ;	genPlus
+                                    138 ;	  genPlusInc
+      000026 E6*00            [ 5]  139 	inc	*_strcspn_count_10000_28
+      000028 D0 02            [ 4]  140 	bne	00132$
+      00002A E6*01            [ 5]  141 	inc	*(_strcspn_count_10000_28 + 1)
+      00002C                        142 00132$:
+                                    143 ;	Raw cost for generated ic 21 : (6, 12.600000) count=1.285713
+                                    144 ;	../_strcspn.c: 41: string++;
+                                    145 ;	genPlus
+                                    146 ;	  genPlusInc
+      00002C E6*02            [ 5]  147 	inc	*_strcspn_sloc0_1_0
+      00002E D0 DA            [ 4]  148 	bne	00104$
+      000030 E6*03            [ 5]  149 	inc	*(_strcspn_sloc0_1_0 + 1)
+                                    150 ;	Raw cost for generated ic 25 : (6, 12.600000) count=1.285713
+                                    151 ;	genGoto
+      000032 4Cr0Ar00         [ 3]  152 	jmp	00104$
+                                    153 ;	Raw cost for generated ic 27 : (3, 3.000000) count=1.285713
+                                    154 ;	genLabel
+      000035                        155 00106$:
+                                    156 ;	Raw cost for generated ic 28 : (0, 0.000000) count=0.999999
+                                    157 ;	../_strcspn.c: 44: return count;
+                                    158 ;	genRet
+      000035 A6*01            [ 3]  159 	ldx	*(_strcspn_count_10000_28 + 1)
+      000037 A5*00            [ 3]  160 	lda	*_strcspn_count_10000_28
+                                    161 ;	Raw cost for generated ic 29 : (4, 6.000000) count=0.999999
+                                    162 ;	genLabel
+                                    163 ;	Raw cost for generated ic 30 : (0, 0.000000) count=0.999999
+                                    164 ;	../_strcspn.c: 45: }  
+                                    165 ;	genEndFunction
+      000039 60               [ 6]  166 	rts
+                                    167 ;	Raw cost for generated ic 31 : (1, 6.000000) count=0.999999
+                                    168 	.area CODE
+                                    169 	.area RODATA
+                                    170 	.area XINIT
+                                    171 	.area CABS    (ABS)

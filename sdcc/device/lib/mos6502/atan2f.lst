@@ -1,0 +1,540 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module atan2f
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _fabsf
+                                     27 	.globl _atanf
+                                     28 	.globl _atan2f_PARM_2
+                                     29 	.globl _atan2f_PARM_1
+                                     30 	.globl _atan2f
+                                     31 ;--------------------------------------------------------
+                                     32 ; ZP ram data
+                                     33 ;--------------------------------------------------------
+                                     34 	.area ZP      (PAG)
+      000000                         35 _atan2f_sloc0_1_0:
+      000000                         36 	.ds 4
+      000004                         37 _atan2f_sloc1_1_0:
+      000004                         38 	.ds 4
+                                     39 ;--------------------------------------------------------
+                                     40 ; overlayable items in ram
+                                     41 ;--------------------------------------------------------
+                                     42 ;--------------------------------------------------------
+                                     43 ; uninitialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area BSS
+      000000                         46 _atan2f_PARM_1:
+      000000                         47 	.ds 4
+      000004                         48 _atan2f_PARM_2:
+      000004                         49 	.ds 4
+      000008                         50 _atan2f_r_10000_26:
+      000008                         51 	.ds 4
+                                     52 ;--------------------------------------------------------
+                                     53 ; absolute external ram data
+                                     54 ;--------------------------------------------------------
+                                     55 	.area DABS    (ABS)
+                                     56 ;--------------------------------------------------------
+                                     57 ; initialized external ram data
+                                     58 ;--------------------------------------------------------
+                                     59 	.area DATA
+                                     60 ;--------------------------------------------------------
+                                     61 ; global & static initialisations
+                                     62 ;--------------------------------------------------------
+                                     63 	.area _CODE
+                                     64 	.area GSINIT
+                                     65 	.area GSFINAL
+                                     66 	.area GSINIT
+                                     67 ;--------------------------------------------------------
+                                     68 ; Home
+                                     69 ;--------------------------------------------------------
+                                     70 	.area _CODE
+                                     71 	.area _CODE
+                                     72 ;--------------------------------------------------------
+                                     73 ; code
+                                     74 ;--------------------------------------------------------
+                                     75 	.area CODE
+                                     76 ;------------------------------------------------------------
+                                     77 ;Allocation info for local variables in function 'atan2f'
+                                     78 ;------------------------------------------------------------
+                                     79 ;sloc0         Allocated with name '_atan2f_sloc0_1_0'
+                                     80 ;sloc1         Allocated with name '_atan2f_sloc1_1_0'
+                                     81 ;x             Allocated with name '_atan2f_PARM_1'
+                                     82 ;y             Allocated with name '_atan2f_PARM_2'
+                                     83 ;r             Allocated with name '_atan2f_r_10000_26'
+                                     84 ;------------------------------------------------------------
+                                     85 ;	../atan2f.c: 34: float atan2f(float x, float y)
+                                     86 ;	genLabel
+                                     87 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     88 ;	-----------------------------------------
+                                     89 ;	 function atan2f
+                                     90 ;	-----------------------------------------
+                                     91 ;	Register assignment is optimal.
+                                     92 ;	Stack space usage: 0 bytes.
+      000000                         93 _atan2f:
+                                     94 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     95 ;	../atan2f.c: 38: if ((x==0.0) && (y==0.0))
+                                     96 ;	genIfx
+      000000 ADr03r00         [ 4]   97 	lda	(_atan2f_PARM_1 + 3)
+      000003 29 7F            [ 2]   98 	and	#0x7F
+      000005 0Dr02r00         [ 4]   99 	ora	(_atan2f_PARM_1 + 2)
+      000008 0Dr01r00         [ 4]  100 	ora	(_atan2f_PARM_1 + 1)
+      00000B 0Dr00r00         [ 4]  101 	ora	_atan2f_PARM_1
+                                    102 ;	genIfxJump : z
+      00000E D0 21            [ 4]  103 	bne	00102$
+                                    104 ;	Raw cost for generated ic 2 : (19, 23.600000) count=1.000000
+                                    105 ;	genIfx
+      000010 ADr07r00         [ 4]  106 	lda	(_atan2f_PARM_2 + 3)
+      000013 29 7F            [ 2]  107 	and	#0x7F
+      000015 0Dr06r00         [ 4]  108 	ora	(_atan2f_PARM_2 + 2)
+      000018 0Dr05r00         [ 4]  109 	ora	(_atan2f_PARM_2 + 1)
+      00001B 0Dr04r00         [ 4]  110 	ora	_atan2f_PARM_2
+                                    111 ;	genIfxJump : z
+      00001E D0 11            [ 4]  112 	bne	00102$
+                                    113 ;	Raw cost for generated ic 5 : (19, 23.600000) count=0.750000
+                                    114 ;	../atan2f.c: 40: errno=EDOM;
+                                    115 ;	genAssign
+                                    116 ;	genAssignLit
+      000020 A2 21            [ 2]  117 	ldx	#0x21
+      000022 8Er00r00         [ 4]  118 	stx	_errno
+      000025 A0 00            [ 2]  119 	ldy	#0x00
+      000027 8Cr01r00         [ 4]  120 	sty	(_errno + 1)
+                                    121 ;	Raw cost for generated ic 9 : (10, 12.000000) count=0.562500
+                                    122 ;	../atan2f.c: 41: return 0.0;
+                                    123 ;	genRet
+      00002A 98               [ 2]  124 	tya
+      00002B AA               [ 2]  125 	tax
+      00002C 85*00            [ 3]  126 	sta	*___SDCC_m6502_ret2
+      00002E 85*00            [ 3]  127 	sta	*___SDCC_m6502_ret3
+      000030 60               [ 6]  128 	rts
+                                    129 ;	Raw cost for generated ic 10 : (9, 13.000000) count=0.562500
+                                    130 ;	genLabel
+      000031                        131 00102$:
+                                    132 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.000000
+                                    133 ;	../atan2f.c: 44: if(fabsf(y)>=fabsf(x))
+                                    134 ;	genAssign
+                                    135 ;	genCopy
+      000031 ADr07r00         [ 4]  136 	lda	(_atan2f_PARM_2 + 3)
+      000034 8Dr03r00         [ 4]  137 	sta	(_fabsf_PARM_1 + 3)
+      000037 ADr06r00         [ 4]  138 	lda	(_atan2f_PARM_2 + 2)
+      00003A 8Dr02r00         [ 4]  139 	sta	(_fabsf_PARM_1 + 2)
+      00003D ADr05r00         [ 4]  140 	lda	(_atan2f_PARM_2 + 1)
+      000040 8Dr01r00         [ 4]  141 	sta	(_fabsf_PARM_1 + 1)
+      000043 ADr04r00         [ 4]  142 	lda	_atan2f_PARM_2
+      000046 8Dr00r00         [ 4]  143 	sta	_fabsf_PARM_1
+                                    144 ;	Raw cost for generated ic 12 : (24, 32.000000) count=1.000000
+                                    145 ;	genCall
+      000049 20r00r00         [ 6]  146 	jsr	_fabsf
+                                    147 ;	assignResultValue
+      00004C 85*00            [ 3]  148 	sta	*_atan2f_sloc0_1_0
+      00004E 86*01            [ 3]  149 	stx	*(_atan2f_sloc0_1_0 + 1)
+      000050 A5*00            [ 3]  150 	lda	*___SDCC_m6502_ret2
+      000052 85*02            [ 3]  151 	sta	*(_atan2f_sloc0_1_0 + 2)
+      000054 A5*00            [ 3]  152 	lda	*___SDCC_m6502_ret3
+      000056 85*03            [ 3]  153 	sta	*(_atan2f_sloc0_1_0 + 3)
+                                    154 ;	Raw cost for generated ic 13 : (15, 24.000000) count=1.000000
+                                    155 ;	genAssign
+                                    156 ;	genCopy
+      000058 ADr03r00         [ 4]  157 	lda	(_atan2f_PARM_1 + 3)
+      00005B 8Dr03r00         [ 4]  158 	sta	(_fabsf_PARM_1 + 3)
+      00005E ADr02r00         [ 4]  159 	lda	(_atan2f_PARM_1 + 2)
+      000061 8Dr02r00         [ 4]  160 	sta	(_fabsf_PARM_1 + 2)
+      000064 ADr01r00         [ 4]  161 	lda	(_atan2f_PARM_1 + 1)
+      000067 8Dr01r00         [ 4]  162 	sta	(_fabsf_PARM_1 + 1)
+      00006A ADr00r00         [ 4]  163 	lda	_atan2f_PARM_1
+      00006D 8Dr00r00         [ 4]  164 	sta	_fabsf_PARM_1
+                                    165 ;	Raw cost for generated ic 14 : (24, 32.000000) count=1.000000
+                                    166 ;	genCall
+      000070 20r00r00         [ 6]  167 	jsr	_fabsf
+                                    168 ;	assignResultValue
+      000073 8Dr00r00         [ 4]  169 	sta	___fslt_PARM_2
+      000076 8Er01r00         [ 4]  170 	stx	(___fslt_PARM_2 + 1)
+      000079 A5*00            [ 3]  171 	lda	*___SDCC_m6502_ret2
+      00007B 8Dr02r00         [ 4]  172 	sta	(___fslt_PARM_2 + 2)
+      00007E A5*00            [ 3]  173 	lda	*___SDCC_m6502_ret3
+      000080 8Dr03r00         [ 4]  174 	sta	(___fslt_PARM_2 + 3)
+                                    175 ;	Raw cost for generated ic 15 : (19, 28.000000) count=1.000000
+                                    176 ;	genAssign
+                                    177 ;	genCopy
+      000083 A5*03            [ 3]  178 	lda	*(_atan2f_sloc0_1_0 + 3)
+      000085 8Dr03r00         [ 4]  179 	sta	(___fslt_PARM_1 + 3)
+      000088 A5*02            [ 3]  180 	lda	*(_atan2f_sloc0_1_0 + 2)
+      00008A 8Dr02r00         [ 4]  181 	sta	(___fslt_PARM_1 + 2)
+      00008D A5*01            [ 3]  182 	lda	*(_atan2f_sloc0_1_0 + 1)
+      00008F 8Dr01r00         [ 4]  183 	sta	(___fslt_PARM_1 + 1)
+      000092 A5*00            [ 3]  184 	lda	*_atan2f_sloc0_1_0
+      000094 8Dr00r00         [ 4]  185 	sta	___fslt_PARM_1
+                                    186 ;	Raw cost for generated ic 59 : (20, 28.000000) count=1.000000
+                                    187 ;	genCall
+      000097 20r00r00         [ 6]  188 	jsr	___fslt
+                                    189 ;	assignResultValue
+                                    190 ;	Raw cost for generated ic 61 : (3, 6.000000) count=1.000000
+                                    191 ;	genIfx
+      00009A C9 00            [ 2]  192 	cmp	#0x00
+                                    193 ;	genIfxJump : z
+      00009C F0 03            [ 4]  194 	beq	00156$
+      00009E 4CrC2r01         [ 3]  195 	jmp	00107$
+      0000A1                        196 00156$:
+                                    197 ;	Raw cost for generated ic 17 : (7, 7.600000) count=1.000000
+                                    198 ;	../atan2f.c: 46: r=atanf(x/y);
+                                    199 ;	genAssign
+                                    200 ;	genCopy
+      0000A1 ADr03r00         [ 4]  201 	lda	(_atan2f_PARM_1 + 3)
+      0000A4 8Dr03r00         [ 4]  202 	sta	(___fsdiv_PARM_1 + 3)
+      0000A7 ADr02r00         [ 4]  203 	lda	(_atan2f_PARM_1 + 2)
+      0000AA 8Dr02r00         [ 4]  204 	sta	(___fsdiv_PARM_1 + 2)
+      0000AD ADr01r00         [ 4]  205 	lda	(_atan2f_PARM_1 + 1)
+      0000B0 8Dr01r00         [ 4]  206 	sta	(___fsdiv_PARM_1 + 1)
+      0000B3 ADr00r00         [ 4]  207 	lda	_atan2f_PARM_1
+      0000B6 8Dr00r00         [ 4]  208 	sta	___fsdiv_PARM_1
+                                    209 ;	Raw cost for generated ic 62 : (24, 32.000000) count=0.750000
+                                    210 ;	genAssign
+                                    211 ;	genCopy
+      0000B9 ADr07r00         [ 4]  212 	lda	(_atan2f_PARM_2 + 3)
+      0000BC 8Dr03r00         [ 4]  213 	sta	(___fsdiv_PARM_2 + 3)
+      0000BF ADr06r00         [ 4]  214 	lda	(_atan2f_PARM_2 + 2)
+      0000C2 8Dr02r00         [ 4]  215 	sta	(___fsdiv_PARM_2 + 2)
+      0000C5 ADr05r00         [ 4]  216 	lda	(_atan2f_PARM_2 + 1)
+      0000C8 8Dr01r00         [ 4]  217 	sta	(___fsdiv_PARM_2 + 1)
+      0000CB ADr04r00         [ 4]  218 	lda	_atan2f_PARM_2
+      0000CE 8Dr00r00         [ 4]  219 	sta	___fsdiv_PARM_2
+                                    220 ;	Raw cost for generated ic 63 : (24, 32.000000) count=0.750000
+                                    221 ;	genCall
+      0000D1 20r00r00         [ 6]  222 	jsr	___fsdiv
+                                    223 ;	assignResultValue
+      0000D4 8Dr00r00         [ 4]  224 	sta	_atanf_PARM_1
+      0000D7 8Er01r00         [ 4]  225 	stx	(_atanf_PARM_1 + 1)
+      0000DA A5*00            [ 3]  226 	lda	*___SDCC_m6502_ret2
+      0000DC 8Dr02r00         [ 4]  227 	sta	(_atanf_PARM_1 + 2)
+      0000DF A5*00            [ 3]  228 	lda	*___SDCC_m6502_ret3
+      0000E1 8Dr03r00         [ 4]  229 	sta	(_atanf_PARM_1 + 3)
+                                    230 ;	Raw cost for generated ic 64 : (19, 28.000000) count=0.750000
+                                    231 ;	genCall
+      0000E4 20r00r00         [ 6]  232 	jsr	_atanf
+                                    233 ;	assignResultValue
+      0000E7 85*00            [ 3]  234 	sta	*_atan2f_sloc0_1_0
+      0000E9 86*01            [ 3]  235 	stx	*(_atan2f_sloc0_1_0 + 1)
+      0000EB A5*00            [ 3]  236 	lda	*___SDCC_m6502_ret2
+      0000ED 85*02            [ 3]  237 	sta	*(_atan2f_sloc0_1_0 + 2)
+      0000EF A5*00            [ 3]  238 	lda	*___SDCC_m6502_ret3
+      0000F1 85*03            [ 3]  239 	sta	*(_atan2f_sloc0_1_0 + 3)
+                                    240 ;	Raw cost for generated ic 22 : (15, 24.000000) count=0.750000
+                                    241 ;	genAssign
+                                    242 ;	genCopy
+      0000F3 8Dr0Br00         [ 4]  243 	sta	(_atan2f_r_10000_26 + 3)
+      0000F6 A5*02            [ 3]  244 	lda	*(_atan2f_sloc0_1_0 + 2)
+      0000F8 8Dr0Ar00         [ 4]  245 	sta	(_atan2f_r_10000_26 + 2)
+      0000FB 8A               [ 2]  246 	txa
+      0000FC 8Dr09r00         [ 4]  247 	sta	(_atan2f_r_10000_26 + 1)
+      0000FF A5*00            [ 3]  248 	lda	*_atan2f_sloc0_1_0
+      000101 8Dr08r00         [ 4]  249 	sta	_atan2f_r_10000_26
+                                    250 ;	Raw cost for generated ic 23 : (17, 24.000000) count=0.750000
+                                    251 ;	../atan2f.c: 47: if(y<0.0) r+=(x>=0?PI:-PI);
+                                    252 ;	genAssign
+                                    253 ;	genCopy
+      000104 ADr07r00         [ 4]  254 	lda	(_atan2f_PARM_2 + 3)
+      000107 8Dr03r00         [ 4]  255 	sta	(___fslt_PARM_1 + 3)
+      00010A ADr06r00         [ 4]  256 	lda	(_atan2f_PARM_2 + 2)
+      00010D 8Dr02r00         [ 4]  257 	sta	(___fslt_PARM_1 + 2)
+      000110 ADr05r00         [ 4]  258 	lda	(_atan2f_PARM_2 + 1)
+      000113 8Dr01r00         [ 4]  259 	sta	(___fslt_PARM_1 + 1)
+      000116 ADr04r00         [ 4]  260 	lda	_atan2f_PARM_2
+      000119 8Dr00r00         [ 4]  261 	sta	___fslt_PARM_1
+                                    262 ;	Raw cost for generated ic 65 : (24, 32.000000) count=0.750000
+                                    263 ;	genAssign
+                                    264 ;	genAssignLit
+      00011C A0 00            [ 2]  265 	ldy	#0x00
+      00011E 8Cr00r00         [ 4]  266 	sty	___fslt_PARM_2
+      000121 8Cr01r00         [ 4]  267 	sty	(___fslt_PARM_2 + 1)
+      000124 8Cr02r00         [ 4]  268 	sty	(___fslt_PARM_2 + 2)
+      000127 8Cr03r00         [ 4]  269 	sty	(___fslt_PARM_2 + 3)
+                                    270 ;	Raw cost for generated ic 66 : (14, 18.000000) count=0.750000
+                                    271 ;	genCall
+      00012A 20r00r00         [ 6]  272 	jsr	___fslt
+                                    273 ;	assignResultValue
+                                    274 ;	Raw cost for generated ic 67 : (3, 6.000000) count=0.750000
+                                    275 ;	genIfx
+      00012D C9 00            [ 2]  276 	cmp	#0x00
+                                    277 ;	genIfxJump : z
+      00012F D0 03            [ 4]  278 	bne	00158$
+      000131 4CrA3r02         [ 3]  279 	jmp	00108$
+      000134                        280 00158$:
+                                    281 ;	Raw cost for generated ic 25 : (7, 7.600000) count=0.750000
+                                    282 ;	genAssign
+                                    283 ;	genCopy
+      000134 ADr03r00         [ 4]  284 	lda	(_atan2f_PARM_1 + 3)
+      000137 8Dr03r00         [ 4]  285 	sta	(___fslt_PARM_1 + 3)
+      00013A ADr02r00         [ 4]  286 	lda	(_atan2f_PARM_1 + 2)
+      00013D 8Dr02r00         [ 4]  287 	sta	(___fslt_PARM_1 + 2)
+      000140 ADr01r00         [ 4]  288 	lda	(_atan2f_PARM_1 + 1)
+      000143 8Dr01r00         [ 4]  289 	sta	(___fslt_PARM_1 + 1)
+      000146 ADr00r00         [ 4]  290 	lda	_atan2f_PARM_1
+      000149 8Dr00r00         [ 4]  291 	sta	___fslt_PARM_1
+                                    292 ;	Raw cost for generated ic 68 : (24, 32.000000) count=0.562500
+                                    293 ;	genAssign
+                                    294 ;	genAssignLit
+      00014C A0 00            [ 2]  295 	ldy	#0x00
+      00014E 8Cr00r00         [ 4]  296 	sty	___fslt_PARM_2
+      000151 8Cr01r00         [ 4]  297 	sty	(___fslt_PARM_2 + 1)
+      000154 8Cr02r00         [ 4]  298 	sty	(___fslt_PARM_2 + 2)
+      000157 8Cr03r00         [ 4]  299 	sty	(___fslt_PARM_2 + 3)
+                                    300 ;	Raw cost for generated ic 69 : (14, 18.000000) count=0.562500
+                                    301 ;	genCall
+      00015A 20r00r00         [ 6]  302 	jsr	___fslt
+                                    303 ;	assignResultValue
+                                    304 ;	Raw cost for generated ic 70 : (3, 6.000000) count=0.562500
+                                    305 ;	genIfx
+      00015D C9 00            [ 2]  306 	cmp	#0x00
+                                    307 ;	genIfxJump : z
+      00015F D0 13            [ 4]  308 	bne	00111$
+                                    309 ;	Raw cost for generated ic 30 : (7, 7.600000) count=0.562500
+                                    310 ;	genAssign
+                                    311 ;	genAssignLit
+      000161 A2 DB            [ 2]  312 	ldx	#0xdb
+      000163 86*04            [ 3]  313 	stx	*_atan2f_sloc1_1_0
+      000165 A2 0F            [ 2]  314 	ldx	#0x0f
+      000167 86*05            [ 3]  315 	stx	*(_atan2f_sloc1_1_0 + 1)
+      000169 A2 49            [ 2]  316 	ldx	#0x49
+      00016B 86*06            [ 3]  317 	stx	*(_atan2f_sloc1_1_0 + 2)
+      00016D A2 40            [ 2]  318 	ldx	#0x40
+      00016F 86*07            [ 3]  319 	stx	*(_atan2f_sloc1_1_0 + 3)
+                                    320 ;	Raw cost for generated ic 31 : (16, 20.000000) count=0.421875
+                                    321 ;	genGoto
+      000171 4Cr84r01         [ 3]  322 	jmp	00112$
+                                    323 ;	Raw cost for generated ic 32 : (3, 3.000000) count=0.421875
+                                    324 ;	genLabel
+      000174                        325 00111$:
+                                    326 ;	Raw cost for generated ic 33 : (0, 0.000000) count=0.140625
+                                    327 ;	genAssign
+                                    328 ;	genAssignLit
+      000174 A2 DB            [ 2]  329 	ldx	#0xdb
+      000176 86*04            [ 3]  330 	stx	*_atan2f_sloc1_1_0
+      000178 A2 0F            [ 2]  331 	ldx	#0x0f
+      00017A 86*05            [ 3]  332 	stx	*(_atan2f_sloc1_1_0 + 1)
+      00017C A2 49            [ 2]  333 	ldx	#0x49
+      00017E 86*06            [ 3]  334 	stx	*(_atan2f_sloc1_1_0 + 2)
+      000180 A2 C0            [ 2]  335 	ldx	#0xc0
+      000182 86*07            [ 3]  336 	stx	*(_atan2f_sloc1_1_0 + 3)
+                                    337 ;	Raw cost for generated ic 34 : (16, 20.000000) count=0.140625
+                                    338 ;	genLabel
+      000184                        339 00112$:
+                                    340 ;	Raw cost for generated ic 35 : (0, 0.000000) count=0.562500
+                                    341 ;	genAssign
+                                    342 ;	genCopy
+      000184 A5*03            [ 3]  343 	lda	*(_atan2f_sloc0_1_0 + 3)
+      000186 8Dr03r00         [ 4]  344 	sta	(___fsadd_PARM_1 + 3)
+      000189 A5*02            [ 3]  345 	lda	*(_atan2f_sloc0_1_0 + 2)
+      00018B 8Dr02r00         [ 4]  346 	sta	(___fsadd_PARM_1 + 2)
+      00018E A5*01            [ 3]  347 	lda	*(_atan2f_sloc0_1_0 + 1)
+      000190 8Dr01r00         [ 4]  348 	sta	(___fsadd_PARM_1 + 1)
+      000193 A5*00            [ 3]  349 	lda	*_atan2f_sloc0_1_0
+      000195 8Dr00r00         [ 4]  350 	sta	___fsadd_PARM_1
+                                    351 ;	Raw cost for generated ic 71 : (20, 28.000000) count=0.562500
+                                    352 ;	genAssign
+                                    353 ;	genCopy
+      000198 A5*07            [ 3]  354 	lda	*(_atan2f_sloc1_1_0 + 3)
+      00019A 8Dr03r00         [ 4]  355 	sta	(___fsadd_PARM_2 + 3)
+      00019D A5*06            [ 3]  356 	lda	*(_atan2f_sloc1_1_0 + 2)
+      00019F 8Dr02r00         [ 4]  357 	sta	(___fsadd_PARM_2 + 2)
+      0001A2 A5*05            [ 3]  358 	lda	*(_atan2f_sloc1_1_0 + 1)
+      0001A4 8Dr01r00         [ 4]  359 	sta	(___fsadd_PARM_2 + 1)
+      0001A7 A5*04            [ 3]  360 	lda	*_atan2f_sloc1_1_0
+      0001A9 8Dr00r00         [ 4]  361 	sta	___fsadd_PARM_2
+                                    362 ;	Raw cost for generated ic 72 : (20, 28.000000) count=0.562500
+                                    363 ;	genCall
+      0001AC 20r00r00         [ 6]  364 	jsr	___fsadd
+                                    365 ;	assignResultValue
+      0001AF 8Dr08r00         [ 4]  366 	sta	_atan2f_r_10000_26
+      0001B2 8Er09r00         [ 4]  367 	stx	(_atan2f_r_10000_26 + 1)
+      0001B5 A5*00            [ 3]  368 	lda	*___SDCC_m6502_ret2
+      0001B7 8Dr0Ar00         [ 4]  369 	sta	(_atan2f_r_10000_26 + 2)
+      0001BA A5*00            [ 3]  370 	lda	*___SDCC_m6502_ret3
+      0001BC 8Dr0Br00         [ 4]  371 	sta	(_atan2f_r_10000_26 + 3)
+                                    372 ;	Raw cost for generated ic 73 : (19, 28.000000) count=0.562500
+                                    373 ;	genGoto
+      0001BF 4CrA3r02         [ 3]  374 	jmp	00108$
+                                    375 ;	Raw cost for generated ic 39 : (3, 3.000000) count=0.562500
+                                    376 ;	genLabel
+      0001C2                        377 00107$:
+                                    378 ;	Raw cost for generated ic 40 : (0, 0.000000) count=0.250000
+                                    379 ;	../atan2f.c: 51: r=-atanf(y/x);
+                                    380 ;	genAssign
+                                    381 ;	genCopy
+      0001C2 ADr07r00         [ 4]  382 	lda	(_atan2f_PARM_2 + 3)
+      0001C5 8Dr03r00         [ 4]  383 	sta	(___fsdiv_PARM_1 + 3)
+      0001C8 ADr06r00         [ 4]  384 	lda	(_atan2f_PARM_2 + 2)
+      0001CB 8Dr02r00         [ 4]  385 	sta	(___fsdiv_PARM_1 + 2)
+      0001CE ADr05r00         [ 4]  386 	lda	(_atan2f_PARM_2 + 1)
+      0001D1 8Dr01r00         [ 4]  387 	sta	(___fsdiv_PARM_1 + 1)
+      0001D4 ADr04r00         [ 4]  388 	lda	_atan2f_PARM_2
+      0001D7 8Dr00r00         [ 4]  389 	sta	___fsdiv_PARM_1
+                                    390 ;	Raw cost for generated ic 74 : (24, 32.000000) count=0.250000
+                                    391 ;	genAssign
+                                    392 ;	genCopy
+      0001DA ADr03r00         [ 4]  393 	lda	(_atan2f_PARM_1 + 3)
+      0001DD 8Dr03r00         [ 4]  394 	sta	(___fsdiv_PARM_2 + 3)
+      0001E0 ADr02r00         [ 4]  395 	lda	(_atan2f_PARM_1 + 2)
+      0001E3 8Dr02r00         [ 4]  396 	sta	(___fsdiv_PARM_2 + 2)
+      0001E6 ADr01r00         [ 4]  397 	lda	(_atan2f_PARM_1 + 1)
+      0001E9 8Dr01r00         [ 4]  398 	sta	(___fsdiv_PARM_2 + 1)
+      0001EC ADr00r00         [ 4]  399 	lda	_atan2f_PARM_1
+      0001EF 8Dr00r00         [ 4]  400 	sta	___fsdiv_PARM_2
+                                    401 ;	Raw cost for generated ic 75 : (24, 32.000000) count=0.250000
+                                    402 ;	genCall
+      0001F2 20r00r00         [ 6]  403 	jsr	___fsdiv
+                                    404 ;	assignResultValue
+      0001F5 8Dr00r00         [ 4]  405 	sta	_atanf_PARM_1
+      0001F8 8Er01r00         [ 4]  406 	stx	(_atanf_PARM_1 + 1)
+      0001FB A5*00            [ 3]  407 	lda	*___SDCC_m6502_ret2
+      0001FD 8Dr02r00         [ 4]  408 	sta	(_atanf_PARM_1 + 2)
+      000200 A5*00            [ 3]  409 	lda	*___SDCC_m6502_ret3
+      000202 8Dr03r00         [ 4]  410 	sta	(_atanf_PARM_1 + 3)
+                                    411 ;	Raw cost for generated ic 76 : (19, 28.000000) count=0.250000
+                                    412 ;	genCall
+      000205 20r00r00         [ 6]  413 	jsr	_atanf
+                                    414 ;	assignResultValue
+      000208 85*04            [ 3]  415 	sta	*_atan2f_sloc1_1_0
+      00020A 86*05            [ 3]  416 	stx	*(_atan2f_sloc1_1_0 + 1)
+      00020C A5*00            [ 3]  417 	lda	*___SDCC_m6502_ret2
+      00020E 85*06            [ 3]  418 	sta	*(_atan2f_sloc1_1_0 + 2)
+      000210 A5*00            [ 3]  419 	lda	*___SDCC_m6502_ret3
+                                    420 ;	Raw cost for generated ic 43 : (15, 24.000000) count=0.250000
+                                    421 ;	genUminus
+                                    422 ;	genUminusFloat
+      000212 85*07            [ 3]  423 	sta	*(_atan2f_sloc1_1_0 + 3)
+      000214 49 80            [ 2]  424 	eor	#0x80
+      000216 85*07            [ 3]  425 	sta	*(_atan2f_sloc1_1_0 + 3)
+                                    426 ;	Raw cost for generated ic 44 : (6, 8.000000) count=0.250000
+                                    427 ;	../atan2f.c: 52: r+=(x<0.0?-HALF_PI:HALF_PI);
+                                    428 ;	genAssign
+                                    429 ;	genCopy
+      000218 ADr03r00         [ 4]  430 	lda	(_atan2f_PARM_1 + 3)
+      00021B 8Dr03r00         [ 4]  431 	sta	(___fslt_PARM_1 + 3)
+      00021E ADr02r00         [ 4]  432 	lda	(_atan2f_PARM_1 + 2)
+      000221 8Dr02r00         [ 4]  433 	sta	(___fslt_PARM_1 + 2)
+      000224 ADr01r00         [ 4]  434 	lda	(_atan2f_PARM_1 + 1)
+      000227 8Dr01r00         [ 4]  435 	sta	(___fslt_PARM_1 + 1)
+      00022A ADr00r00         [ 4]  436 	lda	_atan2f_PARM_1
+      00022D 8Dr00r00         [ 4]  437 	sta	___fslt_PARM_1
+                                    438 ;	Raw cost for generated ic 77 : (24, 32.000000) count=0.250000
+                                    439 ;	genAssign
+                                    440 ;	genAssignLit
+      000230 A0 00            [ 2]  441 	ldy	#0x00
+      000232 8Cr00r00         [ 4]  442 	sty	___fslt_PARM_2
+      000235 8Cr01r00         [ 4]  443 	sty	(___fslt_PARM_2 + 1)
+      000238 8Cr02r00         [ 4]  444 	sty	(___fslt_PARM_2 + 2)
+      00023B 8Cr03r00         [ 4]  445 	sty	(___fslt_PARM_2 + 3)
+                                    446 ;	Raw cost for generated ic 78 : (14, 18.000000) count=0.250000
+                                    447 ;	genCall
+      00023E 20r00r00         [ 6]  448 	jsr	___fslt
+                                    449 ;	assignResultValue
+                                    450 ;	Raw cost for generated ic 79 : (3, 6.000000) count=0.250000
+                                    451 ;	genIfx
+      000241 C9 00            [ 2]  452 	cmp	#0x00
+                                    453 ;	genIfxJump : z
+      000243 F0 13            [ 4]  454 	beq	00113$
+                                    455 ;	Raw cost for generated ic 47 : (7, 7.600000) count=0.250000
+                                    456 ;	genAssign
+                                    457 ;	genAssignLit
+      000245 A2 DB            [ 2]  458 	ldx	#0xdb
+      000247 86*00            [ 3]  459 	stx	*_atan2f_sloc0_1_0
+      000249 A2 0F            [ 2]  460 	ldx	#0x0f
+      00024B 86*01            [ 3]  461 	stx	*(_atan2f_sloc0_1_0 + 1)
+      00024D A2 C9            [ 2]  462 	ldx	#0xc9
+      00024F 86*02            [ 3]  463 	stx	*(_atan2f_sloc0_1_0 + 2)
+      000251 A2 BF            [ 2]  464 	ldx	#0xbf
+      000253 86*03            [ 3]  465 	stx	*(_atan2f_sloc0_1_0 + 3)
+                                    466 ;	Raw cost for generated ic 48 : (16, 20.000000) count=0.187500
+                                    467 ;	genGoto
+      000255 4Cr68r02         [ 3]  468 	jmp	00114$
+                                    469 ;	Raw cost for generated ic 49 : (3, 3.000000) count=0.187500
+                                    470 ;	genLabel
+      000258                        471 00113$:
+                                    472 ;	Raw cost for generated ic 50 : (0, 0.000000) count=0.062500
+                                    473 ;	genAssign
+                                    474 ;	genAssignLit
+      000258 A2 DB            [ 2]  475 	ldx	#0xdb
+      00025A 86*00            [ 3]  476 	stx	*_atan2f_sloc0_1_0
+      00025C A2 0F            [ 2]  477 	ldx	#0x0f
+      00025E 86*01            [ 3]  478 	stx	*(_atan2f_sloc0_1_0 + 1)
+      000260 A2 C9            [ 2]  479 	ldx	#0xc9
+      000262 86*02            [ 3]  480 	stx	*(_atan2f_sloc0_1_0 + 2)
+      000264 A2 3F            [ 2]  481 	ldx	#0x3f
+      000266 86*03            [ 3]  482 	stx	*(_atan2f_sloc0_1_0 + 3)
+                                    483 ;	Raw cost for generated ic 51 : (16, 20.000000) count=0.062500
+                                    484 ;	genLabel
+      000268                        485 00114$:
+                                    486 ;	Raw cost for generated ic 52 : (0, 0.000000) count=0.250000
+                                    487 ;	genAssign
+                                    488 ;	genCopy
+      000268 A5*07            [ 3]  489 	lda	*(_atan2f_sloc1_1_0 + 3)
+      00026A 8Dr03r00         [ 4]  490 	sta	(___fsadd_PARM_1 + 3)
+      00026D A5*06            [ 3]  491 	lda	*(_atan2f_sloc1_1_0 + 2)
+      00026F 8Dr02r00         [ 4]  492 	sta	(___fsadd_PARM_1 + 2)
+      000272 A5*05            [ 3]  493 	lda	*(_atan2f_sloc1_1_0 + 1)
+      000274 8Dr01r00         [ 4]  494 	sta	(___fsadd_PARM_1 + 1)
+      000277 A5*04            [ 3]  495 	lda	*_atan2f_sloc1_1_0
+      000279 8Dr00r00         [ 4]  496 	sta	___fsadd_PARM_1
+                                    497 ;	Raw cost for generated ic 80 : (20, 28.000000) count=0.250000
+                                    498 ;	genAssign
+                                    499 ;	genCopy
+      00027C A5*03            [ 3]  500 	lda	*(_atan2f_sloc0_1_0 + 3)
+      00027E 8Dr03r00         [ 4]  501 	sta	(___fsadd_PARM_2 + 3)
+      000281 A5*02            [ 3]  502 	lda	*(_atan2f_sloc0_1_0 + 2)
+      000283 8Dr02r00         [ 4]  503 	sta	(___fsadd_PARM_2 + 2)
+      000286 A5*01            [ 3]  504 	lda	*(_atan2f_sloc0_1_0 + 1)
+      000288 8Dr01r00         [ 4]  505 	sta	(___fsadd_PARM_2 + 1)
+      00028B A5*00            [ 3]  506 	lda	*_atan2f_sloc0_1_0
+      00028D 8Dr00r00         [ 4]  507 	sta	___fsadd_PARM_2
+                                    508 ;	Raw cost for generated ic 81 : (20, 28.000000) count=0.250000
+                                    509 ;	genCall
+      000290 20r00r00         [ 6]  510 	jsr	___fsadd
+                                    511 ;	assignResultValue
+      000293 8Dr08r00         [ 4]  512 	sta	_atan2f_r_10000_26
+      000296 8Er09r00         [ 4]  513 	stx	(_atan2f_r_10000_26 + 1)
+      000299 A5*00            [ 3]  514 	lda	*___SDCC_m6502_ret2
+      00029B 8Dr0Ar00         [ 4]  515 	sta	(_atan2f_r_10000_26 + 2)
+      00029E A5*00            [ 3]  516 	lda	*___SDCC_m6502_ret3
+      0002A0 8Dr0Br00         [ 4]  517 	sta	(_atan2f_r_10000_26 + 3)
+                                    518 ;	Raw cost for generated ic 82 : (19, 28.000000) count=0.250000
+                                    519 ;	genLabel
+      0002A3                        520 00108$:
+                                    521 ;	Raw cost for generated ic 55 : (0, 0.000000) count=1.000000
+                                    522 ;	../atan2f.c: 54: return r;
+                                    523 ;	genRet
+      0002A3 ADr0Br00         [ 4]  524 	lda	(_atan2f_r_10000_26 + 3)
+      0002A6 85*00            [ 3]  525 	sta	*___SDCC_m6502_ret3
+      0002A8 ADr0Ar00         [ 4]  526 	lda	(_atan2f_r_10000_26 + 2)
+      0002AB 85*00            [ 3]  527 	sta	*___SDCC_m6502_ret2
+      0002AD AEr09r00         [ 4]  528 	ldx	(_atan2f_r_10000_26 + 1)
+      0002B0 ADr08r00         [ 4]  529 	lda	_atan2f_r_10000_26
+                                    530 ;	Raw cost for generated ic 56 : (16, 22.000000) count=1.000000
+                                    531 ;	genLabel
+                                    532 ;	Raw cost for generated ic 57 : (0, 0.000000) count=1.000000
+                                    533 ;	../atan2f.c: 55: }
+                                    534 ;	genEndFunction
+      0002B3 60               [ 6]  535 	rts
+                                    536 ;	Raw cost for generated ic 58 : (1, 6.000000) count=1.000000
+                                    537 	.area CODE
+                                    538 	.area RODATA
+                                    539 	.area XINIT
+                                    540 	.area CABS    (ABS)

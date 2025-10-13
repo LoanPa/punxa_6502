@@ -1,0 +1,737 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module _atof
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _atoi
+                                     27 	.globl _toupper
+                                     28 	.globl _isspace
+                                     29 	.globl _atof
+                                     30 ;--------------------------------------------------------
+                                     31 ; ZP ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area ZP      (PAG)
+      000000                         34 _atof_sloc0_1_0:
+      000000                         35 	.ds 2
+      000002                         36 _atof_sloc1_1_0:
+      000002                         37 	.ds 4
+                                     38 ;--------------------------------------------------------
+                                     39 ; overlayable items in ram
+                                     40 ;--------------------------------------------------------
+                                     41 ;--------------------------------------------------------
+                                     42 ; uninitialized external ram data
+                                     43 ;--------------------------------------------------------
+                                     44 	.area BSS
+      000000                         45 _atof_value_10000_63:
+      000000                         46 	.ds 4
+      000004                         47 _atof_fraction_10000_63:
+      000004                         48 	.ds 4
+      000008                         49 _atof_iexp_10000_63:
+      000008                         50 	.ds 1
+      000009                         51 _atof_sign_10000_63:
+      000009                         52 	.ds 1
+                                     53 ;--------------------------------------------------------
+                                     54 ; absolute external ram data
+                                     55 ;--------------------------------------------------------
+                                     56 	.area DABS    (ABS)
+                                     57 ;--------------------------------------------------------
+                                     58 ; initialized external ram data
+                                     59 ;--------------------------------------------------------
+                                     60 	.area DATA
+                                     61 ;--------------------------------------------------------
+                                     62 ; global & static initialisations
+                                     63 ;--------------------------------------------------------
+                                     64 	.area _CODE
+                                     65 	.area GSINIT
+                                     66 	.area GSFINAL
+                                     67 	.area GSINIT
+                                     68 ;--------------------------------------------------------
+                                     69 ; Home
+                                     70 ;--------------------------------------------------------
+                                     71 	.area _CODE
+                                     72 	.area _CODE
+                                     73 ;--------------------------------------------------------
+                                     74 ; code
+                                     75 ;--------------------------------------------------------
+                                     76 	.area CODE
+                                     77 ;------------------------------------------------------------
+                                     78 ;Allocation info for local variables in function 'atof'
+                                     79 ;------------------------------------------------------------
+                                     80 ;sloc0         Allocated with name '_atof_sloc0_1_0'
+                                     81 ;sloc1         Allocated with name '_atof_sloc1_1_0'
+                                     82 ;s             Allocated to registers a x 
+                                     83 ;__200000004   Allocated to registers 
+                                     84 ;value         Allocated with name '_atof_value_10000_63'
+                                     85 ;fraction      Allocated with name '_atof_fraction_10000_63'
+                                     86 ;iexp          Allocated with name '_atof_iexp_10000_63'
+                                     87 ;sign          Allocated with name '_atof_sign_10000_63'
+                                     88 ;__300000005   Allocated to registers 
+                                     89 ;c             Allocated to registers 
+                                     90 ;__400000007   Allocated to registers 
+                                     91 ;__500000008   Allocated to registers 
+                                     92 ;c             Allocated to registers 
+                                     93 ;------------------------------------------------------------
+                                     94 ;	../_atof.c: 33: float atof(const char * s)
+                                     95 ;	genLabel
+                                     96 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     97 ;	-----------------------------------------
+                                     98 ;	 function atof
+                                     99 ;	-----------------------------------------
+                                    100 ;	Register assignment is optimal.
+                                    101 ;	Stack space usage: 0 bytes.
+      000000                        102 _atof:
+                                    103 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    104 ;	genReceive
+      000000 85*00            [ 3]  105 	sta	*_atof_sloc0_1_0
+      000002 86*01            [ 3]  106 	stx	*(_atof_sloc0_1_0 + 1)
+                                    107 ;	Raw cost for generated ic 2 : (4, 6.000000) count=1.000000
+                                    108 ;	../_atof.c: 40: while (isspace(*s)) s++;
+                                    109 ;	genLabel
+      000004                        110 00101$:
+                                    111 ;	Raw cost for generated ic 3 : (0, 0.000000) count=3.999997
+                                    112 ;	genPointerGet
+      000004 A0 00            [ 2]  113 	ldy	#0x00
+      000006 B1*00            [ 6]  114 	lda	[*_atof_sloc0_1_0],y
+                                    115 ;	Raw cost for generated ic 5 : (4, 7.000000) count=3.999997
+                                    116 ;	genCast
+                                    117 ;	genCopy
+      000008 A2 00            [ 2]  118 	ldx	#0x00
+                                    119 ;	Raw cost for generated ic 6 : (2, 2.000000) count=3.999997
+                                    120 ;	Raw cost for generated ic 7 : (0, 0.000000) count=3.999997
+                                    121 ;	genCall
+                                    122 ;	genSend
+      00000A 20r00r00         [ 6]  123 	jsr	_isspace
+                                    124 ;	assignResultValue
+                                    125 ;	Raw cost for generated ic 8 : (3, 6.000000) count=3.999997
+                                    126 ;	genIfx
+      00000D C9 00            [ 2]  127 	cmp	#0x00
+                                    128 ;	genIfxJump : z
+      00000F D0 04            [ 4]  129 	bne	00253$
+      000011 E0 00            [ 2]  130 	cpx	#0x00
+      000013 F0 09            [ 4]  131 	beq	00155$
+      000015                        132 00253$:
+                                    133 ;	Raw cost for generated ic 9 : (11, 12.200000) count=3.999997
+                                    134 ;	genPlus
+                                    135 ;	  genPlusInc
+      000015 E6*00            [ 5]  136 	inc	*_atof_sloc0_1_0
+      000017 D0 EB            [ 4]  137 	bne	00101$
+      000019 E6*01            [ 5]  138 	inc	*(_atof_sloc0_1_0 + 1)
+                                    139 ;	Raw cost for generated ic 13 : (6, 12.600000) count=2.999997
+                                    140 ;	genGoto
+      00001B 4Cr04r00         [ 3]  141 	jmp	00101$
+                                    142 ;	Raw cost for generated ic 15 : (3, 3.000000) count=2.999997
+                                    143 ;	genLabel
+      00001E                        144 00155$:
+                                    145 ;	Raw cost for generated ic 191 : (0, 0.000000) count=0.999999
+                                    146 ;	genAssign
+                                    147 ;	genCopy
+      00001E A6*01            [ 3]  148 	ldx	*(_atof_sloc0_1_0 + 1)
+      000020 A5*00            [ 3]  149 	lda	*_atof_sloc0_1_0
+                                    150 ;	Raw cost for generated ic 192 : (4, 6.000000) count=0.999999
+                                    151 ;	../_atof.c: 43: if (*s == '-')
+                                    152 ;	genPointerGet
+      000022 85*00            [ 3]  153 	sta	*(REGTEMP+0)
+      000024 A0 00            [ 2]  154 	ldy	#0x00
+      000026 B1*00            [ 6]  155 	lda	[*_atof_sloc0_1_0],y
+      000028 A8               [ 2]  156 	tay
+      000029 A5*00            [ 3]  157 	lda	*(REGTEMP+0)
+                                    158 ;	Raw cost for generated ic 18 : (9, 15.000000) count=0.999999
+                                    159 ;	genCmpEQorNE
+      00002B C0 2D            [ 2]  160 	cpy	#0x2d
+      00002D D0 12            [ 4]  161 	bne	00107$
+                                    162 ;	Raw cost for generated ic 19 : (7, 7.600000) count=0.999999
+                                    163 ;	skipping generated iCode
+                                    164 ;	Raw cost for generated ic 20 : (0, 0.000000) count=0.999999
+                                    165 ;	../_atof.c: 45: sign=1;
+                                    166 ;	genAssign
+                                    167 ;	genAssignLit
+      00002F A2 01            [ 2]  168 	ldx	#0x01
+      000031 8Er09r00         [ 4]  169 	stx	_atof_sign_10000_63
+                                    170 ;	Raw cost for generated ic 23 : (5, 6.000000) count=0.749999
+                                    171 ;	../_atof.c: 46: s++;
+                                    172 ;	genPlus
+                                    173 ;	  genPlusInc
+      000034 A6*01            [ 3]  174 	ldx	*(_atof_sloc0_1_0 + 1)
+      000036 A5*00            [ 3]  175 	lda	*_atof_sloc0_1_0
+      000038 18               [ 2]  176 	clc
+      000039 69 01            [ 2]  177 	adc	#0x01
+      00003B 90 19            [ 4]  178 	bcc	00108$
+      00003D E8               [ 2]  179 	inx
+                                    180 ;	Raw cost for generated ic 25 : (10, 14.600000) count=0.749999
+                                    181 ;	genGoto
+      00003E 4Cr56r00         [ 3]  182 	jmp	00108$
+                                    183 ;	Raw cost for generated ic 27 : (3, 3.000000) count=0.749999
+                                    184 ;	genLabel
+      000041                        185 00107$:
+                                    186 ;	Raw cost for generated ic 28 : (0, 0.000000) count=0.249999
+                                    187 ;	../_atof.c: 50: sign=0;
+                                    188 ;	genAssign
+                                    189 ;	genAssignLit
+      000041 48               [ 3]  190 	pha
+      000042 A9 00            [ 2]  191 	lda	#0x00
+      000044 8Dr09r00         [ 4]  192 	sta	_atof_sign_10000_63
+      000047 68               [ 4]  193 	pla
+                                    194 ;	Raw cost for generated ic 29 : (7, 13.000000) count=0.249999
+                                    195 ;	../_atof.c: 51: if (*s == '+') s++;
+                                    196 ;	genCmpEQorNE
+      000048 C0 2B            [ 2]  197 	cpy	#0x2b
+      00004A D0 0A            [ 4]  198 	bne	00108$
+                                    199 ;	Raw cost for generated ic 32 : (7, 7.600000) count=0.249999
+                                    200 ;	skipping generated iCode
+                                    201 ;	Raw cost for generated ic 33 : (0, 0.000000) count=0.249999
+                                    202 ;	genPlus
+                                    203 ;	  genPlusInc
+      00004C A6*01            [ 3]  204 	ldx	*(_atof_sloc0_1_0 + 1)
+      00004E A5*00            [ 3]  205 	lda	*_atof_sloc0_1_0
+      000050 18               [ 2]  206 	clc
+      000051 69 01            [ 2]  207 	adc	#0x01
+      000053 90 01            [ 4]  208 	bcc	00258$
+      000055 E8               [ 2]  209 	inx
+      000056                        210 00258$:
+                                    211 ;	Raw cost for generated ic 37 : (10, 14.600000) count=0.187499
+                                    212 ;	genLabel
+      000056                        213 00108$:
+                                    214 ;	Raw cost for generated ic 40 : (0, 0.000000) count=0.999997
+                                    215 ;	../_atof.c: 55: for (value=0.0; isdigit(*s); s++)
+                                    216 ;	genAssign
+                                    217 ;	genAssignLit
+      000056 A0 00            [ 2]  218 	ldy	#0x00
+      000058 8Cr00r00         [ 4]  219 	sty	_atof_value_10000_63
+      00005B 8Cr01r00         [ 4]  220 	sty	(_atof_value_10000_63 + 1)
+      00005E 8Cr02r00         [ 4]  221 	sty	(_atof_value_10000_63 + 2)
+      000061 8Cr03r00         [ 4]  222 	sty	(_atof_value_10000_63 + 3)
+                                    223 ;	Raw cost for generated ic 41 : (14, 18.000000) count=0.999997
+                                    224 ;	genAssign
+                                    225 ;	genCopy
+      000064 85*00            [ 3]  226 	sta	*_atof_sloc0_1_0
+      000066 86*01            [ 3]  227 	stx	*(_atof_sloc0_1_0 + 1)
+                                    228 ;	Raw cost for generated ic 193 : (4, 6.000000) count=0.999997
+                                    229 ;	genLabel
+      000068                        230 00126$:
+                                    231 ;	Raw cost for generated ic 42 : (0, 0.000000) count=2.285706
+                                    232 ;	genPointerGet
+      000068 A0 00            [ 2]  233 	ldy	#0x00
+      00006A B1*00            [ 6]  234 	lda	[*_atof_sloc0_1_0],y
+                                    235 ;	Raw cost for generated ic 44 : (4, 7.000000) count=2.285706
+                                    236 ;	./../../include/ctype.h: 62: return ((unsigned char)c >= '0' && (unsigned char)c <= '9');
+                                    237 ;	genCast
+                                    238 ;	genCopy
+                                    239 ;	Raw cost for generated ic 48 : (0, 0.000000) count=2.285706
+                                    240 ;	genCmp
+      00006C C9 30            [ 2]  241 	cmp	#0x30
+      00006E B0 03            [ 4]  242 	bcs	00259$
+      000070 4Cr02r01         [ 3]  243 	jmp	00156$
+      000073                        244 00259$:
+                                    245 ;	Raw cost for generated ic 49 : (7, 7.600000) count=2.285706
+                                    246 ;	skipping generated iCode
+                                    247 ;	Raw cost for generated ic 51 : (0, 0.000000) count=2.285706
+                                    248 ;	genCmp
+      000073 C9 39            [ 2]  249 	cmp	#0x39
+      000075 F0 05            [ 4]  250 	beq	00260$
+      000077 90 03            [ 4]  251 	bcc	00260$
+      000079 4Cr02r01         [ 3]  252 	jmp	00156$
+      00007C                        253 00260$:
+                                    254 ;	Raw cost for generated ic 53 : (9, 10.200000) count=1.714278
+                                    255 ;	skipping generated iCode
+                                    256 ;	Raw cost for generated ic 55 : (0, 0.000000) count=1.714278
+                                    257 ;	../_atof.c: 57: value=10.0*value+(*s-'0');
+                                    258 ;	genAssign
+                                    259 ;	genAssignLit
+      00007C 8Cr00r00         [ 4]  260 	sty	___fsmul_PARM_1
+      00007F 8Cr01r00         [ 4]  261 	sty	(___fsmul_PARM_1 + 1)
+      000082 A2 20            [ 2]  262 	ldx	#0x20
+      000084 8Er02r00         [ 4]  263 	stx	(___fsmul_PARM_1 + 2)
+      000087 A2 41            [ 2]  264 	ldx	#0x41
+      000089 8Er03r00         [ 4]  265 	stx	(___fsmul_PARM_1 + 3)
+                                    266 ;	Raw cost for generated ic 211 : (16, 20.000000) count=1.285709
+                                    267 ;	genAssign
+                                    268 ;	genCopy
+      00008C ADr03r00         [ 4]  269 	lda	(_atof_value_10000_63 + 3)
+      00008F 8Dr03r00         [ 4]  270 	sta	(___fsmul_PARM_2 + 3)
+      000092 ADr02r00         [ 4]  271 	lda	(_atof_value_10000_63 + 2)
+      000095 8Dr02r00         [ 4]  272 	sta	(___fsmul_PARM_2 + 2)
+      000098 ADr01r00         [ 4]  273 	lda	(_atof_value_10000_63 + 1)
+      00009B 8Dr01r00         [ 4]  274 	sta	(___fsmul_PARM_2 + 1)
+      00009E ADr00r00         [ 4]  275 	lda	_atof_value_10000_63
+      0000A1 8Dr00r00         [ 4]  276 	sta	___fsmul_PARM_2
+                                    277 ;	Raw cost for generated ic 212 : (24, 32.000000) count=1.285709
+                                    278 ;	genCall
+      0000A4 20r00r00         [ 6]  279 	jsr	___fsmul
+                                    280 ;	assignResultValue
+      0000A7 85*02            [ 3]  281 	sta	*_atof_sloc1_1_0
+      0000A9 86*03            [ 3]  282 	stx	*(_atof_sloc1_1_0 + 1)
+      0000AB A5*00            [ 3]  283 	lda	*___SDCC_m6502_ret2
+      0000AD 85*04            [ 3]  284 	sta	*(_atof_sloc1_1_0 + 2)
+      0000AF A5*00            [ 3]  285 	lda	*___SDCC_m6502_ret3
+      0000B1 85*05            [ 3]  286 	sta	*(_atof_sloc1_1_0 + 3)
+                                    287 ;	Raw cost for generated ic 213 : (15, 24.000000) count=1.285709
+                                    288 ;	genPointerGet
+      0000B3 A0 00            [ 2]  289 	ldy	#0x00
+      0000B5 B1*00            [ 6]  290 	lda	[*_atof_sloc0_1_0],y
+                                    291 ;	Raw cost for generated ic 71 : (4, 7.000000) count=1.285709
+                                    292 ;	genCast
+                                    293 ;	genCopy
+      0000B7 A2 00            [ 2]  294 	ldx	#0x00
+                                    295 ;	Raw cost for generated ic 72 : (2, 2.000000) count=1.285709
+                                    296 ;	genMinus
+                                    297 ;	  genMinusDec - size=2  icount=48
+      0000B9 38               [ 2]  298 	sec
+      0000BA E9 30            [ 2]  299 	sbc	#0x30
+      0000BC B0 01            [ 4]  300 	bcs	00262$
+      0000BE CA               [ 2]  301 	dex
+      0000BF                        302 00262$:
+                                    303 ;	Raw cost for generated ic 73 : (6, 8.600000) count=1.285709
+                                    304 ;	Raw cost for generated ic 214 : (0, 0.000000) count=1.285709
+                                    305 ;	genCall
+                                    306 ;	genSend
+      0000BF 20r00r00         [ 6]  307 	jsr	___sint2fs
+                                    308 ;	assignResultValue
+      0000C2 8Dr00r00         [ 4]  309 	sta	___fsadd_PARM_2
+      0000C5 8Er01r00         [ 4]  310 	stx	(___fsadd_PARM_2 + 1)
+      0000C8 A5*00            [ 3]  311 	lda	*___SDCC_m6502_ret2
+      0000CA 8Dr02r00         [ 4]  312 	sta	(___fsadd_PARM_2 + 2)
+      0000CD A5*00            [ 3]  313 	lda	*___SDCC_m6502_ret3
+      0000CF 8Dr03r00         [ 4]  314 	sta	(___fsadd_PARM_2 + 3)
+                                    315 ;	Raw cost for generated ic 215 : (19, 28.000000) count=1.285709
+                                    316 ;	genAssign
+                                    317 ;	genCopy
+      0000D2 A5*05            [ 3]  318 	lda	*(_atof_sloc1_1_0 + 3)
+      0000D4 8Dr03r00         [ 4]  319 	sta	(___fsadd_PARM_1 + 3)
+      0000D7 A5*04            [ 3]  320 	lda	*(_atof_sloc1_1_0 + 2)
+      0000D9 8Dr02r00         [ 4]  321 	sta	(___fsadd_PARM_1 + 2)
+      0000DC A5*03            [ 3]  322 	lda	*(_atof_sloc1_1_0 + 1)
+      0000DE 8Dr01r00         [ 4]  323 	sta	(___fsadd_PARM_1 + 1)
+      0000E1 A5*02            [ 3]  324 	lda	*_atof_sloc1_1_0
+      0000E3 8Dr00r00         [ 4]  325 	sta	___fsadd_PARM_1
+                                    326 ;	Raw cost for generated ic 216 : (20, 28.000000) count=1.285709
+                                    327 ;	genCall
+      0000E6 20r00r00         [ 6]  328 	jsr	___fsadd
+                                    329 ;	assignResultValue
+      0000E9 8Dr00r00         [ 4]  330 	sta	_atof_value_10000_63
+      0000EC 8Er01r00         [ 4]  331 	stx	(_atof_value_10000_63 + 1)
+      0000EF A5*00            [ 3]  332 	lda	*___SDCC_m6502_ret2
+      0000F1 8Dr02r00         [ 4]  333 	sta	(_atof_value_10000_63 + 2)
+      0000F4 A5*00            [ 3]  334 	lda	*___SDCC_m6502_ret3
+      0000F6 8Dr03r00         [ 4]  335 	sta	(_atof_value_10000_63 + 3)
+                                    336 ;	Raw cost for generated ic 218 : (19, 28.000000) count=1.285709
+                                    337 ;	../_atof.c: 55: for (value=0.0; isdigit(*s); s++)
+                                    338 ;	genPlus
+                                    339 ;	  genPlusInc
+      0000F9 E6*00            [ 5]  340 	inc	*_atof_sloc0_1_0
+      0000FB D0 02            [ 4]  341 	bne	00263$
+      0000FD E6*01            [ 5]  342 	inc	*(_atof_sloc0_1_0 + 1)
+      0000FF                        343 00263$:
+                                    344 ;	Raw cost for generated ic 79 : (6, 12.600000) count=1.285709
+                                    345 ;	genGoto
+      0000FF 4Cr68r00         [ 3]  346 	jmp	00126$
+                                    347 ;	Raw cost for generated ic 81 : (3, 3.000000) count=1.285709
+                                    348 ;	genLabel
+      000102                        349 00156$:
+                                    350 ;	Raw cost for generated ic 194 : (0, 0.000000) count=0.999996
+                                    351 ;	genAssign
+                                    352 ;	genCopy
+      000102 A5*01            [ 3]  353 	lda	*(_atof_sloc0_1_0 + 1)
+      000104 85*03            [ 3]  354 	sta	*(_atof_sloc1_1_0 + 1)
+      000106 A5*00            [ 3]  355 	lda	*_atof_sloc0_1_0
+      000108 85*02            [ 3]  356 	sta	*_atof_sloc1_1_0
+                                    357 ;	Raw cost for generated ic 195 : (8, 12.000000) count=0.999996
+                                    358 ;	../_atof.c: 61: if (*s == '.')
+                                    359 ;	genPointerGet
+      00010A A0 00            [ 2]  360 	ldy	#0x00
+      00010C B1*00            [ 6]  361 	lda	[*_atof_sloc0_1_0],y
+                                    362 ;	Raw cost for generated ic 84 : (4, 7.000000) count=0.999996
+                                    363 ;	genCmpEQorNE
+      00010E C9 2E            [ 2]  364 	cmp	#0x2e
+      000110 F0 03            [ 4]  365 	beq	00264$
+      000112 4Cr0Dr02         [ 3]  366 	jmp	00112$
+      000115                        367 00264$:
+                                    368 ;	Raw cost for generated ic 85 : (7, 7.600000) count=0.999996
+                                    369 ;	skipping generated iCode
+                                    370 ;	Raw cost for generated ic 86 : (0, 0.000000) count=0.999996
+                                    371 ;	../_atof.c: 63: s++;
+                                    372 ;	genPlus
+                                    373 ;	  genPlusInc
+      000115 A5*00            [ 3]  374 	lda	*_atof_sloc0_1_0
+      000117 18               [ 2]  375 	clc
+      000118 69 01            [ 2]  376 	adc	#0x01
+      00011A 85*02            [ 3]  377 	sta	*_atof_sloc1_1_0
+      00011C A5*01            [ 3]  378 	lda	*(_atof_sloc0_1_0 + 1)
+      00011E 69 00            [ 2]  379 	adc	#0x00
+      000120 85*03            [ 3]  380 	sta	*(_atof_sloc1_1_0 + 1)
+                                    381 ;	Raw cost for generated ic 90 : (13, 18.000000) count=0.749996
+                                    382 ;	../_atof.c: 64: for (fraction=0.1; isdigit(*s); s++)
+                                    383 ;	genAssign
+                                    384 ;	genAssignLit
+      000122 A2 CD            [ 2]  385 	ldx	#0xcd
+      000124 8Er04r00         [ 4]  386 	stx	_atof_fraction_10000_63
+      000127 CA               [ 2]  387 	dex
+      000128 8Er05r00         [ 4]  388 	stx	(_atof_fraction_10000_63 + 1)
+      00012B 8Er06r00         [ 4]  389 	stx	(_atof_fraction_10000_63 + 2)
+      00012E A2 3D            [ 2]  390 	ldx	#0x3d
+      000130 8Er07r00         [ 4]  391 	stx	(_atof_fraction_10000_63 + 3)
+                                    392 ;	Raw cost for generated ic 92 : (17, 22.000000) count=0.749996
+                                    393 ;	genAssign
+                                    394 ;	genCopy
+      000133 85*01            [ 3]  395 	sta	*(_atof_sloc0_1_0 + 1)
+      000135 A5*02            [ 3]  396 	lda	*_atof_sloc1_1_0
+      000137 85*00            [ 3]  397 	sta	*_atof_sloc0_1_0
+                                    398 ;	Raw cost for generated ic 196 : (6, 9.000000) count=0.749996
+                                    399 ;	genLabel
+      000139                        400 00129$:
+                                    401 ;	Raw cost for generated ic 93 : (0, 0.000000) count=1.714275
+                                    402 ;	genPointerGet
+      000139 A0 00            [ 2]  403 	ldy	#0x00
+      00013B B1*00            [ 6]  404 	lda	[*_atof_sloc0_1_0],y
+                                    405 ;	Raw cost for generated ic 95 : (4, 7.000000) count=1.714275
+                                    406 ;	./../../include/ctype.h: 62: return ((unsigned char)c >= '0' && (unsigned char)c <= '9');
+                                    407 ;	genCast
+                                    408 ;	genCopy
+                                    409 ;	Raw cost for generated ic 99 : (0, 0.000000) count=1.714275
+                                    410 ;	genCmp
+      00013D C9 30            [ 2]  411 	cmp	#0x30
+      00013F B0 03            [ 4]  412 	bcs	00265$
+      000141 4Cr05r02         [ 3]  413 	jmp	00157$
+      000144                        414 00265$:
+                                    415 ;	Raw cost for generated ic 100 : (7, 7.600000) count=1.714275
+                                    416 ;	skipping generated iCode
+                                    417 ;	Raw cost for generated ic 102 : (0, 0.000000) count=1.714275
+                                    418 ;	genCmp
+      000144 C9 39            [ 2]  419 	cmp	#0x39
+      000146 F0 05            [ 4]  420 	beq	00266$
+      000148 90 03            [ 4]  421 	bcc	00266$
+      00014A 4Cr05r02         [ 3]  422 	jmp	00157$
+      00014D                        423 00266$:
+                                    424 ;	Raw cost for generated ic 104 : (9, 10.200000) count=1.285705
+                                    425 ;	skipping generated iCode
+                                    426 ;	Raw cost for generated ic 106 : (0, 0.000000) count=1.285705
+                                    427 ;	../_atof.c: 66: value+=(*s-'0')*fraction;
+                                    428 ;	genPointerGet
+      00014D B1*00            [ 6]  429 	lda	[*_atof_sloc0_1_0],y
+                                    430 ;	Raw cost for generated ic 121 : (2, 5.000000) count=0.964279
+                                    431 ;	genCast
+                                    432 ;	genCopy
+      00014F A2 00            [ 2]  433 	ldx	#0x00
+                                    434 ;	Raw cost for generated ic 122 : (2, 2.000000) count=0.964279
+                                    435 ;	genMinus
+                                    436 ;	  genMinusDec - size=2  icount=48
+      000151 38               [ 2]  437 	sec
+      000152 E9 30            [ 2]  438 	sbc	#0x30
+      000154 B0 01            [ 4]  439 	bcs	00268$
+      000156 CA               [ 2]  440 	dex
+      000157                        441 00268$:
+                                    442 ;	Raw cost for generated ic 123 : (6, 8.600000) count=0.964279
+                                    443 ;	Raw cost for generated ic 219 : (0, 0.000000) count=0.964279
+                                    444 ;	genCall
+                                    445 ;	genSend
+      000157 20r00r00         [ 6]  446 	jsr	___sint2fs
+                                    447 ;	assignResultValue
+      00015A 8Dr00r00         [ 4]  448 	sta	___fsmul_PARM_1
+      00015D 8Er01r00         [ 4]  449 	stx	(___fsmul_PARM_1 + 1)
+      000160 A5*00            [ 3]  450 	lda	*___SDCC_m6502_ret2
+      000162 8Dr02r00         [ 4]  451 	sta	(___fsmul_PARM_1 + 2)
+      000165 A5*00            [ 3]  452 	lda	*___SDCC_m6502_ret3
+      000167 8Dr03r00         [ 4]  453 	sta	(___fsmul_PARM_1 + 3)
+                                    454 ;	Raw cost for generated ic 220 : (19, 28.000000) count=0.964279
+                                    455 ;	genAssign
+                                    456 ;	genCopy
+      00016A ADr07r00         [ 4]  457 	lda	(_atof_fraction_10000_63 + 3)
+      00016D 8Dr03r00         [ 4]  458 	sta	(___fsmul_PARM_2 + 3)
+      000170 ADr06r00         [ 4]  459 	lda	(_atof_fraction_10000_63 + 2)
+      000173 8Dr02r00         [ 4]  460 	sta	(___fsmul_PARM_2 + 2)
+      000176 ADr05r00         [ 4]  461 	lda	(_atof_fraction_10000_63 + 1)
+      000179 8Dr01r00         [ 4]  462 	sta	(___fsmul_PARM_2 + 1)
+      00017C ADr04r00         [ 4]  463 	lda	_atof_fraction_10000_63
+      00017F 8Dr00r00         [ 4]  464 	sta	___fsmul_PARM_2
+                                    465 ;	Raw cost for generated ic 222 : (24, 32.000000) count=0.964279
+                                    466 ;	genCall
+      000182 20r00r00         [ 6]  467 	jsr	___fsmul
+                                    468 ;	assignResultValue
+      000185 8Dr00r00         [ 4]  469 	sta	___fsadd_PARM_2
+      000188 8Er01r00         [ 4]  470 	stx	(___fsadd_PARM_2 + 1)
+      00018B A5*00            [ 3]  471 	lda	*___SDCC_m6502_ret2
+      00018D 8Dr02r00         [ 4]  472 	sta	(___fsadd_PARM_2 + 2)
+      000190 A5*00            [ 3]  473 	lda	*___SDCC_m6502_ret3
+      000192 8Dr03r00         [ 4]  474 	sta	(___fsadd_PARM_2 + 3)
+                                    475 ;	Raw cost for generated ic 223 : (19, 28.000000) count=0.964279
+                                    476 ;	genAssign
+                                    477 ;	genCopy
+      000195 ADr03r00         [ 4]  478 	lda	(_atof_value_10000_63 + 3)
+      000198 8Dr03r00         [ 4]  479 	sta	(___fsadd_PARM_1 + 3)
+      00019B ADr02r00         [ 4]  480 	lda	(_atof_value_10000_63 + 2)
+      00019E 8Dr02r00         [ 4]  481 	sta	(___fsadd_PARM_1 + 2)
+      0001A1 ADr01r00         [ 4]  482 	lda	(_atof_value_10000_63 + 1)
+      0001A4 8Dr01r00         [ 4]  483 	sta	(___fsadd_PARM_1 + 1)
+      0001A7 ADr00r00         [ 4]  484 	lda	_atof_value_10000_63
+      0001AA 8Dr00r00         [ 4]  485 	sta	___fsadd_PARM_1
+                                    486 ;	Raw cost for generated ic 224 : (24, 32.000000) count=0.964279
+                                    487 ;	genCall
+      0001AD 20r00r00         [ 6]  488 	jsr	___fsadd
+                                    489 ;	assignResultValue
+      0001B0 8Dr00r00         [ 4]  490 	sta	_atof_value_10000_63
+      0001B3 8Er01r00         [ 4]  491 	stx	(_atof_value_10000_63 + 1)
+      0001B6 A5*00            [ 3]  492 	lda	*___SDCC_m6502_ret2
+      0001B8 8Dr02r00         [ 4]  493 	sta	(_atof_value_10000_63 + 2)
+      0001BB A5*00            [ 3]  494 	lda	*___SDCC_m6502_ret3
+      0001BD 8Dr03r00         [ 4]  495 	sta	(_atof_value_10000_63 + 3)
+                                    496 ;	Raw cost for generated ic 226 : (19, 28.000000) count=0.964279
+                                    497 ;	../_atof.c: 67: fraction*=0.1;
+                                    498 ;	genAssign
+                                    499 ;	genAssignLit
+      0001C0 A2 CD            [ 2]  500 	ldx	#0xcd
+      0001C2 8Er00r00         [ 4]  501 	stx	___fsmul_PARM_1
+      0001C5 CA               [ 2]  502 	dex
+      0001C6 8Er01r00         [ 4]  503 	stx	(___fsmul_PARM_1 + 1)
+      0001C9 8Er02r00         [ 4]  504 	stx	(___fsmul_PARM_1 + 2)
+      0001CC A2 3D            [ 2]  505 	ldx	#0x3d
+      0001CE 8Er03r00         [ 4]  506 	stx	(___fsmul_PARM_1 + 3)
+                                    507 ;	Raw cost for generated ic 227 : (17, 22.000000) count=0.964279
+                                    508 ;	genAssign
+                                    509 ;	genCopy
+      0001D1 ADr07r00         [ 4]  510 	lda	(_atof_fraction_10000_63 + 3)
+      0001D4 8Dr03r00         [ 4]  511 	sta	(___fsmul_PARM_2 + 3)
+      0001D7 ADr06r00         [ 4]  512 	lda	(_atof_fraction_10000_63 + 2)
+      0001DA 8Dr02r00         [ 4]  513 	sta	(___fsmul_PARM_2 + 2)
+      0001DD ADr05r00         [ 4]  514 	lda	(_atof_fraction_10000_63 + 1)
+      0001E0 8Dr01r00         [ 4]  515 	sta	(___fsmul_PARM_2 + 1)
+      0001E3 ADr04r00         [ 4]  516 	lda	_atof_fraction_10000_63
+      0001E6 8Dr00r00         [ 4]  517 	sta	___fsmul_PARM_2
+                                    518 ;	Raw cost for generated ic 228 : (24, 32.000000) count=0.964279
+                                    519 ;	genCall
+      0001E9 20r00r00         [ 6]  520 	jsr	___fsmul
+                                    521 ;	assignResultValue
+      0001EC 8Dr04r00         [ 4]  522 	sta	_atof_fraction_10000_63
+      0001EF 8Er05r00         [ 4]  523 	stx	(_atof_fraction_10000_63 + 1)
+      0001F2 A5*00            [ 3]  524 	lda	*___SDCC_m6502_ret2
+      0001F4 8Dr06r00         [ 4]  525 	sta	(_atof_fraction_10000_63 + 2)
+      0001F7 A5*00            [ 3]  526 	lda	*___SDCC_m6502_ret3
+      0001F9 8Dr07r00         [ 4]  527 	sta	(_atof_fraction_10000_63 + 3)
+                                    528 ;	Raw cost for generated ic 229 : (19, 28.000000) count=0.964279
+                                    529 ;	../_atof.c: 64: for (fraction=0.1; isdigit(*s); s++)
+                                    530 ;	genPlus
+                                    531 ;	  genPlusInc
+      0001FC E6*00            [ 5]  532 	inc	*_atof_sloc0_1_0
+      0001FE D0 02            [ 4]  533 	bne	00269$
+      000200 E6*01            [ 5]  534 	inc	*(_atof_sloc0_1_0 + 1)
+      000202                        535 00269$:
+                                    536 ;	Raw cost for generated ic 132 : (6, 12.600000) count=0.964279
+                                    537 ;	genGoto
+      000202 4Cr39r01         [ 3]  538 	jmp	00129$
+                                    539 ;	Raw cost for generated ic 134 : (3, 3.000000) count=0.964279
+                                    540 ;	genLabel
+      000205                        541 00157$:
+                                    542 ;	Raw cost for generated ic 197 : (0, 0.000000) count=0.749995
+                                    543 ;	genAssign
+                                    544 ;	genCopy
+      000205 A5*01            [ 3]  545 	lda	*(_atof_sloc0_1_0 + 1)
+      000207 85*03            [ 3]  546 	sta	*(_atof_sloc1_1_0 + 1)
+      000209 A5*00            [ 3]  547 	lda	*_atof_sloc0_1_0
+      00020B 85*02            [ 3]  548 	sta	*_atof_sloc1_1_0
+                                    549 ;	Raw cost for generated ic 198 : (8, 12.000000) count=0.749995
+                                    550 ;	genLabel
+      00020D                        551 00112$:
+                                    552 ;	Raw cost for generated ic 136 : (0, 0.000000) count=0.999994
+                                    553 ;	../_atof.c: 72: if (toupper(*s)=='E')
+                                    554 ;	genPointerGet
+      00020D A0 00            [ 2]  555 	ldy	#0x00
+      00020F B1*02            [ 6]  556 	lda	[*_atof_sloc1_1_0],y
+                                    557 ;	Raw cost for generated ic 138 : (4, 7.000000) count=0.999994
+                                    558 ;	genCast
+                                    559 ;	genCopy
+      000211 A2 00            [ 2]  560 	ldx	#0x00
+                                    561 ;	Raw cost for generated ic 139 : (2, 2.000000) count=0.999994
+                                    562 ;	Raw cost for generated ic 140 : (0, 0.000000) count=0.999994
+                                    563 ;	genCall
+                                    564 ;	genSend
+      000213 20r00r00         [ 6]  565 	jsr	_toupper
+                                    566 ;	assignResultValue
+                                    567 ;	Raw cost for generated ic 141 : (3, 6.000000) count=0.999994
+                                    568 ;	genCmpEQorNE
+      000216 C9 45            [ 2]  569 	cmp	#0x45
+      000218 D0 04            [ 4]  570 	bne	00271$
+      00021A E0 00            [ 2]  571 	cpx	#0x00
+      00021C F0 03            [ 4]  572 	beq	00272$
+      00021E                        573 00271$:
+      00021E 4CrC3r02         [ 3]  574 	jmp	00120$
+      000221                        575 00272$:
+                                    576 ;	Raw cost for generated ic 142 : (14, 15.200001) count=0.999994
+                                    577 ;	skipping generated iCode
+                                    578 ;	Raw cost for generated ic 143 : (0, 0.000000) count=0.999994
+                                    579 ;	../_atof.c: 74: s++;
+                                    580 ;	genPlus
+                                    581 ;	  genPlusInc
+      000221 E6*02            [ 5]  582 	inc	*_atof_sloc1_1_0
+      000223 D0 02            [ 4]  583 	bne	00273$
+      000225 E6*03            [ 5]  584 	inc	*(_atof_sloc1_1_0 + 1)
+      000227                        585 00273$:
+                                    586 ;	Raw cost for generated ic 147 : (6, 12.600000) count=0.749996
+                                    587 ;	../_atof.c: 75: iexp=(signed char)atoi(s);
+                                    588 ;	Raw cost for generated ic 149 : (0, 0.000000) count=0.749996
+                                    589 ;	genCall
+                                    590 ;	genSend
+      000227 A6*03            [ 3]  591 	ldx	*(_atof_sloc1_1_0 + 1)
+      000229 A5*02            [ 3]  592 	lda	*_atof_sloc1_1_0
+      00022B 20r00r00         [ 6]  593 	jsr	_atoi
+                                    594 ;	assignResultValue
+                                    595 ;	Raw cost for generated ic 150 : (7, 12.000000) count=0.749996
+                                    596 ;	genCast
+                                    597 ;	genCopy
+      00022E 8Dr08r00         [ 4]  598 	sta	_atof_iexp_10000_63
+                                    599 ;	Raw cost for generated ic 151 : (3, 4.000000) count=0.749996
+                                    600 ;	../_atof.c: 77: while(iexp!=0)
+                                    601 ;	genLabel
+      000231                        602 00116$:
+                                    603 ;	Raw cost for generated ic 153 : (0, 0.000000) count=2.999760
+                                    604 ;	genIfx
+      000231 ADr08r00         [ 4]  605 	lda	_atof_iexp_10000_63
+                                    606 ;	genIfxJump : z
+      000234 D0 03            [ 4]  607 	bne	00275$
+      000236 4CrC3r02         [ 3]  608 	jmp	00120$
+      000239                        609 00275$:
+                                    610 ;	Raw cost for generated ic 154 : (8, 9.600000) count=2.999760
+                                    611 ;	../_atof.c: 79: if(iexp<0)
+                                    612 ;	genCmp
+      000239 2Cr08r00         [ 4]  613 	bit	_atof_iexp_10000_63
+      00023C 10 42            [ 4]  614 	bpl	00114$
+                                    615 ;	Raw cost for generated ic 157 : (8, 9.600000) count=2.249820
+                                    616 ;	skipping generated iCode
+                                    617 ;	Raw cost for generated ic 158 : (0, 0.000000) count=2.249820
+                                    618 ;	../_atof.c: 81: value*=0.1;
+                                    619 ;	genAssign
+                                    620 ;	genAssignLit
+      00023E A2 CD            [ 2]  621 	ldx	#0xcd
+      000240 8Er00r00         [ 4]  622 	stx	___fsmul_PARM_1
+      000243 CA               [ 2]  623 	dex
+      000244 8Er01r00         [ 4]  624 	stx	(___fsmul_PARM_1 + 1)
+      000247 8Er02r00         [ 4]  625 	stx	(___fsmul_PARM_1 + 2)
+      00024A A2 3D            [ 2]  626 	ldx	#0x3d
+      00024C 8Er03r00         [ 4]  627 	stx	(___fsmul_PARM_1 + 3)
+                                    628 ;	Raw cost for generated ic 230 : (17, 22.000000) count=1.687337
+                                    629 ;	genAssign
+                                    630 ;	genCopy
+      00024F ADr03r00         [ 4]  631 	lda	(_atof_value_10000_63 + 3)
+      000252 8Dr03r00         [ 4]  632 	sta	(___fsmul_PARM_2 + 3)
+      000255 ADr02r00         [ 4]  633 	lda	(_atof_value_10000_63 + 2)
+      000258 8Dr02r00         [ 4]  634 	sta	(___fsmul_PARM_2 + 2)
+      00025B ADr01r00         [ 4]  635 	lda	(_atof_value_10000_63 + 1)
+      00025E 8Dr01r00         [ 4]  636 	sta	(___fsmul_PARM_2 + 1)
+      000261 ADr00r00         [ 4]  637 	lda	_atof_value_10000_63
+      000264 8Dr00r00         [ 4]  638 	sta	___fsmul_PARM_2
+                                    639 ;	Raw cost for generated ic 231 : (24, 32.000000) count=1.687337
+                                    640 ;	genCall
+      000267 20r00r00         [ 6]  641 	jsr	___fsmul
+                                    642 ;	assignResultValue
+      00026A 8Dr00r00         [ 4]  643 	sta	_atof_value_10000_63
+      00026D 8Er01r00         [ 4]  644 	stx	(_atof_value_10000_63 + 1)
+      000270 A5*00            [ 3]  645 	lda	*___SDCC_m6502_ret2
+      000272 8Dr02r00         [ 4]  646 	sta	(_atof_value_10000_63 + 2)
+      000275 A5*00            [ 3]  647 	lda	*___SDCC_m6502_ret3
+      000277 8Dr03r00         [ 4]  648 	sta	(_atof_value_10000_63 + 3)
+                                    649 ;	Raw cost for generated ic 232 : (19, 28.000000) count=1.687337
+                                    650 ;	../_atof.c: 82: iexp++;
+                                    651 ;	genPlus
+                                    652 ;	  genPlusInc
+      00027A EEr08r00         [ 6]  653 	inc	_atof_iexp_10000_63
+                                    654 ;	Raw cost for generated ic 164 : (3, 6.000000) count=1.687337
+                                    655 ;	genGoto
+      00027D 4Cr31r02         [ 3]  656 	jmp	00116$
+                                    657 ;	Raw cost for generated ic 166 : (3, 3.000000) count=1.687337
+                                    658 ;	genLabel
+      000280                        659 00114$:
+                                    660 ;	Raw cost for generated ic 167 : (0, 0.000000) count=0.562428
+                                    661 ;	../_atof.c: 86: value*=10.0;
+                                    662 ;	genAssign
+                                    663 ;	genAssignLit
+      000280 A0 00            [ 2]  664 	ldy	#0x00
+      000282 8Cr00r00         [ 4]  665 	sty	___fsmul_PARM_1
+      000285 8Cr01r00         [ 4]  666 	sty	(___fsmul_PARM_1 + 1)
+      000288 A2 20            [ 2]  667 	ldx	#0x20
+      00028A 8Er02r00         [ 4]  668 	stx	(___fsmul_PARM_1 + 2)
+      00028D A2 41            [ 2]  669 	ldx	#0x41
+      00028F 8Er03r00         [ 4]  670 	stx	(___fsmul_PARM_1 + 3)
+                                    671 ;	Raw cost for generated ic 233 : (18, 22.000000) count=0.562428
+                                    672 ;	genAssign
+                                    673 ;	genCopy
+      000292 ADr03r00         [ 4]  674 	lda	(_atof_value_10000_63 + 3)
+      000295 8Dr03r00         [ 4]  675 	sta	(___fsmul_PARM_2 + 3)
+      000298 ADr02r00         [ 4]  676 	lda	(_atof_value_10000_63 + 2)
+      00029B 8Dr02r00         [ 4]  677 	sta	(___fsmul_PARM_2 + 2)
+      00029E ADr01r00         [ 4]  678 	lda	(_atof_value_10000_63 + 1)
+      0002A1 8Dr01r00         [ 4]  679 	sta	(___fsmul_PARM_2 + 1)
+      0002A4 ADr00r00         [ 4]  680 	lda	_atof_value_10000_63
+      0002A7 8Dr00r00         [ 4]  681 	sta	___fsmul_PARM_2
+                                    682 ;	Raw cost for generated ic 234 : (24, 32.000000) count=0.562428
+                                    683 ;	genCall
+      0002AA 20r00r00         [ 6]  684 	jsr	___fsmul
+                                    685 ;	assignResultValue
+      0002AD 8Dr00r00         [ 4]  686 	sta	_atof_value_10000_63
+      0002B0 8Er01r00         [ 4]  687 	stx	(_atof_value_10000_63 + 1)
+      0002B3 A5*00            [ 3]  688 	lda	*___SDCC_m6502_ret2
+      0002B5 8Dr02r00         [ 4]  689 	sta	(_atof_value_10000_63 + 2)
+      0002B8 A5*00            [ 3]  690 	lda	*___SDCC_m6502_ret3
+      0002BA 8Dr03r00         [ 4]  691 	sta	(_atof_value_10000_63 + 3)
+                                    692 ;	Raw cost for generated ic 235 : (19, 28.000000) count=0.562428
+                                    693 ;	../_atof.c: 87: iexp--;
+                                    694 ;	genMinus
+                                    695 ;	  genMinusDec - size=1  icount=1
+      0002BD CEr08r00         [ 6]  696 	dec	_atof_iexp_10000_63
+                                    697 ;	Raw cost for generated ic 171 : (3, 6.000000) count=0.562428
+                                    698 ;	genGoto
+      0002C0 4Cr31r02         [ 3]  699 	jmp	00116$
+                                    700 ;	Raw cost for generated ic 174 : (3, 3.000000) count=0.562428
+                                    701 ;	genLabel
+      0002C3                        702 00120$:
+                                    703 ;	Raw cost for generated ic 176 : (0, 0.000000) count=0.999926
+                                    704 ;	../_atof.c: 93: if(sign) value*=-1.0;
+                                    705 ;	genIfx
+      0002C3 ADr09r00         [ 4]  706 	lda	_atof_sign_10000_63
+                                    707 ;	genIfxJump : z
+      0002C6 F0 08            [ 4]  708 	beq	00122$
+                                    709 ;	Raw cost for generated ic 177 : (8, 9.600000) count=0.999926
+                                    710 ;	genUminus
+                                    711 ;	genUminusFloat
+      0002C8 ADr03r00         [ 4]  712 	lda	(_atof_value_10000_63 + 3)
+      0002CB 49 80            [ 2]  713 	eor	#0x80
+      0002CD 8Dr03r00         [ 4]  714 	sta	(_atof_value_10000_63 + 3)
+                                    715 ;	Raw cost for generated ic 180 : (8, 10.000000) count=0.749944
+                                    716 ;	genLabel
+      0002D0                        717 00122$:
+                                    718 ;	Raw cost for generated ic 182 : (0, 0.000000) count=0.999926
+                                    719 ;	../_atof.c: 94: return (value);
+                                    720 ;	genRet
+      0002D0 ADr03r00         [ 4]  721 	lda	(_atof_value_10000_63 + 3)
+      0002D3 85*00            [ 3]  722 	sta	*___SDCC_m6502_ret3
+      0002D5 ADr02r00         [ 4]  723 	lda	(_atof_value_10000_63 + 2)
+      0002D8 85*00            [ 3]  724 	sta	*___SDCC_m6502_ret2
+      0002DA AEr01r00         [ 4]  725 	ldx	(_atof_value_10000_63 + 1)
+      0002DD ADr00r00         [ 4]  726 	lda	_atof_value_10000_63
+                                    727 ;	Raw cost for generated ic 183 : (16, 22.000000) count=0.999926
+                                    728 ;	genLabel
+                                    729 ;	Raw cost for generated ic 184 : (0, 0.000000) count=0.999926
+                                    730 ;	../_atof.c: 95: }
+                                    731 ;	genEndFunction
+      0002E0 60               [ 6]  732 	rts
+                                    733 ;	Raw cost for generated ic 185 : (1, 6.000000) count=0.999926
+                                    734 	.area CODE
+                                    735 	.area RODATA
+                                    736 	.area XINIT
+                                    737 	.area CABS    (ABS)

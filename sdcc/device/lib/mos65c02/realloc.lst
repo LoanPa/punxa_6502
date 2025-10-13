@@ -1,0 +1,946 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module realloc
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl ___memcpy
+                                     28 	.globl _memmove
+                                     29 	.globl _free
+                                     30 	.globl _malloc
+                                     31 	.globl _realloc_PARM_2
+                                     32 	.globl _realloc
+                                     33 ;--------------------------------------------------------
+                                     34 ; ZP ram data
+                                     35 ;--------------------------------------------------------
+                                     36 	.area ZP      (PAG)
+      000000                         37 _realloc_sloc0_1_0:
+      000000                         38 	.ds 2
+      000002                         39 _realloc_sloc1_1_0:
+      000002                         40 	.ds 2
+                                     41 ;--------------------------------------------------------
+                                     42 ; overlayable items in ram
+                                     43 ;--------------------------------------------------------
+                                     44 ;--------------------------------------------------------
+                                     45 ; uninitialized external ram data
+                                     46 ;--------------------------------------------------------
+                                     47 	.area BSS
+      000000                         48 _realloc_PARM_2:
+      000000                         49 	.ds 2
+      000002                         50 _realloc_ptr_10000_70:
+      000002                         51 	.ds 2
+      000004                         52 _realloc_ret_10000_71:
+      000004                         53 	.ds 2
+      000006                         54 _realloc_h_10000_71:
+      000006                         55 	.ds 2
+      000008                         56 _realloc_next_free_10000_71:
+      000008                         57 	.ds 2
+      00000A                         58 _realloc_prev_free_10000_71:
+      00000A                         59 	.ds 2
+      00000C                         60 _realloc_f_10000_71:
+      00000C                         61 	.ds 2
+      00000E                         62 _realloc_pf_10000_71:
+      00000E                         63 	.ds 2
+      000010                         64 _realloc_blocksize_10000_71:
+      000010                         65 	.ds 2
+      000012                         66 _realloc_oldblocksize_10000_71:
+      000012                         67 	.ds 2
+      000014                         68 _realloc_maxblocksize_10000_71:
+      000014                         69 	.ds 2
+      000016                         70 _realloc_newheader_50000_85:
+      000016                         71 	.ds 2
+                                     72 ;--------------------------------------------------------
+                                     73 ; absolute external ram data
+                                     74 ;--------------------------------------------------------
+                                     75 	.area DABS    (ABS)
+                                     76 ;--------------------------------------------------------
+                                     77 ; initialized external ram data
+                                     78 ;--------------------------------------------------------
+                                     79 	.area DATA
+                                     80 ;--------------------------------------------------------
+                                     81 ; global & static initialisations
+                                     82 ;--------------------------------------------------------
+                                     83 	.area _CODE
+                                     84 	.area GSINIT
+                                     85 	.area GSFINAL
+                                     86 	.area GSINIT
+                                     87 ;--------------------------------------------------------
+                                     88 ; Home
+                                     89 ;--------------------------------------------------------
+                                     90 	.area _CODE
+                                     91 	.area _CODE
+                                     92 ;--------------------------------------------------------
+                                     93 ; code
+                                     94 ;--------------------------------------------------------
+                                     95 	.area CODE
+                                     96 ;------------------------------------------------------------
+                                     97 ;Allocation info for local variables in function 'realloc'
+                                     98 ;------------------------------------------------------------
+                                     99 ;sloc0         Allocated with name '_realloc_sloc0_1_0'
+                                    100 ;sloc1         Allocated with name '_realloc_sloc1_1_0'
+                                    101 ;size          Allocated with name '_realloc_PARM_2'
+                                    102 ;ptr           Allocated with name '_realloc_ptr_10000_70'
+                                    103 ;ret           Allocated with name '_realloc_ret_10000_71'
+                                    104 ;h             Allocated with name '_realloc_h_10000_71'
+                                    105 ;next_free     Allocated with name '_realloc_next_free_10000_71'
+                                    106 ;prev_free     Allocated with name '_realloc_prev_free_10000_71'
+                                    107 ;f             Allocated with name '_realloc_f_10000_71'
+                                    108 ;pf            Allocated with name '_realloc_pf_10000_71'
+                                    109 ;blocksize     Allocated with name '_realloc_blocksize_10000_71'
+                                    110 ;oldblocksize  Allocated with name '_realloc_oldblocksize_10000_71'
+                                    111 ;maxblocksize  Allocated with name '_realloc_maxblocksize_10000_71'
+                                    112 ;newheader     Allocated with name '_realloc_newheader_50000_85'
+                                    113 ;oldsize       Allocated to registers a x 
+                                    114 ;------------------------------------------------------------
+                                    115 ;	../realloc.c: 60: void *realloc(void *ptr, size_t size)
+                                    116 ;	genLabel
+                                    117 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    118 ;	-----------------------------------------
+                                    119 ;	 function realloc
+                                    120 ;	-----------------------------------------
+                                    121 ;	Register assignment might be sub-optimal.
+                                    122 ;	Stack space usage: 0 bytes.
+      000000                        123 _realloc:
+                                    124 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    125 ;	genReceive
+      000000 8Dr02r00         [ 4]  126 	sta	_realloc_ptr_10000_70
+      000003 8Er03r00         [ 4]  127 	stx	(_realloc_ptr_10000_70 + 1)
+                                    128 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    129 ;	../realloc.c: 73: if(!ptr)
+                                    130 ;	genIfx
+      000006 8A               [ 2]  131 	txa
+      000007 0Dr02r00         [ 4]  132 	ora	_realloc_ptr_10000_70
+                                    133 ;	genIfxJump : z
+      00000A D0 09            [ 4]  134 	bne	00102$
+                                    135 ;	Raw cost for generated ic 3 : (9, 11.600000) count=1.000000
+                                    136 ;	../realloc.c: 74: return(malloc(size));
+                                    137 ;	Raw cost for generated ic 6 : (0, 0.000000) count=0.750000
+                                    138 ;	genCall
+                                    139 ;	genSend
+      00000C AEr01r00         [ 4]  140 	ldx	(_realloc_PARM_2 + 1)
+      00000F ADr00r00         [ 4]  141 	lda	_realloc_PARM_2
+                                    142 ;	assignResultValue
+                                    143 ;	Raw cost for generated ic 7 : (9, 14.000000) count=0.750000
+                                    144 ;	genRet
+      000012 4Cr00r00         [ 3]  145 	jmp	_malloc
+                                    146 ;	Raw cost for generated ic 8 : (3, 3.000000) count=0.750000
+                                    147 ;	genLabel
+      000015                        148 00102$:
+                                    149 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                    150 ;	../realloc.c: 84: prev_free = 0, pf = 0;
+                                    151 ;	genAssign
+                                    152 ;	genAssignLit
+      000015 9Cr0Ar00         [ 4]  153 	stz	_realloc_prev_free_10000_71
+      000018 9Cr0Br00         [ 4]  154 	stz	(_realloc_prev_free_10000_71 + 1)
+                                    155 ;	Raw cost for generated ic 11 : (6, 8.000000) count=1.000000
+                                    156 ;	genAssign
+                                    157 ;	genAssignLit
+      00001B 9Cr0Er00         [ 4]  158 	stz	_realloc_pf_10000_71
+      00001E 9Cr0Fr00         [ 4]  159 	stz	(_realloc_pf_10000_71 + 1)
+                                    160 ;	Raw cost for generated ic 13 : (6, 8.000000) count=1.000000
+                                    161 ;	../realloc.c: 85: for(h = __sdcc_heap_free, f = &__sdcc_heap_free; h && h < ptr; prev_free = h, pf = f, f = &(h->next_free), h = h->next_free); // Find adjacent blocks in free list
+                                    162 ;	genAssign
+                                    163 ;	genCopy
+      000021 AEr01r00         [ 4]  164 	ldx	(___sdcc_heap_free + 1)
+      000024 ADr00r00         [ 4]  165 	lda	___sdcc_heap_free
+                                    166 ;	Raw cost for generated ic 14 : (6, 8.000000) count=1.000000
+                                    167 ;	skipping iCode since result will be rematerialized
+                                    168 ;	Raw cost for generated ic 15 : (0, 0.000000) count=1.000000
+                                    169 ;	genCast
+                                    170 ;	genCopy
+      000027 A0s00            [ 2]  171 	ldy	#>___sdcc_heap_free
+      000029 8Cr0Dr00         [ 4]  172 	sty	(_realloc_f_10000_71 + 1)
+      00002C A0r00            [ 2]  173 	ldy	#___sdcc_heap_free
+      00002E 8Cr0Cr00         [ 4]  174 	sty	_realloc_f_10000_71
+                                    175 ;	Raw cost for generated ic 16 : (10, 12.000000) count=1.000000
+                                    176 ;	genLabel
+      000031                        177 00127$:
+                                    178 ;	Raw cost for generated ic 18 : (0, 0.000000) count=2.285713
+                                    179 ;	genIfx
+      000031 C9 00            [ 2]  180 	cmp	#0x00
+                                    181 ;	genIfxJump : z
+      000033 D0 04            [ 4]  182 	bne	00264$
+      000035 E0 00            [ 2]  183 	cpx	#0x00
+      000037 F0 43            [ 4]  184 	beq	00103$
+      000039                        185 00264$:
+                                    186 ;	Raw cost for generated ic 19 : (11, 12.200000) count=2.285713
+                                    187 ;	genCast
+                                    188 ;	genCopy
+      000039 ACr03r00         [ 4]  189 	ldy	(_realloc_ptr_10000_70 + 1)
+      00003C 84*01            [ 3]  190 	sty	*(_realloc_sloc0_1_0 + 1)
+      00003E ACr02r00         [ 4]  191 	ldy	_realloc_ptr_10000_70
+      000041 84*00            [ 3]  192 	sty	*_realloc_sloc0_1_0
+                                    193 ;	Raw cost for generated ic 22 : (10, 14.000000) count=1.714284
+                                    194 ;	genCmp
+      000043 85*00            [ 3]  195 	sta	*(REGTEMP+0)
+      000045 38               [ 2]  196 	sec
+      000046 E5*00            [ 4]  197 	sbc	*_realloc_sloc0_1_0
+      000048 8A               [ 2]  198 	txa
+      000049 E5*01            [ 4]  199 	sbc	*(_realloc_sloc0_1_0 + 1)
+      00004B A5*00            [ 3]  200 	lda	*(REGTEMP+0)
+      00004D B0 2D            [ 4]  201 	bcs	00103$
+                                    202 ;	Raw cost for generated ic 23 : (15, 21.600000) count=1.714284
+                                    203 ;	skipping generated iCode
+                                    204 ;	Raw cost for generated ic 24 : (0, 0.000000) count=1.714284
+                                    205 ;	genAssign
+                                    206 ;	genCopy
+      00004F 8Dr0Ar00         [ 4]  207 	sta	_realloc_prev_free_10000_71
+      000052 8Er0Br00         [ 4]  208 	stx	(_realloc_prev_free_10000_71 + 1)
+                                    209 ;	Raw cost for generated ic 28 : (6, 8.000000) count=1.285713
+                                    210 ;	genAssign
+                                    211 ;	genCopy
+      000055 ACr0Dr00         [ 4]  212 	ldy	(_realloc_f_10000_71 + 1)
+      000058 8Cr0Fr00         [ 4]  213 	sty	(_realloc_pf_10000_71 + 1)
+      00005B ACr0Cr00         [ 4]  214 	ldy	_realloc_f_10000_71
+      00005E 8Cr0Er00         [ 4]  215 	sty	_realloc_pf_10000_71
+                                    216 ;	Raw cost for generated ic 29 : (12, 16.000000) count=1.285713
+                                    217 ;	genPlus
+                                    218 ;	  genPlusInc
+      000061 18               [ 2]  219 	clc
+      000062 69 02            [ 3]  220 	adc	#0x02
+      000064 90 01            [ 4]  221 	bcc	00266$
+      000066 E8               [ 2]  222 	inx
+      000067                        223 00266$:
+                                    224 ;	Raw cost for generated ic 31 : (6, 8.600000) count=1.285713
+                                    225 ;	genAssign
+                                    226 ;	genCopy
+      000067 8Dr0Cr00         [ 4]  227 	sta	_realloc_f_10000_71
+      00006A 8Er0Dr00         [ 4]  228 	stx	(_realloc_f_10000_71 + 1)
+                                    229 ;	Raw cost for generated ic 32 : (6, 8.000000) count=1.285713
+                                    230 ;	genPointerGet
+                                    231 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00006D 85*00            [ 3]  232 	sta	*(DPTR+0)
+      00006F 86*01            [ 3]  233 	stx	*(DPTR+1)
+      000071 A0 01            [ 2]  234 	ldy	#0x01
+      000073 B1*00            [ 6]  235 	lda	[DPTR],y
+      000075 AA               [ 2]  236 	tax
+      000076 88               [ 2]  237 	dey
+      000077 B1*00            [ 6]  238 	lda	[DPTR],y
+                                    239 ;	Raw cost for generated ic 35 : (12, 22.000000) count=1.285713
+                                    240 ;	genGoto
+      000079 4Cr31r00         [ 3]  241 	jmp	00127$
+                                    242 ;	Raw cost for generated ic 37 : (3, 3.000000) count=1.285713
+                                    243 ;	genLabel
+      00007C                        244 00103$:
+                                    245 ;	Raw cost for generated ic 38 : (0, 0.000000) count=0.999999
+                                    246 ;	../realloc.c: 86: next_free = h;
+                                    247 ;	genAssign
+                                    248 ;	genCopy
+      00007C 8Dr08r00         [ 4]  249 	sta	_realloc_next_free_10000_71
+      00007F 8Er09r00         [ 4]  250 	stx	(_realloc_next_free_10000_71 + 1)
+                                    251 ;	Raw cost for generated ic 39 : (6, 8.000000) count=0.999999
+                                    252 ;	../realloc.c: 88: if(size + offsetof(struct header, next_free) < size) // Handle overflow
+                                    253 ;	genPlus
+                                    254 ;	  genPlusInc
+      000082 AEr01r00         [ 4]  255 	ldx	(_realloc_PARM_2 + 1)
+      000085 ADr00r00         [ 4]  256 	lda	_realloc_PARM_2
+      000088 18               [ 2]  257 	clc
+      000089 69 02            [ 3]  258 	adc	#0x02
+      00008B 90 01            [ 4]  259 	bcc	00267$
+      00008D E8               [ 2]  260 	inx
+      00008E                        261 00267$:
+                                    262 ;	Raw cost for generated ic 40 : (12, 16.600000) count=0.999999
+                                    263 ;	genCmp
+      00008E 38               [ 2]  264 	sec
+      00008F EDr00r00         [ 5]  265 	sbc	_realloc_PARM_2
+      000092 8A               [ 2]  266 	txa
+      000093 EDr01r00         [ 5]  267 	sbc	(_realloc_PARM_2 + 1)
+      000096 B0 04            [ 4]  268 	bcs	00105$
+                                    269 ;	Raw cost for generated ic 41 : (13, 17.600000) count=0.999999
+                                    270 ;	skipping generated iCode
+                                    271 ;	Raw cost for generated ic 42 : (0, 0.000000) count=0.999999
+                                    272 ;	../realloc.c: 89: return(0);
+                                    273 ;	genRet
+      000098 A9 00            [ 2]  274 	lda	#0x00
+      00009A AA               [ 2]  275 	tax
+      00009B 60               [ 6]  276 	rts
+                                    277 ;	Raw cost for generated ic 45 : (6, 7.000000) count=0.749999
+                                    278 ;	genLabel
+      00009C                        279 00105$:
+                                    280 ;	Raw cost for generated ic 46 : (0, 0.000000) count=0.999998
+                                    281 ;	../realloc.c: 90: blocksize = size + offsetof(struct header, next_free);
+                                    282 ;	genPlus
+                                    283 ;	  genPlusInc
+      00009C ADr00r00         [ 4]  284 	lda	_realloc_PARM_2
+      00009F 18               [ 2]  285 	clc
+      0000A0 69 02            [ 3]  286 	adc	#0x02
+      0000A2 8Dr10r00         [ 4]  287 	sta	_realloc_blocksize_10000_71
+      0000A5 ADr01r00         [ 4]  288 	lda	(_realloc_PARM_2 + 1)
+      0000A8 69 00            [ 3]  289 	adc	#0x00
+      0000AA 8Dr11r00         [ 4]  290 	sta	(_realloc_blocksize_10000_71 + 1)
+                                    291 ;	Raw cost for generated ic 47 : (17, 22.000000) count=0.999998
+                                    292 ;	../realloc.c: 91: if(blocksize < sizeof(struct header)) // Requiring a minimum size makes it easier to implement free(), and avoid memory leaks.
+                                    293 ;	genCmp
+      0000AD ADr10r00         [ 4]  294 	lda	_realloc_blocksize_10000_71
+      0000B0 38               [ 2]  295 	sec
+      0000B1 E9 04            [ 3]  296 	sbc	#0x04
+      0000B3 ADr11r00         [ 4]  297 	lda	(_realloc_blocksize_10000_71 + 1)
+      0000B6 E9 00            [ 3]  298 	sbc	#0x00
+      0000B8 B0 08            [ 4]  299 	bcs	00107$
+                                    300 ;	Raw cost for generated ic 49 : (16, 19.600000) count=0.999998
+                                    301 ;	skipping generated iCode
+                                    302 ;	Raw cost for generated ic 50 : (0, 0.000000) count=0.999998
+                                    303 ;	../realloc.c: 92: blocksize = sizeof(struct header);
+                                    304 ;	genAssign
+                                    305 ;	genAssignLit
+      0000BA A2 04            [ 2]  306 	ldx	#0x04
+      0000BC 8Er10r00         [ 4]  307 	stx	_realloc_blocksize_10000_71
+      0000BF 9Cr11r00         [ 4]  308 	stz	(_realloc_blocksize_10000_71 + 1)
+                                    309 ;	Raw cost for generated ic 53 : (8, 10.000000) count=0.749999
+                                    310 ;	genLabel
+      0000C2                        311 00107$:
+                                    312 ;	Raw cost for generated ic 54 : (0, 0.000000) count=0.999998
+                                    313 ;	../realloc.c: 94: h = (void HEAPSPACE *)((char HEAPSPACE *)(ptr) - offsetof(struct header, next_free));
+                                    314 ;	genCast
+                                    315 ;	genCopy
+      0000C2 AEr03r00         [ 4]  316 	ldx	(_realloc_ptr_10000_70 + 1)
+      0000C5 ADr02r00         [ 4]  317 	lda	_realloc_ptr_10000_70
+                                    318 ;	Raw cost for generated ic 55 : (6, 8.000000) count=0.999998
+                                    319 ;	genMinus
+                                    320 ;	  genMinusDec - size=2  icount=2
+      0000C8 38               [ 2]  321 	sec
+      0000C9 E9 02            [ 3]  322 	sbc	#0x02
+      0000CB B0 01            [ 4]  323 	bcs	00270$
+      0000CD CA               [ 2]  324 	dex
+      0000CE                        325 00270$:
+                                    326 ;	Raw cost for generated ic 56 : (6, 8.600000) count=0.999998
+                                    327 ;	genCast
+                                    328 ;	genCopy
+      0000CE 8Dr06r00         [ 4]  329 	sta	_realloc_h_10000_71
+      0000D1 8Er07r00         [ 4]  330 	stx	(_realloc_h_10000_71 + 1)
+                                    331 ;	Raw cost for generated ic 58 : (6, 8.000000) count=0.999998
+                                    332 ;	../realloc.c: 95: oldblocksize = (char HEAPSPACE *)(h->next) - (char HEAPSPACE *)h;
+                                    333 ;	genPointerGet
+                                    334 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0000D4 85*00            [ 3]  335 	sta	*(DPTR+0)
+      0000D6 86*01            [ 3]  336 	stx	*(DPTR+1)
+      0000D8 A0 00            [ 2]  337 	ldy	#0x00
+      0000DA B1*00            [ 6]  338 	lda	[DPTR],y
+      0000DC 85*00            [ 3]  339 	sta	*_realloc_sloc0_1_0
+      0000DE C8               [ 2]  340 	iny
+      0000DF B1*00            [ 6]  341 	lda	[DPTR],y
+      0000E1 85*01            [ 3]  342 	sta	*(_realloc_sloc0_1_0 + 1)
+                                    343 ;	Raw cost for generated ic 62 : (15, 26.000000) count=0.999998
+                                    344 ;	genCast
+                                    345 ;	genCopy
+      0000E3 AA               [ 2]  346 	tax
+      0000E4 A5*00            [ 3]  347 	lda	*_realloc_sloc0_1_0
+                                    348 ;	Raw cost for generated ic 63 : (3, 5.000000) count=0.999998
+                                    349 ;	genCast
+                                    350 ;	genCopy
+      0000E6 ACr07r00         [ 4]  351 	ldy	(_realloc_h_10000_71 + 1)
+      0000E9 84*03            [ 3]  352 	sty	*(_realloc_sloc1_1_0 + 1)
+      0000EB ACr06r00         [ 4]  353 	ldy	_realloc_h_10000_71
+      0000EE 84*02            [ 3]  354 	sty	*_realloc_sloc1_1_0
+                                    355 ;	Raw cost for generated ic 64 : (10, 14.000000) count=0.999998
+                                    356 ;	genMinus
+      0000F0 38               [ 2]  357 	sec
+      0000F1 E5*02            [ 4]  358 	sbc	*_realloc_sloc1_1_0
+      0000F3 8Dr12r00         [ 4]  359 	sta	_realloc_oldblocksize_10000_71
+      0000F6 8A               [ 2]  360 	txa
+      0000F7 E5*03            [ 4]  361 	sbc	*(_realloc_sloc1_1_0 + 1)
+      0000F9 8Dr13r00         [ 4]  362 	sta	(_realloc_oldblocksize_10000_71 + 1)
+                                    363 ;	Raw cost for generated ic 65 : (12, 18.000000) count=0.999998
+                                    364 ;	../realloc.c: 97: maxblocksize = oldblocksize;
+                                    365 ;	genAssign
+                                    366 ;	genCopy
+      0000FC 8Dr15r00         [ 4]  367 	sta	(_realloc_maxblocksize_10000_71 + 1)
+      0000FF ADr12r00         [ 4]  368 	lda	_realloc_oldblocksize_10000_71
+      000102 8Dr14r00         [ 4]  369 	sta	_realloc_maxblocksize_10000_71
+                                    370 ;	Raw cost for generated ic 68 : (9, 12.000000) count=0.999998
+                                    371 ;	../realloc.c: 98: if(prev_free && prev_free->next == h) // Can merge with previous block
+                                    372 ;	genIfx
+      000105 ADr0Br00         [ 4]  373 	lda	(_realloc_prev_free_10000_71 + 1)
+      000108 0Dr0Ar00         [ 4]  374 	ora	_realloc_prev_free_10000_71
+                                    375 ;	genIfxJump : z
+      00010B F0 40            [ 4]  376 	beq	00109$
+                                    377 ;	Raw cost for generated ic 69 : (11, 13.600000) count=0.999998
+                                    378 ;	genPointerGet
+                                    379 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00010D AEr0Ar00         [ 4]  380 	ldx	_realloc_prev_free_10000_71
+      000110 86*00            [ 3]  381 	stx	*(DPTR+0)
+      000112 AEr0Br00         [ 4]  382 	ldx	(_realloc_prev_free_10000_71 + 1)
+      000115 86*01            [ 3]  383 	stx	*(DPTR+1)
+      000117 A0 01            [ 2]  384 	ldy	#0x01
+      000119 B1*00            [ 6]  385 	lda	[DPTR],y
+      00011B AA               [ 2]  386 	tax
+      00011C 88               [ 2]  387 	dey
+      00011D B1*00            [ 6]  388 	lda	[DPTR],y
+                                    389 ;	Raw cost for generated ic 74 : (18, 30.000000) count=0.749999
+                                    390 ;	genCmpEQorNE
+      00011F CDr06r00         [ 4]  391 	cmp	_realloc_h_10000_71
+      000122 D0 29            [ 4]  392 	bne	00109$
+      000124 ECr07r00         [ 4]  393 	cpx	(_realloc_h_10000_71 + 1)
+      000127 D0 24            [ 4]  394 	bne	00109$
+                                    395 ;	Raw cost for generated ic 75 : (16, 19.200001) count=0.749999
+                                    396 ;	skipping generated iCode
+                                    397 ;	Raw cost for generated ic 76 : (0, 0.000000) count=0.749999
+                                    398 ;	../realloc.c: 99: maxblocksize += (char HEAPSPACE *)h - (char HEAPSPACE *)prev_free;
+                                    399 ;	genCast
+                                    400 ;	genCopy
+      000129 AEr0Br00         [ 4]  401 	ldx	(_realloc_prev_free_10000_71 + 1)
+      00012C ADr0Ar00         [ 4]  402 	lda	_realloc_prev_free_10000_71
+                                    403 ;	Raw cost for generated ic 80 : (6, 8.000000) count=0.562498
+                                    404 ;	genMinus
+      00012F 85*00            [ 3]  405 	sta	*(REGTEMP+0)
+      000131 A5*02            [ 3]  406 	lda	*_realloc_sloc1_1_0
+      000133 38               [ 2]  407 	sec
+      000134 E5*00            [ 4]  408 	sbc	*(REGTEMP+0)
+      000136 48               [ 3]  409 	pha
+      000137 A5*03            [ 3]  410 	lda	*(_realloc_sloc1_1_0 + 1)
+      000139 86*00            [ 3]  411 	stx	*(REGTEMP+0)
+      00013B E5*00            [ 4]  412 	sbc	*(REGTEMP+0)
+      00013D AA               [ 2]  413 	tax
+      00013E 68               [ 4]  414 	pla
+                                    415 ;	Raw cost for generated ic 81 : (16, 29.000000) count=0.562498
+                                    416 ;	genCast
+                                    417 ;	genCopy
+                                    418 ;	Raw cost for generated ic 83 : (0, 0.000000) count=0.562498
+                                    419 ;	genPlus
+      00013F 18               [ 2]  420 	clc
+      000140 6Dr12r00         [ 5]  421 	adc	_realloc_oldblocksize_10000_71
+      000143 8Dr14r00         [ 4]  422 	sta	_realloc_maxblocksize_10000_71
+      000146 8A               [ 2]  423 	txa
+      000147 6Dr13r00         [ 5]  424 	adc	(_realloc_oldblocksize_10000_71 + 1)
+      00014A 8Dr15r00         [ 4]  425 	sta	(_realloc_maxblocksize_10000_71 + 1)
+                                    426 ;	Raw cost for generated ic 84 : (14, 20.000000) count=0.562498
+                                    427 ;	genLabel
+      00014D                        428 00109$:
+                                    429 ;	Raw cost for generated ic 86 : (0, 0.000000) count=0.999997
+                                    430 ;	../realloc.c: 100: if(next_free == h->next) // Can merge with next block
+                                    431 ;	genCmpEQorNE
+      00014D ADr08r00         [ 4]  432 	lda	_realloc_next_free_10000_71
+      000150 C5*00            [ 3]  433 	cmp	*_realloc_sloc0_1_0
+      000152 D0 3A            [ 4]  434 	bne	00112$
+      000154 ADr09r00         [ 4]  435 	lda	(_realloc_next_free_10000_71 + 1)
+      000157 C5*01            [ 3]  436 	cmp	*(_realloc_sloc0_1_0 + 1)
+      000159 D0 33            [ 4]  437 	bne	00112$
+                                    438 ;	Raw cost for generated ic 90 : (20, 25.200001) count=0.999997
+                                    439 ;	skipping generated iCode
+                                    440 ;	Raw cost for generated ic 91 : (0, 0.000000) count=0.999997
+                                    441 ;	../realloc.c: 101: maxblocksize += (char HEAPSPACE *)(next_free->next) - (char HEAPSPACE *)next_free;
+                                    442 ;	genPointerGet
+                                    443 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00015B AEr08r00         [ 4]  444 	ldx	_realloc_next_free_10000_71
+      00015E 86*00            [ 3]  445 	stx	*(DPTR+0)
+      000160 AEr09r00         [ 4]  446 	ldx	(_realloc_next_free_10000_71 + 1)
+      000163 86*01            [ 3]  447 	stx	*(DPTR+1)
+      000165 A0 01            [ 2]  448 	ldy	#0x01
+      000167 B1*00            [ 6]  449 	lda	[DPTR],y
+      000169 AA               [ 2]  450 	tax
+      00016A 88               [ 2]  451 	dey
+      00016B B1*00            [ 6]  452 	lda	[DPTR],y
+                                    453 ;	Raw cost for generated ic 96 : (18, 30.000000) count=0.749997
+                                    454 ;	genCast
+                                    455 ;	genCopy
+                                    456 ;	Raw cost for generated ic 97 : (0, 0.000000) count=0.749997
+                                    457 ;	genCast
+                                    458 ;	genCopy
+      00016D ACr09r00         [ 4]  459 	ldy	(_realloc_next_free_10000_71 + 1)
+      000170 84*03            [ 3]  460 	sty	*(_realloc_sloc1_1_0 + 1)
+      000172 ACr08r00         [ 4]  461 	ldy	_realloc_next_free_10000_71
+      000175 84*02            [ 3]  462 	sty	*_realloc_sloc1_1_0
+                                    463 ;	Raw cost for generated ic 98 : (10, 14.000000) count=0.749997
+                                    464 ;	genMinus
+      000177 38               [ 2]  465 	sec
+      000178 E5*02            [ 4]  466 	sbc	*_realloc_sloc1_1_0
+      00017A 48               [ 3]  467 	pha
+      00017B 8A               [ 2]  468 	txa
+      00017C E5*03            [ 4]  469 	sbc	*(_realloc_sloc1_1_0 + 1)
+      00017E AA               [ 2]  470 	tax
+      00017F 68               [ 4]  471 	pla
+                                    472 ;	Raw cost for generated ic 99 : (9, 19.000000) count=0.749997
+                                    473 ;	genCast
+                                    474 ;	genCopy
+                                    475 ;	Raw cost for generated ic 101 : (0, 0.000000) count=0.749997
+                                    476 ;	genPlus
+      000180 18               [ 2]  477 	clc
+      000181 6Dr14r00         [ 5]  478 	adc	_realloc_maxblocksize_10000_71
+      000184 8Dr14r00         [ 4]  479 	sta	_realloc_maxblocksize_10000_71
+      000187 8A               [ 2]  480 	txa
+      000188 6Dr15r00         [ 5]  481 	adc	(_realloc_maxblocksize_10000_71 + 1)
+      00018B 8Dr15r00         [ 4]  482 	sta	(_realloc_maxblocksize_10000_71 + 1)
+                                    483 ;	Raw cost for generated ic 102 : (14, 20.000000) count=0.749997
+                                    484 ;	genLabel
+      00018E                        485 00112$:
+                                    486 ;	Raw cost for generated ic 104 : (0, 0.000000) count=0.999997
+                                    487 ;	../realloc.c: 103: if(blocksize <= maxblocksize) // Can resize in place.
+                                    488 ;	genCmp
+      00018E ADr14r00         [ 4]  489 	lda	_realloc_maxblocksize_10000_71
+      000191 38               [ 2]  490 	sec
+      000192 EDr10r00         [ 5]  491 	sbc	_realloc_blocksize_10000_71
+      000195 ADr15r00         [ 4]  492 	lda	(_realloc_maxblocksize_10000_71 + 1)
+      000198 EDr11r00         [ 5]  493 	sbc	(_realloc_blocksize_10000_71 + 1)
+      00019B B0 03            [ 4]  494 	bcs	00279$
+      00019D 4Cr3Ar03         [ 3]  495 	jmp	00122$
+      0001A0                        496 00279$:
+                                    497 ;	Raw cost for generated ic 105 : (18, 23.600000) count=0.999997
+                                    498 ;	skipping generated iCode
+                                    499 ;	Raw cost for generated ic 106 : (0, 0.000000) count=0.999997
+                                    500 ;	../realloc.c: 105: if(prev_free && prev_free->next == h) // Always move into previous block to defragment
+                                    501 ;	genIfx
+      0001A0 ADr0Br00         [ 4]  502 	lda	(_realloc_prev_free_10000_71 + 1)
+      0001A3 0Dr0Ar00         [ 4]  503 	ora	_realloc_prev_free_10000_71
+                                    504 ;	genIfxJump : z
+      0001A6 D0 03            [ 4]  505 	bne	00281$
+      0001A8 4Cr40r02         [ 3]  506 	jmp	00114$
+      0001AB                        507 00281$:
+                                    508 ;	Raw cost for generated ic 109 : (11, 13.600000) count=0.749997
+                                    509 ;	genPointerGet
+                                    510 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0001AB AEr0Ar00         [ 4]  511 	ldx	_realloc_prev_free_10000_71
+      0001AE 86*00            [ 3]  512 	stx	*(DPTR+0)
+      0001B0 AEr0Br00         [ 4]  513 	ldx	(_realloc_prev_free_10000_71 + 1)
+      0001B3 86*01            [ 3]  514 	stx	*(DPTR+1)
+      0001B5 A0 01            [ 2]  515 	ldy	#0x01
+      0001B7 B1*00            [ 6]  516 	lda	[DPTR],y
+      0001B9 AA               [ 2]  517 	tax
+      0001BA 88               [ 2]  518 	dey
+      0001BB B1*00            [ 6]  519 	lda	[DPTR],y
+                                    520 ;	Raw cost for generated ic 114 : (18, 30.000000) count=0.562498
+                                    521 ;	genCmpEQorNE
+      0001BD CDr06r00         [ 4]  522 	cmp	_realloc_h_10000_71
+      0001C0 D0 05            [ 4]  523 	bne	00283$
+      0001C2 ECr07r00         [ 4]  524 	cpx	(_realloc_h_10000_71 + 1)
+      0001C5 F0 03            [ 4]  525 	beq	00284$
+      0001C7                        526 00283$:
+      0001C7 4Cr40r02         [ 3]  527 	jmp	00114$
+      0001CA                        528 00284$:
+                                    529 ;	Raw cost for generated ic 115 : (16, 19.200001) count=0.562498
+                                    530 ;	skipping generated iCode
+                                    531 ;	Raw cost for generated ic 116 : (0, 0.000000) count=0.562498
+                                    532 ;	../realloc.c: 107: memmove(prev_free, h, blocksize <= oldblocksize ? blocksize : oldblocksize);
+                                    533 ;	genCast
+                                    534 ;	genCopy
+      0001CA ADr0Br00         [ 4]  535 	lda	(_realloc_prev_free_10000_71 + 1)
+      0001CD 85*03            [ 3]  536 	sta	*(_realloc_sloc1_1_0 + 1)
+      0001CF ADr0Ar00         [ 4]  537 	lda	_realloc_prev_free_10000_71
+      0001D2 85*02            [ 3]  538 	sta	*_realloc_sloc1_1_0
+                                    539 ;	Raw cost for generated ic 119 : (10, 14.000000) count=0.421874
+                                    540 ;	genCast
+                                    541 ;	genCopy
+      0001D4 ADr07r00         [ 4]  542 	lda	(_realloc_h_10000_71 + 1)
+      0001D7 85*01            [ 3]  543 	sta	*(_realloc_sloc0_1_0 + 1)
+      0001D9 ADr06r00         [ 4]  544 	lda	_realloc_h_10000_71
+      0001DC 85*00            [ 3]  545 	sta	*_realloc_sloc0_1_0
+                                    546 ;	Raw cost for generated ic 120 : (10, 14.000000) count=0.421874
+                                    547 ;	genCmp
+      0001DE ADr12r00         [ 4]  548 	lda	_realloc_oldblocksize_10000_71
+      0001E1 38               [ 2]  549 	sec
+      0001E2 EDr10r00         [ 5]  550 	sbc	_realloc_blocksize_10000_71
+      0001E5 ADr13r00         [ 4]  551 	lda	(_realloc_oldblocksize_10000_71 + 1)
+      0001E8 EDr11r00         [ 5]  552 	sbc	(_realloc_blocksize_10000_71 + 1)
+      0001EB 90 09            [ 4]  553 	bcc	00131$
+                                    554 ;	Raw cost for generated ic 121 : (18, 23.600000) count=0.421874
+                                    555 ;	skipping generated iCode
+                                    556 ;	Raw cost for generated ic 123 : (0, 0.000000) count=0.421874
+                                    557 ;	genAssign
+                                    558 ;	genCopy
+      0001ED AEr11r00         [ 4]  559 	ldx	(_realloc_blocksize_10000_71 + 1)
+      0001F0 ADr10r00         [ 4]  560 	lda	_realloc_blocksize_10000_71
+                                    561 ;	Raw cost for generated ic 124 : (6, 8.000000) count=0.316404
+                                    562 ;	genGoto
+      0001F3 4CrFCr01         [ 3]  563 	jmp	00132$
+                                    564 ;	Raw cost for generated ic 125 : (3, 3.000000) count=0.316404
+                                    565 ;	genLabel
+      0001F6                        566 00131$:
+                                    567 ;	Raw cost for generated ic 126 : (0, 0.000000) count=0.105468
+                                    568 ;	genAssign
+                                    569 ;	genCopy
+      0001F6 AEr13r00         [ 4]  570 	ldx	(_realloc_oldblocksize_10000_71 + 1)
+      0001F9 ADr12r00         [ 4]  571 	lda	_realloc_oldblocksize_10000_71
+                                    572 ;	Raw cost for generated ic 127 : (6, 8.000000) count=0.105468
+                                    573 ;	genLabel
+      0001FC                        574 00132$:
+                                    575 ;	Raw cost for generated ic 128 : (0, 0.000000) count=0.421873
+                                    576 ;	genAssign
+                                    577 ;	genCopy
+      0001FC A4*01            [ 3]  578 	ldy	*(_realloc_sloc0_1_0 + 1)
+      0001FE 8Cr01r00         [ 4]  579 	sty	(_memmove_PARM_2 + 1)
+      000201 A4*00            [ 3]  580 	ldy	*_realloc_sloc0_1_0
+      000203 8Cr00r00         [ 4]  581 	sty	_memmove_PARM_2
+                                    582 ;	Raw cost for generated ic 130 : (10, 14.000000) count=0.421873
+                                    583 ;	genAssign
+                                    584 ;	genCopy
+      000206 8Dr00r00         [ 4]  585 	sta	_memmove_PARM_3
+      000209 8Er01r00         [ 4]  586 	stx	(_memmove_PARM_3 + 1)
+                                    587 ;	Raw cost for generated ic 131 : (6, 8.000000) count=0.421873
+                                    588 ;	Raw cost for generated ic 129 : (0, 0.000000) count=0.421873
+                                    589 ;	genCall
+                                    590 ;	genSend
+      00020C A6*03            [ 3]  591 	ldx	*(_realloc_sloc1_1_0 + 1)
+      00020E A5*02            [ 3]  592 	lda	*_realloc_sloc1_1_0
+      000210 20r00r00         [ 6]  593 	jsr	_memmove
+                                    594 ;	Raw cost for generated ic 132 : (7, 12.000000) count=0.421873
+                                    595 ;	../realloc.c: 108: h = prev_free;
+                                    596 ;	genAssign
+                                    597 ;	genCopy
+      000213 ADr0Br00         [ 4]  598 	lda	(_realloc_prev_free_10000_71 + 1)
+      000216 8Dr07r00         [ 4]  599 	sta	(_realloc_h_10000_71 + 1)
+      000219 ADr0Ar00         [ 4]  600 	lda	_realloc_prev_free_10000_71
+      00021C 8Dr06r00         [ 4]  601 	sta	_realloc_h_10000_71
+                                    602 ;	Raw cost for generated ic 133 : (12, 16.000000) count=0.421873
+                                    603 ;	../realloc.c: 109: *pf = next_free;
+                                    604 ;	genPointerSet
+                                    605 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00021F AEr0Er00         [ 4]  606 	ldx	_realloc_pf_10000_71
+      000222 86*00            [ 3]  607 	stx	*(DPTR+0)
+      000224 AEr0Fr00         [ 4]  608 	ldx	(_realloc_pf_10000_71 + 1)
+      000227 86*01            [ 3]  609 	stx	*(DPTR+1)
+      000229 ADr08r00         [ 4]  610 	lda	_realloc_next_free_10000_71
+      00022C A0 00            [ 2]  611 	ldy	#0x00
+      00022E 91*00            [ 6]  612 	sta	[DPTR],y
+      000230 ADr09r00         [ 4]  613 	lda	(_realloc_next_free_10000_71 + 1)
+      000233 C8               [ 2]  614 	iny
+      000234 91*00            [ 6]  615 	sta	[DPTR],y
+                                    616 ;	Raw cost for generated ic 135 : (23, 38.000000) count=0.421873
+                                    617 ;	../realloc.c: 110: f = pf;
+                                    618 ;	genAssign
+                                    619 ;	genCopy
+      000236 8A               [ 2]  620 	txa
+      000237 8Dr0Dr00         [ 4]  621 	sta	(_realloc_f_10000_71 + 1)
+      00023A ADr0Er00         [ 4]  622 	lda	_realloc_pf_10000_71
+      00023D 8Dr0Cr00         [ 4]  623 	sta	_realloc_f_10000_71
+                                    624 ;	Raw cost for generated ic 136 : (10, 14.000000) count=0.421873
+                                    625 ;	genLabel
+      000240                        626 00114$:
+                                    627 ;	Raw cost for generated ic 137 : (0, 0.000000) count=0.749996
+                                    628 ;	../realloc.c: 113: if(next_free && next_free == h->next) // Merge with following block
+                                    629 ;	genIfx
+      000240 ADr09r00         [ 4]  630 	lda	(_realloc_next_free_10000_71 + 1)
+      000243 0Dr08r00         [ 4]  631 	ora	_realloc_next_free_10000_71
+                                    632 ;	genIfxJump : z
+      000246 F0 5B            [ 4]  633 	beq	00117$
+                                    634 ;	Raw cost for generated ic 138 : (11, 13.600000) count=0.749996
+                                    635 ;	genCast
+                                    636 ;	genCopy
+      000248 ADr07r00         [ 4]  637 	lda	(_realloc_h_10000_71 + 1)
+      00024B 85*03            [ 3]  638 	sta	*(_realloc_sloc1_1_0 + 1)
+      00024D ADr06r00         [ 4]  639 	lda	_realloc_h_10000_71
+      000250 85*02            [ 3]  640 	sta	*_realloc_sloc1_1_0
+                                    641 ;	Raw cost for generated ic 142 : (10, 14.000000) count=0.562497
+                                    642 ;	genPointerGet
+      000252 A0 01            [ 2]  643 	ldy	#0x01
+      000254 B1*02            [ 6]  644 	lda	[*_realloc_sloc1_1_0],y
+      000256 AA               [ 2]  645 	tax
+      000257 88               [ 2]  646 	dey
+      000258 B1*02            [ 6]  647 	lda	[*_realloc_sloc1_1_0],y
+                                    648 ;	Raw cost for generated ic 143 : (8, 16.000000) count=0.562497
+                                    649 ;	genCmpEQorNE
+      00025A CDr08r00         [ 4]  650 	cmp	_realloc_next_free_10000_71
+      00025D D0 44            [ 4]  651 	bne	00117$
+      00025F ECr09r00         [ 4]  652 	cpx	(_realloc_next_free_10000_71 + 1)
+      000262 D0 3F            [ 4]  653 	bne	00117$
+                                    654 ;	Raw cost for generated ic 144 : (16, 19.200001) count=0.562497
+                                    655 ;	skipping generated iCode
+                                    656 ;	Raw cost for generated ic 145 : (0, 0.000000) count=0.562497
+                                    657 ;	../realloc.c: 115: h->next = next_free->next;
+                                    658 ;	genPointerGet
+                                    659 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000264 AEr08r00         [ 4]  660 	ldx	_realloc_next_free_10000_71
+      000267 86*00            [ 3]  661 	stx	*(DPTR+0)
+      000269 AEr09r00         [ 4]  662 	ldx	(_realloc_next_free_10000_71 + 1)
+      00026C 86*01            [ 3]  663 	stx	*(DPTR+1)
+      00026E C8               [ 2]  664 	iny
+      00026F B1*00            [ 6]  665 	lda	[DPTR],y
+      000271 AA               [ 2]  666 	tax
+      000272 88               [ 2]  667 	dey
+      000273 B1*00            [ 6]  668 	lda	[DPTR],y
+                                    669 ;	Raw cost for generated ic 152 : (17, 30.000000) count=0.421873
+                                    670 ;	genPointerSet
+      000275 91*02            [ 6]  671 	sta	[*_realloc_sloc1_1_0],y
+      000277 8A               [ 2]  672 	txa
+      000278 C8               [ 2]  673 	iny
+      000279 91*02            [ 6]  674 	sta	[*_realloc_sloc1_1_0],y
+                                    675 ;	Raw cost for generated ic 153 : (6, 16.000000) count=0.421873
+                                    676 ;	../realloc.c: 116: *f = next_free->next_free;
+                                    677 ;	genAssign
+                                    678 ;	genCopy
+      00027B AEr09r00         [ 4]  679 	ldx	(_realloc_next_free_10000_71 + 1)
+      00027E ADr08r00         [ 4]  680 	lda	_realloc_next_free_10000_71
+                                    681 ;	Raw cost for generated ic 156 : (6, 8.000000) count=0.421873
+                                    682 ;	genPointerGet
+                                    683 ;	  setupDPTR - off=2 remat=(null) savea=0
+      000281 85*00            [ 3]  684 	sta	*(DPTR+0)
+      000283 86*01            [ 3]  685 	stx	*(DPTR+1)
+      000285 A0 03            [ 2]  686 	ldy	#0x03
+      000287 B1*00            [ 6]  687 	lda	[DPTR],y
+      000289 AA               [ 2]  688 	tax
+      00028A 88               [ 2]  689 	dey
+      00028B B1*00            [ 6]  690 	lda	[DPTR],y
+                                    691 ;	Raw cost for generated ic 157 : (12, 22.000000) count=0.421873
+                                    692 ;	genPointerSet
+      00028D 85*00            [ 3]  693 	sta	*(REGTEMP+0)
+                                    694 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00028F ADr0Cr00         [ 4]  695 	lda	_realloc_f_10000_71
+      000292 85*00            [ 3]  696 	sta	*(DPTR+0)
+      000294 ADr0Dr00         [ 4]  697 	lda	(_realloc_f_10000_71 + 1)
+      000297 85*01            [ 3]  698 	sta	*(DPTR+1)
+      000299 A5*00            [ 3]  699 	lda	*(REGTEMP+0)
+      00029B A0 00            [ 2]  700 	ldy	#0x00
+      00029D 91*00            [ 6]  701 	sta	[DPTR],y
+      00029F 8A               [ 2]  702 	txa
+      0002A0 C8               [ 2]  703 	iny
+      0002A1 91*00            [ 6]  704 	sta	[DPTR],y
+                                    705 ;	Raw cost for generated ic 158 : (22, 38.000000) count=0.421873
+                                    706 ;	genLabel
+      0002A3                        707 00117$:
+                                    708 ;	Raw cost for generated ic 159 : (0, 0.000000) count=0.749996
+                                    709 ;	../realloc.c: 119: if(maxblocksize >= blocksize + sizeof(struct header)) // Create new block from free space
+                                    710 ;	genPlus
+                                    711 ;	  genPlusInc
+      0002A3 AEr11r00         [ 4]  712 	ldx	(_realloc_blocksize_10000_71 + 1)
+      0002A6 ADr10r00         [ 4]  713 	lda	_realloc_blocksize_10000_71
+      0002A9 18               [ 2]  714 	clc
+      0002AA 69 04            [ 3]  715 	adc	#0x04
+      0002AC 90 01            [ 4]  716 	bcc	00291$
+      0002AE E8               [ 2]  717 	inx
+      0002AF                        718 00291$:
+                                    719 ;	Raw cost for generated ic 160 : (12, 16.600000) count=0.749996
+                                    720 ;	genCmp
+      0002AF 85*00            [ 3]  721 	sta	*(REGTEMP+0)
+      0002B1 ADr14r00         [ 4]  722 	lda	_realloc_maxblocksize_10000_71
+      0002B4 38               [ 2]  723 	sec
+      0002B5 E5*00            [ 4]  724 	sbc	*(REGTEMP+0)
+      0002B7 ADr15r00         [ 4]  725 	lda	(_realloc_maxblocksize_10000_71 + 1)
+      0002BA 86*00            [ 3]  726 	stx	*(REGTEMP+0)
+      0002BC E5*00            [ 4]  727 	sbc	*(REGTEMP+0)
+      0002BE 90 6D            [ 4]  728 	bcc	00120$
+                                    729 ;	Raw cost for generated ic 161 : (20, 27.600000) count=0.749996
+                                    730 ;	skipping generated iCode
+                                    731 ;	Raw cost for generated ic 162 : (0, 0.000000) count=0.749996
+                                    732 ;	../realloc.c: 121: header_t *const newheader = (header_t *const)((char HEAPSPACE *)h + blocksize);
+                                    733 ;	genPlus
+      0002C0 ADr06r00         [ 4]  734 	lda	_realloc_h_10000_71
+      0002C3 18               [ 2]  735 	clc
+      0002C4 6Dr10r00         [ 5]  736 	adc	_realloc_blocksize_10000_71
+      0002C7 8Dr16r00         [ 4]  737 	sta	_realloc_newheader_50000_85
+      0002CA ADr07r00         [ 4]  738 	lda	(_realloc_h_10000_71 + 1)
+      0002CD 6Dr11r00         [ 5]  739 	adc	(_realloc_blocksize_10000_71 + 1)
+      0002D0 8Dr17r00         [ 4]  740 	sta	(_realloc_newheader_50000_85 + 1)
+                                    741 ;	Raw cost for generated ic 166 : (19, 26.000000) count=0.562497
+                                    742 ;	../realloc.c: 122: newheader->next = h->next;
+                                    743 ;	genCast
+                                    744 ;	genCopy
+      0002D3 85*03            [ 3]  745 	sta	*(_realloc_sloc1_1_0 + 1)
+      0002D5 ADr16r00         [ 4]  746 	lda	_realloc_newheader_50000_85
+      0002D8 85*02            [ 3]  747 	sta	*_realloc_sloc1_1_0
+                                    748 ;	Raw cost for generated ic 170 : (7, 10.000000) count=0.562497
+                                    749 ;	genCast
+                                    750 ;	genCopy
+      0002DA ADr07r00         [ 4]  751 	lda	(_realloc_h_10000_71 + 1)
+      0002DD 85*01            [ 3]  752 	sta	*(_realloc_sloc0_1_0 + 1)
+      0002DF ADr06r00         [ 4]  753 	lda	_realloc_h_10000_71
+      0002E2 85*00            [ 3]  754 	sta	*_realloc_sloc0_1_0
+                                    755 ;	Raw cost for generated ic 172 : (10, 14.000000) count=0.562497
+                                    756 ;	genPointerGet
+      0002E4 A0 01            [ 2]  757 	ldy	#0x01
+      0002E6 B1*00            [ 6]  758 	lda	[*_realloc_sloc0_1_0],y
+      0002E8 AA               [ 2]  759 	tax
+      0002E9 88               [ 2]  760 	dey
+      0002EA B1*00            [ 6]  761 	lda	[*_realloc_sloc0_1_0],y
+                                    762 ;	Raw cost for generated ic 173 : (8, 16.000000) count=0.562497
+                                    763 ;	genPointerSet
+      0002EC 91*02            [ 6]  764 	sta	[*_realloc_sloc1_1_0],y
+      0002EE 8A               [ 2]  765 	txa
+      0002EF C8               [ 2]  766 	iny
+      0002F0 91*02            [ 6]  767 	sta	[*_realloc_sloc1_1_0],y
+                                    768 ;	Raw cost for generated ic 174 : (6, 16.000000) count=0.562497
+                                    769 ;	../realloc.c: 123: newheader->next_free = *f;
+                                    770 ;	genAssign
+                                    771 ;	genCopy
+      0002F2 ADr17r00         [ 4]  772 	lda	(_realloc_newheader_50000_85 + 1)
+      0002F5 85*03            [ 3]  773 	sta	*(_realloc_sloc1_1_0 + 1)
+      0002F7 ADr16r00         [ 4]  774 	lda	_realloc_newheader_50000_85
+      0002FA 85*02            [ 3]  775 	sta	*_realloc_sloc1_1_0
+                                    776 ;	Raw cost for generated ic 176 : (10, 14.000000) count=0.562497
+                                    777 ;	genPointerGet
+                                    778 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0002FC AEr0Cr00         [ 4]  779 	ldx	_realloc_f_10000_71
+      0002FF 86*00            [ 3]  780 	stx	*(DPTR+0)
+      000301 AEr0Dr00         [ 4]  781 	ldx	(_realloc_f_10000_71 + 1)
+      000304 86*01            [ 3]  782 	stx	*(DPTR+1)
+      000306 B1*00            [ 6]  783 	lda	[DPTR],y
+      000308 AA               [ 2]  784 	tax
+      000309 88               [ 2]  785 	dey
+      00030A B1*00            [ 6]  786 	lda	[DPTR],y
+                                    787 ;	Raw cost for generated ic 178 : (16, 28.000000) count=0.562497
+                                    788 ;	genPointerSet
+      00030C A0 02            [ 2]  789 	ldy	#0x02
+      00030E 91*02            [ 6]  790 	sta	[*_realloc_sloc1_1_0],y
+      000310 8A               [ 2]  791 	txa
+      000311 C8               [ 2]  792 	iny
+      000312 91*02            [ 6]  793 	sta	[*_realloc_sloc1_1_0],y
+                                    794 ;	Raw cost for generated ic 179 : (8, 18.000000) count=0.562497
+                                    795 ;	../realloc.c: 124: *f = newheader;
+                                    796 ;	genPointerSet
+                                    797 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000314 ADr16r00         [ 4]  798 	lda	_realloc_newheader_50000_85
+      000317 A0 00            [ 2]  799 	ldy	#0x00
+      000319 91*00            [ 6]  800 	sta	[DPTR],y
+      00031B ADr17r00         [ 4]  801 	lda	(_realloc_newheader_50000_85 + 1)
+      00031E C8               [ 2]  802 	iny
+      00031F 91*00            [ 6]  803 	sta	[DPTR],y
+                                    804 ;	Raw cost for generated ic 181 : (13, 24.000000) count=0.562497
+                                    805 ;	../realloc.c: 125: h->next = newheader;
+                                    806 ;	genPointerSet
+      000321 ADr16r00         [ 4]  807 	lda	_realloc_newheader_50000_85
+      000324 88               [ 2]  808 	dey
+      000325 91*00            [ 6]  809 	sta	[*_realloc_sloc0_1_0],y
+      000327 ADr17r00         [ 4]  810 	lda	(_realloc_newheader_50000_85 + 1)
+      00032A C8               [ 2]  811 	iny
+      00032B 91*00            [ 6]  812 	sta	[*_realloc_sloc0_1_0],y
+                                    813 ;	Raw cost for generated ic 184 : (12, 24.000000) count=0.562497
+                                    814 ;	genLabel
+      00032D                        815 00120$:
+                                    816 ;	Raw cost for generated ic 185 : (0, 0.000000) count=0.749996
+                                    817 ;	../realloc.c: 128: return(&(h->next_free));
+                                    818 ;	genPlus
+                                    819 ;	  genPlusInc
+      00032D AEr07r00         [ 4]  820 	ldx	(_realloc_h_10000_71 + 1)
+      000330 ADr06r00         [ 4]  821 	lda	_realloc_h_10000_71
+      000333 18               [ 2]  822 	clc
+      000334 69 02            [ 3]  823 	adc	#0x02
+      000336 90 6A            [ 4]  824 	bcc	00129$
+      000338 E8               [ 2]  825 	inx
+                                    826 ;	Raw cost for generated ic 187 : (12, 16.600000) count=0.749996
+                                    827 ;	genRet
+      000339 60               [ 6]  828 	rts
+                                    829 ;	Raw cost for generated ic 189 : (3, 3.000000) count=0.749996
+                                    830 ;	genLabel
+      00033A                        831 00122$:
+                                    832 ;	Raw cost for generated ic 190 : (0, 0.000000) count=0.999994
+                                    833 ;	../realloc.c: 131: if(ret = malloc(size))
+                                    834 ;	Raw cost for generated ic 191 : (0, 0.000000) count=0.999994
+                                    835 ;	genCall
+                                    836 ;	genSend
+      00033A AEr01r00         [ 4]  837 	ldx	(_realloc_PARM_2 + 1)
+      00033D ADr00r00         [ 4]  838 	lda	_realloc_PARM_2
+      000340 20r00r00         [ 6]  839 	jsr	_malloc
+                                    840 ;	assignResultValue
+                                    841 ;	Raw cost for generated ic 192 : (9, 14.000000) count=0.999994
+                                    842 ;	genAssign
+                                    843 ;	genCopy
+      000343 8Dr04r00         [ 4]  844 	sta	_realloc_ret_10000_71
+      000346 8Er05r00         [ 4]  845 	stx	(_realloc_ret_10000_71 + 1)
+                                    846 ;	Raw cost for generated ic 193 : (6, 8.000000) count=0.999994
+                                    847 ;	genIfx
+      000349 C9 00            [ 2]  848 	cmp	#0x00
+                                    849 ;	genIfxJump : z
+      00034B D0 04            [ 4]  850 	bne	00295$
+      00034D E0 00            [ 2]  851 	cpx	#0x00
+      00034F F0 4E            [ 4]  852 	beq	00124$
+      000351                        853 00295$:
+                                    854 ;	Raw cost for generated ic 194 : (11, 12.200000) count=0.999994
+                                    855 ;	../realloc.c: 133: size_t oldsize = oldblocksize - offsetof(struct header, next_free);
+                                    856 ;	genMinus
+                                    857 ;	  genMinusDec - size=2  icount=2
+      000351 AEr13r00         [ 4]  858 	ldx	(_realloc_oldblocksize_10000_71 + 1)
+      000354 ADr12r00         [ 4]  859 	lda	_realloc_oldblocksize_10000_71
+      000357 38               [ 2]  860 	sec
+      000358 E9 02            [ 3]  861 	sbc	#0x02
+      00035A B0 01            [ 4]  862 	bcs	00296$
+      00035C CA               [ 2]  863 	dex
+      00035D                        864 00296$:
+                                    865 ;	Raw cost for generated ic 197 : (12, 16.600000) count=0.749996
+                                    866 ;	../realloc.c: 134: memcpy(ret, ptr, size <= oldsize ? size : oldsize);
+                                    867 ;	genCmp
+      00035D 85*00            [ 3]  868 	sta	*(REGTEMP+0)
+      00035F 38               [ 2]  869 	sec
+      000360 EDr00r00         [ 5]  870 	sbc	_realloc_PARM_2
+      000363 8A               [ 2]  871 	txa
+      000364 EDr01r00         [ 5]  872 	sbc	(_realloc_PARM_2 + 1)
+      000367 A5*00            [ 3]  873 	lda	*(REGTEMP+0)
+      000369 90 09            [ 4]  874 	bcc	00133$
+                                    875 ;	Raw cost for generated ic 199 : (17, 23.600000) count=0.749996
+                                    876 ;	skipping generated iCode
+                                    877 ;	Raw cost for generated ic 201 : (0, 0.000000) count=0.749996
+                                    878 ;	genAssign
+                                    879 ;	genCopy
+      00036B AEr01r00         [ 4]  880 	ldx	(_realloc_PARM_2 + 1)
+      00036E ADr00r00         [ 4]  881 	lda	_realloc_PARM_2
+                                    882 ;	Raw cost for generated ic 202 : (6, 8.000000) count=0.562497
+                                    883 ;	genGoto
+      000371 4Cr74r03         [ 3]  884 	jmp	00134$
+                                    885 ;	Raw cost for generated ic 203 : (3, 3.000000) count=0.562497
+                                    886 ;	genLabel
+      000374                        887 00133$:
+                                    888 ;	Raw cost for generated ic 204 : (0, 0.000000) count=0.187498
+                                    889 ;	genAssign
+                                    890 ;	genCopy
+                                    891 ;	Raw cost for generated ic 205 : (0, 0.000000) count=0.187498
+                                    892 ;	genLabel
+      000374                        893 00134$:
+                                    894 ;	Raw cost for generated ic 206 : (0, 0.000000) count=0.749995
+                                    895 ;	genAssign
+                                    896 ;	genCopy
+      000374 ACr03r00         [ 4]  897 	ldy	(_realloc_ptr_10000_70 + 1)
+      000377 8Cr01r00         [ 4]  898 	sty	(___memcpy_PARM_2 + 1)
+      00037A ACr02r00         [ 4]  899 	ldy	_realloc_ptr_10000_70
+      00037D 8Cr00r00         [ 4]  900 	sty	___memcpy_PARM_2
+                                    901 ;	Raw cost for generated ic 208 : (12, 16.000000) count=0.749995
+                                    902 ;	genAssign
+                                    903 ;	genCopy
+      000380 8Dr00r00         [ 4]  904 	sta	___memcpy_PARM_3
+      000383 8Er01r00         [ 4]  905 	stx	(___memcpy_PARM_3 + 1)
+                                    906 ;	Raw cost for generated ic 209 : (6, 8.000000) count=0.749995
+                                    907 ;	Raw cost for generated ic 207 : (0, 0.000000) count=0.749995
+                                    908 ;	genCall
+                                    909 ;	genSend
+      000386 AEr05r00         [ 4]  910 	ldx	(_realloc_ret_10000_71 + 1)
+      000389 ADr04r00         [ 4]  911 	lda	_realloc_ret_10000_71
+      00038C 20r00r00         [ 6]  912 	jsr	___memcpy
+                                    913 ;	Raw cost for generated ic 210 : (9, 14.000000) count=0.749995
+                                    914 ;	../realloc.c: 135: free(ptr);
+                                    915 ;	Raw cost for generated ic 211 : (0, 0.000000) count=0.749995
+                                    916 ;	genCall
+                                    917 ;	genSend
+      00038F AEr03r00         [ 4]  918 	ldx	(_realloc_ptr_10000_70 + 1)
+      000392 ADr02r00         [ 4]  919 	lda	_realloc_ptr_10000_70
+      000395 20r00r00         [ 6]  920 	jsr	_free
+                                    921 ;	Raw cost for generated ic 212 : (9, 14.000000) count=0.749995
+                                    922 ;	../realloc.c: 136: return(ret);
+                                    923 ;	genRet
+      000398 AEr05r00         [ 4]  924 	ldx	(_realloc_ret_10000_71 + 1)
+      00039B ADr04r00         [ 4]  925 	lda	_realloc_ret_10000_71
+      00039E 60               [ 6]  926 	rts
+                                    927 ;	Raw cost for generated ic 213 : (9, 11.000000) count=0.749995
+                                    928 ;	genLabel
+      00039F                        929 00124$:
+                                    930 ;	Raw cost for generated ic 214 : (0, 0.000000) count=0.999993
+                                    931 ;	../realloc.c: 139: return(0);
+                                    932 ;	genRet
+      00039F A9 00            [ 2]  933 	lda	#0x00
+      0003A1 AA               [ 2]  934 	tax
+                                    935 ;	Raw cost for generated ic 215 : (3, 4.000000) count=0.999993
+                                    936 ;	genLabel
+      0003A2                        937 00129$:
+                                    938 ;	Raw cost for generated ic 216 : (0, 0.000000) count=0.999993
+                                    939 ;	../realloc.c: 140: }
+                                    940 ;	genEndFunction
+      0003A2 60               [ 6]  941 	rts
+                                    942 ;	Raw cost for generated ic 217 : (1, 6.000000) count=0.999993
+                                    943 	.area CODE
+                                    944 	.area RODATA
+                                    945 	.area XINIT
+                                    946 	.area CABS    (ABS)

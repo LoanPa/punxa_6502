@@ -1,0 +1,59 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _modsint.s - routine for division of 16 bit signed int
+                                      3 ;
+                                      4 ;   Copyright (C) 1998, Ullrich von Bassewitz
+                                      5 ;   Copyright (C) 2022, Gabriele Gorla
+                                      6 ;
+                                      7 ;   This library is free software; you can redistribute it and/or modify it
+                                      8 ;   under the terms of the GNU General Public License as published by the
+                                      9 ;   Free Software Foundation; either version 2, or (at your option) any
+                                     10 ;   later version.
+                                     11 ;
+                                     12 ;   This library is distributed in the hope that it will be useful,
+                                     13 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     14 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     15 ;   GNU General Public License for more details.
+                                     16 ;
+                                     17 ;   You should have received a copy of the GNU General Public License
+                                     18 ;   along with this library; see the file COPYING. If not, write to the
+                                     19 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     20 ;   MA 02110-1301, USA.
+                                     21 ;
+                                     22 ;   As a special exception, if you link this library with other files,
+                                     23 ;   some of which are compiled with SDCC, to produce an executable,
+                                     24 ;   this library does not by itself cause the resulting executable to
+                                     25 ;   be covered by the GNU General Public License. This exception does
+                                     26 ;   not however invalidate any other reasons why the executable file
+                                     27 ;   might be covered by the GNU General Public License.
+                                     28 ;-------------------------------------------------------------------------
+                                     29 
+                                     30 	.module _modsint
+                                     31 
+                                     32 ;--------------------------------------------------------
+                                     33 ; exported symbols
+                                     34 ;--------------------------------------------------------
+                                     35 	.globl __modsint
+                                     36 
+                                     37 ;--------------------------------------------------------
+                                     38 ; local aliases
+                                     39 ;--------------------------------------------------------
+                                     40 	.define res "___SDCC_m6502_ret0"
+                                     41 	.define den "__divsint_PARM_2"
+                                     42 	.define rem "___SDCC_m6502_ret2"
+                                     43 	.define s1  "___SDCC_m6502_ret4"
+                                     44 	.define s2  "___SDCC_m6502_ret5"
+                                     45 
+                                     46 ;--------------------------------------------------------
+                                     47 ; code
+                                     48 ;--------------------------------------------------------
+                                     49 	.area CODE
+                                     50 
+      000000                         51 __modsint:
+      000000 20r00r00         [ 6]   52 	jsr 	___sdivmod16
+      000003 A5*00            [ 3]   53 	lda	*rem+0
+      000005 A6*01            [ 3]   54 	ldx	*rem+1
+      000007 A4*00            [ 3]   55 	ldy	*s1
+      000009 10 03            [ 4]   56 	bpl	pos
+      00000B 4Cr00r00         [ 3]   57 	jmp 	___negax
+      00000E                         58 pos:
+      00000E 60               [ 6]   59 	rts

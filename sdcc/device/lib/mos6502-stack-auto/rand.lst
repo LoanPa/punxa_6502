@@ -1,0 +1,313 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module rand
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _rand
+                                     27 	.globl _srand
+                                     28 ;--------------------------------------------------------
+                                     29 ; ZP ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area ZP      (PAG)
+                                     32 ;--------------------------------------------------------
+                                     33 ; overlayable items in ram
+                                     34 ;--------------------------------------------------------
+                                     35 ;--------------------------------------------------------
+                                     36 ; uninitialized external ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area BSS
+                                     39 ;--------------------------------------------------------
+                                     40 ; absolute external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area DABS    (ABS)
+                                     43 ;--------------------------------------------------------
+                                     44 ; initialized external ram data
+                                     45 ;--------------------------------------------------------
+                                     46 	.area DATA
+      000000                         47 _s:
+      000000                         48 	.ds 4
+                                     49 ;--------------------------------------------------------
+                                     50 ; global & static initialisations
+                                     51 ;--------------------------------------------------------
+                                     52 	.area _CODE
+                                     53 	.area GSINIT
+                                     54 	.area GSFINAL
+                                     55 	.area GSINIT
+                                     56 ;--------------------------------------------------------
+                                     57 ; Home
+                                     58 ;--------------------------------------------------------
+                                     59 	.area _CODE
+                                     60 	.area _CODE
+                                     61 ;--------------------------------------------------------
+                                     62 ; code
+                                     63 ;--------------------------------------------------------
+                                     64 	.area CODE
+                                     65 ;------------------------------------------------------------
+                                     66 ;Allocation info for local variables in function 'rand'
+                                     67 ;------------------------------------------------------------
+                                     68 ;t             Allocated to stack - sp +1 +4 
+                                     69 ;sloc0         Allocated to stack - sp +9 +4 
+                                     70 ;sloc1         Allocated to stack - sp +5 +4 
+                                     71 ;------------------------------------------------------------
+                                     72 ;	../rand.c: 40: int rand(void)
+                                     73 ;	genLabel
+                                     74 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     75 ;	-----------------------------------------
+                                     76 ;	 function rand
+                                     77 ;	-----------------------------------------
+                                     78 ;	Register assignment is optimal.
+                                     79 ;	Stack space usage: 12 bytes.
+      000000                         80 _rand:
+                                     81 ;	  adjustStack : cycles stk:36  incdec:28  adc:12
+      000000 BA               [ 2]   82 	tsx
+      000001 8A               [ 2]   83 	txa
+      000002 18               [ 2]   84 	clc
+      000003 69 F4            [ 2]   85 	adc	#0xf4
+      000005 AA               [ 2]   86 	tax
+      000006 9A               [ 2]   87 	txs
+                                     88 ;	Raw cost for generated ic 1 : (7, 12.000000) count=1.000000
+                                     89 ;	../rand.c: 44: t ^= t >> 10;
+                                     90 ;	genRightShift
+                                     91 ;	genRightShiftLiteral
+                                     92 ;	  genrsh32 - shift=10
+      000007 ADr03r00         [ 4]   93 	lda	(_s + 3)
+      00000A 4A               [ 2]   94 	lsr	a
+      00000B 9D 0B 01         [ 5]   95 	sta	0x10b,x
+      00000E ADr02r00         [ 4]   96 	lda	(_s + 2)
+      000011 6A               [ 2]   97 	ror	a
+      000012 9D 0A 01         [ 5]   98 	sta	0x10a,x
+      000015 ADr01r00         [ 4]   99 	lda	(_s + 1)
+      000018 6A               [ 2]  100 	ror	a
+      000019 9D 09 01         [ 5]  101 	sta	0x109,x
+      00001C BD 0B 01         [ 5]  102 	lda	0x10b,x
+      00001F 4A               [ 2]  103 	lsr	a
+      000020 7E 0A 01         [ 7]  104 	ror	0x10a,x
+      000023 7E 09 01         [ 7]  105 	ror	0x109,x
+      000026 9D 0B 01         [ 5]  106 	sta	0x10b,x
+      000029 A9 00            [ 2]  107 	lda	#0x00
+      00002B 9D 0C 01         [ 5]  108 	sta	0x10c,x
+                                    109 ;	Raw cost for generated ic 3 : (39, 63.000000) count=1.000000
+                                    110 ;	genXor
+      00002E ADr00r00         [ 4]  111 	lda	_s
+      000031 5D 09 01         [ 5]  112 	eor	0x109,x
+      000034 9D 09 01         [ 5]  113 	sta	0x109,x
+      000037 ADr01r00         [ 4]  114 	lda	(_s + 1)
+      00003A 5D 0A 01         [ 5]  115 	eor	0x10a,x
+      00003D 9D 0A 01         [ 5]  116 	sta	0x10a,x
+      000040 ADr02r00         [ 4]  117 	lda	(_s + 2)
+      000043 5D 0B 01         [ 5]  118 	eor	0x10b,x
+      000046 9D 0B 01         [ 5]  119 	sta	0x10b,x
+      000049 ADr03r00         [ 4]  120 	lda	(_s + 3)
+      00004C 5D 0C 01         [ 5]  121 	eor	0x10c,x
+      00004F 9D 0C 01         [ 5]  122 	sta	0x10c,x
+                                    123 ;	Raw cost for generated ic 4 : (36, 52.000000) count=1.000000
+                                    124 ;	../rand.c: 45: t ^= t << 9;
+                                    125 ;	genLeftShift
+                                    126 ;	genLeftShiftLiteral
+                                    127 ;	  genlsh32 - shift=9
+      000052 BD 09 01         [ 5]  128 	lda	0x109,x
+      000055 0A               [ 2]  129 	asl	a
+      000056 9D 06 01         [ 5]  130 	sta	0x106,x
+      000059 BD 0A 01         [ 5]  131 	lda	0x10a,x
+      00005C 2A               [ 2]  132 	rol	a
+      00005D 9D 07 01         [ 5]  133 	sta	0x107,x
+      000060 BD 0B 01         [ 5]  134 	lda	0x10b,x
+      000063 2A               [ 2]  135 	rol	a
+      000064 48               [ 3]  136 	pha
+      000065 A9 00            [ 2]  137 	lda	#0x00
+      000067 9D 05 01         [ 5]  138 	sta	0x105,x
+      00006A 68               [ 4]  139 	pla
+      00006B 9D 08 01         [ 5]  140 	sta	0x108,x
+                                    141 ;	Raw cost for generated ic 6 : (28, 47.000000) count=1.000000
+                                    142 ;	genXor
+      00006E BD 09 01         [ 5]  143 	lda	0x109,x
+      000071 5D 05 01         [ 5]  144 	eor	0x105,x
+      000074 9D 05 01         [ 5]  145 	sta	0x105,x
+      000077 BD 0A 01         [ 5]  146 	lda	0x10a,x
+      00007A 5D 06 01         [ 5]  147 	eor	0x106,x
+      00007D 9D 06 01         [ 5]  148 	sta	0x106,x
+      000080 BD 0B 01         [ 5]  149 	lda	0x10b,x
+      000083 5D 07 01         [ 5]  150 	eor	0x107,x
+      000086 9D 07 01         [ 5]  151 	sta	0x107,x
+      000089 BD 0C 01         [ 5]  152 	lda	0x10c,x
+      00008C 5D 08 01         [ 5]  153 	eor	0x108,x
+      00008F 9D 08 01         [ 5]  154 	sta	0x108,x
+                                    155 ;	Raw cost for generated ic 7 : (36, 52.000000) count=1.000000
+                                    156 ;	../rand.c: 46: t ^= t >> 25;
+                                    157 ;	genRightShift
+                                    158 ;	genRightShiftLiteral
+                                    159 ;	  genrsh32 - shift=25
+      000092 4A               [ 2]  160 	lsr	a
+      000093 9D 09 01         [ 5]  161 	sta	0x109,x
+      000096 A9 00            [ 2]  162 	lda	#0x00
+      000098 9D 0A 01         [ 5]  163 	sta	0x10a,x
+      00009B 9D 0B 01         [ 5]  164 	sta	0x10b,x
+      00009E 9D 0C 01         [ 5]  165 	sta	0x10c,x
+                                    166 ;	Raw cost for generated ic 9 : (15, 24.000000) count=1.000000
+                                    167 ;	genXor
+      0000A1 BD 05 01         [ 5]  168 	lda	0x105,x
+      0000A4 5D 09 01         [ 5]  169 	eor	0x109,x
+      0000A7 9D 05 01         [ 5]  170 	sta	0x105,x
+      0000AA BD 06 01         [ 5]  171 	lda	0x106,x
+      0000AD 5D 0A 01         [ 5]  172 	eor	0x10a,x
+      0000B0 9D 06 01         [ 5]  173 	sta	0x106,x
+      0000B3 BD 07 01         [ 5]  174 	lda	0x107,x
+      0000B6 5D 0B 01         [ 5]  175 	eor	0x10b,x
+      0000B9 9D 07 01         [ 5]  176 	sta	0x107,x
+      0000BC BD 08 01         [ 5]  177 	lda	0x108,x
+      0000BF 5D 0C 01         [ 5]  178 	eor	0x10c,x
+      0000C2 9D 08 01         [ 5]  179 	sta	0x108,x
+                                    180 ;	Raw cost for generated ic 10 : (36, 52.000000) count=1.000000
+                                    181 ;	genAssign
+                                    182 ;	genCopy
+      0000C5 9D 04 01         [ 5]  183 	sta	0x104,x
+      0000C8 BD 07 01         [ 5]  184 	lda	0x107,x
+      0000CB 9D 03 01         [ 5]  185 	sta	0x103,x
+      0000CE BD 06 01         [ 5]  186 	lda	0x106,x
+      0000D1 9D 02 01         [ 5]  187 	sta	0x102,x
+      0000D4 BD 05 01         [ 5]  188 	lda	0x105,x
+      0000D7 9D 01 01         [ 5]  189 	sta	0x101,x
+                                    190 ;	Raw cost for generated ic 11 : (21, 32.000000) count=1.000000
+                                    191 ;	../rand.c: 48: s = t;
+                                    192 ;	genAssign
+                                    193 ;	genCopy
+      0000DA BD 08 01         [ 5]  194 	lda	0x108,x
+      0000DD 8Dr03r00         [ 4]  195 	sta	(_s + 3)
+      0000E0 BD 07 01         [ 5]  196 	lda	0x107,x
+      0000E3 8Dr02r00         [ 4]  197 	sta	(_s + 2)
+      0000E6 BD 06 01         [ 5]  198 	lda	0x106,x
+      0000E9 8Dr01r00         [ 4]  199 	sta	(_s + 1)
+      0000EC BD 05 01         [ 5]  200 	lda	0x105,x
+      0000EF 8Dr00r00         [ 4]  201 	sta	_s
+                                    202 ;	Raw cost for generated ic 12 : (24, 32.000000) count=1.000000
+                                    203 ;	../rand.c: 50: return(t & RAND_MAX);
+                                    204 ;	genCast
+                                    205 ;	genCopy
+      0000F2 BD 01 01         [ 5]  206 	lda	0x101,x
+      0000F5 A8               [ 2]  207 	tay
+      0000F6 BD 02 01         [ 5]  208 	lda	0x102,x
+      0000F9 AA               [ 2]  209 	tax
+      0000FA 98               [ 2]  210 	tya
+                                    211 ;	Raw cost for generated ic 19 : (9, 14.000000) count=1.000000
+                                    212 ;	genAnd
+      0000FB 85*00            [ 3]  213 	sta	*(REGTEMP+0)
+      0000FD 8A               [ 2]  214 	txa
+      0000FE 29 7F            [ 2]  215 	and	#0x7f
+      000100 AA               [ 2]  216 	tax
+      000101 A5*00            [ 3]  217 	lda	*(REGTEMP+0)
+                                    218 ;	Raw cost for generated ic 14 : (8, 12.000000) count=1.000000
+                                    219 ;	genRet
+                                    220 ;	Raw cost for generated ic 16 : (0, 0.000000) count=1.000000
+                                    221 ;	genLabel
+                                    222 ;	Raw cost for generated ic 17 : (0, 0.000000) count=1.000000
+                                    223 ;	../rand.c: 51: }
+                                    224 ;	genEndFunction
+                                    225 ;	  adjustStack : cycles stk:54  incdec:34  adc:24
+      000103 86*00            [ 3]  226 	stx	*(REGTEMP+0)
+      000105 85*01            [ 3]  227 	sta	*(REGTEMP+1)
+      000107 BA               [ 2]  228 	tsx
+      000108 8A               [ 2]  229 	txa
+      000109 18               [ 2]  230 	clc
+      00010A 69 0C            [ 2]  231 	adc	#0x0c
+      00010C AA               [ 2]  232 	tax
+      00010D 9A               [ 2]  233 	txs
+      00010E A5*01            [ 3]  234 	lda	*(REGTEMP+1)
+      000110 A6*00            [ 3]  235 	ldx	*(REGTEMP+0)
+      000112 60               [ 6]  236 	rts
+                                    237 ;	Raw cost for generated ic 18 : (16, 30.000000) count=1.000000
+                                    238 ;------------------------------------------------------------
+                                    239 ;Allocation info for local variables in function 'srand'
+                                    240 ;------------------------------------------------------------
+                                    241 ;seed          Allocated to stack - sp +5 +2 
+                                    242 ;sloc0         Allocated to stack - sp +1 +4 
+                                    243 ;------------------------------------------------------------
+                                    244 ;	../rand.c: 53: void srand(unsigned int seed)
+                                    245 ;	genLabel
+                                    246 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    247 ;	-----------------------------------------
+                                    248 ;	 function srand
+                                    249 ;	-----------------------------------------
+                                    250 ;	Register assignment is optimal.
+                                    251 ;	Stack space usage: 6 bytes.
+      000113                        252 _srand:
+                                    253 ;	genReceive: size=2
+                                    254 ;	pushreg: ofs=1
+      000113 85*00            [ 3]  255 	sta	*(REGTEMP+0)
+      000115 8A               [ 2]  256 	txa
+      000116 48               [ 3]  257 	pha
+      000117 A5*00            [ 3]  258 	lda	*(REGTEMP+0)
+                                    259 ;	pushreg: ofs=0
+      000119 48               [ 3]  260 	pha
+                                    261 ;	  adjustStack : cycles stk:12  incdec:12  adc:12
+      00011A 48               [ 3]  262 	pha
+      00011B 48               [ 3]  263 	pha
+      00011C 48               [ 3]  264 	pha
+      00011D 48               [ 3]  265 	pha
+                                    266 ;	Raw cost for generated ic 1 : (11, 26.000000) count=1.000000
+                                    267 ;	skipping generated iCode
+                                    268 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    269 ;	../rand.c: 55: s = seed | 0x80000000; /* s shall not become 0 */
+                                    270 ;	genCast
+                                    271 ;	genCopy
+      00011E A9 00            [ 2]  272 	lda	#0x00
+      000120 BA               [ 2]  273 	tsx
+      000121 9D 04 01         [ 5]  274 	sta	0x104,x
+      000124 9D 03 01         [ 5]  275 	sta	0x103,x
+      000127 BD 06 01         [ 5]  276 	lda	0x106,x
+      00012A 9D 02 01         [ 5]  277 	sta	0x102,x
+      00012D BD 05 01         [ 5]  278 	lda	0x105,x
+      000130 9D 01 01         [ 5]  279 	sta	0x101,x
+                                    280 ;	Raw cost for generated ic 3 : (21, 32.000000) count=1.000000
+                                    281 ;	genOr
+      000133 8Dr00r00         [ 4]  282 	sta	_s
+      000136 BD 02 01         [ 5]  283 	lda	0x102,x
+      000139 8Dr01r00         [ 4]  284 	sta	(_s + 1)
+      00013C BD 03 01         [ 5]  285 	lda	0x103,x
+      00013F 8Dr02r00         [ 4]  286 	sta	(_s + 2)
+      000142 BD 04 01         [ 5]  287 	lda	0x104,x
+      000145 09 80            [ 2]  288 	ora	#0x80
+      000147 8Dr03r00         [ 4]  289 	sta	(_s + 3)
+                                    290 ;	Raw cost for generated ic 4 : (23, 30.000000) count=1.000000
+                                    291 ;	genLabel
+                                    292 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    293 ;	../rand.c: 56: }
+                                    294 ;	genEndFunction
+                                    295 ;	  adjustStack : cycles stk:30  incdec:22  adc:24
+      00014A 86*00            [ 3]  296 	stx	*(REGTEMP+0)
+      00014C BA               [ 2]  297 	tsx
+      00014D E8               [ 2]  298 	inx
+      00014E E8               [ 2]  299 	inx
+      00014F E8               [ 2]  300 	inx
+      000150 E8               [ 2]  301 	inx
+      000151 E8               [ 2]  302 	inx
+      000152 E8               [ 2]  303 	inx
+      000153 9A               [ 2]  304 	txs
+      000154 A6*00            [ 3]  305 	ldx	*(REGTEMP+0)
+      000156 60               [ 6]  306 	rts
+                                    307 ;	Raw cost for generated ic 8 : (13, 28.000000) count=1.000000
+                                    308 	.area CODE
+                                    309 	.area RODATA
+                                    310 	.area XINIT
+      000000                        311 __xinit__s:
+      000000 01 00 00 80            312 	.byte #0x01, #0x00, #0x00, #0x80	; 2147483649
+                                    313 	.area CABS    (ABS)

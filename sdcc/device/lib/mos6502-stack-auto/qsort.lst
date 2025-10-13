@@ -1,0 +1,562 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module qsort
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _qsort
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'swap'
+                                     64 ;------------------------------------------------------------
+                                     65 ;src           Allocated to stack - sp +13 +2 
+                                     66 ;n             Allocated to stack - sp +15 +2 
+                                     67 ;dst           Allocated to stack - sp +9 +2 
+                                     68 ;d             Allocated to registers 
+                                     69 ;s             Allocated to registers 
+                                     70 ;tmp           Allocated to registers a 
+                                     71 ;sloc0         Allocated to stack - sp +7 +2 
+                                     72 ;sloc1         Allocated to stack - sp +5 +2 
+                                     73 ;sloc2         Allocated to stack - sp +3 +2 
+                                     74 ;sloc3         Allocated to stack - sp +1 +2 
+                                     75 ;------------------------------------------------------------
+                                     76 ;	../qsort.c: 33: static void swap(void *restrict dst, void *restrict src, size_t n)
+                                     77 ;	genLabel
+                                     78 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     79 ;	-----------------------------------------
+                                     80 ;	 function swap
+                                     81 ;	-----------------------------------------
+                                     82 ;	Register assignment is optimal.
+                                     83 ;	Stack space usage: 10 bytes.
+      000000                         84 _swap:
+                                     85 ;	genReceive: size=2
+                                     86 ;	pushreg: ofs=1
+      000000 85*00            [ 3]   87 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   88 	txa
+      000003 48               [ 3]   89 	pha
+      000004 A5*00            [ 3]   90 	lda	*(REGTEMP+0)
+                                     91 ;	pushreg: ofs=0
+      000006 48               [ 3]   92 	pha
+                                     93 ;	  adjustStack : cycles stk:24  incdec:20  adc:12
+      000007 BA               [ 2]   94 	tsx
+      000008 8A               [ 2]   95 	txa
+      000009 18               [ 2]   96 	clc
+      00000A 69 F8            [ 2]   97 	adc	#0xf8
+      00000C AA               [ 2]   98 	tax
+      00000D 9A               [ 2]   99 	txs
+                                    100 ;	Raw cost for generated ic 1 : (14, 26.000000) count=1.000000
+                                    101 ;	skipping generated iCode
+                                    102 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    103 ;	../qsort.c: 35: unsigned char *restrict d = dst;
+                                    104 ;	genCast
+                                    105 ;	genCopy
+      00000E BD 0A 01         [ 5]  106 	lda	0x10a,x
+      000011 9D 08 01         [ 5]  107 	sta	0x108,x
+      000014 BD 09 01         [ 5]  108 	lda	0x109,x
+      000017 9D 07 01         [ 5]  109 	sta	0x107,x
+                                    110 ;	Raw cost for generated ic 3 : (12, 18.000000) count=1.000000
+                                    111 ;	../qsort.c: 36: unsigned char *restrict s = src;
+                                    112 ;	genCast
+                                    113 ;	genCopy
+      00001A BD 0E 01         [ 5]  114 	lda	0x10e,x
+      00001D 9D 06 01         [ 5]  115 	sta	0x106,x
+      000020 BD 0D 01         [ 5]  116 	lda	0x10d,x
+      000023 9D 05 01         [ 5]  117 	sta	0x105,x
+                                    118 ;	Raw cost for generated ic 5 : (12, 18.000000) count=1.000000
+                                    119 ;	../qsort.c: 38: while(n--)
+                                    120 ;	genAssign
+                                    121 ;	genCopy
+      000026 BD 10 01         [ 5]  122 	lda	0x110,x
+      000029 9D 04 01         [ 5]  123 	sta	0x104,x
+      00002C BD 0F 01         [ 5]  124 	lda	0x10f,x
+      00002F 9D 03 01         [ 5]  125 	sta	0x103,x
+                                    126 ;	Raw cost for generated ic 39 : (12, 18.000000) count=1.000000
+                                    127 ;	genLabel
+      000032                        128 00101$:
+                                    129 ;	Raw cost for generated ic 7 : (0, 0.000000) count=3.999997
+                                    130 ;	genAssign
+                                    131 ;	genCopy
+      000032 BA               [ 2]  132 	tsx
+      000033 BD 04 01         [ 5]  133 	lda	0x104,x
+      000036 9D 02 01         [ 5]  134 	sta	0x102,x
+                                    135 ;	Raw cost for generated ic 8 : (13, 20.000000) count=3.999997
+                                    136 ;	genMinus
+                                    137 ;	  genMinusDec - size=2  icount=1
+      000039 BD 03 01         [ 5]  138 	lda	0x103,x
+      00003C 9D 01 01         [ 5]  139 	sta	0x101,x
+      00003F 38               [ 2]  140 	sec
+      000040 E9 01            [ 2]  141 	sbc	#0x01
+      000042 9D 03 01         [ 5]  142 	sta	0x103,x
+      000045 BD 04 01         [ 5]  143 	lda	0x104,x
+      000048 E9 00            [ 2]  144 	sbc	#0x00
+      00004A 9D 04 01         [ 5]  145 	sta	0x104,x
+                                    146 ;	Raw cost for generated ic 9 : (17, 24.000000) count=3.999997
+                                    147 ;	genIfx
+      00004D BD 02 01         [ 5]  148 	lda	0x102,x
+      000050 1D 01 01         [ 5]  149 	ora	0x101,x
+                                    150 ;	genIfxJump : z
+      000053 F0 69            [ 4]  151 	beq	00104$
+                                    152 ;	Raw cost for generated ic 11 : (11, 13.600000) count=3.999997
+                                    153 ;	../qsort.c: 40: unsigned char tmp = *d;
+                                    154 ;	genPointerGet
+                                    155 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000055 BD 07 01         [ 5]  156 	lda	0x107,x
+      000058 85*00            [ 3]  157 	sta	*(DPTR+0)
+      00005A BD 08 01         [ 5]  158 	lda	0x108,x
+      00005D 85*01            [ 3]  159 	sta	*(DPTR+1)
+      00005F A0 00            [ 2]  160 	ldy	#0x00
+      000061 B1*00            [ 6]  161 	lda	[DPTR],y
+                                    162 ;	Raw cost for generated ic 15 : (14, 21.000000) count=2.999997
+                                    163 ;	../qsort.c: 41: *d = *s;
+                                    164 ;	genPointerGet
+      000063 85*00            [ 3]  165 	sta	*(REGTEMP+0)
+                                    166 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000065 BD 05 01         [ 5]  167 	lda	0x105,x
+      000068 85*00            [ 3]  168 	sta	*(DPTR+0)
+      00006A BD 06 01         [ 5]  169 	lda	0x106,x
+      00006D 85*01            [ 3]  170 	sta	*(DPTR+1)
+      00006F B1*00            [ 6]  171 	lda	[DPTR],y
+      000071 A8               [ 2]  172 	tay
+                                    173 ;	Raw cost for generated ic 19 : (17, 27.000000) count=2.999997
+                                    174 ;	genPointerSet
+      000072 A5*00            [ 3]  175 	lda	*(REGTEMP+0)
+      000074 84*01            [ 3]  176 	sty	*(REGTEMP+1)
+                                    177 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000076 BD 07 01         [ 5]  178 	lda	0x107,x
+      000079 85*00            [ 3]  179 	sta	*(DPTR+0)
+      00007B BD 08 01         [ 5]  180 	lda	0x108,x
+      00007E 85*01            [ 3]  181 	sta	*(DPTR+1)
+      000080 A4*01            [ 3]  182 	ldy	*(REGTEMP+1)
+      000082 98               [ 2]  183 	tya
+      000083 A0 00            [ 2]  184 	ldy	#0x00
+      000085 91*00            [ 6]  185 	sta	[DPTR],y
+      000087 A4*01            [ 3]  186 	ldy	*(REGTEMP+1)
+                                    187 ;	Raw cost for generated ic 20 : (25, 39.000000) count=2.999997
+                                    188 ;	../qsort.c: 42: *s = tmp;
+                                    189 ;	genPointerSet
+                                    190 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000089 BD 05 01         [ 5]  191 	lda	0x105,x
+      00008C 85*00            [ 3]  192 	sta	*(DPTR+0)
+      00008E BD 06 01         [ 5]  193 	lda	0x106,x
+      000091 85*01            [ 3]  194 	sta	*(DPTR+1)
+      000093 A5*00            [ 3]  195 	lda	*(REGTEMP+0)
+      000095 A0 00            [ 2]  196 	ldy	#0x00
+      000097 91*00            [ 6]  197 	sta	[DPTR],y
+                                    198 ;	Raw cost for generated ic 22 : (18, 28.000000) count=2.999997
+                                    199 ;	../qsort.c: 43: d++;
+                                    200 ;	genPlus
+                                    201 ;	  genPlusInc
+      000099 BD 07 01         [ 5]  202 	lda	0x107,x
+      00009C 18               [ 2]  203 	clc
+      00009D 69 01            [ 2]  204 	adc	#0x01
+      00009F 9D 07 01         [ 5]  205 	sta	0x107,x
+      0000A2 BD 08 01         [ 5]  206 	lda	0x108,x
+      0000A5 69 00            [ 2]  207 	adc	#0x00
+      0000A7 9D 08 01         [ 5]  208 	sta	0x108,x
+                                    209 ;	Raw cost for generated ic 24 : (17, 24.000000) count=2.999997
+                                    210 ;	../qsort.c: 44: s++;
+                                    211 ;	genPlus
+                                    212 ;	  genPlusInc
+      0000AA BD 05 01         [ 5]  213 	lda	0x105,x
+      0000AD 18               [ 2]  214 	clc
+      0000AE 69 01            [ 2]  215 	adc	#0x01
+      0000B0 9D 05 01         [ 5]  216 	sta	0x105,x
+      0000B3 BD 06 01         [ 5]  217 	lda	0x106,x
+      0000B6 69 00            [ 2]  218 	adc	#0x00
+      0000B8 9D 06 01         [ 5]  219 	sta	0x106,x
+                                    220 ;	Raw cost for generated ic 27 : (17, 24.000000) count=2.999997
+                                    221 ;	genGoto
+      0000BB 4Cr32r00         [ 3]  222 	jmp	00101$
+                                    223 ;	Raw cost for generated ic 29 : (3, 3.000000) count=2.999997
+                                    224 ;	genLabel
+      0000BE                        225 00104$:
+                                    226 ;	Raw cost for generated ic 31 : (0, 0.000000) count=0.999999
+                                    227 ;	../qsort.c: 46: }
+                                    228 ;	genEndFunction
+                                    229 ;	  adjustStack : cycles stk:46  incdec:30  adc:24
+      0000BE 86*00            [ 3]  230 	stx	*(REGTEMP+0)
+      0000C0 85*01            [ 3]  231 	sta	*(REGTEMP+1)
+      0000C2 BA               [ 2]  232 	tsx
+      0000C3 8A               [ 2]  233 	txa
+      0000C4 18               [ 2]  234 	clc
+      0000C5 69 0A            [ 2]  235 	adc	#0x0a
+      0000C7 AA               [ 2]  236 	tax
+      0000C8 9A               [ 2]  237 	txs
+      0000C9 A5*01            [ 3]  238 	lda	*(REGTEMP+1)
+      0000CB A6*00            [ 3]  239 	ldx	*(REGTEMP+0)
+      0000CD 60               [ 6]  240 	rts
+                                    241 ;	Raw cost for generated ic 32 : (16, 30.000000) count=0.999999
+                                    242 ;------------------------------------------------------------
+                                    243 ;Allocation info for local variables in function 'qsort'
+                                    244 ;------------------------------------------------------------
+                                    245 ;nmemb         Allocated to stack - sp +21 +2 
+                                    246 ;size          Allocated to stack - sp +23 +2 
+                                    247 ;compar        Allocated to stack - sp +25 +2 
+                                    248 ;base          Allocated to stack - sp +17 +2 
+                                    249 ;b             Allocated to stack - sp +15 +2 
+                                    250 ;i             Allocated to stack - sp +13 +2 
+                                    251 ;j             Allocated to stack - sp +11 +2 
+                                    252 ;sloc0         Allocated to stack - sp +9 +2 
+                                    253 ;sloc1         Allocated to stack - sp +7 +2 
+                                    254 ;sloc2         Allocated to stack - sp +5 +2 
+                                    255 ;sloc3         Allocated to stack - sp +3 +2 
+                                    256 ;sloc4         Allocated to stack - sp +1 +2 
+                                    257 ;------------------------------------------------------------
+                                    258 ;	../qsort.c: 48: void qsort(void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *) __reentrant)
+                                    259 ;	genLabel
+                                    260 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    261 ;	-----------------------------------------
+                                    262 ;	 function qsort
+                                    263 ;	-----------------------------------------
+                                    264 ;	Register assignment is optimal.
+                                    265 ;	Stack space usage: 18 bytes.
+      0000CE                        266 _qsort:
+                                    267 ;	genReceive: size=2
+                                    268 ;	pushreg: ofs=1
+      0000CE 85*00            [ 3]  269 	sta	*(REGTEMP+0)
+      0000D0 8A               [ 2]  270 	txa
+      0000D1 48               [ 3]  271 	pha
+      0000D2 A5*00            [ 3]  272 	lda	*(REGTEMP+0)
+                                    273 ;	pushreg: ofs=0
+      0000D4 48               [ 3]  274 	pha
+                                    275 ;	  adjustStack : cycles stk:48  incdec:36  adc:12
+      0000D5 BA               [ 2]  276 	tsx
+      0000D6 8A               [ 2]  277 	txa
+      0000D7 18               [ 2]  278 	clc
+      0000D8 69 F0            [ 2]  279 	adc	#0xf0
+      0000DA AA               [ 2]  280 	tax
+      0000DB 9A               [ 2]  281 	txs
+                                    282 ;	Raw cost for generated ic 1 : (14, 26.000000) count=1.000000
+                                    283 ;	skipping generated iCode
+                                    284 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    285 ;	../qsort.c: 50: unsigned char *b = base;
+                                    286 ;	genCast
+                                    287 ;	genCopy
+      0000DC BD 12 01         [ 5]  288 	lda	0x112,x
+      0000DF 9D 0A 01         [ 5]  289 	sta	0x10a,x
+      0000E2 BD 11 01         [ 5]  290 	lda	0x111,x
+      0000E5 9D 09 01         [ 5]  291 	sta	0x109,x
+                                    292 ;	Raw cost for generated ic 3 : (12, 18.000000) count=1.000000
+                                    293 ;	genAssign
+                                    294 ;	genCopy
+      0000E8 BD 0A 01         [ 5]  295 	lda	0x10a,x
+      0000EB 9D 10 01         [ 5]  296 	sta	0x110,x
+      0000EE BD 09 01         [ 5]  297 	lda	0x109,x
+      0000F1 9D 0F 01         [ 5]  298 	sta	0x10f,x
+                                    299 ;	Raw cost for generated ic 4 : (12, 18.000000) count=1.000000
+                                    300 ;	../qsort.c: 52: if(nmemb <= 1)
+                                    301 ;	genCmp
+      0000F4 A9 01            [ 2]  302 	lda	#0x01
+      0000F6 38               [ 2]  303 	sec
+      0000F7 FD 15 01         [ 5]  304 	sbc	0x115,x
+      0000FA A9 00            [ 2]  305 	lda	#0x00
+      0000FC FD 16 01         [ 5]  306 	sbc	0x116,x
+      0000FF 90 03            [ 4]  307 	bcc	00102$
+                                    308 ;	Raw cost for generated ic 5 : (16, 19.600000) count=1.000000
+                                    309 ;	skipping generated iCode
+                                    310 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    311 ;	../qsort.c: 53: return;
+                                    312 ;	genRet
+      000101 4Cr35r02         [ 3]  313 	jmp	00112$
+                                    314 ;	Raw cost for generated ic 9 : (3, 3.000000) count=0.750000
+                                    315 ;	genLabel
+      000104                        316 00102$:
+                                    317 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    318 ;	../qsort.c: 55: for(unsigned char *i = base; i < b + nmemb * size; i += size)
+                                    319 ;	genAssign
+                                    320 ;	genCopy
+      000104 BA               [ 2]  321 	tsx
+      000105 BD 0A 01         [ 5]  322 	lda	0x10a,x
+      000108 9D 0E 01         [ 5]  323 	sta	0x10e,x
+      00010B BD 09 01         [ 5]  324 	lda	0x109,x
+      00010E 9D 0D 01         [ 5]  325 	sta	0x10d,x
+                                    326 ;	Raw cost for generated ic 12 : (13, 20.000000) count=1.000000
+                                    327 ;	genAssign
+                                    328 ;	genCopy
+      000111 BD 18 01         [ 5]  329 	lda	0x118,x
+      000114 9D 0A 01         [ 5]  330 	sta	0x10a,x
+      000117 BD 17 01         [ 5]  331 	lda	0x117,x
+      00011A 9D 09 01         [ 5]  332 	sta	0x109,x
+                                    333 ;	Raw cost for generated ic 26 : (12, 18.000000) count=1.000000
+                                    334 ;	genIpush
+      00011D BD 0A 01         [ 5]  335 	lda	0x10a,x
+      000120 48               [ 3]  336 	pha
+      000121 BD 09 01         [ 5]  337 	lda	0x109,x
+      000124 48               [ 3]  338 	pha
+                                    339 ;	Raw cost for generated ic 66 : (8, 14.000000) count=1.000000
+                                    340 ;	Raw cost for generated ic 67 : (0, 0.000000) count=1.000000
+                                    341 ;	genCall
+                                    342 ;	genSend
+      000125 BD 15 01         [ 5]  343 	lda	0x115,x
+      000128 A8               [ 2]  344 	tay
+      000129 BD 16 01         [ 5]  345 	lda	0x116,x
+      00012C AA               [ 2]  346 	tax
+      00012D 98               [ 2]  347 	tya
+      00012E 20r00r00         [ 6]  348 	jsr	__mulint
+                                    349 ;	assignResultValue
+                                    350 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000131 85*00            [ 3]  351 	sta	*(REGTEMP+0)
+      000133 68               [ 4]  352 	pla
+      000134 68               [ 4]  353 	pla
+      000135 A5*00            [ 3]  354 	lda	*(REGTEMP+0)
+                                    355 ;	Raw cost for generated ic 68 : (18, 34.000000) count=1.000000
+                                    356 ;	genPlus
+      000137 86*00            [ 3]  357 	stx	*(REGTEMP+0)
+      000139 18               [ 2]  358 	clc
+      00013A BA               [ 2]  359 	tsx
+      00013B 7D 0F 01         [ 5]  360 	adc	0x10f,x
+      00013E 9D 07 01         [ 5]  361 	sta	0x107,x
+      000141 A5*00            [ 3]  362 	lda	*(REGTEMP+0)
+      000143 7D 10 01         [ 5]  363 	adc	0x110,x
+      000146 9D 08 01         [ 5]  364 	sta	0x108,x
+                                    365 ;	Raw cost for generated ic 15 : (18, 28.000000) count=1.000000
+                                    366 ;	genLabel
+      000149                        367 00110$:
+                                    368 ;	Raw cost for generated ic 13 : (0, 0.000000) count=3.999196
+                                    369 ;	genCmp
+      000149 BA               [ 2]  370 	tsx
+      00014A BD 0D 01         [ 5]  371 	lda	0x10d,x
+      00014D 38               [ 2]  372 	sec
+      00014E FD 07 01         [ 5]  373 	sbc	0x107,x
+      000151 BD 0E 01         [ 5]  374 	lda	0x10e,x
+      000154 FD 08 01         [ 5]  375 	sbc	0x108,x
+      000157 90 03            [ 4]  376 	bcc	00151$
+      000159 4Cr35r02         [ 3]  377 	jmp	00112$
+      00015C                        378 00151$:
+                                    379 ;	Raw cost for generated ic 16 : (19, 25.600000) count=3.999196
+                                    380 ;	skipping generated iCode
+                                    381 ;	Raw cost for generated ic 17 : (0, 0.000000) count=3.999196
+                                    382 ;	../qsort.c: 57: for(unsigned char *j = i; (j > b) && (*compar)(j, j - size) < 0; j -= size)
+                                    383 ;	genAssign
+                                    384 ;	genCopy
+      00015C BD 0E 01         [ 5]  385 	lda	0x10e,x
+      00015F 9D 0C 01         [ 5]  386 	sta	0x10c,x
+      000162 BD 0D 01         [ 5]  387 	lda	0x10d,x
+      000165 9D 0B 01         [ 5]  388 	sta	0x10b,x
+                                    389 ;	Raw cost for generated ic 20 : (12, 18.000000) count=2.999397
+                                    390 ;	genLabel
+      000168                        391 00107$:
+                                    392 ;	Raw cost for generated ic 21 : (0, 0.000000) count=6.855505
+                                    393 ;	genCmp
+      000168 BA               [ 2]  394 	tsx
+      000169 BD 0F 01         [ 5]  395 	lda	0x10f,x
+      00016C 38               [ 2]  396 	sec
+      00016D FD 0B 01         [ 5]  397 	sbc	0x10b,x
+      000170 BD 10 01         [ 5]  398 	lda	0x110,x
+      000173 FD 0C 01         [ 5]  399 	sbc	0x10c,x
+      000176 90 03            [ 4]  400 	bcc	00152$
+      000178 4Cr1Er02         [ 3]  401 	jmp	00111$
+      00017B                        402 00152$:
+                                    403 ;	Raw cost for generated ic 22 : (19, 25.600000) count=6.855505
+                                    404 ;	skipping generated iCode
+                                    405 ;	Raw cost for generated ic 23 : (0, 0.000000) count=6.855505
+                                    406 ;	genMinus
+      00017B BD 0B 01         [ 5]  407 	lda	0x10b,x
+      00017E 38               [ 2]  408 	sec
+      00017F FD 09 01         [ 5]  409 	sbc	0x109,x
+      000182 9D 05 01         [ 5]  410 	sta	0x105,x
+      000185 BD 0C 01         [ 5]  411 	lda	0x10c,x
+      000188 FD 0A 01         [ 5]  412 	sbc	0x10a,x
+      00018B 9D 06 01         [ 5]  413 	sta	0x106,x
+                                    414 ;	Raw cost for generated ic 27 : (19, 28.000000) count=5.141629
+                                    415 ;	genCast
+                                    416 ;	genCopy
+      00018E 9D 04 01         [ 5]  417 	sta	0x104,x
+      000191 BD 05 01         [ 5]  418 	lda	0x105,x
+      000194 9D 03 01         [ 5]  419 	sta	0x103,x
+                                    420 ;	Raw cost for generated ic 28 : (9, 14.000000) count=5.141629
+                                    421 ;	genCast
+                                    422 ;	genCopy
+      000197 BD 0C 01         [ 5]  423 	lda	0x10c,x
+      00019A 9D 02 01         [ 5]  424 	sta	0x102,x
+      00019D BD 0B 01         [ 5]  425 	lda	0x10b,x
+      0001A0 9D 01 01         [ 5]  426 	sta	0x101,x
+                                    427 ;	Raw cost for generated ic 29 : (12, 18.000000) count=5.141629
+                                    428 ;	genIpush
+      0001A3 BD 04 01         [ 5]  429 	lda	0x104,x
+      0001A6 48               [ 3]  430 	pha
+      0001A7 BD 03 01         [ 5]  431 	lda	0x103,x
+      0001AA 48               [ 3]  432 	pha
+                                    433 ;	Raw cost for generated ic 30 : (8, 14.000000) count=5.141629
+                                    434 ;	Raw cost for generated ic 31 : (0, 0.000000) count=5.141629
+                                    435 ;	genPcall
+      0001AB BD 19 01         [ 5]  436 	lda	0x119,x
+      0001AE 85*00            [ 3]  437 	sta	*(REGTEMP+0)
+      0001B0 BD 1A 01         [ 5]  438 	lda	0x11a,x
+      0001B3 85*01            [ 3]  439 	sta	*(REGTEMP+1)
+                                    440 ;	genSend
+      0001B5 BD 01 01         [ 5]  441 	lda	0x101,x
+      0001B8 A8               [ 2]  442 	tay
+      0001B9 BD 02 01         [ 5]  443 	lda	0x102,x
+      0001BC AA               [ 2]  444 	tax
+      0001BD 98               [ 2]  445 	tya
+      0001BE 20r00r00         [ 6]  446 	jsr	__sdcc_indirect_jsr
+                                    447 ;	assignResultValue
+                                    448 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      0001C1 85*00            [ 3]  449 	sta	*(REGTEMP+0)
+      0001C3 68               [ 4]  450 	pla
+      0001C4 68               [ 4]  451 	pla
+                                    452 ;	Raw cost for generated ic 32 : (28, 48.000000) count=5.141629
+                                    453 ;	genCmp
+      0001C5 8A               [ 2]  454 	txa
+      0001C6 38               [ 2]  455 	sec
+      0001C7 E9 00            [ 2]  456 	sbc	#0x00
+      0001C9 50 04            [ 4]  457 	bvc	00154$
+      0001CB 10 04            [ 4]  458 	bpl	00153$
+      0001CD 30 4F            [ 4]  459 	bmi	00111$
+      0001CF                        460 00154$:
+      0001CF 10 4D            [ 4]  461 	bpl	00111$
+      0001D1                        462 00153$:
+                                    463 ;	Raw cost for generated ic 33 : (15, 19.400002) count=5.141629
+                                    464 ;	skipping generated iCode
+                                    465 ;	Raw cost for generated ic 34 : (0, 0.000000) count=5.141629
+                                    466 ;	../qsort.c: 58: swap(j, j - size, size);
+                                    467 ;	genCast
+                                    468 ;	genCopy
+      0001D1 BA               [ 2]  469 	tsx
+      0001D2 BD 06 01         [ 5]  470 	lda	0x106,x
+      0001D5 9D 02 01         [ 5]  471 	sta	0x102,x
+      0001D8 BD 05 01         [ 5]  472 	lda	0x105,x
+      0001DB 9D 01 01         [ 5]  473 	sta	0x101,x
+                                    474 ;	Raw cost for generated ic 39 : (13, 20.000000) count=3.856222
+                                    475 ;	genCast
+                                    476 ;	genCopy
+      0001DE BD 0C 01         [ 5]  477 	lda	0x10c,x
+      0001E1 9D 04 01         [ 5]  478 	sta	0x104,x
+      0001E4 BD 0B 01         [ 5]  479 	lda	0x10b,x
+      0001E7 9D 03 01         [ 5]  480 	sta	0x103,x
+                                    481 ;	Raw cost for generated ic 40 : (12, 18.000000) count=3.856222
+                                    482 ;	genIpush
+      0001EA BD 0A 01         [ 5]  483 	lda	0x10a,x
+      0001ED 48               [ 3]  484 	pha
+      0001EE BD 09 01         [ 5]  485 	lda	0x109,x
+      0001F1 48               [ 3]  486 	pha
+                                    487 ;	Raw cost for generated ic 41 : (8, 14.000000) count=3.856222
+                                    488 ;	genIpush
+      0001F2 BD 02 01         [ 5]  489 	lda	0x102,x
+      0001F5 48               [ 3]  490 	pha
+      0001F6 BD 01 01         [ 5]  491 	lda	0x101,x
+      0001F9 48               [ 3]  492 	pha
+                                    493 ;	Raw cost for generated ic 42 : (8, 14.000000) count=3.856222
+                                    494 ;	Raw cost for generated ic 43 : (0, 0.000000) count=3.856222
+                                    495 ;	genCall
+                                    496 ;	genSend
+      0001FA BD 03 01         [ 5]  497 	lda	0x103,x
+      0001FD A8               [ 2]  498 	tay
+      0001FE BD 04 01         [ 5]  499 	lda	0x104,x
+      000201 AA               [ 2]  500 	tax
+      000202 98               [ 2]  501 	tya
+      000203 20r00r00         [ 6]  502 	jsr	_swap
+                                    503 ;	  adjustStack : cycles stk:22  incdec:18  adc:24
+      000206 86*00            [ 3]  504 	stx	*(REGTEMP+0)
+      000208 BA               [ 2]  505 	tsx
+      000209 E8               [ 2]  506 	inx
+      00020A E8               [ 2]  507 	inx
+      00020B E8               [ 2]  508 	inx
+      00020C E8               [ 2]  509 	inx
+      00020D 9A               [ 2]  510 	txs
+                                    511 ;	Raw cost for generated ic 44 : (22, 38.000000) count=3.856222
+                                    512 ;	../qsort.c: 57: for(unsigned char *j = i; (j > b) && (*compar)(j, j - size) < 0; j -= size)
+                                    513 ;	genAssign
+                                    514 ;	genCopy
+      00020E BA               [ 2]  515 	tsx
+      00020F BD 06 01         [ 5]  516 	lda	0x106,x
+      000212 9D 0C 01         [ 5]  517 	sta	0x10c,x
+      000215 BD 05 01         [ 5]  518 	lda	0x105,x
+      000218 9D 0B 01         [ 5]  519 	sta	0x10b,x
+                                    520 ;	Raw cost for generated ic 47 : (13, 20.000000) count=3.856222
+                                    521 ;	genGoto
+      00021B 4Cr68r01         [ 3]  522 	jmp	00107$
+                                    523 ;	Raw cost for generated ic 49 : (3, 3.000000) count=3.856222
+                                    524 ;	genLabel
+      00021E                        525 00111$:
+                                    526 ;	Raw cost for generated ic 51 : (0, 0.000000) count=2.999284
+                                    527 ;	../qsort.c: 55: for(unsigned char *i = base; i < b + nmemb * size; i += size)
+                                    528 ;	genPlus
+      00021E BA               [ 2]  529 	tsx
+      00021F BD 0D 01         [ 5]  530 	lda	0x10d,x
+      000222 18               [ 2]  531 	clc
+      000223 7D 09 01         [ 5]  532 	adc	0x109,x
+      000226 9D 0D 01         [ 5]  533 	sta	0x10d,x
+      000229 BD 0E 01         [ 5]  534 	lda	0x10e,x
+      00022C 7D 0A 01         [ 5]  535 	adc	0x10a,x
+      00022F 9D 0E 01         [ 5]  536 	sta	0x10e,x
+                                    537 ;	Raw cost for generated ic 52 : (20, 30.000000) count=2.999284
+                                    538 ;	genGoto
+      000232 4Cr49r01         [ 3]  539 	jmp	00110$
+                                    540 ;	Raw cost for generated ic 54 : (3, 3.000000) count=2.999284
+                                    541 ;	genLabel
+      000235                        542 00112$:
+                                    543 ;	Raw cost for generated ic 56 : (0, 0.000000) count=0.999799
+                                    544 ;	../qsort.c: 60: }
+                                    545 ;	genEndFunction
+                                    546 ;	  adjustStack : cycles stk:78  incdec:46  adc:24
+      000235 86*00            [ 3]  547 	stx	*(REGTEMP+0)
+      000237 85*01            [ 3]  548 	sta	*(REGTEMP+1)
+      000239 BA               [ 2]  549 	tsx
+      00023A 8A               [ 2]  550 	txa
+      00023B 18               [ 2]  551 	clc
+      00023C 69 12            [ 2]  552 	adc	#0x12
+      00023E AA               [ 2]  553 	tax
+      00023F 9A               [ 2]  554 	txs
+      000240 A5*01            [ 3]  555 	lda	*(REGTEMP+1)
+      000242 A6*00            [ 3]  556 	ldx	*(REGTEMP+0)
+      000244 60               [ 6]  557 	rts
+                                    558 ;	Raw cost for generated ic 57 : (16, 30.000000) count=0.999799
+                                    559 	.area CODE
+                                    560 	.area RODATA
+                                    561 	.area XINIT
+                                    562 	.area CABS    (ABS)

@@ -1,0 +1,92 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _mulint.s - routine for multiplication of 16 bit (unsigned) int
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module _mulint
+                                     30 
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl __mulint_PARM_2
+                                     35 	.globl __mulint
+                                     36 
+                                     37 ;--------------------------------------------------------
+                                     38 ; overlayable function parameters in zero page
+                                     39 ;--------------------------------------------------------
+                                     40 	.area	OSEG    (PAG, OVR)
+      000000                         41 __mulint_PARM_2:
+      000000                         42 	.ds 2
+                                     43 
+                                     44 ;--------------------------------------------------------
+                                     45 ; local aliases
+                                     46 ;--------------------------------------------------------
+                                     47 	.define res0 "___SDCC_m6502_ret0"
+                                     48 	.define res1 "___SDCC_m6502_ret1"
+                                     49 	.define P1   "___SDCC_m6502_ret2"
+                                     50 	
+                                     51 ;--------------------------------------------------------
+                                     52 ; code
+                                     53 ;--------------------------------------------------------
+                                     54 	.area CODE
+                                     55 
+      000000                         56 __mulint:
+      000000 49 FF            [ 2]   57 	eor #0xff	; invert P1 to avoid clc in the add loops
+      000002 85*00            [ 3]   58 	sta *P1+0
+      000004 8A               [ 2]   59 	txa
+      000005 49 FF            [ 2]   60 	eor #0xff
+      000007 85*01            [ 3]   61 	sta *P1+1
+                                     62 
+      000009 A9 00            [ 2]   63 	lda #0x00	; set result to 0
+      00000B 85*00            [ 3]   64 	sta *res0
+                                     65 
+      00000D A0 08            [ 2]   66 	ldy #0x08	; first 8 bits
+      00000F                         67 loop1:
+      00000F 46*00            [ 5]   68 	lsr *P1+0
+      000011 B0 0A            [ 4]   69 	bcs skip1	; add if necessary
+      000013 AA               [ 2]   70 	tax
+      000014 A5*00            [ 3]   71 	lda *res0
+      000016 65*00            [ 3]   72 	adc *__mulint_PARM_2+0
+      000018 85*00            [ 3]   73 	sta *res0
+      00001A 8A               [ 2]   74 	txa
+      00001B 65*01            [ 3]   75 	adc *__mulint_PARM_2+1
+      00001D                         76 skip1:
+      00001D 06*00            [ 5]   77 	asl *__mulint_PARM_2+0 ; shift P2
+      00001F 26*01            [ 5]   78 	rol *__mulint_PARM_2+1
+      000021 88               [ 2]   79 	dey
+      000022 D0 EB            [ 4]   80 	bne loop1
+                                     81 
+      000024                         82 loop2:
+      000024 46*01            [ 5]   83 	lsr *P1+1
+      000026 B0 02            [ 4]   84 	bcs skip2
+      000028 65*01            [ 3]   85 	adc *__mulint_PARM_2+1
+      00002A                         86 skip2:
+      00002A 06*01            [ 5]   87 	asl *__mulint_PARM_2+1
+      00002C D0 F6            [ 4]   88 	bne loop2	; second loop ends when P2 is completely shifted out
+                                     89 
+      00002E AA               [ 2]   90 	tax
+      00002F A5*00            [ 3]   91 	lda *res0
+      000031 60               [ 6]   92 	rts

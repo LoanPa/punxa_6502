@@ -1,0 +1,262 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module strndup
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _malloc
+                                     27 	.globl ___memcpy
+                                     28 	.globl _strnlen
+                                     29 	.globl _strndup
+                                     30 ;--------------------------------------------------------
+                                     31 ; ZP ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area ZP      (PAG)
+                                     34 ;--------------------------------------------------------
+                                     35 ; overlayable items in ram
+                                     36 ;--------------------------------------------------------
+                                     37 ;--------------------------------------------------------
+                                     38 ; uninitialized external ram data
+                                     39 ;--------------------------------------------------------
+                                     40 	.area BSS
+                                     41 ;--------------------------------------------------------
+                                     42 ; absolute external ram data
+                                     43 ;--------------------------------------------------------
+                                     44 	.area DABS    (ABS)
+                                     45 ;--------------------------------------------------------
+                                     46 ; initialized external ram data
+                                     47 ;--------------------------------------------------------
+                                     48 	.area DATA
+                                     49 ;--------------------------------------------------------
+                                     50 ; global & static initialisations
+                                     51 ;--------------------------------------------------------
+                                     52 	.area _CODE
+                                     53 	.area GSINIT
+                                     54 	.area GSFINAL
+                                     55 	.area GSINIT
+                                     56 ;--------------------------------------------------------
+                                     57 ; Home
+                                     58 ;--------------------------------------------------------
+                                     59 	.area _CODE
+                                     60 	.area _CODE
+                                     61 ;--------------------------------------------------------
+                                     62 ; code
+                                     63 ;--------------------------------------------------------
+                                     64 	.area CODE
+                                     65 ;------------------------------------------------------------
+                                     66 ;Allocation info for local variables in function 'strndup'
+                                     67 ;------------------------------------------------------------
+                                     68 ;n             Allocated to stack - sp +13 +2 
+                                     69 ;s             Allocated to stack - sp +9 +2 
+                                     70 ;l             Allocated to stack - sp +7 +2 
+                                     71 ;r             Allocated to stack - sp +5 +2 
+                                     72 ;sloc0         Allocated to stack - sp +3 +2 
+                                     73 ;sloc1         Allocated to stack - sp +1 +2 
+                                     74 ;------------------------------------------------------------
+                                     75 ;	../strndup.c: 33: char *strndup (const char *s, size_t n)
+                                     76 ;	genLabel
+                                     77 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     78 ;	-----------------------------------------
+                                     79 ;	 function strndup
+                                     80 ;	-----------------------------------------
+                                     81 ;	Register assignment is optimal.
+                                     82 ;	Stack space usage: 10 bytes.
+      000000                         83 _strndup:
+                                     84 ;	genReceive: size=2
+                                     85 ;	pushreg: ofs=1
+      000000 85*00            [ 3]   86 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   87 	txa
+      000003 48               [ 3]   88 	pha
+      000004 A5*00            [ 3]   89 	lda	*(REGTEMP+0)
+                                     90 ;	pushreg: ofs=0
+      000006 48               [ 3]   91 	pha
+                                     92 ;	  adjustStack : cycles stk:24  incdec:20  adc:12
+      000007 BA               [ 2]   93 	tsx
+      000008 8A               [ 2]   94 	txa
+      000009 18               [ 2]   95 	clc
+      00000A 69 F8            [ 2]   96 	adc	#0xf8
+      00000C AA               [ 2]   97 	tax
+      00000D 9A               [ 2]   98 	txs
+                                     99 ;	Raw cost for generated ic 1 : (14, 26.000000) count=1.000000
+                                    100 ;	skipping generated iCode
+                                    101 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    102 ;	../strndup.c: 35: size_t l = strnlen (s, n);
+                                    103 ;	genIpush
+      00000E BD 0E 01         [ 5]  104 	lda	0x10e,x
+      000011 48               [ 3]  105 	pha
+      000012 BD 0D 01         [ 5]  106 	lda	0x10d,x
+      000015 48               [ 3]  107 	pha
+                                    108 ;	Raw cost for generated ic 3 : (8, 14.000000) count=1.000000
+                                    109 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    110 ;	genCall
+                                    111 ;	genSend
+      000016 BD 09 01         [ 5]  112 	lda	0x109,x
+      000019 A8               [ 2]  113 	tay
+      00001A BD 0A 01         [ 5]  114 	lda	0x10a,x
+      00001D AA               [ 2]  115 	tax
+      00001E 98               [ 2]  116 	tya
+      00001F 20r00r00         [ 6]  117 	jsr	_strnlen
+                                    118 ;	assignResultValue
+      000022 86*00            [ 3]  119 	stx	*(REGTEMP+0)
+      000024 BA               [ 2]  120 	tsx
+      000025 9D 09 01         [ 5]  121 	sta	0x109,x
+      000028 A5*00            [ 3]  122 	lda	*(REGTEMP+0)
+      00002A 9D 0A 01         [ 5]  123 	sta	0x10a,x
+                                    124 ;	  adjustStack : cycles stk:8  incdec:6  adc:10
+      00002D E8               [ 2]  125 	inx
+      00002E E8               [ 2]  126 	inx
+      00002F 9A               [ 2]  127 	txs
+                                    128 ;	Raw cost for generated ic 5 : (26, 44.000000) count=1.000000
+                                    129 ;	../strndup.c: 36: char *r = malloc (l + 1);
+                                    130 ;	genPlus
+                                    131 ;	  genPlusInc
+      000030 BD 07 01         [ 5]  132 	lda	0x107,x
+      000033 A8               [ 2]  133 	tay
+      000034 BD 08 01         [ 5]  134 	lda	0x108,x
+      000037 AA               [ 2]  135 	tax
+      000038 98               [ 2]  136 	tya
+      000039 18               [ 2]  137 	clc
+      00003A 69 01            [ 2]  138 	adc	#0x01
+      00003C 90 01            [ 4]  139 	bcc	00111$
+      00003E E8               [ 2]  140 	inx
+      00003F                        141 00111$:
+                                    142 ;	Raw cost for generated ic 7 : (15, 22.600000) count=1.000000
+                                    143 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    144 ;	genCall
+                                    145 ;	genSend
+      00003F 20r00r00         [ 6]  146 	jsr	_malloc
+                                    147 ;	assignResultValue
+      000042 86*00            [ 3]  148 	stx	*(REGTEMP+0)
+      000044 BA               [ 2]  149 	tsx
+      000045 9D 03 01         [ 5]  150 	sta	0x103,x
+      000048 A5*00            [ 3]  151 	lda	*(REGTEMP+0)
+      00004A 9D 04 01         [ 5]  152 	sta	0x104,x
+                                    153 ;	Raw cost for generated ic 9 : (14, 24.000000) count=1.000000
+                                    154 ;	genCast
+                                    155 ;	genCopy
+      00004D 9D 06 01         [ 5]  156 	sta	0x106,x
+      000050 BD 03 01         [ 5]  157 	lda	0x103,x
+      000053 9D 05 01         [ 5]  158 	sta	0x105,x
+                                    159 ;	Raw cost for generated ic 10 : (9, 14.000000) count=1.000000
+                                    160 ;	../strndup.c: 37: if (r)
+                                    161 ;	genIfx
+      000056 BD 06 01         [ 5]  162 	lda	0x106,x
+      000059 1D 05 01         [ 5]  163 	ora	0x105,x
+                                    164 ;	genIfxJump : z
+      00005C F0 56            [ 4]  165 	beq	00102$
+                                    166 ;	Raw cost for generated ic 12 : (11, 13.600000) count=1.000000
+                                    167 ;	../strndup.c: 39: memcpy (r, s, l);
+                                    168 ;	genCast
+                                    169 ;	genCopy
+      00005E BD 0A 01         [ 5]  170 	lda	0x10a,x
+      000061 9D 04 01         [ 5]  171 	sta	0x104,x
+      000064 BD 09 01         [ 5]  172 	lda	0x109,x
+      000067 9D 03 01         [ 5]  173 	sta	0x103,x
+                                    174 ;	Raw cost for generated ic 15 : (12, 18.000000) count=0.750000
+                                    175 ;	genCast
+                                    176 ;	genCopy
+      00006A BD 06 01         [ 5]  177 	lda	0x106,x
+      00006D 9D 02 01         [ 5]  178 	sta	0x102,x
+      000070 BD 05 01         [ 5]  179 	lda	0x105,x
+      000073 9D 01 01         [ 5]  180 	sta	0x101,x
+                                    181 ;	Raw cost for generated ic 16 : (12, 18.000000) count=0.750000
+                                    182 ;	genIpush
+      000076 BD 08 01         [ 5]  183 	lda	0x108,x
+      000079 48               [ 3]  184 	pha
+      00007A BD 07 01         [ 5]  185 	lda	0x107,x
+      00007D 48               [ 3]  186 	pha
+                                    187 ;	Raw cost for generated ic 17 : (8, 14.000000) count=0.750000
+                                    188 ;	genIpush
+      00007E BD 04 01         [ 5]  189 	lda	0x104,x
+      000081 48               [ 3]  190 	pha
+      000082 BD 03 01         [ 5]  191 	lda	0x103,x
+      000085 48               [ 3]  192 	pha
+                                    193 ;	Raw cost for generated ic 18 : (8, 14.000000) count=0.750000
+                                    194 ;	Raw cost for generated ic 19 : (0, 0.000000) count=0.750000
+                                    195 ;	genCall
+                                    196 ;	genSend
+      000086 BD 01 01         [ 5]  197 	lda	0x101,x
+      000089 A8               [ 2]  198 	tay
+      00008A BD 02 01         [ 5]  199 	lda	0x102,x
+      00008D AA               [ 2]  200 	tax
+      00008E 98               [ 2]  201 	tya
+      00008F 20r00r00         [ 6]  202 	jsr	___memcpy
+                                    203 ;	  adjustStack : cycles stk:22  incdec:18  adc:24
+      000092 86*00            [ 3]  204 	stx	*(REGTEMP+0)
+      000094 BA               [ 2]  205 	tsx
+      000095 E8               [ 2]  206 	inx
+      000096 E8               [ 2]  207 	inx
+      000097 E8               [ 2]  208 	inx
+      000098 E8               [ 2]  209 	inx
+      000099 9A               [ 2]  210 	txs
+                                    211 ;	Raw cost for generated ic 20 : (22, 38.000000) count=0.750000
+                                    212 ;	../strndup.c: 40: r[l] = 0;
+                                    213 ;	genPlus
+      00009A BA               [ 2]  214 	tsx
+      00009B BD 05 01         [ 5]  215 	lda	0x105,x
+      00009E 18               [ 2]  216 	clc
+      00009F 7D 07 01         [ 5]  217 	adc	0x107,x
+      0000A2 48               [ 3]  218 	pha
+      0000A3 BD 06 01         [ 5]  219 	lda	0x106,x
+      0000A6 7D 08 01         [ 5]  220 	adc	0x108,x
+      0000A9 AA               [ 2]  221 	tax
+      0000AA 68               [ 4]  222 	pla
+                                    223 ;	Raw cost for generated ic 21 : (17, 29.000000) count=0.750000
+                                    224 ;	genPointerSet
+                                    225 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0000AB 85*00            [ 3]  226 	sta	*(DPTR+0)
+      0000AD 86*01            [ 3]  227 	stx	*(DPTR+1)
+      0000AF A9 00            [ 2]  228 	lda	#0x00
+      0000B1 A8               [ 2]  229 	tay
+      0000B2 91*00            [ 6]  230 	sta	[DPTR],y
+                                    231 ;	Raw cost for generated ic 22 : (9, 16.000000) count=0.750000
+                                    232 ;	genLabel
+      0000B4                        233 00102$:
+                                    234 ;	Raw cost for generated ic 23 : (0, 0.000000) count=1.000000
+                                    235 ;	../strndup.c: 42: return (r);
+                                    236 ;	genRet
+      0000B4 BA               [ 2]  237 	tsx
+      0000B5 BD 06 01         [ 5]  238 	lda	0x106,x
+      0000B8 85*00            [ 3]  239 	sta	*(REGTEMP+0)
+      0000BA BD 05 01         [ 5]  240 	lda	0x105,x
+                                    241 ;	Raw cost for generated ic 24 : (11, 16.000000) count=1.000000
+                                    242 ;	genLabel
+                                    243 ;	Raw cost for generated ic 25 : (0, 0.000000) count=1.000000
+                                    244 ;	../strndup.c: 43: }
+                                    245 ;	genEndFunction
+                                    246 ;	  adjustStack : cycles stk:46  incdec:30  adc:24
+      0000BD A6*00            [ 3]  247 	ldx	*(REGTEMP+0)
+      0000BF 85*01            [ 3]  248 	sta	*(REGTEMP+1)
+      0000C1 BA               [ 2]  249 	tsx
+      0000C2 8A               [ 2]  250 	txa
+      0000C3 18               [ 2]  251 	clc
+      0000C4 69 0A            [ 2]  252 	adc	#0x0a
+      0000C6 AA               [ 2]  253 	tax
+      0000C7 9A               [ 2]  254 	txs
+      0000C8 A5*01            [ 3]  255 	lda	*(REGTEMP+1)
+      0000CA A6*00            [ 3]  256 	ldx	*(REGTEMP+0)
+      0000CC 60               [ 6]  257 	rts
+                                    258 ;	Raw cost for generated ic 26 : (16, 30.000000) count=1.000000
+                                    259 	.area CODE
+                                    260 	.area RODATA
+                                    261 	.area XINIT
+                                    262 	.area CABS    (ABS)

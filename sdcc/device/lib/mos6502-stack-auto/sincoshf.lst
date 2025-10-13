@@ -1,0 +1,1085 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module sincoshf
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _sincoshf
+                                     27 	.globl _expf
+                                     28 ;--------------------------------------------------------
+                                     29 ; ZP ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area ZP      (PAG)
+                                     32 ;--------------------------------------------------------
+                                     33 ; overlayable items in ram
+                                     34 ;--------------------------------------------------------
+                                     35 ;--------------------------------------------------------
+                                     36 ; uninitialized external ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area BSS
+                                     39 ;--------------------------------------------------------
+                                     40 ; absolute external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area DABS    (ABS)
+                                     43 ;--------------------------------------------------------
+                                     44 ; initialized external ram data
+                                     45 ;--------------------------------------------------------
+                                     46 	.area DATA
+                                     47 ;--------------------------------------------------------
+                                     48 ; global & static initialisations
+                                     49 ;--------------------------------------------------------
+                                     50 	.area _CODE
+                                     51 	.area GSINIT
+                                     52 	.area GSFINAL
+                                     53 	.area GSINIT
+                                     54 ;--------------------------------------------------------
+                                     55 ; Home
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _CODE
+                                     58 	.area _CODE
+                                     59 ;--------------------------------------------------------
+                                     60 ; code
+                                     61 ;--------------------------------------------------------
+                                     62 	.area CODE
+                                     63 ;------------------------------------------------------------
+                                     64 ;Allocation info for local variables in function 'sincoshf'
+                                     65 ;------------------------------------------------------------
+                                     66 ;x             Allocated to stack - sp +28 +4 
+                                     67 ;iscosh        Allocated to stack - sp +32 +1 
+                                     68 ;y             Allocated to stack - sp +9 +4 
+                                     69 ;w             Allocated to stack - sp +5 +4 
+                                     70 ;z             Allocated to stack - sp +1 +4 
+                                     71 ;sign          Allocated to stack - sp +25 +1 
+                                     72 ;sloc0         Allocated to stack - sp +21 +4 
+                                     73 ;sloc1         Allocated to stack - sp +17 +4 
+                                     74 ;sloc2         Allocated to stack - sp +13 +4 
+                                     75 ;------------------------------------------------------------
+                                     76 ;	../sincoshf.c: 56: float sincoshf(float x, bool iscosh)
+                                     77 ;	genLabel
+                                     78 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     79 ;	-----------------------------------------
+                                     80 ;	 function sincoshf
+                                     81 ;	-----------------------------------------
+                                     82 ;	Register assignment is optimal.
+                                     83 ;	Stack space usage: 25 bytes.
+      000000                         84 _sincoshf:
+                                     85 ;	  adjustStack : cycles stk:75  incdec:54  adc:12
+      000000 BA               [ 2]   86 	tsx
+      000001 8A               [ 2]   87 	txa
+      000002 18               [ 2]   88 	clc
+      000003 69 E7            [ 2]   89 	adc	#0xe7
+      000005 AA               [ 2]   90 	tax
+      000006 9A               [ 2]   91 	txs
+                                     92 ;	Raw cost for generated ic 1 : (7, 12.000000) count=1.000000
+                                     93 ;	../sincoshf.c: 61: if (x<0.0) { y=-x; sign=1; }
+                                     94 ;	genIpush
+      000007 A9 00            [ 2]   95 	lda	#0x00
+      000009 48               [ 3]   96 	pha
+      00000A 48               [ 3]   97 	pha
+      00000B 48               [ 3]   98 	pha
+      00000C 48               [ 3]   99 	pha
+                                    100 ;	Raw cost for generated ic 91 : (6, 14.000000) count=1.000000
+                                    101 ;	genIpush
+      00000D BD 1F 01         [ 5]  102 	lda	0x11f,x
+      000010 48               [ 3]  103 	pha
+      000011 BD 1E 01         [ 5]  104 	lda	0x11e,x
+      000014 48               [ 3]  105 	pha
+      000015 BD 1D 01         [ 5]  106 	lda	0x11d,x
+      000018 48               [ 3]  107 	pha
+      000019 BD 1C 01         [ 5]  108 	lda	0x11c,x
+      00001C 48               [ 3]  109 	pha
+                                    110 ;	Raw cost for generated ic 92 : (16, 28.000000) count=1.000000
+                                    111 ;	genCall
+      00001D 20r00r00         [ 6]  112 	jsr	___fslt
+                                    113 ;	assignResultValue
+      000020 A8               [ 2]  114 	tay
+                                    115 ;	  adjustStack : cycles stk:32  incdec:20  adc:12
+      000021 BA               [ 2]  116 	tsx
+      000022 8A               [ 2]  117 	txa
+      000023 18               [ 2]  118 	clc
+      000024 69 08            [ 2]  119 	adc	#0x08
+      000026 AA               [ 2]  120 	tax
+      000027 9A               [ 2]  121 	txs
+                                    122 ;	Raw cost for generated ic 93 : (11, 20.000000) count=1.000000
+                                    123 ;	genIfx
+      000028 C0 00            [ 2]  124 	cpy	#0x00
+                                    125 ;	genIfxJump : z
+      00002A F0 22            [ 4]  126 	beq	00102$
+                                    127 ;	Raw cost for generated ic 3 : (7, 7.600000) count=1.000000
+                                    128 ;	genUminus
+                                    129 ;	genUminusFloat
+      00002C BD 1C 01         [ 5]  130 	lda	0x11c,x
+      00002F 9D 09 01         [ 5]  131 	sta	0x109,x
+      000032 BD 1D 01         [ 5]  132 	lda	0x11d,x
+      000035 9D 0A 01         [ 5]  133 	sta	0x10a,x
+      000038 BD 1E 01         [ 5]  134 	lda	0x11e,x
+      00003B 9D 0B 01         [ 5]  135 	sta	0x10b,x
+      00003E BD 1F 01         [ 5]  136 	lda	0x11f,x
+      000041 49 80            [ 2]  137 	eor	#0x80
+      000043 9D 0C 01         [ 5]  138 	sta	0x10c,x
+                                    139 ;	Raw cost for generated ic 6 : (26, 38.000000) count=0.750000
+                                    140 ;	genAssign
+                                    141 ;	genAssignLit
+      000046 A9 01            [ 2]  142 	lda	#0x01
+      000048 9D 19 01         [ 5]  143 	sta	0x119,x
+                                    144 ;	Raw cost for generated ic 8 : (5, 7.000000) count=0.750000
+                                    145 ;	genGoto
+      00004B 4Cr6Cr00         [ 3]  146 	jmp	00103$
+                                    147 ;	Raw cost for generated ic 9 : (3, 3.000000) count=0.750000
+                                    148 ;	genLabel
+      00004E                        149 00102$:
+                                    150 ;	Raw cost for generated ic 10 : (0, 0.000000) count=0.250000
+                                    151 ;	../sincoshf.c: 62: else { y=x;  sign=0; }
+                                    152 ;	genAssign
+                                    153 ;	genCopy
+      00004E BA               [ 2]  154 	tsx
+      00004F BD 1F 01         [ 5]  155 	lda	0x11f,x
+      000052 9D 0C 01         [ 5]  156 	sta	0x10c,x
+      000055 BD 1E 01         [ 5]  157 	lda	0x11e,x
+      000058 9D 0B 01         [ 5]  158 	sta	0x10b,x
+      00005B BD 1D 01         [ 5]  159 	lda	0x11d,x
+      00005E 9D 0A 01         [ 5]  160 	sta	0x10a,x
+      000061 BD 1C 01         [ 5]  161 	lda	0x11c,x
+      000064 9D 09 01         [ 5]  162 	sta	0x109,x
+                                    163 ;	Raw cost for generated ic 11 : (25, 38.000000) count=0.250000
+                                    164 ;	genAssign
+                                    165 ;	genAssignLit
+      000067 A9 00            [ 2]  166 	lda	#0x00
+      000069 9D 19 01         [ 5]  167 	sta	0x119,x
+                                    168 ;	Raw cost for generated ic 12 : (5, 7.000000) count=0.250000
+                                    169 ;	genLabel
+      00006C                        170 00103$:
+                                    171 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    172 ;	../sincoshf.c: 64: if ((y>1.0) || iscosh)
+                                    173 ;	genIpush
+      00006C BA               [ 2]  174 	tsx
+      00006D BD 0C 01         [ 5]  175 	lda	0x10c,x
+      000070 48               [ 3]  176 	pha
+      000071 BD 0B 01         [ 5]  177 	lda	0x10b,x
+      000074 48               [ 3]  178 	pha
+      000075 BD 0A 01         [ 5]  179 	lda	0x10a,x
+      000078 48               [ 3]  180 	pha
+      000079 BD 09 01         [ 5]  181 	lda	0x109,x
+      00007C 48               [ 3]  182 	pha
+                                    183 ;	Raw cost for generated ic 94 : (17, 30.000000) count=1.000000
+                                    184 ;	genIpush
+      00007D A9 3F            [ 2]  185 	lda	#0x3f
+      00007F 48               [ 3]  186 	pha
+      000080 A9 80            [ 2]  187 	lda	#0x80
+      000082 48               [ 3]  188 	pha
+      000083 A9 00            [ 2]  189 	lda	#0x00
+      000085 48               [ 3]  190 	pha
+      000086 48               [ 3]  191 	pha
+                                    192 ;	Raw cost for generated ic 95 : (10, 18.000000) count=1.000000
+                                    193 ;	genCall
+      000087 20r00r00         [ 6]  194 	jsr	___fslt
+                                    195 ;	assignResultValue
+      00008A A8               [ 2]  196 	tay
+                                    197 ;	  adjustStack : cycles stk:32  incdec:20  adc:12
+      00008B BA               [ 2]  198 	tsx
+      00008C 8A               [ 2]  199 	txa
+      00008D 18               [ 2]  200 	clc
+      00008E 69 08            [ 2]  201 	adc	#0x08
+      000090 AA               [ 2]  202 	tax
+      000091 9A               [ 2]  203 	txs
+                                    204 ;	Raw cost for generated ic 96 : (11, 20.000000) count=1.000000
+                                    205 ;	genIfx
+      000092 C0 00            [ 2]  206 	cpy	#0x00
+                                    207 ;	genIfxJump : z
+      000094 D0 08            [ 4]  208 	bne	00117$
+                                    209 ;	Raw cost for generated ic 15 : (7, 7.600000) count=1.000000
+                                    210 ;	genIfx
+      000096 BD 20 01         [ 5]  211 	lda	0x120,x
+                                    212 ;	genIfxJump : z
+      000099 D0 03            [ 4]  213 	bne	00170$
+      00009B 4Cr16r03         [ 3]  214 	jmp	00118$
+      00009E                        215 00170$:
+                                    216 ;	Raw cost for generated ic 18 : (8, 9.600000) count=0.750000
+                                    217 ;	genLabel
+      00009E                        218 00117$:
+                                    219 ;	Raw cost for generated ic 20 : (0, 0.000000) count=0.812500
+                                    220 ;	../sincoshf.c: 66: if(y>YBAR)
+                                    221 ;	genIpush
+      00009E BA               [ 2]  222 	tsx
+      00009F BD 0C 01         [ 5]  223 	lda	0x10c,x
+      0000A2 48               [ 3]  224 	pha
+      0000A3 BD 0B 01         [ 5]  225 	lda	0x10b,x
+      0000A6 48               [ 3]  226 	pha
+      0000A7 BD 0A 01         [ 5]  227 	lda	0x10a,x
+      0000AA 48               [ 3]  228 	pha
+      0000AB BD 09 01         [ 5]  229 	lda	0x109,x
+      0000AE 48               [ 3]  230 	pha
+                                    231 ;	Raw cost for generated ic 97 : (17, 30.000000) count=0.812500
+                                    232 ;	genIpush
+      0000AF A9 41            [ 2]  233 	lda	#0x41
+      0000B1 48               [ 3]  234 	pha
+      0000B2 A9 10            [ 2]  235 	lda	#0x10
+      0000B4 48               [ 3]  236 	pha
+      0000B5 A9 00            [ 2]  237 	lda	#0x00
+      0000B7 48               [ 3]  238 	pha
+      0000B8 48               [ 3]  239 	pha
+                                    240 ;	Raw cost for generated ic 98 : (10, 18.000000) count=0.812500
+                                    241 ;	genCall
+      0000B9 20r00r00         [ 6]  242 	jsr	___fslt
+                                    243 ;	assignResultValue
+      0000BC A8               [ 2]  244 	tay
+                                    245 ;	  adjustStack : cycles stk:32  incdec:20  adc:12
+      0000BD BA               [ 2]  246 	tsx
+      0000BE 8A               [ 2]  247 	txa
+      0000BF 18               [ 2]  248 	clc
+      0000C0 69 08            [ 2]  249 	adc	#0x08
+      0000C2 AA               [ 2]  250 	tax
+      0000C3 9A               [ 2]  251 	txs
+                                    252 ;	Raw cost for generated ic 99 : (11, 20.000000) count=0.812500
+                                    253 ;	genIfx
+      0000C4 C0 00            [ 2]  254 	cpy	#0x00
+                                    255 ;	genIfxJump : z
+      0000C6 D0 03            [ 4]  256 	bne	00172$
+      0000C8 4CrF3r01         [ 3]  257 	jmp	00110$
+      0000CB                        258 00172$:
+                                    259 ;	Raw cost for generated ic 22 : (7, 7.600000) count=0.812500
+                                    260 ;	../sincoshf.c: 68: w=y-K1;
+                                    261 ;	genIpush
+      0000CB A9 3F            [ 2]  262 	lda	#0x3f
+      0000CD 48               [ 3]  263 	pha
+      0000CE A9 31            [ 2]  264 	lda	#0x31
+      0000D0 48               [ 3]  265 	pha
+      0000D1 A9 73            [ 2]  266 	lda	#0x73
+      0000D3 48               [ 3]  267 	pha
+      0000D4 A9 00            [ 2]  268 	lda	#0x00
+      0000D6 48               [ 3]  269 	pha
+                                    270 ;	Raw cost for generated ic 100 : (12, 20.000000) count=0.609375
+                                    271 ;	genIpush
+      0000D7 BD 0C 01         [ 5]  272 	lda	0x10c,x
+      0000DA 48               [ 3]  273 	pha
+      0000DB BD 0B 01         [ 5]  274 	lda	0x10b,x
+      0000DE 48               [ 3]  275 	pha
+      0000DF BD 0A 01         [ 5]  276 	lda	0x10a,x
+      0000E2 48               [ 3]  277 	pha
+      0000E3 BD 09 01         [ 5]  278 	lda	0x109,x
+      0000E6 48               [ 3]  279 	pha
+                                    280 ;	Raw cost for generated ic 101 : (16, 28.000000) count=0.609375
+                                    281 ;	../sincoshf.c: 69: if (w>WMAX)
+                                    282 ;	genCall
+      0000E7 20r00r00         [ 6]  283 	jsr	___fssub
+                                    284 ;	assignResultValue
+      0000EA 86*00            [ 3]  285 	stx	*(REGTEMP+0)
+      0000EC BA               [ 2]  286 	tsx
+      0000ED 9D 1D 01         [ 5]  287 	sta	0x11d,x
+      0000F0 A5*00            [ 3]  288 	lda	*(REGTEMP+0)
+      0000F2 9D 1E 01         [ 5]  289 	sta	0x11e,x
+      0000F5 A5*00            [ 3]  290 	lda	*___SDCC_m6502_ret2
+      0000F7 9D 1F 01         [ 5]  291 	sta	0x11f,x
+      0000FA A5*00            [ 3]  292 	lda	*___SDCC_m6502_ret3
+      0000FC 9D 20 01         [ 5]  293 	sta	0x120,x
+                                    294 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      0000FF 8A               [ 2]  295 	txa
+      000100 18               [ 2]  296 	clc
+      000101 69 08            [ 2]  297 	adc	#0x08
+      000103 AA               [ 2]  298 	tax
+      000104 9A               [ 2]  299 	txs
+                                    300 ;	Raw cost for generated ic 102 : (30, 50.000000) count=0.609375
+                                    301 ;	genIpush
+      000105 BD 18 01         [ 5]  302 	lda	0x118,x
+      000108 48               [ 3]  303 	pha
+      000109 BD 17 01         [ 5]  304 	lda	0x117,x
+      00010C 48               [ 3]  305 	pha
+      00010D BD 16 01         [ 5]  306 	lda	0x116,x
+      000110 48               [ 3]  307 	pha
+      000111 BD 15 01         [ 5]  308 	lda	0x115,x
+      000114 48               [ 3]  309 	pha
+                                    310 ;	Raw cost for generated ic 103 : (16, 28.000000) count=0.609375
+                                    311 ;	genIpush
+      000115 A9 42            [ 2]  312 	lda	#0x42
+      000117 48               [ 3]  313 	pha
+      000118 A9 33            [ 2]  314 	lda	#0x33
+      00011A 48               [ 3]  315 	pha
+      00011B A9 BD            [ 2]  316 	lda	#0xbd
+      00011D 48               [ 3]  317 	pha
+      00011E A9 CF            [ 2]  318 	lda	#0xcf
+      000120 48               [ 3]  319 	pha
+                                    320 ;	Raw cost for generated ic 104 : (12, 20.000000) count=0.609375
+                                    321 ;	genCall
+      000121 20r00r00         [ 6]  322 	jsr	___fslt
+                                    323 ;	assignResultValue
+      000124 A8               [ 2]  324 	tay
+                                    325 ;	  adjustStack : cycles stk:32  incdec:20  adc:12
+      000125 BA               [ 2]  326 	tsx
+      000126 8A               [ 2]  327 	txa
+      000127 18               [ 2]  328 	clc
+      000128 69 08            [ 2]  329 	adc	#0x08
+      00012A AA               [ 2]  330 	tax
+      00012B 9A               [ 2]  331 	txs
+                                    332 ;	Raw cost for generated ic 105 : (11, 20.000000) count=0.609375
+                                    333 ;	genIfx
+      00012C C0 00            [ 2]  334 	cpy	#0x00
+                                    335 ;	genIfxJump : z
+      00012E F0 1D            [ 4]  336 	beq	00105$
+                                    337 ;	Raw cost for generated ic 28 : (7, 7.600000) count=0.609375
+                                    338 ;	../sincoshf.c: 71: errno=ERANGE;
+                                    339 ;	genAssign
+                                    340 ;	genAssignLit
+      000130 A0 22            [ 2]  341 	ldy	#0x22
+      000132 8Cr00r00         [ 4]  342 	sty	_errno
+      000135 A0 00            [ 2]  343 	ldy	#0x00
+      000137 8Cr01r00         [ 4]  344 	sty	(_errno + 1)
+                                    345 ;	Raw cost for generated ic 32 : (10, 12.000000) count=0.457031
+                                    346 ;	../sincoshf.c: 72: z=HUGE_VALF;
+                                    347 ;	genAssign
+                                    348 ;	genAssignLit
+      00013A A9 FF            [ 2]  349 	lda	#0xff
+      00013C 9D 01 01         [ 5]  350 	sta	0x101,x
+      00013F 9D 02 01         [ 5]  351 	sta	0x102,x
+      000142 A9 7F            [ 2]  352 	lda	#0x7f
+      000144 9D 03 01         [ 5]  353 	sta	0x103,x
+      000147 9D 04 01         [ 5]  354 	sta	0x104,x
+                                    355 ;	Raw cost for generated ic 33 : (16, 24.000000) count=0.457031
+                                    356 ;	genGoto
+      00014A 4Cr02r03         [ 3]  357 	jmp	00111$
+                                    358 ;	Raw cost for generated ic 34 : (3, 3.000000) count=0.457031
+                                    359 ;	genLabel
+      00014D                        360 00105$:
+                                    361 ;	Raw cost for generated ic 35 : (0, 0.000000) count=0.152344
+                                    362 ;	../sincoshf.c: 76: z=expf(w);
+                                    363 ;	genIpush
+      00014D BA               [ 2]  364 	tsx
+      00014E BD 18 01         [ 5]  365 	lda	0x118,x
+      000151 48               [ 3]  366 	pha
+      000152 BD 17 01         [ 5]  367 	lda	0x117,x
+      000155 48               [ 3]  368 	pha
+      000156 BD 16 01         [ 5]  369 	lda	0x116,x
+      000159 48               [ 3]  370 	pha
+      00015A BD 15 01         [ 5]  371 	lda	0x115,x
+      00015D 48               [ 3]  372 	pha
+                                    373 ;	Raw cost for generated ic 36 : (17, 30.000000) count=0.152344
+                                    374 ;	genCall
+      00015E 20r00r00         [ 6]  375 	jsr	_expf
+                                    376 ;	assignResultValue
+      000161 86*00            [ 3]  377 	stx	*(REGTEMP+0)
+      000163 BA               [ 2]  378 	tsx
+      000164 9D 19 01         [ 5]  379 	sta	0x119,x
+      000167 A5*00            [ 3]  380 	lda	*(REGTEMP+0)
+      000169 9D 1A 01         [ 5]  381 	sta	0x11a,x
+      00016C A5*00            [ 3]  382 	lda	*___SDCC_m6502_ret2
+      00016E 9D 1B 01         [ 5]  383 	sta	0x11b,x
+      000171 A5*00            [ 3]  384 	lda	*___SDCC_m6502_ret3
+      000173 9D 1C 01         [ 5]  385 	sta	0x11c,x
+                                    386 ;	  adjustStack : cycles stk:16  incdec:10  adc:10
+      000176 E8               [ 2]  387 	inx
+      000177 E8               [ 2]  388 	inx
+      000178 E8               [ 2]  389 	inx
+      000179 E8               [ 2]  390 	inx
+      00017A 9A               [ 2]  391 	txs
+                                    392 ;	Raw cost for generated ic 37 : (29, 50.000000) count=0.152344
+                                    393 ;	../sincoshf.c: 77: z+=K3*z;
+                                    394 ;	genIpush
+      00017B 48               [ 3]  395 	pha
+      00017C BD 17 01         [ 5]  396 	lda	0x117,x
+      00017F 48               [ 3]  397 	pha
+      000180 BD 16 01         [ 5]  398 	lda	0x116,x
+      000183 48               [ 3]  399 	pha
+      000184 BD 15 01         [ 5]  400 	lda	0x115,x
+      000187 48               [ 3]  401 	pha
+                                    402 ;	Raw cost for generated ic 106 : (13, 24.000000) count=0.152344
+                                    403 ;	genIpush
+      000188 A9 37            [ 2]  404 	lda	#0x37
+      00018A 48               [ 3]  405 	pha
+      00018B A9 68            [ 2]  406 	lda	#0x68
+      00018D 48               [ 3]  407 	pha
+      00018E A9 08            [ 2]  408 	lda	#0x08
+      000190 48               [ 3]  409 	pha
+      000191 A9 97            [ 2]  410 	lda	#0x97
+      000193 48               [ 3]  411 	pha
+                                    412 ;	Raw cost for generated ic 107 : (12, 20.000000) count=0.152344
+                                    413 ;	genCall
+      000194 20r00r00         [ 6]  414 	jsr	___fsmul
+                                    415 ;	assignResultValue
+      000197 86*00            [ 3]  416 	stx	*(REGTEMP+0)
+      000199 BA               [ 2]  417 	tsx
+      00019A 9D 19 01         [ 5]  418 	sta	0x119,x
+      00019D A5*00            [ 3]  419 	lda	*(REGTEMP+0)
+      00019F 9D 1A 01         [ 5]  420 	sta	0x11a,x
+      0001A2 A5*00            [ 3]  421 	lda	*___SDCC_m6502_ret2
+      0001A4 9D 1B 01         [ 5]  422 	sta	0x11b,x
+      0001A7 A5*00            [ 3]  423 	lda	*___SDCC_m6502_ret3
+      0001A9 9D 1C 01         [ 5]  424 	sta	0x11c,x
+                                    425 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      0001AC 8A               [ 2]  426 	txa
+      0001AD 18               [ 2]  427 	clc
+      0001AE 69 08            [ 2]  428 	adc	#0x08
+      0001B0 AA               [ 2]  429 	tax
+      0001B1 9A               [ 2]  430 	txs
+                                    431 ;	Raw cost for generated ic 108 : (30, 50.000000) count=0.152344
+                                    432 ;	genIpush
+      0001B2 BD 14 01         [ 5]  433 	lda	0x114,x
+      0001B5 48               [ 3]  434 	pha
+      0001B6 BD 13 01         [ 5]  435 	lda	0x113,x
+      0001B9 48               [ 3]  436 	pha
+      0001BA BD 12 01         [ 5]  437 	lda	0x112,x
+      0001BD 48               [ 3]  438 	pha
+      0001BE BD 11 01         [ 5]  439 	lda	0x111,x
+      0001C1 48               [ 3]  440 	pha
+                                    441 ;	Raw cost for generated ic 109 : (16, 28.000000) count=0.152344
+                                    442 ;	genIpush
+      0001C2 BD 18 01         [ 5]  443 	lda	0x118,x
+      0001C5 48               [ 3]  444 	pha
+      0001C6 BD 17 01         [ 5]  445 	lda	0x117,x
+      0001C9 48               [ 3]  446 	pha
+      0001CA BD 16 01         [ 5]  447 	lda	0x116,x
+      0001CD 48               [ 3]  448 	pha
+      0001CE BD 15 01         [ 5]  449 	lda	0x115,x
+      0001D1 48               [ 3]  450 	pha
+                                    451 ;	Raw cost for generated ic 110 : (16, 28.000000) count=0.152344
+                                    452 ;	genCall
+      0001D2 20r00r00         [ 6]  453 	jsr	___fsadd
+                                    454 ;	assignResultValue
+      0001D5 86*00            [ 3]  455 	stx	*(REGTEMP+0)
+      0001D7 BA               [ 2]  456 	tsx
+      0001D8 9D 09 01         [ 5]  457 	sta	0x109,x
+      0001DB A5*00            [ 3]  458 	lda	*(REGTEMP+0)
+      0001DD 9D 0A 01         [ 5]  459 	sta	0x10a,x
+      0001E0 A5*00            [ 3]  460 	lda	*___SDCC_m6502_ret2
+      0001E2 9D 0B 01         [ 5]  461 	sta	0x10b,x
+      0001E5 A5*00            [ 3]  462 	lda	*___SDCC_m6502_ret3
+      0001E7 9D 0C 01         [ 5]  463 	sta	0x10c,x
+                                    464 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      0001EA 8A               [ 2]  465 	txa
+      0001EB 18               [ 2]  466 	clc
+      0001EC 69 08            [ 2]  467 	adc	#0x08
+      0001EE AA               [ 2]  468 	tax
+      0001EF 9A               [ 2]  469 	txs
+                                    470 ;	Raw cost for generated ic 111 : (30, 50.000000) count=0.152344
+                                    471 ;	genGoto
+      0001F0 4Cr02r03         [ 3]  472 	jmp	00111$
+                                    473 ;	Raw cost for generated ic 43 : (3, 3.000000) count=0.152344
+                                    474 ;	genLabel
+      0001F3                        475 00110$:
+                                    476 ;	Raw cost for generated ic 44 : (0, 0.000000) count=0.203125
+                                    477 ;	../sincoshf.c: 82: z=expf(y);
+                                    478 ;	genIpush
+      0001F3 BA               [ 2]  479 	tsx
+      0001F4 BD 0C 01         [ 5]  480 	lda	0x10c,x
+      0001F7 48               [ 3]  481 	pha
+      0001F8 BD 0B 01         [ 5]  482 	lda	0x10b,x
+      0001FB 48               [ 3]  483 	pha
+      0001FC BD 0A 01         [ 5]  484 	lda	0x10a,x
+      0001FF 48               [ 3]  485 	pha
+      000200 BD 09 01         [ 5]  486 	lda	0x109,x
+      000203 48               [ 3]  487 	pha
+                                    488 ;	Raw cost for generated ic 45 : (17, 30.000000) count=0.203125
+                                    489 ;	genCall
+      000204 20r00r00         [ 6]  490 	jsr	_expf
+                                    491 ;	assignResultValue
+      000207 86*00            [ 3]  492 	stx	*(REGTEMP+0)
+      000209 BA               [ 2]  493 	tsx
+      00020A 9D 15 01         [ 5]  494 	sta	0x115,x
+      00020D A5*00            [ 3]  495 	lda	*(REGTEMP+0)
+      00020F 9D 16 01         [ 5]  496 	sta	0x116,x
+      000212 A5*00            [ 3]  497 	lda	*___SDCC_m6502_ret2
+      000214 9D 17 01         [ 5]  498 	sta	0x117,x
+      000217 A5*00            [ 3]  499 	lda	*___SDCC_m6502_ret3
+      000219 9D 18 01         [ 5]  500 	sta	0x118,x
+                                    501 ;	  adjustStack : cycles stk:16  incdec:10  adc:10
+      00021C E8               [ 2]  502 	inx
+      00021D E8               [ 2]  503 	inx
+      00021E E8               [ 2]  504 	inx
+      00021F E8               [ 2]  505 	inx
+      000220 9A               [ 2]  506 	txs
+                                    507 ;	Raw cost for generated ic 46 : (29, 50.000000) count=0.203125
+                                    508 ;	../sincoshf.c: 83: w=1.0/z;
+                                    509 ;	genIpush
+      000221 48               [ 3]  510 	pha
+      000222 BD 13 01         [ 5]  511 	lda	0x113,x
+      000225 48               [ 3]  512 	pha
+      000226 BD 12 01         [ 5]  513 	lda	0x112,x
+      000229 48               [ 3]  514 	pha
+      00022A BD 11 01         [ 5]  515 	lda	0x111,x
+      00022D 48               [ 3]  516 	pha
+                                    517 ;	Raw cost for generated ic 112 : (13, 24.000000) count=0.203125
+                                    518 ;	genIpush
+      00022E A9 3F            [ 2]  519 	lda	#0x3f
+      000230 48               [ 3]  520 	pha
+      000231 A9 80            [ 2]  521 	lda	#0x80
+      000233 48               [ 3]  522 	pha
+      000234 A9 00            [ 2]  523 	lda	#0x00
+      000236 48               [ 3]  524 	pha
+      000237 48               [ 3]  525 	pha
+                                    526 ;	Raw cost for generated ic 113 : (10, 18.000000) count=0.203125
+                                    527 ;	genCall
+      000238 20r00r00         [ 6]  528 	jsr	___fsdiv
+                                    529 ;	assignResultValue
+      00023B 86*00            [ 3]  530 	stx	*(REGTEMP+0)
+      00023D BA               [ 2]  531 	tsx
+      00023E 9D 1D 01         [ 5]  532 	sta	0x11d,x
+      000241 A5*00            [ 3]  533 	lda	*(REGTEMP+0)
+      000243 9D 1E 01         [ 5]  534 	sta	0x11e,x
+      000246 A5*00            [ 3]  535 	lda	*___SDCC_m6502_ret2
+      000248 9D 1F 01         [ 5]  536 	sta	0x11f,x
+      00024B A5*00            [ 3]  537 	lda	*___SDCC_m6502_ret3
+      00024D 9D 20 01         [ 5]  538 	sta	0x120,x
+                                    539 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      000250 8A               [ 2]  540 	txa
+      000251 18               [ 2]  541 	clc
+      000252 69 08            [ 2]  542 	adc	#0x08
+      000254 AA               [ 2]  543 	tax
+      000255 9A               [ 2]  544 	txs
+                                    545 ;	Raw cost for generated ic 114 : (30, 50.000000) count=0.203125
+                                    546 ;	genAssign
+                                    547 ;	genCopy
+      000256 BD 18 01         [ 5]  548 	lda	0x118,x
+      000259 9D 08 01         [ 5]  549 	sta	0x108,x
+      00025C BD 17 01         [ 5]  550 	lda	0x117,x
+      00025F 9D 07 01         [ 5]  551 	sta	0x107,x
+      000262 BD 16 01         [ 5]  552 	lda	0x116,x
+      000265 9D 06 01         [ 5]  553 	sta	0x106,x
+      000268 BD 15 01         [ 5]  554 	lda	0x115,x
+      00026B 9D 05 01         [ 5]  555 	sta	0x105,x
+                                    556 ;	Raw cost for generated ic 49 : (24, 36.000000) count=0.203125
+                                    557 ;	../sincoshf.c: 84: if(!iscosh) w=-w;
+                                    558 ;	genIfx
+      00026E BD 20 01         [ 5]  559 	lda	0x120,x
+                                    560 ;	genIfxJump : z
+      000271 D0 1A            [ 4]  561 	bne	00108$
+                                    562 ;	Raw cost for generated ic 50 : (8, 9.600000) count=0.203125
+                                    563 ;	genUminus
+                                    564 ;	genUminusFloat
+      000273 BD 15 01         [ 5]  565 	lda	0x115,x
+      000276 9D 05 01         [ 5]  566 	sta	0x105,x
+      000279 BD 16 01         [ 5]  567 	lda	0x116,x
+      00027C 9D 06 01         [ 5]  568 	sta	0x106,x
+      00027F BD 17 01         [ 5]  569 	lda	0x117,x
+      000282 9D 07 01         [ 5]  570 	sta	0x107,x
+      000285 BD 18 01         [ 5]  571 	lda	0x118,x
+      000288 49 80            [ 2]  572 	eor	#0x80
+      00028A 9D 08 01         [ 5]  573 	sta	0x108,x
+                                    574 ;	Raw cost for generated ic 53 : (26, 38.000000) count=0.152344
+                                    575 ;	genLabel
+      00028D                        576 00108$:
+                                    577 ;	Raw cost for generated ic 55 : (0, 0.000000) count=0.203125
+                                    578 ;	../sincoshf.c: 85: z=(z+w)*0.5;
+                                    579 ;	genIpush
+      00028D BA               [ 2]  580 	tsx
+      00028E BD 08 01         [ 5]  581 	lda	0x108,x
+      000291 48               [ 3]  582 	pha
+      000292 BD 07 01         [ 5]  583 	lda	0x107,x
+      000295 48               [ 3]  584 	pha
+      000296 BD 06 01         [ 5]  585 	lda	0x106,x
+      000299 48               [ 3]  586 	pha
+      00029A BD 05 01         [ 5]  587 	lda	0x105,x
+      00029D 48               [ 3]  588 	pha
+                                    589 ;	Raw cost for generated ic 115 : (17, 30.000000) count=0.203125
+                                    590 ;	genIpush
+      00029E BD 14 01         [ 5]  591 	lda	0x114,x
+      0002A1 48               [ 3]  592 	pha
+      0002A2 BD 13 01         [ 5]  593 	lda	0x113,x
+      0002A5 48               [ 3]  594 	pha
+      0002A6 BD 12 01         [ 5]  595 	lda	0x112,x
+      0002A9 48               [ 3]  596 	pha
+      0002AA BD 11 01         [ 5]  597 	lda	0x111,x
+      0002AD 48               [ 3]  598 	pha
+                                    599 ;	Raw cost for generated ic 116 : (16, 28.000000) count=0.203125
+                                    600 ;	genCall
+      0002AE 20r00r00         [ 6]  601 	jsr	___fsadd
+                                    602 ;	assignResultValue
+      0002B1 86*00            [ 3]  603 	stx	*(REGTEMP+0)
+      0002B3 BA               [ 2]  604 	tsx
+      0002B4 9D 19 01         [ 5]  605 	sta	0x119,x
+      0002B7 A5*00            [ 3]  606 	lda	*(REGTEMP+0)
+      0002B9 9D 1A 01         [ 5]  607 	sta	0x11a,x
+      0002BC A5*00            [ 3]  608 	lda	*___SDCC_m6502_ret2
+      0002BE 9D 1B 01         [ 5]  609 	sta	0x11b,x
+      0002C1 A5*00            [ 3]  610 	lda	*___SDCC_m6502_ret3
+      0002C3 9D 1C 01         [ 5]  611 	sta	0x11c,x
+                                    612 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      0002C6 8A               [ 2]  613 	txa
+      0002C7 18               [ 2]  614 	clc
+      0002C8 69 08            [ 2]  615 	adc	#0x08
+      0002CA AA               [ 2]  616 	tax
+      0002CB 9A               [ 2]  617 	txs
+                                    618 ;	Raw cost for generated ic 117 : (30, 50.000000) count=0.203125
+                                    619 ;	genIpush
+      0002CC BD 14 01         [ 5]  620 	lda	0x114,x
+      0002CF 48               [ 3]  621 	pha
+      0002D0 BD 13 01         [ 5]  622 	lda	0x113,x
+      0002D3 48               [ 3]  623 	pha
+      0002D4 BD 12 01         [ 5]  624 	lda	0x112,x
+      0002D7 48               [ 3]  625 	pha
+      0002D8 BD 11 01         [ 5]  626 	lda	0x111,x
+      0002DB 48               [ 3]  627 	pha
+                                    628 ;	Raw cost for generated ic 118 : (16, 28.000000) count=0.203125
+                                    629 ;	genIpush
+      0002DC A9 3F            [ 2]  630 	lda	#0x3f
+      0002DE 48               [ 3]  631 	pha
+      0002DF A9 00            [ 2]  632 	lda	#0x00
+      0002E1 48               [ 3]  633 	pha
+      0002E2 48               [ 3]  634 	pha
+      0002E3 48               [ 3]  635 	pha
+                                    636 ;	Raw cost for generated ic 119 : (8, 16.000000) count=0.203125
+                                    637 ;	genCall
+      0002E4 20r00r00         [ 6]  638 	jsr	___fsmul
+                                    639 ;	assignResultValue
+      0002E7 86*00            [ 3]  640 	stx	*(REGTEMP+0)
+      0002E9 BA               [ 2]  641 	tsx
+      0002EA 9D 09 01         [ 5]  642 	sta	0x109,x
+      0002ED A5*00            [ 3]  643 	lda	*(REGTEMP+0)
+      0002EF 9D 0A 01         [ 5]  644 	sta	0x10a,x
+      0002F2 A5*00            [ 3]  645 	lda	*___SDCC_m6502_ret2
+      0002F4 9D 0B 01         [ 5]  646 	sta	0x10b,x
+      0002F7 A5*00            [ 3]  647 	lda	*___SDCC_m6502_ret3
+      0002F9 9D 0C 01         [ 5]  648 	sta	0x10c,x
+                                    649 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      0002FC 8A               [ 2]  650 	txa
+      0002FD 18               [ 2]  651 	clc
+      0002FE 69 08            [ 2]  652 	adc	#0x08
+      000300 AA               [ 2]  653 	tax
+      000301 9A               [ 2]  654 	txs
+                                    655 ;	Raw cost for generated ic 120 : (30, 50.000000) count=0.203125
+                                    656 ;	genLabel
+      000302                        657 00111$:
+                                    658 ;	Raw cost for generated ic 59 : (0, 0.000000) count=0.812500
+                                    659 ;	../sincoshf.c: 87: if(sign) z=-z;
+                                    660 ;	genIfx
+      000302 BA               [ 2]  661 	tsx
+      000303 BD 19 01         [ 5]  662 	lda	0x119,x
+                                    663 ;	genIfxJump : z
+      000306 D0 03            [ 4]  664 	bne	00178$
+      000308 4Cr40r05         [ 3]  665 	jmp	00119$
+      00030B                        666 00178$:
+                                    667 ;	Raw cost for generated ic 60 : (9, 11.600000) count=0.812500
+                                    668 ;	genUminus
+                                    669 ;	genUminusFloat
+      00030B BD 04 01         [ 5]  670 	lda	0x104,x
+      00030E 49 80            [ 2]  671 	eor	#0x80
+      000310 9D 04 01         [ 5]  672 	sta	0x104,x
+                                    673 ;	Raw cost for generated ic 63 : (8, 11.000000) count=0.609375
+                                    674 ;	genGoto
+      000313 4Cr40r05         [ 3]  675 	jmp	00119$
+                                    676 ;	Raw cost for generated ic 66 : (3, 3.000000) count=0.609375
+                                    677 ;	genLabel
+      000316                        678 00118$:
+                                    679 ;	Raw cost for generated ic 67 : (0, 0.000000) count=0.187500
+                                    680 ;	../sincoshf.c: 91: if (y<EPS)
+                                    681 ;	genIpush
+      000316 A9 39            [ 2]  682 	lda	#0x39
+      000318 48               [ 3]  683 	pha
+      000319 A9 80            [ 2]  684 	lda	#0x80
+      00031B 48               [ 3]  685 	pha
+      00031C A9 00            [ 2]  686 	lda	#0x00
+      00031E 48               [ 3]  687 	pha
+      00031F 48               [ 3]  688 	pha
+                                    689 ;	Raw cost for generated ic 121 : (10, 18.000000) count=0.187500
+                                    690 ;	genIpush
+      000320 BA               [ 2]  691 	tsx
+      000321 BD 10 01         [ 5]  692 	lda	0x110,x
+      000324 48               [ 3]  693 	pha
+      000325 BD 0F 01         [ 5]  694 	lda	0x10f,x
+      000328 48               [ 3]  695 	pha
+      000329 BD 0E 01         [ 5]  696 	lda	0x10e,x
+      00032C 48               [ 3]  697 	pha
+      00032D BD 0D 01         [ 5]  698 	lda	0x10d,x
+      000330 48               [ 3]  699 	pha
+                                    700 ;	Raw cost for generated ic 122 : (17, 30.000000) count=0.187500
+                                    701 ;	genCall
+      000331 20r00r00         [ 6]  702 	jsr	___fslt
+                                    703 ;	assignResultValue
+      000334 A8               [ 2]  704 	tay
+                                    705 ;	  adjustStack : cycles stk:32  incdec:20  adc:12
+      000335 BA               [ 2]  706 	tsx
+      000336 8A               [ 2]  707 	txa
+      000337 18               [ 2]  708 	clc
+      000338 69 08            [ 2]  709 	adc	#0x08
+      00033A AA               [ 2]  710 	tax
+      00033B 9A               [ 2]  711 	txs
+                                    712 ;	Raw cost for generated ic 123 : (11, 20.000000) count=0.187500
+                                    713 ;	genIfx
+      00033C C0 00            [ 2]  714 	cpy	#0x00
+                                    715 ;	genIfxJump : z
+      00033E F0 1B            [ 4]  716 	beq	00115$
+                                    717 ;	Raw cost for generated ic 69 : (7, 7.600000) count=0.187500
+                                    718 ;	../sincoshf.c: 92: z=x;
+                                    719 ;	genAssign
+                                    720 ;	genCopy
+      000340 BD 1F 01         [ 5]  721 	lda	0x11f,x
+      000343 9D 04 01         [ 5]  722 	sta	0x104,x
+      000346 BD 1E 01         [ 5]  723 	lda	0x11e,x
+      000349 9D 03 01         [ 5]  724 	sta	0x103,x
+      00034C BD 1D 01         [ 5]  725 	lda	0x11d,x
+      00034F 9D 02 01         [ 5]  726 	sta	0x102,x
+      000352 BD 1C 01         [ 5]  727 	lda	0x11c,x
+      000355 9D 01 01         [ 5]  728 	sta	0x101,x
+                                    729 ;	Raw cost for generated ic 72 : (24, 36.000000) count=0.140625
+                                    730 ;	genGoto
+      000358 4Cr40r05         [ 3]  731 	jmp	00119$
+                                    732 ;	Raw cost for generated ic 73 : (3, 3.000000) count=0.140625
+                                    733 ;	genLabel
+      00035B                        734 00115$:
+                                    735 ;	Raw cost for generated ic 74 : (0, 0.000000) count=0.046875
+                                    736 ;	../sincoshf.c: 95: z=x*x;
+                                    737 ;	genIpush
+      00035B BA               [ 2]  738 	tsx
+      00035C BD 1F 01         [ 5]  739 	lda	0x11f,x
+      00035F 48               [ 3]  740 	pha
+      000360 BD 1E 01         [ 5]  741 	lda	0x11e,x
+      000363 48               [ 3]  742 	pha
+      000364 BD 1D 01         [ 5]  743 	lda	0x11d,x
+      000367 48               [ 3]  744 	pha
+      000368 BD 1C 01         [ 5]  745 	lda	0x11c,x
+      00036B 48               [ 3]  746 	pha
+                                    747 ;	Raw cost for generated ic 124 : (17, 30.000000) count=0.046875
+                                    748 ;	genIpush
+      00036C BD 1F 01         [ 5]  749 	lda	0x11f,x
+      00036F 48               [ 3]  750 	pha
+      000370 BD 1E 01         [ 5]  751 	lda	0x11e,x
+      000373 48               [ 3]  752 	pha
+      000374 BD 1D 01         [ 5]  753 	lda	0x11d,x
+      000377 48               [ 3]  754 	pha
+      000378 BD 1C 01         [ 5]  755 	lda	0x11c,x
+      00037B 48               [ 3]  756 	pha
+                                    757 ;	Raw cost for generated ic 125 : (16, 28.000000) count=0.046875
+                                    758 ;	../sincoshf.c: 96: z=x+x*z*P(z)/Q(z);
+                                    759 ;	genCall
+      00037C 20r00r00         [ 6]  760 	jsr	___fsmul
+                                    761 ;	assignResultValue
+      00037F 86*00            [ 3]  762 	stx	*(REGTEMP+0)
+      000381 BA               [ 2]  763 	tsx
+      000382 9D 19 01         [ 5]  764 	sta	0x119,x
+      000385 A5*00            [ 3]  765 	lda	*(REGTEMP+0)
+      000387 9D 1A 01         [ 5]  766 	sta	0x11a,x
+      00038A A5*00            [ 3]  767 	lda	*___SDCC_m6502_ret2
+      00038C 9D 1B 01         [ 5]  768 	sta	0x11b,x
+      00038F A5*00            [ 3]  769 	lda	*___SDCC_m6502_ret3
+      000391 9D 1C 01         [ 5]  770 	sta	0x11c,x
+                                    771 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      000394 8A               [ 2]  772 	txa
+      000395 18               [ 2]  773 	clc
+      000396 69 08            [ 2]  774 	adc	#0x08
+      000398 AA               [ 2]  775 	tax
+      000399 9A               [ 2]  776 	txs
+                                    777 ;	Raw cost for generated ic 126 : (30, 50.000000) count=0.046875
+                                    778 ;	genIpush
+      00039A BD 14 01         [ 5]  779 	lda	0x114,x
+      00039D 48               [ 3]  780 	pha
+      00039E BD 13 01         [ 5]  781 	lda	0x113,x
+      0003A1 48               [ 3]  782 	pha
+      0003A2 BD 12 01         [ 5]  783 	lda	0x112,x
+      0003A5 48               [ 3]  784 	pha
+      0003A6 BD 11 01         [ 5]  785 	lda	0x111,x
+      0003A9 48               [ 3]  786 	pha
+                                    787 ;	Raw cost for generated ic 127 : (16, 28.000000) count=0.046875
+                                    788 ;	genIpush
+      0003AA BD 1F 01         [ 5]  789 	lda	0x11f,x
+      0003AD 48               [ 3]  790 	pha
+      0003AE BD 1E 01         [ 5]  791 	lda	0x11e,x
+      0003B1 48               [ 3]  792 	pha
+      0003B2 BD 1D 01         [ 5]  793 	lda	0x11d,x
+      0003B5 48               [ 3]  794 	pha
+      0003B6 BD 1C 01         [ 5]  795 	lda	0x11c,x
+      0003B9 48               [ 3]  796 	pha
+                                    797 ;	Raw cost for generated ic 128 : (16, 28.000000) count=0.046875
+                                    798 ;	genCall
+      0003BA 20r00r00         [ 6]  799 	jsr	___fsmul
+                                    800 ;	assignResultValue
+      0003BD 86*00            [ 3]  801 	stx	*(REGTEMP+0)
+      0003BF BA               [ 2]  802 	tsx
+      0003C0 9D 1D 01         [ 5]  803 	sta	0x11d,x
+      0003C3 A5*00            [ 3]  804 	lda	*(REGTEMP+0)
+      0003C5 9D 1E 01         [ 5]  805 	sta	0x11e,x
+      0003C8 A5*00            [ 3]  806 	lda	*___SDCC_m6502_ret2
+      0003CA 9D 1F 01         [ 5]  807 	sta	0x11f,x
+      0003CD A5*00            [ 3]  808 	lda	*___SDCC_m6502_ret3
+      0003CF 9D 20 01         [ 5]  809 	sta	0x120,x
+                                    810 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      0003D2 8A               [ 2]  811 	txa
+      0003D3 18               [ 2]  812 	clc
+      0003D4 69 08            [ 2]  813 	adc	#0x08
+      0003D6 AA               [ 2]  814 	tax
+      0003D7 9A               [ 2]  815 	txs
+                                    816 ;	Raw cost for generated ic 129 : (30, 50.000000) count=0.046875
+                                    817 ;	genIpush
+      0003D8 BD 14 01         [ 5]  818 	lda	0x114,x
+      0003DB 48               [ 3]  819 	pha
+      0003DC BD 13 01         [ 5]  820 	lda	0x113,x
+      0003DF 48               [ 3]  821 	pha
+      0003E0 BD 12 01         [ 5]  822 	lda	0x112,x
+      0003E3 48               [ 3]  823 	pha
+      0003E4 BD 11 01         [ 5]  824 	lda	0x111,x
+      0003E7 48               [ 3]  825 	pha
+                                    826 ;	Raw cost for generated ic 130 : (16, 28.000000) count=0.046875
+                                    827 ;	genIpush
+      0003E8 A9 BE            [ 2]  828 	lda	#0xbe
+      0003EA 48               [ 3]  829 	pha
+      0003EB A9 42            [ 2]  830 	lda	#0x42
+      0003ED 48               [ 3]  831 	pha
+      0003EE A9 E6            [ 2]  832 	lda	#0xe6
+      0003F0 48               [ 3]  833 	pha
+      0003F1 A9 EA            [ 2]  834 	lda	#0xea
+      0003F3 48               [ 3]  835 	pha
+                                    836 ;	Raw cost for generated ic 131 : (12, 20.000000) count=0.046875
+                                    837 ;	genCall
+      0003F4 20r00r00         [ 6]  838 	jsr	___fsmul
+                                    839 ;	assignResultValue
+      0003F7 86*00            [ 3]  840 	stx	*(REGTEMP+0)
+      0003F9 BA               [ 2]  841 	tsx
+      0003FA 9D 15 01         [ 5]  842 	sta	0x115,x
+      0003FD A5*00            [ 3]  843 	lda	*(REGTEMP+0)
+      0003FF 9D 16 01         [ 5]  844 	sta	0x116,x
+      000402 A5*00            [ 3]  845 	lda	*___SDCC_m6502_ret2
+      000404 9D 17 01         [ 5]  846 	sta	0x117,x
+      000407 A5*00            [ 3]  847 	lda	*___SDCC_m6502_ret3
+      000409 9D 18 01         [ 5]  848 	sta	0x118,x
+                                    849 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      00040C 8A               [ 2]  850 	txa
+      00040D 18               [ 2]  851 	clc
+      00040E 69 08            [ 2]  852 	adc	#0x08
+      000410 AA               [ 2]  853 	tax
+      000411 9A               [ 2]  854 	txs
+                                    855 ;	Raw cost for generated ic 132 : (30, 50.000000) count=0.046875
+                                    856 ;	genIpush
+      000412 A9 C0            [ 2]  857 	lda	#0xc0
+      000414 48               [ 3]  858 	pha
+      000415 A9 E4            [ 2]  859 	lda	#0xe4
+      000417 48               [ 3]  860 	pha
+      000418 A9 69            [ 2]  861 	lda	#0x69
+      00041A 48               [ 3]  862 	pha
+      00041B A9 F0            [ 2]  863 	lda	#0xf0
+      00041D 48               [ 3]  864 	pha
+                                    865 ;	Raw cost for generated ic 133 : (12, 20.000000) count=0.046875
+                                    866 ;	genIpush
+      00041E BD 10 01         [ 5]  867 	lda	0x110,x
+      000421 48               [ 3]  868 	pha
+      000422 BD 0F 01         [ 5]  869 	lda	0x10f,x
+      000425 48               [ 3]  870 	pha
+      000426 BD 0E 01         [ 5]  871 	lda	0x10e,x
+      000429 48               [ 3]  872 	pha
+      00042A BD 0D 01         [ 5]  873 	lda	0x10d,x
+      00042D 48               [ 3]  874 	pha
+                                    875 ;	Raw cost for generated ic 134 : (16, 28.000000) count=0.046875
+                                    876 ;	genCall
+      00042E 20r00r00         [ 6]  877 	jsr	___fsadd
+                                    878 ;	assignResultValue
+      000431 86*00            [ 3]  879 	stx	*(REGTEMP+0)
+      000433 BA               [ 2]  880 	tsx
+      000434 9D 15 01         [ 5]  881 	sta	0x115,x
+      000437 A5*00            [ 3]  882 	lda	*(REGTEMP+0)
+      000439 9D 16 01         [ 5]  883 	sta	0x116,x
+      00043C A5*00            [ 3]  884 	lda	*___SDCC_m6502_ret2
+      00043E 9D 17 01         [ 5]  885 	sta	0x117,x
+      000441 A5*00            [ 3]  886 	lda	*___SDCC_m6502_ret3
+      000443 9D 18 01         [ 5]  887 	sta	0x118,x
+                                    888 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      000446 8A               [ 2]  889 	txa
+      000447 18               [ 2]  890 	clc
+      000448 69 08            [ 2]  891 	adc	#0x08
+      00044A AA               [ 2]  892 	tax
+      00044B 9A               [ 2]  893 	txs
+                                    894 ;	Raw cost for generated ic 135 : (30, 50.000000) count=0.046875
+                                    895 ;	genIpush
+      00044C BD 10 01         [ 5]  896 	lda	0x110,x
+      00044F 48               [ 3]  897 	pha
+      000450 BD 0F 01         [ 5]  898 	lda	0x10f,x
+      000453 48               [ 3]  899 	pha
+      000454 BD 0E 01         [ 5]  900 	lda	0x10e,x
+      000457 48               [ 3]  901 	pha
+      000458 BD 0D 01         [ 5]  902 	lda	0x10d,x
+      00045B 48               [ 3]  903 	pha
+                                    904 ;	Raw cost for generated ic 136 : (16, 28.000000) count=0.046875
+                                    905 ;	genIpush
+      00045C BD 18 01         [ 5]  906 	lda	0x118,x
+      00045F 48               [ 3]  907 	pha
+      000460 BD 17 01         [ 5]  908 	lda	0x117,x
+      000463 48               [ 3]  909 	pha
+      000464 BD 16 01         [ 5]  910 	lda	0x116,x
+      000467 48               [ 3]  911 	pha
+      000468 BD 15 01         [ 5]  912 	lda	0x115,x
+      00046B 48               [ 3]  913 	pha
+                                    914 ;	Raw cost for generated ic 137 : (16, 28.000000) count=0.046875
+                                    915 ;	genCall
+      00046C 20r00r00         [ 6]  916 	jsr	___fsmul
+                                    917 ;	assignResultValue
+      00046F 86*00            [ 3]  918 	stx	*(REGTEMP+0)
+      000471 BA               [ 2]  919 	tsx
+      000472 9D 15 01         [ 5]  920 	sta	0x115,x
+      000475 A5*00            [ 3]  921 	lda	*(REGTEMP+0)
+      000477 9D 16 01         [ 5]  922 	sta	0x116,x
+      00047A A5*00            [ 3]  923 	lda	*___SDCC_m6502_ret2
+      00047C 9D 17 01         [ 5]  924 	sta	0x117,x
+      00047F A5*00            [ 3]  925 	lda	*___SDCC_m6502_ret3
+      000481 9D 18 01         [ 5]  926 	sta	0x118,x
+                                    927 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      000484 8A               [ 2]  928 	txa
+      000485 18               [ 2]  929 	clc
+      000486 69 08            [ 2]  930 	adc	#0x08
+      000488 AA               [ 2]  931 	tax
+      000489 9A               [ 2]  932 	txs
+                                    933 ;	Raw cost for generated ic 138 : (30, 50.000000) count=0.046875
+                                    934 ;	genIpush
+      00048A A9 C2            [ 2]  935 	lda	#0xc2
+      00048C 48               [ 3]  936 	pha
+      00048D A9 2B            [ 2]  937 	lda	#0x2b
+      00048F 48               [ 3]  938 	pha
+      000490 A9 4F            [ 2]  939 	lda	#0x4f
+      000492 48               [ 3]  940 	pha
+      000493 A9 93            [ 2]  941 	lda	#0x93
+      000495 48               [ 3]  942 	pha
+                                    943 ;	Raw cost for generated ic 139 : (12, 20.000000) count=0.046875
+                                    944 ;	genIpush
+      000496 BD 14 01         [ 5]  945 	lda	0x114,x
+      000499 48               [ 3]  946 	pha
+      00049A BD 13 01         [ 5]  947 	lda	0x113,x
+      00049D 48               [ 3]  948 	pha
+      00049E BD 12 01         [ 5]  949 	lda	0x112,x
+      0004A1 48               [ 3]  950 	pha
+      0004A2 BD 11 01         [ 5]  951 	lda	0x111,x
+      0004A5 48               [ 3]  952 	pha
+                                    953 ;	Raw cost for generated ic 140 : (16, 28.000000) count=0.046875
+                                    954 ;	genCall
+      0004A6 20r00r00         [ 6]  955 	jsr	___fsadd
+                                    956 ;	assignResultValue
+      0004A9 86*00            [ 3]  957 	stx	*(REGTEMP+0)
+      0004AB BA               [ 2]  958 	tsx
+      0004AC 9D 19 01         [ 5]  959 	sta	0x119,x
+      0004AF A5*00            [ 3]  960 	lda	*(REGTEMP+0)
+      0004B1 9D 1A 01         [ 5]  961 	sta	0x11a,x
+      0004B4 A5*00            [ 3]  962 	lda	*___SDCC_m6502_ret2
+      0004B6 9D 1B 01         [ 5]  963 	sta	0x11b,x
+      0004B9 A5*00            [ 3]  964 	lda	*___SDCC_m6502_ret3
+      0004BB 9D 1C 01         [ 5]  965 	sta	0x11c,x
+                                    966 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      0004BE 8A               [ 2]  967 	txa
+      0004BF 18               [ 2]  968 	clc
+      0004C0 69 08            [ 2]  969 	adc	#0x08
+      0004C2 AA               [ 2]  970 	tax
+      0004C3 9A               [ 2]  971 	txs
+                                    972 ;	Raw cost for generated ic 141 : (30, 50.000000) count=0.046875
+                                    973 ;	genIpush
+      0004C4 BD 14 01         [ 5]  974 	lda	0x114,x
+      0004C7 48               [ 3]  975 	pha
+      0004C8 BD 13 01         [ 5]  976 	lda	0x113,x
+      0004CB 48               [ 3]  977 	pha
+      0004CC BD 12 01         [ 5]  978 	lda	0x112,x
+      0004CF 48               [ 3]  979 	pha
+      0004D0 BD 11 01         [ 5]  980 	lda	0x111,x
+      0004D3 48               [ 3]  981 	pha
+                                    982 ;	Raw cost for generated ic 142 : (16, 28.000000) count=0.046875
+                                    983 ;	genIpush
+      0004D4 BD 10 01         [ 5]  984 	lda	0x110,x
+      0004D7 48               [ 3]  985 	pha
+      0004D8 BD 0F 01         [ 5]  986 	lda	0x10f,x
+      0004DB 48               [ 3]  987 	pha
+      0004DC BD 0E 01         [ 5]  988 	lda	0x10e,x
+      0004DF 48               [ 3]  989 	pha
+      0004E0 BD 0D 01         [ 5]  990 	lda	0x10d,x
+      0004E3 48               [ 3]  991 	pha
+                                    992 ;	Raw cost for generated ic 143 : (16, 28.000000) count=0.046875
+                                    993 ;	genCall
+      0004E4 20r00r00         [ 6]  994 	jsr	___fsdiv
+                                    995 ;	assignResultValue
+      0004E7 86*00            [ 3]  996 	stx	*(REGTEMP+0)
+      0004E9 BA               [ 2]  997 	tsx
+      0004EA 9D 15 01         [ 5]  998 	sta	0x115,x
+      0004ED A5*00            [ 3]  999 	lda	*(REGTEMP+0)
+      0004EF 9D 16 01         [ 5] 1000 	sta	0x116,x
+      0004F2 A5*00            [ 3] 1001 	lda	*___SDCC_m6502_ret2
+      0004F4 9D 17 01         [ 5] 1002 	sta	0x117,x
+      0004F7 A5*00            [ 3] 1003 	lda	*___SDCC_m6502_ret3
+      0004F9 9D 18 01         [ 5] 1004 	sta	0x118,x
+                                   1005 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      0004FC 8A               [ 2] 1006 	txa
+      0004FD 18               [ 2] 1007 	clc
+      0004FE 69 08            [ 2] 1008 	adc	#0x08
+      000500 AA               [ 2] 1009 	tax
+      000501 9A               [ 2] 1010 	txs
+                                   1011 ;	Raw cost for generated ic 144 : (30, 50.000000) count=0.046875
+                                   1012 ;	genIpush
+      000502 BD 10 01         [ 5] 1013 	lda	0x110,x
+      000505 48               [ 3] 1014 	pha
+      000506 BD 0F 01         [ 5] 1015 	lda	0x10f,x
+      000509 48               [ 3] 1016 	pha
+      00050A BD 0E 01         [ 5] 1017 	lda	0x10e,x
+      00050D 48               [ 3] 1018 	pha
+      00050E BD 0D 01         [ 5] 1019 	lda	0x10d,x
+      000511 48               [ 3] 1020 	pha
+                                   1021 ;	Raw cost for generated ic 145 : (16, 28.000000) count=0.046875
+                                   1022 ;	genIpush
+      000512 BD 1F 01         [ 5] 1023 	lda	0x11f,x
+      000515 48               [ 3] 1024 	pha
+      000516 BD 1E 01         [ 5] 1025 	lda	0x11e,x
+      000519 48               [ 3] 1026 	pha
+      00051A BD 1D 01         [ 5] 1027 	lda	0x11d,x
+      00051D 48               [ 3] 1028 	pha
+      00051E BD 1C 01         [ 5] 1029 	lda	0x11c,x
+      000521 48               [ 3] 1030 	pha
+                                   1031 ;	Raw cost for generated ic 146 : (16, 28.000000) count=0.046875
+                                   1032 ;	genCall
+      000522 20r00r00         [ 6] 1033 	jsr	___fsadd
+                                   1034 ;	assignResultValue
+      000525 86*00            [ 3] 1035 	stx	*(REGTEMP+0)
+      000527 BA               [ 2] 1036 	tsx
+      000528 9D 09 01         [ 5] 1037 	sta	0x109,x
+      00052B A5*00            [ 3] 1038 	lda	*(REGTEMP+0)
+      00052D 9D 0A 01         [ 5] 1039 	sta	0x10a,x
+      000530 A5*00            [ 3] 1040 	lda	*___SDCC_m6502_ret2
+      000532 9D 0B 01         [ 5] 1041 	sta	0x10b,x
+      000535 A5*00            [ 3] 1042 	lda	*___SDCC_m6502_ret3
+      000537 9D 0C 01         [ 5] 1043 	sta	0x10c,x
+                                   1044 ;	  adjustStack : cycles stk:32  incdec:18  adc:10
+      00053A 8A               [ 2] 1045 	txa
+      00053B 18               [ 2] 1046 	clc
+      00053C 69 08            [ 2] 1047 	adc	#0x08
+      00053E AA               [ 2] 1048 	tax
+      00053F 9A               [ 2] 1049 	txs
+                                   1050 ;	Raw cost for generated ic 147 : (30, 50.000000) count=0.046875
+                                   1051 ;	genLabel
+      000540                       1052 00119$:
+                                   1053 ;	Raw cost for generated ic 87 : (0, 0.000000) count=1.000000
+                                   1054 ;	../sincoshf.c: 99: return z;
+                                   1055 ;	genRet
+      000540 BA               [ 2] 1056 	tsx
+      000541 BD 04 01         [ 5] 1057 	lda	0x104,x
+      000544 85*00            [ 3] 1058 	sta	*___SDCC_m6502_ret3
+      000546 BD 03 01         [ 5] 1059 	lda	0x103,x
+      000549 85*00            [ 3] 1060 	sta	*___SDCC_m6502_ret2
+      00054B BD 02 01         [ 5] 1061 	lda	0x102,x
+      00054E 85*00            [ 3] 1062 	sta	*(REGTEMP+0)
+      000550 BD 01 01         [ 5] 1063 	lda	0x101,x
+                                   1064 ;	Raw cost for generated ic 88 : (21, 30.000000) count=1.000000
+                                   1065 ;	genLabel
+                                   1066 ;	Raw cost for generated ic 89 : (0, 0.000000) count=1.000000
+                                   1067 ;	../sincoshf.c: 100: }
+                                   1068 ;	genEndFunction
+                                   1069 ;	  adjustStack : cycles stk:106  incdec:60  adc:24
+      000553 A6*00            [ 3] 1070 	ldx	*(REGTEMP+0)
+      000555 85*01            [ 3] 1071 	sta	*(REGTEMP+1)
+      000557 BA               [ 2] 1072 	tsx
+      000558 8A               [ 2] 1073 	txa
+      000559 18               [ 2] 1074 	clc
+      00055A 69 19            [ 2] 1075 	adc	#0x19
+      00055C AA               [ 2] 1076 	tax
+      00055D 9A               [ 2] 1077 	txs
+      00055E A5*01            [ 3] 1078 	lda	*(REGTEMP+1)
+      000560 A6*00            [ 3] 1079 	ldx	*(REGTEMP+0)
+      000562 60               [ 6] 1080 	rts
+                                   1081 ;	Raw cost for generated ic 90 : (16, 30.000000) count=1.000000
+                                   1082 	.area CODE
+                                   1083 	.area RODATA
+                                   1084 	.area XINIT
+                                   1085 	.area CABS    (ABS)

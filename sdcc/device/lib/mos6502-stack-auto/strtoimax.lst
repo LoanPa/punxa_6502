@@ -1,0 +1,181 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module strtoimax
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _strtoll
+                                     27 	.globl _strtoimax
+                                     28 ;--------------------------------------------------------
+                                     29 ; ZP ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area ZP      (PAG)
+                                     32 ;--------------------------------------------------------
+                                     33 ; overlayable items in ram
+                                     34 ;--------------------------------------------------------
+                                     35 ;--------------------------------------------------------
+                                     36 ; uninitialized external ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area BSS
+                                     39 ;--------------------------------------------------------
+                                     40 ; absolute external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area DABS    (ABS)
+                                     43 ;--------------------------------------------------------
+                                     44 ; initialized external ram data
+                                     45 ;--------------------------------------------------------
+                                     46 	.area DATA
+                                     47 ;--------------------------------------------------------
+                                     48 ; global & static initialisations
+                                     49 ;--------------------------------------------------------
+                                     50 	.area _CODE
+                                     51 	.area GSINIT
+                                     52 	.area GSFINAL
+                                     53 	.area GSINIT
+                                     54 ;--------------------------------------------------------
+                                     55 ; Home
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _CODE
+                                     58 	.area _CODE
+                                     59 ;--------------------------------------------------------
+                                     60 ; code
+                                     61 ;--------------------------------------------------------
+                                     62 	.area CODE
+                                     63 ;------------------------------------------------------------
+                                     64 ;Allocation info for local variables in function 'strtoimax'
+                                     65 ;------------------------------------------------------------
+                                     66 ;endptr        Allocated to stack - sp +13 +2 
+                                     67 ;base          Allocated to stack - sp +15 +2 
+                                     68 ;nptr          Allocated to stack - sp +9 +2 
+                                     69 ;sloc0         Allocated to stack - sp +1 +8 
+                                     70 ;------------------------------------------------------------
+                                     71 ;	../strtoimax.c: 32: intmax_t strtoimax(const char * restrict nptr, char ** restrict endptr, int base)
+                                     72 ;	genLabel
+                                     73 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     74 ;	-----------------------------------------
+                                     75 ;	 function strtoimax
+                                     76 ;	-----------------------------------------
+                                     77 ;	Register assignment is optimal.
+                                     78 ;	Stack space usage: 10 bytes.
+      000000                         79 _strtoimax:
+                                     80 ;	genReceive: size=2
+                                     81 ;	pushreg: ofs=1
+      000000 85*00            [ 3]   82 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   83 	txa
+      000003 48               [ 3]   84 	pha
+      000004 A5*00            [ 3]   85 	lda	*(REGTEMP+0)
+                                     86 ;	pushreg: ofs=0
+      000006 48               [ 3]   87 	pha
+                                     88 ;	  adjustStack : cycles stk:24  incdec:20  adc:12
+      000007 BA               [ 2]   89 	tsx
+      000008 8A               [ 2]   90 	txa
+      000009 18               [ 2]   91 	clc
+      00000A 69 F8            [ 2]   92 	adc	#0xf8
+      00000C AA               [ 2]   93 	tax
+      00000D 9A               [ 2]   94 	txs
+                                     95 ;	Raw cost for generated ic 1 : (14, 26.000000) count=1.000000
+                                     96 ;	skipping generated iCode
+                                     97 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     98 ;	../strtoimax.c: 35: return strtoll(nptr, endptr, base);
+                                     99 ;	genIpush
+      00000E BD 10 01         [ 5]  100 	lda	0x110,x
+      000011 48               [ 3]  101 	pha
+      000012 BD 0F 01         [ 5]  102 	lda	0x10f,x
+      000015 48               [ 3]  103 	pha
+                                    104 ;	Raw cost for generated ic 3 : (8, 14.000000) count=1.000000
+                                    105 ;	genIpush
+      000016 BD 0E 01         [ 5]  106 	lda	0x10e,x
+      000019 48               [ 3]  107 	pha
+      00001A BD 0D 01         [ 5]  108 	lda	0x10d,x
+      00001D 48               [ 3]  109 	pha
+                                    110 ;	Raw cost for generated ic 4 : (8, 14.000000) count=1.000000
+                                    111 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                    112 ;	genCall
+                                    113 ;	genSend
+      00001E BD 09 01         [ 5]  114 	lda	0x109,x
+      000021 A8               [ 2]  115 	tay
+      000022 BD 0A 01         [ 5]  116 	lda	0x10a,x
+      000025 AA               [ 2]  117 	tax
+      000026 98               [ 2]  118 	tya
+      000027 20r00r00         [ 6]  119 	jsr	_strtoll
+                                    120 ;	assignResultValue
+      00002A 86*00            [ 3]  121 	stx	*(REGTEMP+0)
+      00002C BA               [ 2]  122 	tsx
+      00002D 9D 05 01         [ 5]  123 	sta	0x105,x
+      000030 A5*00            [ 3]  124 	lda	*(REGTEMP+0)
+      000032 9D 06 01         [ 5]  125 	sta	0x106,x
+      000035 A5*00            [ 3]  126 	lda	*___SDCC_m6502_ret2
+      000037 9D 07 01         [ 5]  127 	sta	0x107,x
+      00003A A5*00            [ 3]  128 	lda	*___SDCC_m6502_ret3
+      00003C 9D 08 01         [ 5]  129 	sta	0x108,x
+      00003F A5*00            [ 3]  130 	lda	*___SDCC_m6502_ret4
+      000041 9D 09 01         [ 5]  131 	sta	0x109,x
+      000044 A5*00            [ 3]  132 	lda	*___SDCC_m6502_ret5
+      000046 9D 0A 01         [ 5]  133 	sta	0x10a,x
+      000049 A5*00            [ 3]  134 	lda	*___SDCC_m6502_ret6
+      00004B 9D 0B 01         [ 5]  135 	sta	0x10b,x
+      00004E A5*00            [ 3]  136 	lda	*___SDCC_m6502_ret7
+      000050 9D 0C 01         [ 5]  137 	sta	0x10c,x
+                                    138 ;	  adjustStack : cycles stk:16  incdec:10  adc:10
+      000053 E8               [ 2]  139 	inx
+      000054 E8               [ 2]  140 	inx
+      000055 E8               [ 2]  141 	inx
+      000056 E8               [ 2]  142 	inx
+      000057 9A               [ 2]  143 	txs
+                                    144 ;	Raw cost for generated ic 6 : (58, 96.000000) count=1.000000
+                                    145 ;	genRet
+      000058 85*00            [ 3]  146 	sta	*___SDCC_m6502_ret7
+      00005A BD 07 01         [ 5]  147 	lda	0x107,x
+      00005D 85*00            [ 3]  148 	sta	*___SDCC_m6502_ret6
+      00005F BD 06 01         [ 5]  149 	lda	0x106,x
+      000062 85*00            [ 3]  150 	sta	*___SDCC_m6502_ret5
+      000064 BD 05 01         [ 5]  151 	lda	0x105,x
+      000067 85*00            [ 3]  152 	sta	*___SDCC_m6502_ret4
+      000069 BD 04 01         [ 5]  153 	lda	0x104,x
+      00006C 85*00            [ 3]  154 	sta	*___SDCC_m6502_ret3
+      00006E BD 03 01         [ 5]  155 	lda	0x103,x
+      000071 85*00            [ 3]  156 	sta	*___SDCC_m6502_ret2
+      000073 BD 02 01         [ 5]  157 	lda	0x102,x
+      000076 85*00            [ 3]  158 	sta	*(REGTEMP+0)
+      000078 BD 01 01         [ 5]  159 	lda	0x101,x
+                                    160 ;	Raw cost for generated ic 7 : (37, 52.000000) count=1.000000
+                                    161 ;	genLabel
+                                    162 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    163 ;	../strtoimax.c: 39: }
+                                    164 ;	genEndFunction
+                                    165 ;	  adjustStack : cycles stk:46  incdec:30  adc:24
+      00007B A6*00            [ 3]  166 	ldx	*(REGTEMP+0)
+      00007D 85*01            [ 3]  167 	sta	*(REGTEMP+1)
+      00007F BA               [ 2]  168 	tsx
+      000080 8A               [ 2]  169 	txa
+      000081 18               [ 2]  170 	clc
+      000082 69 0A            [ 2]  171 	adc	#0x0a
+      000084 AA               [ 2]  172 	tax
+      000085 9A               [ 2]  173 	txs
+      000086 A5*01            [ 3]  174 	lda	*(REGTEMP+1)
+      000088 A6*00            [ 3]  175 	ldx	*(REGTEMP+0)
+      00008A 60               [ 6]  176 	rts
+                                    177 ;	Raw cost for generated ic 9 : (16, 30.000000) count=1.000000
+                                    178 	.area CODE
+                                    179 	.area RODATA
+                                    180 	.area XINIT
+                                    181 	.area CABS    (ABS)

@@ -1,0 +1,317 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module ldexpf
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _ldexpf
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'ldexpf'
+                                     64 ;------------------------------------------------------------
+                                     65 ;x             Allocated to stack - sp +19 +4 
+                                     66 ;pw2           Allocated to stack - sp +23 +2 
+                                     67 ;fl            Allocated to stack - sp +1 +4 
+                                     68 ;e             Allocated to stack - sp +9 +4 
+                                     69 ;sloc0         Allocated to stack - sp +15 +2 
+                                     70 ;sloc1         Allocated to stack - sp +13 +2 
+                                     71 ;sloc2         Allocated to stack - sp +9 +4 
+                                     72 ;sloc3         Allocated to stack - sp +5 +4 
+                                     73 ;------------------------------------------------------------
+                                     74 ;	../ldexpf.c: 34: float ldexpf(float x, int pw2)
+                                     75 ;	genLabel
+                                     76 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     77 ;	-----------------------------------------
+                                     78 ;	 function ldexpf
+                                     79 ;	-----------------------------------------
+                                     80 ;	Register assignment is optimal.
+                                     81 ;	Stack space usage: 16 bytes.
+      000000                         82 _ldexpf:
+                                     83 ;	  adjustStack : cycles stk:48  incdec:36  adc:12
+      000000 BA               [ 2]   84 	tsx
+      000001 8A               [ 2]   85 	txa
+      000002 18               [ 2]   86 	clc
+      000003 69 F0            [ 2]   87 	adc	#0xf0
+      000005 AA               [ 2]   88 	tax
+      000006 9A               [ 2]   89 	txs
+                                     90 ;	Raw cost for generated ic 1 : (7, 12.000000) count=1.000000
+                                     91 ;	../ldexpf.c: 39: fl.f = x;
+                                     92 ;	genAddrOf
+      000007 E8               [ 2]   93 	inx
+      000008 8A               [ 2]   94 	txa
+      000009 9D 0E 01         [ 5]   95 	sta	0x10e,x
+      00000C A9 01            [ 2]   96 	lda	#0x01
+      00000E 9D 0F 01         [ 5]   97 	sta	0x10f,x
+                                     98 ;	Raw cost for generated ic 2 : (10, 16.000000) count=1.000000
+                                     99 ;	genCast
+                                    100 ;	genCopy
+      000011 BD 0F 01         [ 5]  101 	lda	0x10f,x
+      000014 9D 0D 01         [ 5]  102 	sta	0x10d,x
+      000017 BD 0E 01         [ 5]  103 	lda	0x10e,x
+      00001A 9D 0C 01         [ 5]  104 	sta	0x10c,x
+                                    105 ;	Raw cost for generated ic 3 : (12, 18.000000) count=1.000000
+                                    106 ;	genPointerSet
+                                    107 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00001D 85*00            [ 3]  108 	sta	*(DPTR+0)
+      00001F BD 0D 01         [ 5]  109 	lda	0x10d,x
+      000022 85*01            [ 3]  110 	sta	*(DPTR+1)
+      000024 BD 12 01         [ 5]  111 	lda	0x112,x
+      000027 A0 00            [ 2]  112 	ldy	#0x00
+      000029 91*00            [ 6]  113 	sta	[DPTR],y
+      00002B BD 13 01         [ 5]  114 	lda	0x113,x
+      00002E C8               [ 2]  115 	iny
+      00002F 91*00            [ 6]  116 	sta	[DPTR],y
+      000031 BD 14 01         [ 5]  117 	lda	0x114,x
+      000034 C8               [ 2]  118 	iny
+      000035 91*00            [ 6]  119 	sta	[DPTR],y
+      000037 BD 15 01         [ 5]  120 	lda	0x115,x
+      00003A C8               [ 2]  121 	iny
+      00003B 91*00            [ 6]  122 	sta	[DPTR],y
+                                    123 ;	Raw cost for generated ic 4 : (32, 58.000000) count=1.000000
+                                    124 ;	../ldexpf.c: 41: e=(fl.l >> 23) & 0x000000ff;
+                                    125 ;	genCast
+                                    126 ;	genCopy
+                                    127 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    128 ;	genPointerGet
+                                    129 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00003D BD 0E 01         [ 5]  130 	lda	0x10e,x
+      000040 85*00            [ 3]  131 	sta	*(DPTR+0)
+      000042 BD 0F 01         [ 5]  132 	lda	0x10f,x
+      000045 85*01            [ 3]  133 	sta	*(DPTR+1)
+      000047 A0 00            [ 2]  134 	ldy	#0x00
+      000049 B1*00            [ 6]  135 	lda	[DPTR],y
+      00004B 9D 08 01         [ 5]  136 	sta	0x108,x
+      00004E C8               [ 2]  137 	iny
+      00004F B1*00            [ 6]  138 	lda	[DPTR],y
+      000051 9D 09 01         [ 5]  139 	sta	0x109,x
+      000054 C8               [ 2]  140 	iny
+      000055 B1*00            [ 6]  141 	lda	[DPTR],y
+      000057 9D 0A 01         [ 5]  142 	sta	0x10a,x
+      00005A C8               [ 2]  143 	iny
+      00005B B1*00            [ 6]  144 	lda	[DPTR],y
+      00005D 9D 0B 01         [ 5]  145 	sta	0x10b,x
+                                    146 ;	Raw cost for generated ic 7 : (35, 62.000000) count=1.000000
+                                    147 ;	genRightShift
+                                    148 ;	genRightShiftLiteral
+                                    149 ;	  genrsh32 - shift=23
+      000060 BD 0A 01         [ 5]  150 	lda	0x10a,x
+      000063 2A               [ 2]  151 	rol	a
+      000064 BD 0B 01         [ 5]  152 	lda	0x10b,x
+      000067 2A               [ 2]  153 	rol	a
+      000068 9D 08 01         [ 5]  154 	sta	0x108,x
+      00006B A9 00            [ 2]  155 	lda	#0x00
+      00006D 69 FF            [ 2]  156 	adc	#0xff
+      00006F 49 FF            [ 2]  157 	eor	#0xff
+      000071 9D 09 01         [ 5]  158 	sta	0x109,x
+      000074 9D 0A 01         [ 5]  159 	sta	0x10a,x
+      000077 9D 0B 01         [ 5]  160 	sta	0x10b,x
+                                    161 ;	Raw cost for generated ic 8 : (26, 38.000000) count=1.000000
+                                    162 ;	genAnd
+      00007A A9 00            [ 2]  163 	lda	#0x00
+      00007C 9D 09 01         [ 5]  164 	sta	0x109,x
+      00007F 9D 0A 01         [ 5]  165 	sta	0x10a,x
+      000082 9D 0B 01         [ 5]  166 	sta	0x10b,x
+                                    167 ;	Raw cost for generated ic 9 : (11, 17.000000) count=1.000000
+                                    168 ;	../ldexpf.c: 42: e+=pw2;
+                                    169 ;	genCast
+      000085 BD 16 01         [ 5]  170 	lda	0x116,x
+      000088 9D 04 01         [ 5]  171 	sta	0x104,x
+      00008B BD 17 01         [ 5]  172 	lda	0x117,x
+      00008E 9D 05 01         [ 5]  173 	sta	0x105,x
+      000091 0A               [ 2]  174 	asl	a
+      000092 A9 00            [ 2]  175 	lda	#0x00
+      000094 69 FF            [ 2]  176 	adc	#0xff
+      000096 49 FF            [ 2]  177 	eor	#0xff
+      000098 9D 06 01         [ 5]  178 	sta	0x106,x
+      00009B 9D 07 01         [ 5]  179 	sta	0x107,x
+                                    180 ;	Raw cost for generated ic 11 : (25, 36.000000) count=1.000000
+                                    181 ;	genPlus
+      00009E BD 08 01         [ 5]  182 	lda	0x108,x
+      0000A1 18               [ 2]  183 	clc
+      0000A2 7D 04 01         [ 5]  184 	adc	0x104,x
+      0000A5 9D 04 01         [ 5]  185 	sta	0x104,x
+      0000A8 BD 09 01         [ 5]  186 	lda	0x109,x
+      0000AB 7D 05 01         [ 5]  187 	adc	0x105,x
+      0000AE 9D 05 01         [ 5]  188 	sta	0x105,x
+      0000B1 BD 0A 01         [ 5]  189 	lda	0x10a,x
+      0000B4 7D 06 01         [ 5]  190 	adc	0x106,x
+      0000B7 9D 06 01         [ 5]  191 	sta	0x106,x
+      0000BA BD 0B 01         [ 5]  192 	lda	0x10b,x
+      0000BD 7D 07 01         [ 5]  193 	adc	0x107,x
+      0000C0 9D 07 01         [ 5]  194 	sta	0x107,x
+                                    195 ;	Raw cost for generated ic 12 : (37, 54.000000) count=1.000000
+                                    196 ;	../ldexpf.c: 43: fl.l= ((e & 0xff) << 23) | (fl.l & 0x807fffff);
+                                    197 ;	genAnd
+      0000C3 A9 00            [ 2]  198 	lda	#0x00
+      0000C5 9D 05 01         [ 5]  199 	sta	0x105,x
+      0000C8 9D 06 01         [ 5]  200 	sta	0x106,x
+      0000CB 9D 07 01         [ 5]  201 	sta	0x107,x
+                                    202 ;	Raw cost for generated ic 16 : (11, 17.000000) count=1.000000
+                                    203 ;	genLeftShift
+                                    204 ;	genLeftShiftLiteral
+                                    205 ;	  genlsh32 - shift=23
+      0000CE BD 05 01         [ 5]  206 	lda	0x105,x
+      0000D1 4A               [ 2]  207 	lsr	a
+      0000D2 BD 04 01         [ 5]  208 	lda	0x104,x
+      0000D5 6A               [ 2]  209 	ror	a
+      0000D6 9D 07 01         [ 5]  210 	sta	0x107,x
+      0000D9 A9 00            [ 2]  211 	lda	#0x00
+      0000DB 9D 05 01         [ 5]  212 	sta	0x105,x
+      0000DE 9D 04 01         [ 5]  213 	sta	0x104,x
+      0000E1 6A               [ 2]  214 	ror	a
+      0000E2 9D 06 01         [ 5]  215 	sta	0x106,x
+                                    216 ;	Raw cost for generated ic 17 : (23, 36.000000) count=1.000000
+                                    217 ;	genPointerGet
+                                    218 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0000E5 A0 00            [ 2]  219 	ldy	#0x00
+      0000E7 B1*00            [ 6]  220 	lda	[DPTR],y
+      0000E9 9D 08 01         [ 5]  221 	sta	0x108,x
+      0000EC C8               [ 2]  222 	iny
+      0000ED B1*00            [ 6]  223 	lda	[DPTR],y
+      0000EF 9D 09 01         [ 5]  224 	sta	0x109,x
+      0000F2 C8               [ 2]  225 	iny
+      0000F3 B1*00            [ 6]  226 	lda	[DPTR],y
+      0000F5 9D 0A 01         [ 5]  227 	sta	0x10a,x
+      0000F8 C8               [ 2]  228 	iny
+      0000F9 B1*00            [ 6]  229 	lda	[DPTR],y
+      0000FB 9D 0B 01         [ 5]  230 	sta	0x10b,x
+                                    231 ;	Raw cost for generated ic 20 : (25, 48.000000) count=1.000000
+                                    232 ;	genAnd
+      0000FE BD 0A 01         [ 5]  233 	lda	0x10a,x
+      000101 29 7F            [ 2]  234 	and	#0x7f
+      000103 9D 0A 01         [ 5]  235 	sta	0x10a,x
+      000106 BD 0B 01         [ 5]  236 	lda	0x10b,x
+      000109 29 80            [ 2]  237 	and	#0x80
+      00010B 9D 0B 01         [ 5]  238 	sta	0x10b,x
+                                    239 ;	Raw cost for generated ic 21 : (16, 22.000000) count=1.000000
+                                    240 ;	genOr
+      00010E BD 04 01         [ 5]  241 	lda	0x104,x
+      000111 1D 08 01         [ 5]  242 	ora	0x108,x
+      000114 9D 04 01         [ 5]  243 	sta	0x104,x
+      000117 BD 05 01         [ 5]  244 	lda	0x105,x
+      00011A 1D 09 01         [ 5]  245 	ora	0x109,x
+      00011D 9D 05 01         [ 5]  246 	sta	0x105,x
+      000120 BD 06 01         [ 5]  247 	lda	0x106,x
+      000123 1D 0A 01         [ 5]  248 	ora	0x10a,x
+      000126 9D 06 01         [ 5]  249 	sta	0x106,x
+      000129 BD 07 01         [ 5]  250 	lda	0x107,x
+      00012C 1D 0B 01         [ 5]  251 	ora	0x10b,x
+      00012F 9D 07 01         [ 5]  252 	sta	0x107,x
+                                    253 ;	Raw cost for generated ic 22 : (36, 52.000000) count=1.000000
+                                    254 ;	genPointerSet
+                                    255 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000132 BD 04 01         [ 5]  256 	lda	0x104,x
+      000135 A0 00            [ 2]  257 	ldy	#0x00
+      000137 91*00            [ 6]  258 	sta	[DPTR],y
+      000139 BD 05 01         [ 5]  259 	lda	0x105,x
+      00013C C8               [ 2]  260 	iny
+      00013D 91*00            [ 6]  261 	sta	[DPTR],y
+      00013F BD 06 01         [ 5]  262 	lda	0x106,x
+      000142 C8               [ 2]  263 	iny
+      000143 91*00            [ 6]  264 	sta	[DPTR],y
+      000145 BD 07 01         [ 5]  265 	lda	0x107,x
+      000148 C8               [ 2]  266 	iny
+      000149 91*00            [ 6]  267 	sta	[DPTR],y
+                                    268 ;	Raw cost for generated ic 23 : (25, 48.000000) count=1.000000
+                                    269 ;	../ldexpf.c: 45: return(fl.f);
+                                    270 ;	genPointerGet
+                                    271 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00014B BD 0C 01         [ 5]  272 	lda	0x10c,x
+      00014E 85*00            [ 3]  273 	sta	*(DPTR+0)
+      000150 BD 0D 01         [ 5]  274 	lda	0x10d,x
+      000153 85*01            [ 3]  275 	sta	*(DPTR+1)
+      000155 A0 00            [ 2]  276 	ldy	#0x00
+      000157 B1*00            [ 6]  277 	lda	[DPTR],y
+      000159 9D 04 01         [ 5]  278 	sta	0x104,x
+      00015C C8               [ 2]  279 	iny
+      00015D B1*00            [ 6]  280 	lda	[DPTR],y
+      00015F 9D 05 01         [ 5]  281 	sta	0x105,x
+      000162 C8               [ 2]  282 	iny
+      000163 B1*00            [ 6]  283 	lda	[DPTR],y
+      000165 9D 06 01         [ 5]  284 	sta	0x106,x
+      000168 C8               [ 2]  285 	iny
+      000169 B1*00            [ 6]  286 	lda	[DPTR],y
+      00016B 9D 07 01         [ 5]  287 	sta	0x107,x
+                                    288 ;	Raw cost for generated ic 26 : (35, 62.000000) count=1.000000
+                                    289 ;	genRet
+      00016E 85*00            [ 3]  290 	sta	*___SDCC_m6502_ret3
+      000170 BD 06 01         [ 5]  291 	lda	0x106,x
+      000173 85*00            [ 3]  292 	sta	*___SDCC_m6502_ret2
+      000175 BD 05 01         [ 5]  293 	lda	0x105,x
+      000178 85*00            [ 3]  294 	sta	*(REGTEMP+0)
+      00017A BD 04 01         [ 5]  295 	lda	0x104,x
+                                    296 ;	Raw cost for generated ic 27 : (17, 24.000000) count=1.000000
+                                    297 ;	genLabel
+                                    298 ;	Raw cost for generated ic 28 : (0, 0.000000) count=1.000000
+                                    299 ;	../ldexpf.c: 46: }
+                                    300 ;	genEndFunction
+                                    301 ;	  adjustStack : cycles stk:70  incdec:42  adc:24
+      00017D A6*00            [ 3]  302 	ldx	*(REGTEMP+0)
+      00017F 85*01            [ 3]  303 	sta	*(REGTEMP+1)
+      000181 BA               [ 2]  304 	tsx
+      000182 8A               [ 2]  305 	txa
+      000183 18               [ 2]  306 	clc
+      000184 69 10            [ 2]  307 	adc	#0x10
+      000186 AA               [ 2]  308 	tax
+      000187 9A               [ 2]  309 	txs
+      000188 A5*01            [ 3]  310 	lda	*(REGTEMP+1)
+      00018A A6*00            [ 3]  311 	ldx	*(REGTEMP+0)
+      00018C 60               [ 6]  312 	rts
+                                    313 ;	Raw cost for generated ic 29 : (16, 30.000000) count=1.000000
+                                    314 	.area CODE
+                                    315 	.area RODATA
+                                    316 	.area XINIT
+                                    317 	.area CABS    (ABS)

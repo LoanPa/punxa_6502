@@ -1,0 +1,130 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module abs
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _abs
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'abs'
+                                     64 ;------------------------------------------------------------
+                                     65 ;j             Allocated to registers a x 
+                                     66 ;------------------------------------------------------------
+                                     67 ;	../abs.c: 54: int abs(int j)
+                                     68 ;	genLabel
+                                     69 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     70 ;	-----------------------------------------
+                                     71 ;	 function abs
+                                     72 ;	-----------------------------------------
+                                     73 ;	Register assignment is optimal.
+                                     74 ;	Stack space usage: 0 bytes.
+      000000                         75 _abs:
+                                     76 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     77 ;	genReceive
+                                     78 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     79 ;	../abs.c: 56: return (j < 0) ? -j : j;
+                                     80 ;	genCmp
+      000000 85*00            [ 3]   81 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   82 	txa
+      000003 38               [ 2]   83 	sec
+      000004 E9 00            [ 2]   84 	sbc	#0x00
+      000006 08               [ 3]   85 	php
+      000007 A5*00            [ 3]   86 	lda	*(REGTEMP+0)
+      000009 28               [ 4]   87 	plp
+      00000A 50 04            [ 4]   88 	bvc	00112$
+      00000C 10 05            [ 4]   89 	bpl	00111$
+      00000E 30 11            [ 4]   90 	bmi	00103$
+      000010                         91 00112$:
+      000010 30 01            [ 4]   92 	bmi	00111$
+      000012 60               [ 6]   93 	rts
+      000013                         94 00111$:
+                                     95 ;	Raw cost for generated ic 3 : (21, 32.400002) count=1.000000
+                                     96 ;	skipping generated iCode
+                                     97 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                     98 ;	genUminus
+      000013 49 FF            [ 2]   99 	eor	#0xff
+      000015 18               [ 2]  100 	clc
+      000016 69 01            [ 2]  101 	adc	#0x01
+      000018 48               [ 3]  102 	pha
+      000019 A9 00            [ 2]  103 	lda	#0x00
+      00001B 86*00            [ 3]  104 	stx	*(REGTEMP+0)
+      00001D E5*00            [ 3]  105 	sbc	*(REGTEMP+0)
+      00001F AA               [ 2]  106 	tax
+      000020 68               [ 4]  107 	pla
+                                    108 ;	Raw cost for generated ic 5 : (14, 23.000000) count=0.750000
+                                    109 ;	genGoto
+                                    110 ;	Raw cost for generated ic 7 : (3, 3.000000) count=0.750000
+                                    111 ;	genLabel
+                                    112 ;	Raw cost for generated ic 8 : (0, 0.000000) count=0.250000
+                                    113 ;	genAssign
+                                    114 ;	genCopy
+                                    115 ;	Raw cost for generated ic 9 : (0, 0.000000) count=0.250000
+                                    116 ;	genLabel
+                                    117 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    118 ;	genRet
+                                    119 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.000000
+                                    120 ;	genLabel
+                                    121 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                    122 ;	../abs.c: 57: }
+                                    123 ;	genEndFunction
+      000021                        124 00103$:
+      000021 60               [ 6]  125 	rts
+                                    126 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                    127 	.area CODE
+                                    128 	.area RODATA
+                                    129 	.area XINIT
+                                    130 	.area CABS    (ABS)

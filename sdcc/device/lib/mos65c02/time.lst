@@ -1,0 +1,2275 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module time
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl ___day
+                                     28 	.globl ___month
+                                     29 	.globl _RtcRead
+                                     30 	.globl _sprintf
+                                     31 	.globl _time
+                                     32 	.globl _asctime
+                                     33 	.globl _ctime
+                                     34 	.globl _localtime
+                                     35 	.globl _gmtime
+                                     36 	.globl _mktime
+                                     37 ;--------------------------------------------------------
+                                     38 ; ZP ram data
+                                     39 ;--------------------------------------------------------
+                                     40 	.area ZP      (PAG)
+      000000                         41 _asctime_sloc0_1_0:
+      000000                         42 	.ds 2
+      000002                         43 _asctime_sloc1_1_0:
+      000002                         44 	.ds 2
+      000004                         45 _asctime_sloc2_1_0:
+      000004                         46 	.ds 2
+      000006                         47 _asctime_sloc3_1_0:
+      000006                         48 	.ds 2
+      000008                         49 _asctime_sloc4_1_0:
+      000008                         50 	.ds 2
+      00000A                         51 _asctime_sloc5_1_0:
+      00000A                         52 	.ds 2
+      00000C                         53 _asctime_sloc6_1_0:
+      00000C                         54 	.ds 2
+      00000E                         55 _gmtime_sloc0_1_0:
+      00000E                         56 	.ds 4
+      000012                         57 _gmtime_sloc1_1_0:
+      000012                         58 	.ds 4
+      000016                         59 _gmtime_sloc2_1_0:
+      000016                         60 	.ds 4
+      00001A                         61 _mktime_sloc0_1_0:
+      00001A                         62 	.ds 4
+      00001E                         63 _mktime_sloc1_1_0:
+      00001E                         64 	.ds 2
+      000020                         65 _mktime_sloc2_1_0:
+      000020                         66 	.ds 4
+                                     67 ;--------------------------------------------------------
+                                     68 ; overlayable items in ram
+                                     69 ;--------------------------------------------------------
+                                     70 	.area	OSEG    (PAG, OVR)
+      000000                         71 _CheckTime_sloc0_1_0:
+      000000                         72 	.ds 2
+      000002                         73 _CheckTime_sloc1_1_0:
+      000002                         74 	.ds 2
+                                     75 ;--------------------------------------------------------
+                                     76 ; uninitialized external ram data
+                                     77 ;--------------------------------------------------------
+                                     78 	.area BSS
+      000000                         79 _time_timeptr_10000_19:
+      000000                         80 	.ds 2
+      000002                         81 _time_now_10000_20:
+      000002                         82 	.ds 12
+      00000E                         83 _time_t_10000_20:
+      00000E                         84 	.ds 4
+      000012                         85 _ascTimeBuffer:
+      000012                         86 	.ds 32
+      000032                         87 _CheckTime_timeptr_10000_25:
+      000032                         88 	.ds 2
+      000034                         89 _asctime_timeptr_10000_35:
+      000034                         90 	.ds 2
+      000036                         91 _lastTime:
+      000036                         92 	.ds 12
+      000042                         93 _gmtime_epoch_10000_42:
+      000042                         94 	.ds 4
+      000046                         95 _gmtime_days_10000_42:
+      000046                         96 	.ds 4
+      00004A                         97 _mktime_timeptr_10000_55:
+      00004A                         98 	.ds 2
+      00004C                         99 _mktime_year_10000_56:
+      00004C                        100 	.ds 2
+      00004E                        101 _mktime_month_10000_56:
+      00004E                        102 	.ds 2
+      000050                        103 _mktime_seconds_10000_56:
+      000050                        104 	.ds 4
+                                    105 ;--------------------------------------------------------
+                                    106 ; absolute external ram data
+                                    107 ;--------------------------------------------------------
+                                    108 	.area DABS    (ABS)
+                                    109 ;--------------------------------------------------------
+                                    110 ; initialized external ram data
+                                    111 ;--------------------------------------------------------
+                                    112 	.area DATA
+                                    113 ;--------------------------------------------------------
+                                    114 ; global & static initialisations
+                                    115 ;--------------------------------------------------------
+                                    116 	.area _CODE
+                                    117 	.area GSINIT
+                                    118 	.area GSFINAL
+                                    119 	.area GSINIT
+                                    120 ;--------------------------------------------------------
+                                    121 ; Home
+                                    122 ;--------------------------------------------------------
+                                    123 	.area _CODE
+                                    124 	.area _CODE
+                                    125 ;--------------------------------------------------------
+                                    126 ; code
+                                    127 ;--------------------------------------------------------
+                                    128 	.area CODE
+                                    129 ;------------------------------------------------------------
+                                    130 ;Allocation info for local variables in function 'RtcRead'
+                                    131 ;------------------------------------------------------------
+                                    132 ;timeptr       Allocated to registers 
+                                    133 ;------------------------------------------------------------
+                                    134 ;	../time.c: 42: unsigned char RtcRead(struct tm *timeptr) {
+                                    135 ;	genLabel
+                                    136 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    137 ;	-----------------------------------------
+                                    138 ;	 function RtcRead
+                                    139 ;	-----------------------------------------
+                                    140 ;	Register assignment is optimal.
+                                    141 ;	Stack space usage: 0 bytes.
+      000000                        142 _RtcRead:
+                                    143 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    144 ;	../time.c: 45: return 0;
+                                    145 ;	genRet
+      000000 A9 00            [ 2]  146 	lda	#0x00
+                                    147 ;	Raw cost for generated ic 3 : (2, 2.000000) count=1.000000
+                                    148 ;	genLabel
+                                    149 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    150 ;	../time.c: 46: }
+                                    151 ;	genEndFunction
+      000002 60               [ 6]  152 	rts
+                                    153 ;	Raw cost for generated ic 5 : (1, 6.000000) count=1.000000
+                                    154 ;------------------------------------------------------------
+                                    155 ;Allocation info for local variables in function 'time'
+                                    156 ;------------------------------------------------------------
+                                    157 ;timeptr       Allocated with name '_time_timeptr_10000_19'
+                                    158 ;now           Allocated with name '_time_now_10000_20'
+                                    159 ;t             Allocated with name '_time_t_10000_20'
+                                    160 ;------------------------------------------------------------
+                                    161 ;	../time.c: 50: time_t time(time_t *timeptr) {
+                                    162 ;	genLabel
+                                    163 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    164 ;	-----------------------------------------
+                                    165 ;	 function time
+                                    166 ;	-----------------------------------------
+                                    167 ;	Register assignment is optimal.
+                                    168 ;	Stack space usage: 0 bytes.
+      000003                        169 _time:
+                                    170 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    171 ;	genReceive
+      000003 8Dr00r00         [ 4]  172 	sta	_time_timeptr_10000_19
+      000006 8Er01r00         [ 4]  173 	stx	(_time_timeptr_10000_19 + 1)
+                                    174 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    175 ;	../time.c: 52: time_t t=(time_t) -1;
+                                    176 ;	genAssign
+                                    177 ;	genAssignLit
+      000009 A2 FF            [ 2]  178 	ldx	#0xff
+      00000B 8Er0Er00         [ 4]  179 	stx	_time_t_10000_20
+      00000E 8Er0Fr00         [ 4]  180 	stx	(_time_t_10000_20 + 1)
+      000011 8Er10r00         [ 4]  181 	stx	(_time_t_10000_20 + 2)
+      000014 8Er11r00         [ 4]  182 	stx	(_time_t_10000_20 + 3)
+                                    183 ;	Raw cost for generated ic 3 : (14, 18.000000) count=1.000000
+                                    184 ;	../time.c: 54: if (RtcRead(&now)) {
+                                    185 ;	skipping iCode since result will be rematerialized
+                                    186 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    187 ;	skipping iCode since result will be rematerialized
+                                    188 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                    189 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    190 ;	genCall
+                                    191 ;	genSend
+      000017 A2s00            [ 2]  192 	ldx	#>_time_now_10000_20
+      000019 A9r02            [ 2]  193 	lda	#_time_now_10000_20
+      00001B 20r00r00         [ 6]  194 	jsr	_RtcRead
+                                    195 ;	assignResultValue
+                                    196 ;	Raw cost for generated ic 7 : (7, 10.000000) count=1.000000
+                                    197 ;	genIfx
+      00001E C9 00            [ 2]  198 	cmp	#0x00
+                                    199 ;	genIfxJump : z
+      000020 F0 17            [ 4]  200 	beq	00102$
+                                    201 ;	Raw cost for generated ic 8 : (7, 7.600000) count=1.000000
+                                    202 ;	../time.c: 55: t=mktime(&now);
+                                    203 ;	skipping iCode since result will be rematerialized
+                                    204 ;	Raw cost for generated ic 12 : (0, 0.000000) count=0.750000
+                                    205 ;	Raw cost for generated ic 13 : (0, 0.000000) count=0.750000
+                                    206 ;	genCall
+                                    207 ;	genSend
+      000022 A2s00            [ 2]  208 	ldx	#>_time_now_10000_20
+      000024 A9r02            [ 2]  209 	lda	#_time_now_10000_20
+      000026 20r30r05         [ 6]  210 	jsr	_mktime
+                                    211 ;	assignResultValue
+      000029 8Dr0Er00         [ 4]  212 	sta	_time_t_10000_20
+      00002C 8Er0Fr00         [ 4]  213 	stx	(_time_t_10000_20 + 1)
+      00002F A5*00            [ 3]  214 	lda	*___SDCC_m6502_ret2
+      000031 8Dr10r00         [ 4]  215 	sta	(_time_t_10000_20 + 2)
+      000034 A5*00            [ 3]  216 	lda	*___SDCC_m6502_ret3
+      000036 8Dr11r00         [ 4]  217 	sta	(_time_t_10000_20 + 3)
+                                    218 ;	Raw cost for generated ic 14 : (23, 32.000000) count=0.750000
+                                    219 ;	genLabel
+      000039                        220 00102$:
+                                    221 ;	Raw cost for generated ic 16 : (0, 0.000000) count=1.000000
+                                    222 ;	../time.c: 57: if (timeptr) {
+                                    223 ;	genIfx
+      000039 ADr01r00         [ 4]  224 	lda	(_time_timeptr_10000_19 + 1)
+      00003C 0Dr00r00         [ 4]  225 	ora	_time_timeptr_10000_19
+                                    226 ;	genIfxJump : z
+      00003F F0 23            [ 4]  227 	beq	00104$
+                                    228 ;	Raw cost for generated ic 17 : (11, 13.600000) count=1.000000
+                                    229 ;	../time.c: 58: *timeptr=t;
+                                    230 ;	genPointerSet
+                                    231 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000041 AEr00r00         [ 4]  232 	ldx	_time_timeptr_10000_19
+      000044 86*00            [ 3]  233 	stx	*(DPTR+0)
+      000046 AEr01r00         [ 4]  234 	ldx	(_time_timeptr_10000_19 + 1)
+      000049 86*01            [ 3]  235 	stx	*(DPTR+1)
+      00004B ADr0Er00         [ 4]  236 	lda	_time_t_10000_20
+      00004E A0 00            [ 2]  237 	ldy	#0x00
+      000050 91*00            [ 6]  238 	sta	[DPTR],y
+      000052 ADr0Fr00         [ 4]  239 	lda	(_time_t_10000_20 + 1)
+      000055 C8               [ 2]  240 	iny
+      000056 91*00            [ 6]  241 	sta	[DPTR],y
+      000058 ADr10r00         [ 4]  242 	lda	(_time_t_10000_20 + 2)
+      00005B C8               [ 2]  243 	iny
+      00005C 91*00            [ 6]  244 	sta	[DPTR],y
+      00005E ADr11r00         [ 4]  245 	lda	(_time_t_10000_20 + 3)
+      000061 C8               [ 2]  246 	iny
+      000062 91*00            [ 6]  247 	sta	[DPTR],y
+                                    248 ;	Raw cost for generated ic 21 : (35, 62.000000) count=0.750000
+                                    249 ;	genLabel
+      000064                        250 00104$:
+                                    251 ;	Raw cost for generated ic 22 : (0, 0.000000) count=1.000000
+                                    252 ;	../time.c: 60: return t;
+                                    253 ;	genRet
+      000064 ADr11r00         [ 4]  254 	lda	(_time_t_10000_20 + 3)
+      000067 85*00            [ 3]  255 	sta	*___SDCC_m6502_ret3
+      000069 ADr10r00         [ 4]  256 	lda	(_time_t_10000_20 + 2)
+      00006C 85*00            [ 3]  257 	sta	*___SDCC_m6502_ret2
+      00006E AEr0Fr00         [ 4]  258 	ldx	(_time_t_10000_20 + 1)
+      000071 ADr0Er00         [ 4]  259 	lda	_time_t_10000_20
+                                    260 ;	Raw cost for generated ic 23 : (16, 22.000000) count=1.000000
+                                    261 ;	genLabel
+                                    262 ;	Raw cost for generated ic 24 : (0, 0.000000) count=1.000000
+                                    263 ;	../time.c: 61: }
+                                    264 ;	genEndFunction
+      000074 60               [ 6]  265 	rts
+                                    266 ;	Raw cost for generated ic 25 : (1, 6.000000) count=1.000000
+                                    267 ;------------------------------------------------------------
+                                    268 ;Allocation info for local variables in function 'CheckTime'
+                                    269 ;------------------------------------------------------------
+                                    270 ;timeptr       Allocated with name '_CheckTime_timeptr_10000_25'
+                                    271 ;sloc0         Allocated with name '_CheckTime_sloc0_1_0'
+                                    272 ;sloc1         Allocated with name '_CheckTime_sloc1_1_0'
+                                    273 ;------------------------------------------------------------
+                                    274 ;	../time.c: 73: static void CheckTime(struct tm *timeptr) {
+                                    275 ;	genLabel
+                                    276 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    277 ;	-----------------------------------------
+                                    278 ;	 function CheckTime
+                                    279 ;	-----------------------------------------
+                                    280 ;	Register assignment is optimal.
+                                    281 ;	Stack space usage: 0 bytes.
+      000075                        282 _CheckTime:
+                                    283 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    284 ;	genReceive
+      000075 8Dr32r00         [ 4]  285 	sta	_CheckTime_timeptr_10000_25
+      000078 8Er33r00         [ 4]  286 	stx	(_CheckTime_timeptr_10000_25 + 1)
+                                    287 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    288 ;	../time.c: 84: if (timeptr->tm_sec>59) timeptr->tm_sec=59;
+                                    289 ;	genCast
+                                    290 ;	genCopy
+      00007B 85*00            [ 3]  291 	sta	*_CheckTime_sloc0_1_0
+      00007D 86*01            [ 3]  292 	stx	*(_CheckTime_sloc0_1_0 + 1)
+                                    293 ;	Raw cost for generated ic 4 : (4, 6.000000) count=1.000000
+                                    294 ;	genPointerGet
+      00007F A0 00            [ 2]  295 	ldy	#0x00
+      000081 B1*00            [ 6]  296 	lda	[*_CheckTime_sloc0_1_0],y
+                                    297 ;	Raw cost for generated ic 5 : (4, 7.000000) count=1.000000
+                                    298 ;	genCmp
+      000083 C9 3B            [ 2]  299 	cmp	#0x3b
+      000085 F0 06            [ 4]  300 	beq	00102$
+      000087 90 04            [ 4]  301 	bcc	00102$
+                                    302 ;	Raw cost for generated ic 6 : (9, 10.200000) count=1.000000
+                                    303 ;	skipping generated iCode
+                                    304 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    305 ;	genPointerSet
+      000089 A9 3B            [ 2]  306 	lda	#0x3b
+      00008B 91*00            [ 6]  307 	sta	[*_CheckTime_sloc0_1_0],y
+                                    308 ;	Raw cost for generated ic 12 : (4, 8.000000) count=0.750000
+                                    309 ;	genLabel
+      00008D                        310 00102$:
+                                    311 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    312 ;	../time.c: 85: if (timeptr->tm_min>59) timeptr->tm_min=59;
+                                    313 ;	genAssign
+                                    314 ;	genCopy
+      00008D ADr33r00         [ 4]  315 	lda	(_CheckTime_timeptr_10000_25 + 1)
+      000090 85*01            [ 3]  316 	sta	*(_CheckTime_sloc0_1_0 + 1)
+      000092 ADr32r00         [ 4]  317 	lda	_CheckTime_timeptr_10000_25
+      000095 85*00            [ 3]  318 	sta	*_CheckTime_sloc0_1_0
+                                    319 ;	Raw cost for generated ic 15 : (10, 14.000000) count=1.000000
+                                    320 ;	genPointerGet
+      000097 A0 01            [ 2]  321 	ldy	#0x01
+      000099 B1*00            [ 6]  322 	lda	[*_CheckTime_sloc0_1_0],y
+                                    323 ;	Raw cost for generated ic 16 : (4, 7.000000) count=1.000000
+                                    324 ;	genCmp
+      00009B C9 3B            [ 2]  325 	cmp	#0x3b
+      00009D F0 06            [ 4]  326 	beq	00104$
+      00009F 90 04            [ 4]  327 	bcc	00104$
+                                    328 ;	Raw cost for generated ic 17 : (9, 10.200000) count=1.000000
+                                    329 ;	skipping generated iCode
+                                    330 ;	Raw cost for generated ic 18 : (0, 0.000000) count=1.000000
+                                    331 ;	genPointerSet
+      0000A1 A9 3B            [ 2]  332 	lda	#0x3b
+      0000A3 91*00            [ 6]  333 	sta	[*_CheckTime_sloc0_1_0],y
+                                    334 ;	Raw cost for generated ic 23 : (4, 8.000000) count=0.750000
+                                    335 ;	genLabel
+      0000A5                        336 00104$:
+                                    337 ;	Raw cost for generated ic 24 : (0, 0.000000) count=1.000000
+                                    338 ;	../time.c: 86: if (timeptr->tm_hour>23) timeptr->tm_hour=23;
+                                    339 ;	genAssign
+                                    340 ;	genCopy
+      0000A5 ADr33r00         [ 4]  341 	lda	(_CheckTime_timeptr_10000_25 + 1)
+      0000A8 85*01            [ 3]  342 	sta	*(_CheckTime_sloc0_1_0 + 1)
+      0000AA ADr32r00         [ 4]  343 	lda	_CheckTime_timeptr_10000_25
+      0000AD 85*00            [ 3]  344 	sta	*_CheckTime_sloc0_1_0
+                                    345 ;	Raw cost for generated ic 26 : (10, 14.000000) count=1.000000
+                                    346 ;	genPointerGet
+      0000AF A0 02            [ 2]  347 	ldy	#0x02
+      0000B1 B1*00            [ 6]  348 	lda	[*_CheckTime_sloc0_1_0],y
+                                    349 ;	Raw cost for generated ic 27 : (4, 7.000000) count=1.000000
+                                    350 ;	genCmp
+      0000B3 C9 17            [ 2]  351 	cmp	#0x17
+      0000B5 F0 06            [ 4]  352 	beq	00106$
+      0000B7 90 04            [ 4]  353 	bcc	00106$
+                                    354 ;	Raw cost for generated ic 28 : (9, 10.200000) count=1.000000
+                                    355 ;	skipping generated iCode
+                                    356 ;	Raw cost for generated ic 29 : (0, 0.000000) count=1.000000
+                                    357 ;	genPointerSet
+      0000B9 A9 17            [ 2]  358 	lda	#0x17
+      0000BB 91*00            [ 6]  359 	sta	[*_CheckTime_sloc0_1_0],y
+                                    360 ;	Raw cost for generated ic 34 : (4, 8.000000) count=0.750000
+                                    361 ;	genLabel
+      0000BD                        362 00106$:
+                                    363 ;	Raw cost for generated ic 35 : (0, 0.000000) count=1.000000
+                                    364 ;	../time.c: 87: if (timeptr->tm_wday>6) timeptr->tm_wday=6;
+                                    365 ;	genAssign
+                                    366 ;	genCopy
+      0000BD ADr33r00         [ 4]  367 	lda	(_CheckTime_timeptr_10000_25 + 1)
+      0000C0 85*01            [ 3]  368 	sta	*(_CheckTime_sloc0_1_0 + 1)
+      0000C2 ADr32r00         [ 4]  369 	lda	_CheckTime_timeptr_10000_25
+      0000C5 85*00            [ 3]  370 	sta	*_CheckTime_sloc0_1_0
+                                    371 ;	Raw cost for generated ic 37 : (10, 14.000000) count=1.000000
+                                    372 ;	genPointerGet
+      0000C7 A0 07            [ 2]  373 	ldy	#0x07
+      0000C9 B1*00            [ 6]  374 	lda	[*_CheckTime_sloc0_1_0],y
+                                    375 ;	Raw cost for generated ic 38 : (4, 7.000000) count=1.000000
+                                    376 ;	genCmp
+      0000CB C9 06            [ 2]  377 	cmp	#0x06
+      0000CD F0 06            [ 4]  378 	beq	00108$
+      0000CF 90 04            [ 4]  379 	bcc	00108$
+                                    380 ;	Raw cost for generated ic 39 : (9, 10.200000) count=1.000000
+                                    381 ;	skipping generated iCode
+                                    382 ;	Raw cost for generated ic 40 : (0, 0.000000) count=1.000000
+                                    383 ;	genPointerSet
+      0000D1 A9 06            [ 2]  384 	lda	#0x06
+      0000D3 91*00            [ 6]  385 	sta	[*_CheckTime_sloc0_1_0],y
+                                    386 ;	Raw cost for generated ic 45 : (4, 8.000000) count=0.750000
+                                    387 ;	genLabel
+      0000D5                        388 00108$:
+                                    389 ;	Raw cost for generated ic 46 : (0, 0.000000) count=1.000000
+                                    390 ;	../time.c: 88: if (timeptr->tm_mday<1) timeptr->tm_mday=1;
+                                    391 ;	genAssign
+                                    392 ;	genCopy
+      0000D5 ADr33r00         [ 4]  393 	lda	(_CheckTime_timeptr_10000_25 + 1)
+      0000D8 85*01            [ 3]  394 	sta	*(_CheckTime_sloc0_1_0 + 1)
+      0000DA ADr32r00         [ 4]  395 	lda	_CheckTime_timeptr_10000_25
+      0000DD 85*00            [ 3]  396 	sta	*_CheckTime_sloc0_1_0
+                                    397 ;	Raw cost for generated ic 48 : (10, 14.000000) count=1.000000
+                                    398 ;	genPointerGet
+      0000DF A0 03            [ 2]  399 	ldy	#0x03
+      0000E1 B1*00            [ 6]  400 	lda	[*_CheckTime_sloc0_1_0],y
+                                    401 ;	Raw cost for generated ic 49 : (4, 7.000000) count=1.000000
+                                    402 ;	genCmp
+      0000E3 C9 01            [ 2]  403 	cmp	#0x01
+      0000E5 B0 07            [ 4]  404 	bcs	00112$
+                                    405 ;	Raw cost for generated ic 50 : (7, 7.600000) count=1.000000
+                                    406 ;	skipping generated iCode
+                                    407 ;	Raw cost for generated ic 51 : (0, 0.000000) count=1.000000
+                                    408 ;	genPointerSet
+      0000E7 A9 01            [ 2]  409 	lda	#0x01
+      0000E9 91*00            [ 6]  410 	sta	[*_CheckTime_sloc0_1_0],y
+                                    411 ;	Raw cost for generated ic 56 : (4, 8.000000) count=0.750000
+                                    412 ;	genGoto
+      0000EB 4CrFAr00         [ 3]  413 	jmp	00113$
+                                    414 ;	Raw cost for generated ic 57 : (3, 3.000000) count=0.750000
+                                    415 ;	genLabel
+      0000EE                        416 00112$:
+                                    417 ;	Raw cost for generated ic 58 : (0, 0.000000) count=0.250000
+                                    418 ;	../time.c: 89: else if (timeptr->tm_mday>31) timeptr->tm_mday=31;
+                                    419 ;	genCmp
+      0000EE C9 1F            [ 2]  420 	cmp	#0x1f
+      0000F0 F0 08            [ 4]  421 	beq	00113$
+      0000F2 90 06            [ 4]  422 	bcc	00113$
+                                    423 ;	Raw cost for generated ic 62 : (9, 10.200000) count=0.250000
+                                    424 ;	skipping generated iCode
+                                    425 ;	Raw cost for generated ic 63 : (0, 0.000000) count=0.250000
+                                    426 ;	genPointerSet
+      0000F4 A9 1F            [ 2]  427 	lda	#0x1f
+      0000F6 A0 03            [ 2]  428 	ldy	#0x03
+      0000F8 91*00            [ 6]  429 	sta	[*_CheckTime_sloc0_1_0],y
+                                    430 ;	Raw cost for generated ic 68 : (6, 10.000000) count=0.187500
+                                    431 ;	genLabel
+      0000FA                        432 00113$:
+                                    433 ;	Raw cost for generated ic 70 : (0, 0.000000) count=1.000000
+                                    434 ;	../time.c: 90: if (timeptr->tm_mon>11) timeptr->tm_mon=11;
+                                    435 ;	genAssign
+                                    436 ;	genCopy
+      0000FA ADr33r00         [ 4]  437 	lda	(_CheckTime_timeptr_10000_25 + 1)
+      0000FD 85*01            [ 3]  438 	sta	*(_CheckTime_sloc0_1_0 + 1)
+      0000FF ADr32r00         [ 4]  439 	lda	_CheckTime_timeptr_10000_25
+      000102 85*00            [ 3]  440 	sta	*_CheckTime_sloc0_1_0
+                                    441 ;	Raw cost for generated ic 72 : (10, 14.000000) count=1.000000
+                                    442 ;	genPointerGet
+      000104 A0 04            [ 2]  443 	ldy	#0x04
+      000106 B1*00            [ 6]  444 	lda	[*_CheckTime_sloc0_1_0],y
+                                    445 ;	Raw cost for generated ic 73 : (4, 7.000000) count=1.000000
+                                    446 ;	genCmp
+      000108 C9 0B            [ 2]  447 	cmp	#0x0b
+      00010A F0 06            [ 4]  448 	beq	00115$
+      00010C 90 04            [ 4]  449 	bcc	00115$
+                                    450 ;	Raw cost for generated ic 74 : (9, 10.200000) count=1.000000
+                                    451 ;	skipping generated iCode
+                                    452 ;	Raw cost for generated ic 75 : (0, 0.000000) count=1.000000
+                                    453 ;	genPointerSet
+      00010E A9 0B            [ 2]  454 	lda	#0x0b
+      000110 91*00            [ 6]  455 	sta	[*_CheckTime_sloc0_1_0],y
+                                    456 ;	Raw cost for generated ic 80 : (4, 8.000000) count=0.750000
+                                    457 ;	genLabel
+      000112                        458 00115$:
+                                    459 ;	Raw cost for generated ic 81 : (0, 0.000000) count=1.000000
+                                    460 ;	../time.c: 91: if (timeptr->tm_year<0) timeptr->tm_year=0;
+                                    461 ;	genAssign
+                                    462 ;	genCopy
+      000112 ADr33r00         [ 4]  463 	lda	(_CheckTime_timeptr_10000_25 + 1)
+      000115 85*01            [ 3]  464 	sta	*(_CheckTime_sloc0_1_0 + 1)
+      000117 ADr32r00         [ 4]  465 	lda	_CheckTime_timeptr_10000_25
+      00011A 85*00            [ 3]  466 	sta	*_CheckTime_sloc0_1_0
+                                    467 ;	Raw cost for generated ic 83 : (10, 14.000000) count=1.000000
+                                    468 ;	genPointerGet
+      00011C A0 05            [ 2]  469 	ldy	#0x05
+      00011E B1*00            [ 6]  470 	lda	[*_CheckTime_sloc0_1_0],y
+      000120 85*02            [ 3]  471 	sta	*_CheckTime_sloc1_1_0
+      000122 C8               [ 2]  472 	iny
+      000123 B1*00            [ 6]  473 	lda	[*_CheckTime_sloc0_1_0],y
+      000125 85*03            [ 3]  474 	sta	*(_CheckTime_sloc1_1_0 + 1)
+                                    475 ;	Raw cost for generated ic 84 : (11, 20.000000) count=1.000000
+                                    476 ;	genCmp
+      000127 24*03            [ 3]  477 	bit	*(_CheckTime_sloc1_1_0 + 1)
+      000129 10 08            [ 4]  478 	bpl	00118$
+                                    479 ;	Raw cost for generated ic 85 : (7, 8.600000) count=1.000000
+                                    480 ;	skipping generated iCode
+                                    481 ;	Raw cost for generated ic 86 : (0, 0.000000) count=1.000000
+                                    482 ;	genPointerSet
+      00012B A9 00            [ 2]  483 	lda	#0x00
+      00012D 88               [ 2]  484 	dey
+      00012E 91*00            [ 6]  485 	sta	[*_CheckTime_sloc0_1_0],y
+      000130 C8               [ 2]  486 	iny
+      000131 91*00            [ 6]  487 	sta	[*_CheckTime_sloc0_1_0],y
+                                    488 ;	Raw cost for generated ic 91 : (8, 18.000000) count=0.750000
+                                    489 ;	genLabel
+      000133                        490 00118$:
+                                    491 ;	Raw cost for generated ic 93 : (0, 0.000000) count=1.000000
+                                    492 ;	../time.c: 92: }
+                                    493 ;	genEndFunction
+      000133 60               [ 6]  494 	rts
+                                    495 ;	Raw cost for generated ic 94 : (1, 6.000000) count=1.000000
+                                    496 ;------------------------------------------------------------
+                                    497 ;Allocation info for local variables in function 'asctime'
+                                    498 ;------------------------------------------------------------
+                                    499 ;sloc0         Allocated with name '_asctime_sloc0_1_0'
+                                    500 ;sloc1         Allocated with name '_asctime_sloc1_1_0'
+                                    501 ;sloc2         Allocated with name '_asctime_sloc2_1_0'
+                                    502 ;sloc3         Allocated with name '_asctime_sloc3_1_0'
+                                    503 ;sloc4         Allocated with name '_asctime_sloc4_1_0'
+                                    504 ;sloc5         Allocated with name '_asctime_sloc5_1_0'
+                                    505 ;sloc6         Allocated with name '_asctime_sloc6_1_0'
+                                    506 ;timeptr       Allocated with name '_asctime_timeptr_10000_35'
+                                    507 ;------------------------------------------------------------
+                                    508 ;	../time.c: 95: char *asctime(struct tm *timeptr) {
+                                    509 ;	genLabel
+                                    510 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    511 ;	-----------------------------------------
+                                    512 ;	 function asctime
+                                    513 ;	-----------------------------------------
+                                    514 ;	Register assignment is optimal.
+                                    515 ;	Stack space usage: 0 bytes.
+      000134                        516 _asctime:
+                                    517 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    518 ;	genReceive
+      000134 8Dr34r00         [ 4]  519 	sta	_asctime_timeptr_10000_35
+      000137 8Er35r00         [ 4]  520 	stx	(_asctime_timeptr_10000_35 + 1)
+                                    521 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    522 ;	../time.c: 96: CheckTime(timeptr);
+                                    523 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                    524 ;	genCall
+                                    525 ;	genSend
+      00013A 20r75r00         [ 6]  526 	jsr	_CheckTime
+                                    527 ;	Raw cost for generated ic 4 : (3, 6.000000) count=1.000000
+                                    528 ;	../time.c: 100: timeptr->tm_year+1900);
+                                    529 ;	genAssign
+                                    530 ;	genCopy
+      00013D AEr35r00         [ 4]  531 	ldx	(_asctime_timeptr_10000_35 + 1)
+      000140 ADr34r00         [ 4]  532 	lda	_asctime_timeptr_10000_35
+                                    533 ;	Raw cost for generated ic 6 : (6, 8.000000) count=1.000000
+                                    534 ;	genPointerGet
+                                    535 ;	  setupDPTR - off=5 remat=(null) savea=0
+      000143 85*00            [ 3]  536 	sta	*(DPTR+0)
+      000145 86*01            [ 3]  537 	stx	*(DPTR+1)
+      000147 A0 06            [ 2]  538 	ldy	#0x06
+      000149 B1*00            [ 6]  539 	lda	[DPTR],y
+      00014B AA               [ 2]  540 	tax
+      00014C 88               [ 2]  541 	dey
+      00014D B1*00            [ 6]  542 	lda	[DPTR],y
+                                    543 ;	Raw cost for generated ic 7 : (12, 22.000000) count=1.000000
+                                    544 ;	genPlus
+                                    545 ;	  genPlusInc
+      00014F 18               [ 2]  546 	clc
+      000150 69 6C            [ 3]  547 	adc	#0x6c
+      000152 85*00            [ 3]  548 	sta	*_asctime_sloc0_1_0
+      000154 8A               [ 2]  549 	txa
+      000155 69 07            [ 3]  550 	adc	#0x07
+      000157 85*01            [ 3]  551 	sta	*(_asctime_sloc0_1_0 + 1)
+                                    552 ;	Raw cost for generated ic 8 : (10, 14.000000) count=1.000000
+                                    553 ;	../time.c: 99: timeptr->tm_hour, timeptr->tm_min, timeptr->tm_sec, 
+                                    554 ;	genPointerGet
+                                    555 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000159 AEr34r00         [ 4]  556 	ldx	_asctime_timeptr_10000_35
+      00015C 86*00            [ 3]  557 	stx	*(DPTR+0)
+      00015E AEr35r00         [ 4]  558 	ldx	(_asctime_timeptr_10000_35 + 1)
+      000161 86*01            [ 3]  559 	stx	*(DPTR+1)
+      000163 A0 00            [ 2]  560 	ldy	#0x00
+      000165 B1*00            [ 6]  561 	lda	[DPTR],y
+                                    562 ;	Raw cost for generated ic 11 : (14, 21.000000) count=1.000000
+                                    563 ;	genCast
+      000167 85*02            [ 3]  564 	sta	*_asctime_sloc1_1_0
+      000169 84*03            [ 3]  565 	sty	*(_asctime_sloc1_1_0 + 1)
+                                    566 ;	Raw cost for generated ic 12 : (4, 6.000000) count=1.000000
+                                    567 ;	genAssign
+                                    568 ;	genCopy
+      00016B ADr34r00         [ 4]  569 	lda	_asctime_timeptr_10000_35
+                                    570 ;	Raw cost for generated ic 14 : (3, 4.000000) count=1.000000
+                                    571 ;	genPointerGet
+                                    572 ;	  setupDPTR - off=1 remat=(null) savea=0
+      00016E 85*00            [ 3]  573 	sta	*(DPTR+0)
+      000170 86*01            [ 3]  574 	stx	*(DPTR+1)
+      000172 C8               [ 2]  575 	iny
+      000173 B1*00            [ 6]  576 	lda	[DPTR],y
+                                    577 ;	Raw cost for generated ic 15 : (7, 13.000000) count=1.000000
+                                    578 ;	genCast
+      000175 85*04            [ 3]  579 	sta	*_asctime_sloc2_1_0
+      000177 64*05            [ 3]  580 	stz	*(_asctime_sloc2_1_0 + 1)
+                                    581 ;	Raw cost for generated ic 16 : (5, 7.000000) count=1.000000
+                                    582 ;	genAssign
+                                    583 ;	genCopy
+      000179 AEr35r00         [ 4]  584 	ldx	(_asctime_timeptr_10000_35 + 1)
+      00017C ADr34r00         [ 4]  585 	lda	_asctime_timeptr_10000_35
+                                    586 ;	Raw cost for generated ic 18 : (6, 8.000000) count=1.000000
+                                    587 ;	genPointerGet
+                                    588 ;	  setupDPTR - off=2 remat=(null) savea=0
+      00017F 85*00            [ 3]  589 	sta	*(DPTR+0)
+      000181 86*01            [ 3]  590 	stx	*(DPTR+1)
+      000183 C8               [ 2]  591 	iny
+      000184 B1*00            [ 6]  592 	lda	[DPTR],y
+                                    593 ;	Raw cost for generated ic 19 : (7, 13.000000) count=1.000000
+                                    594 ;	genCast
+      000186 85*06            [ 3]  595 	sta	*_asctime_sloc3_1_0
+      000188 64*07            [ 3]  596 	stz	*(_asctime_sloc3_1_0 + 1)
+                                    597 ;	Raw cost for generated ic 20 : (5, 7.000000) count=1.000000
+                                    598 ;	../time.c: 98: __day[timeptr->tm_wday], __month[timeptr->tm_mon], timeptr->tm_mday,
+                                    599 ;	genAssign
+                                    600 ;	genCopy
+      00018A AEr35r00         [ 4]  601 	ldx	(_asctime_timeptr_10000_35 + 1)
+      00018D ADr34r00         [ 4]  602 	lda	_asctime_timeptr_10000_35
+                                    603 ;	Raw cost for generated ic 22 : (6, 8.000000) count=1.000000
+                                    604 ;	genPointerGet
+                                    605 ;	  setupDPTR - off=3 remat=(null) savea=0
+      000190 85*00            [ 3]  606 	sta	*(DPTR+0)
+      000192 86*01            [ 3]  607 	stx	*(DPTR+1)
+      000194 C8               [ 2]  608 	iny
+      000195 B1*00            [ 6]  609 	lda	[DPTR],y
+                                    610 ;	Raw cost for generated ic 23 : (7, 13.000000) count=1.000000
+                                    611 ;	genCast
+      000197 85*08            [ 3]  612 	sta	*_asctime_sloc4_1_0
+      000199 64*09            [ 3]  613 	stz	*(_asctime_sloc4_1_0 + 1)
+                                    614 ;	Raw cost for generated ic 24 : (5, 7.000000) count=1.000000
+                                    615 ;	skipping iCode since result will be rematerialized
+                                    616 ;	Raw cost for generated ic 25 : (0, 0.000000) count=1.000000
+                                    617 ;	genAssign
+                                    618 ;	genCopy
+      00019B AEr35r00         [ 4]  619 	ldx	(_asctime_timeptr_10000_35 + 1)
+      00019E ADr34r00         [ 4]  620 	lda	_asctime_timeptr_10000_35
+                                    621 ;	Raw cost for generated ic 27 : (6, 8.000000) count=1.000000
+                                    622 ;	genPointerGet
+                                    623 ;	  setupDPTR - off=4 remat=(null) savea=0
+      0001A1 85*00            [ 3]  624 	sta	*(DPTR+0)
+      0001A3 86*01            [ 3]  625 	stx	*(DPTR+1)
+      0001A5 C8               [ 2]  626 	iny
+      0001A6 B1*00            [ 6]  627 	lda	[DPTR],y
+                                    628 ;	Raw cost for generated ic 28 : (7, 13.000000) count=1.000000
+                                    629 ;	genCast
+                                    630 ;	genCopy
+      0001A8 A2 00            [ 2]  631 	ldx	#0x00
+                                    632 ;	Raw cost for generated ic 29 : (2, 2.000000) count=1.000000
+                                    633 ;	genLeftShift
+                                    634 ;	genLeftShiftLiteral
+                                    635 ;	  genlsh16 - shift=1
+      0001AA 86*00            [ 3]  636 	stx	*(REGTEMP+0)
+      0001AC 0A               [ 2]  637 	asl	a
+      0001AD 26*00            [ 5]  638 	rol	*(REGTEMP+0)
+      0001AF A6*00            [ 3]  639 	ldx	*(REGTEMP+0)
+                                    640 ;	Raw cost for generated ic 30 : (7, 13.000000) count=1.000000
+                                    641 ;	genAssign
+                                    642 ;	genCopy
+                                    643 ;	Raw cost for generated ic 31 : (0, 0.000000) count=1.000000
+                                    644 ;	genPointerGet
+                                    645 ;	  setupDPTR - off=0 remat=___month savea=0
+      0001B1 18               [ 2]  646 	clc
+      0001B2 69r0C            [ 3]  647 	adc	#<(___month+0)
+      0001B4 85*00            [ 3]  648 	sta	*(DPTR+0)
+      0001B6 8A               [ 2]  649 	txa
+      0001B7 69s00            [ 3]  650 	adc	#>(___month+0)
+      0001B9 85*01            [ 3]  651 	sta	*(DPTR+1)
+      0001BB A0 00            [ 2]  652 	ldy	#0x00
+      0001BD B1*00            [ 6]  653 	lda	[DPTR],y
+      0001BF 85*0A            [ 3]  654 	sta	*_asctime_sloc5_1_0
+      0001C1 C8               [ 2]  655 	iny
+      0001C2 B1*00            [ 6]  656 	lda	[DPTR],y
+      0001C4 85*0B            [ 3]  657 	sta	*(_asctime_sloc5_1_0 + 1)
+                                    658 ;	Raw cost for generated ic 32 : (21, 34.000000) count=1.000000
+                                    659 ;	skipping iCode since result will be rematerialized
+                                    660 ;	Raw cost for generated ic 33 : (0, 0.000000) count=1.000000
+                                    661 ;	genAssign
+                                    662 ;	genCopy
+      0001C6 AEr35r00         [ 4]  663 	ldx	(_asctime_timeptr_10000_35 + 1)
+      0001C9 ADr34r00         [ 4]  664 	lda	_asctime_timeptr_10000_35
+                                    665 ;	Raw cost for generated ic 35 : (6, 8.000000) count=1.000000
+                                    666 ;	genPointerGet
+                                    667 ;	  setupDPTR - off=7 remat=(null) savea=0
+      0001CC 85*00            [ 3]  668 	sta	*(DPTR+0)
+      0001CE 86*01            [ 3]  669 	stx	*(DPTR+1)
+      0001D0 A0 07            [ 2]  670 	ldy	#0x07
+      0001D2 B1*00            [ 6]  671 	lda	[DPTR],y
+                                    672 ;	Raw cost for generated ic 36 : (8, 13.000000) count=1.000000
+                                    673 ;	genCast
+                                    674 ;	genCopy
+      0001D4 A2 00            [ 2]  675 	ldx	#0x00
+                                    676 ;	Raw cost for generated ic 37 : (2, 2.000000) count=1.000000
+                                    677 ;	genLeftShift
+                                    678 ;	genLeftShiftLiteral
+                                    679 ;	  genlsh16 - shift=1
+      0001D6 86*00            [ 3]  680 	stx	*(REGTEMP+0)
+      0001D8 0A               [ 2]  681 	asl	a
+      0001D9 26*00            [ 5]  682 	rol	*(REGTEMP+0)
+      0001DB A6*00            [ 3]  683 	ldx	*(REGTEMP+0)
+                                    684 ;	Raw cost for generated ic 38 : (7, 13.000000) count=1.000000
+                                    685 ;	genAssign
+                                    686 ;	genCopy
+                                    687 ;	Raw cost for generated ic 39 : (0, 0.000000) count=1.000000
+                                    688 ;	genPointerGet
+                                    689 ;	  setupDPTR - off=0 remat=___day savea=0
+      0001DD 18               [ 2]  690 	clc
+      0001DE 69r24            [ 3]  691 	adc	#<(___day+0)
+      0001E0 85*00            [ 3]  692 	sta	*(DPTR+0)
+      0001E2 8A               [ 2]  693 	txa
+      0001E3 69s00            [ 3]  694 	adc	#>(___day+0)
+      0001E5 85*01            [ 3]  695 	sta	*(DPTR+1)
+      0001E7 A0 00            [ 2]  696 	ldy	#0x00
+      0001E9 B1*00            [ 6]  697 	lda	[DPTR],y
+      0001EB 85*0C            [ 3]  698 	sta	*_asctime_sloc6_1_0
+      0001ED C8               [ 2]  699 	iny
+      0001EE B1*00            [ 6]  700 	lda	[DPTR],y
+      0001F0 85*0D            [ 3]  701 	sta	*(_asctime_sloc6_1_0 + 1)
+                                    702 ;	Raw cost for generated ic 40 : (21, 34.000000) count=1.000000
+                                    703 ;	../time.c: 97: sprintf (ascTimeBuffer, "%s %s %2d %02d:%02d:%02d %04d\n",
+                                    704 ;	skipping iCode since result will be rematerialized
+                                    705 ;	Raw cost for generated ic 41 : (0, 0.000000) count=1.000000
+                                    706 ;	skipping iCode since result will be rematerialized
+                                    707 ;	Raw cost for generated ic 42 : (0, 0.000000) count=1.000000
+                                    708 ;	skipping iCode since result will be rematerialized
+                                    709 ;	Raw cost for generated ic 43 : (0, 0.000000) count=1.000000
+                                    710 ;	skipping iCode since result will be rematerialized
+                                    711 ;	Raw cost for generated ic 44 : (0, 0.000000) count=1.000000
+                                    712 ;	genIpush
+      0001F2 A5*01            [ 3]  713 	lda	*(_asctime_sloc0_1_0 + 1)
+      0001F4 48               [ 3]  714 	pha
+      0001F5 A5*00            [ 3]  715 	lda	*_asctime_sloc0_1_0
+      0001F7 48               [ 3]  716 	pha
+                                    717 ;	Raw cost for generated ic 45 : (6, 12.000000) count=1.000000
+                                    718 ;	genIpush
+      0001F8 A5*03            [ 3]  719 	lda	*(_asctime_sloc1_1_0 + 1)
+      0001FA 48               [ 3]  720 	pha
+      0001FB A5*02            [ 3]  721 	lda	*_asctime_sloc1_1_0
+      0001FD 48               [ 3]  722 	pha
+                                    723 ;	Raw cost for generated ic 46 : (6, 12.000000) count=1.000000
+                                    724 ;	genIpush
+      0001FE A5*05            [ 3]  725 	lda	*(_asctime_sloc2_1_0 + 1)
+      000200 48               [ 3]  726 	pha
+      000201 A5*04            [ 3]  727 	lda	*_asctime_sloc2_1_0
+      000203 48               [ 3]  728 	pha
+                                    729 ;	Raw cost for generated ic 47 : (6, 12.000000) count=1.000000
+                                    730 ;	genIpush
+      000204 A5*07            [ 3]  731 	lda	*(_asctime_sloc3_1_0 + 1)
+      000206 48               [ 3]  732 	pha
+      000207 A5*06            [ 3]  733 	lda	*_asctime_sloc3_1_0
+      000209 48               [ 3]  734 	pha
+                                    735 ;	Raw cost for generated ic 48 : (6, 12.000000) count=1.000000
+                                    736 ;	genIpush
+      00020A A5*09            [ 3]  737 	lda	*(_asctime_sloc4_1_0 + 1)
+      00020C 48               [ 3]  738 	pha
+      00020D A5*08            [ 3]  739 	lda	*_asctime_sloc4_1_0
+      00020F 48               [ 3]  740 	pha
+                                    741 ;	Raw cost for generated ic 49 : (6, 12.000000) count=1.000000
+                                    742 ;	genIpush
+      000210 A5*0B            [ 3]  743 	lda	*(_asctime_sloc5_1_0 + 1)
+      000212 48               [ 3]  744 	pha
+      000213 A5*0A            [ 3]  745 	lda	*_asctime_sloc5_1_0
+      000215 48               [ 3]  746 	pha
+                                    747 ;	Raw cost for generated ic 50 : (6, 12.000000) count=1.000000
+                                    748 ;	genIpush
+      000216 A5*0D            [ 3]  749 	lda	*(_asctime_sloc6_1_0 + 1)
+      000218 48               [ 3]  750 	pha
+      000219 A5*0C            [ 3]  751 	lda	*_asctime_sloc6_1_0
+      00021B 48               [ 3]  752 	pha
+                                    753 ;	Raw cost for generated ic 51 : (6, 12.000000) count=1.000000
+                                    754 ;	genIpush
+      00021C A9s00            [ 2]  755 	lda	#>___str_0
+      00021E 48               [ 3]  756 	pha
+      00021F A9r32            [ 2]  757 	lda	#___str_0
+      000221 48               [ 3]  758 	pha
+                                    759 ;	Raw cost for generated ic 52 : (6, 10.000000) count=1.000000
+                                    760 ;	genIpush
+      000222 A9s00            [ 2]  761 	lda	#>_ascTimeBuffer
+      000224 48               [ 3]  762 	pha
+      000225 A9r12            [ 2]  763 	lda	#_ascTimeBuffer
+      000227 48               [ 3]  764 	pha
+                                    765 ;	Raw cost for generated ic 53 : (6, 10.000000) count=1.000000
+                                    766 ;	genCall
+      000228 20r00r00         [ 6]  767 	jsr	_sprintf
+                                    768 ;	  adjustStack : cycles stk:72  incdec:40  adc:12
+      00022B BA               [ 2]  769 	tsx
+      00022C 8A               [ 2]  770 	txa
+      00022D 18               [ 2]  771 	clc
+      00022E 69 12            [ 3]  772 	adc	#0x12
+      000230 AA               [ 2]  773 	tax
+      000231 9A               [ 2]  774 	txs
+                                    775 ;	Raw cost for generated ic 54 : (10, 18.000000) count=1.000000
+                                    776 ;	../time.c: 101: return ascTimeBuffer;
+                                    777 ;	skipping iCode since result will be rematerialized
+                                    778 ;	Raw cost for generated ic 56 : (0, 0.000000) count=1.000000
+                                    779 ;	genRet
+      000232 A2s00            [ 2]  780 	ldx	#>_ascTimeBuffer
+      000234 A9r12            [ 2]  781 	lda	#_ascTimeBuffer
+                                    782 ;	Raw cost for generated ic 57 : (4, 4.000000) count=1.000000
+                                    783 ;	genLabel
+                                    784 ;	Raw cost for generated ic 58 : (0, 0.000000) count=1.000000
+                                    785 ;	../time.c: 102: }
+                                    786 ;	genEndFunction
+      000236 60               [ 6]  787 	rts
+                                    788 ;	Raw cost for generated ic 59 : (1, 6.000000) count=1.000000
+                                    789 ;------------------------------------------------------------
+                                    790 ;Allocation info for local variables in function 'ctime'
+                                    791 ;------------------------------------------------------------
+                                    792 ;timep         Allocated to registers a x 
+                                    793 ;------------------------------------------------------------
+                                    794 ;	../time.c: 104: char *ctime(time_t *timep) {
+                                    795 ;	genLabel
+                                    796 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    797 ;	-----------------------------------------
+                                    798 ;	 function ctime
+                                    799 ;	-----------------------------------------
+                                    800 ;	Register assignment is optimal.
+                                    801 ;	Stack space usage: 0 bytes.
+      000237                        802 _ctime:
+                                    803 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    804 ;	genReceive
+                                    805 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    806 ;	../time.c: 105: return asctime(localtime(timep));
+                                    807 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                    808 ;	genCall
+                                    809 ;	genSend
+      000237 20r3Dr02         [ 6]  810 	jsr	_localtime
+                                    811 ;	assignResultValue
+                                    812 ;	Raw cost for generated ic 4 : (3, 6.000000) count=1.000000
+                                    813 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                    814 ;	genCall
+                                    815 ;	genSend
+                                    816 ;	assignResultValue
+                                    817 ;	Raw cost for generated ic 6 : (3, 6.000000) count=1.000000
+                                    818 ;	genRet
+                                    819 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    820 ;	genLabel
+                                    821 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    822 ;	../time.c: 106: }
+                                    823 ;	genEndFunction
+      00023A 4Cr34r01         [ 3]  824 	jmp	_asctime
+                                    825 ;	Raw cost for generated ic 9 : (1, 6.000000) count=1.000000
+                                    826 ;------------------------------------------------------------
+                                    827 ;Allocation info for local variables in function 'localtime'
+                                    828 ;------------------------------------------------------------
+                                    829 ;timep         Allocated to registers a x 
+                                    830 ;------------------------------------------------------------
+                                    831 ;	../time.c: 121: struct tm *localtime(time_t *timep) {
+                                    832 ;	genLabel
+                                    833 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    834 ;	-----------------------------------------
+                                    835 ;	 function localtime
+                                    836 ;	-----------------------------------------
+                                    837 ;	Register assignment is optimal.
+                                    838 ;	Stack space usage: 0 bytes.
+      00023D                        839 _localtime:
+                                    840 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    841 ;	genReceive
+                                    842 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    843 ;	../time.c: 122: return gmtime(timep);
+                                    844 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                    845 ;	genCall
+                                    846 ;	genSend
+                                    847 ;	assignResultValue
+                                    848 ;	Raw cost for generated ic 4 : (3, 6.000000) count=1.000000
+                                    849 ;	genRet
+                                    850 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                    851 ;	genLabel
+                                    852 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    853 ;	../time.c: 123: }
+                                    854 ;	genEndFunction
+      00023D 4Cr40r02         [ 3]  855 	jmp	_gmtime
+                                    856 ;	Raw cost for generated ic 7 : (1, 6.000000) count=1.000000
+                                    857 ;------------------------------------------------------------
+                                    858 ;Allocation info for local variables in function 'gmtime'
+                                    859 ;------------------------------------------------------------
+                                    860 ;sloc0         Allocated with name '_gmtime_sloc0_1_0'
+                                    861 ;sloc1         Allocated with name '_gmtime_sloc1_1_0'
+                                    862 ;sloc2         Allocated with name '_gmtime_sloc2_1_0'
+                                    863 ;timep         Allocated to registers a x 
+                                    864 ;epoch         Allocated with name '_gmtime_epoch_10000_42'
+                                    865 ;year          Allocated to registers 
+                                    866 ;month         Allocated to registers 
+                                    867 ;monthLength   Allocated to registers a 
+                                    868 ;days          Allocated with name '_gmtime_days_10000_42'
+                                    869 ;------------------------------------------------------------
+                                    870 ;	../time.c: 125: struct tm *gmtime(time_t *timep) {
+                                    871 ;	genLabel
+                                    872 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    873 ;	-----------------------------------------
+                                    874 ;	 function gmtime
+                                    875 ;	-----------------------------------------
+                                    876 ;	Register assignment is optimal.
+                                    877 ;	Stack space usage: 0 bytes.
+      000240                        878 _gmtime:
+                                    879 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    880 ;	genReceive
+                                    881 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    882 ;	../time.c: 126: unsigned long epoch=*timep;
+                                    883 ;	genPointerGet
+                                    884 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000240 85*00            [ 3]  885 	sta	*(DPTR+0)
+      000242 86*01            [ 3]  886 	stx	*(DPTR+1)
+      000244 A0 00            [ 2]  887 	ldy	#0x00
+      000246 B1*00            [ 6]  888 	lda	[DPTR],y
+      000248 85*0E            [ 3]  889 	sta	*_gmtime_sloc0_1_0
+      00024A C8               [ 2]  890 	iny
+      00024B B1*00            [ 6]  891 	lda	[DPTR],y
+      00024D 85*0F            [ 3]  892 	sta	*(_gmtime_sloc0_1_0 + 1)
+      00024F C8               [ 2]  893 	iny
+      000250 B1*00            [ 6]  894 	lda	[DPTR],y
+      000252 85*10            [ 3]  895 	sta	*(_gmtime_sloc0_1_0 + 2)
+      000254 C8               [ 2]  896 	iny
+      000255 B1*00            [ 6]  897 	lda	[DPTR],y
+      000257 85*11            [ 3]  898 	sta	*(_gmtime_sloc0_1_0 + 3)
+                                    899 ;	Raw cost for generated ic 4 : (25, 46.000000) count=1.000000
+                                    900 ;	../time.c: 131: lastTime.tm_sec=epoch%60;
+                                    901 ;	skipping iCode since result will be rematerialized
+                                    902 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    903 ;	skipping iCode since result will be rematerialized
+                                    904 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    905 ;	genAssign
+                                    906 ;	genCopy
+      000259 8Dr03r00         [ 4]  907 	sta	(__modulong_PARM_1 + 3)
+      00025C A5*10            [ 3]  908 	lda	*(_gmtime_sloc0_1_0 + 2)
+      00025E 8Dr02r00         [ 4]  909 	sta	(__modulong_PARM_1 + 2)
+      000261 A5*0F            [ 3]  910 	lda	*(_gmtime_sloc0_1_0 + 1)
+      000263 8Dr01r00         [ 4]  911 	sta	(__modulong_PARM_1 + 1)
+      000266 A5*0E            [ 3]  912 	lda	*_gmtime_sloc0_1_0
+      000268 8Dr00r00         [ 4]  913 	sta	__modulong_PARM_1
+                                    914 ;	Raw cost for generated ic 157 : (18, 25.000000) count=1.000000
+                                    915 ;	genAssign
+                                    916 ;	genAssignLit
+      00026B A2 3C            [ 2]  917 	ldx	#0x3c
+      00026D 8Er00r00         [ 4]  918 	stx	__modulong_PARM_2
+      000270 9Cr01r00         [ 4]  919 	stz	(__modulong_PARM_2 + 1)
+      000273 9Cr02r00         [ 4]  920 	stz	(__modulong_PARM_2 + 2)
+      000276 9Cr03r00         [ 4]  921 	stz	(__modulong_PARM_2 + 3)
+                                    922 ;	Raw cost for generated ic 158 : (14, 18.000000) count=1.000000
+                                    923 ;	genCall
+      000279 20r00r00         [ 6]  924 	jsr	__modulong
+                                    925 ;	assignResultValue
+      00027C 85*12            [ 3]  926 	sta	*_gmtime_sloc1_1_0
+      00027E 86*13            [ 3]  927 	stx	*(_gmtime_sloc1_1_0 + 1)
+      000280 A5*00            [ 3]  928 	lda	*___SDCC_m6502_ret2
+      000282 85*14            [ 3]  929 	sta	*(_gmtime_sloc1_1_0 + 2)
+      000284 A5*00            [ 3]  930 	lda	*___SDCC_m6502_ret3
+      000286 85*15            [ 3]  931 	sta	*(_gmtime_sloc1_1_0 + 3)
+                                    932 ;	Raw cost for generated ic 159 : (15, 24.000000) count=1.000000
+                                    933 ;	genCast
+                                    934 ;	genCopy
+      000288 A5*12            [ 3]  935 	lda	*_gmtime_sloc1_1_0
+                                    936 ;	Raw cost for generated ic 9 : (2, 3.000000) count=1.000000
+                                    937 ;	genPointerSet
+                                    938 ;	genDataPointerSet
+      00028A 8Dr36r00         [ 4]  939 	sta	_lastTime
+                                    940 ;	Raw cost for generated ic 10 : (3, 4.000000) count=1.000000
+                                    941 ;	../time.c: 132: epoch/=60; // now it is minutes
+                                    942 ;	genAssign
+                                    943 ;	genCopy
+      00028D A5*11            [ 3]  944 	lda	*(_gmtime_sloc0_1_0 + 3)
+      00028F 8Dr03r00         [ 4]  945 	sta	(__divulong_PARM_1 + 3)
+      000292 A5*10            [ 3]  946 	lda	*(_gmtime_sloc0_1_0 + 2)
+      000294 8Dr02r00         [ 4]  947 	sta	(__divulong_PARM_1 + 2)
+      000297 A5*0F            [ 3]  948 	lda	*(_gmtime_sloc0_1_0 + 1)
+      000299 8Dr01r00         [ 4]  949 	sta	(__divulong_PARM_1 + 1)
+      00029C A5*0E            [ 3]  950 	lda	*_gmtime_sloc0_1_0
+      00029E 8Dr00r00         [ 4]  951 	sta	__divulong_PARM_1
+                                    952 ;	Raw cost for generated ic 160 : (20, 28.000000) count=1.000000
+                                    953 ;	genAssign
+                                    954 ;	genAssignLit
+      0002A1 A2 3C            [ 2]  955 	ldx	#0x3c
+      0002A3 8Er00r00         [ 4]  956 	stx	__divulong_PARM_2
+      0002A6 9Cr01r00         [ 4]  957 	stz	(__divulong_PARM_2 + 1)
+      0002A9 9Cr02r00         [ 4]  958 	stz	(__divulong_PARM_2 + 2)
+      0002AC 9Cr03r00         [ 4]  959 	stz	(__divulong_PARM_2 + 3)
+                                    960 ;	Raw cost for generated ic 161 : (14, 18.000000) count=1.000000
+                                    961 ;	../time.c: 133: lastTime.tm_min=epoch%60;
+                                    962 ;	genCall
+      0002AF 20r00r00         [ 6]  963 	jsr	__divulong
+                                    964 ;	assignResultValue
+      0002B2 85*12            [ 3]  965 	sta	*_gmtime_sloc1_1_0
+      0002B4 86*13            [ 3]  966 	stx	*(_gmtime_sloc1_1_0 + 1)
+      0002B6 A5*00            [ 3]  967 	lda	*___SDCC_m6502_ret2
+      0002B8 85*14            [ 3]  968 	sta	*(_gmtime_sloc1_1_0 + 2)
+      0002BA A5*00            [ 3]  969 	lda	*___SDCC_m6502_ret3
+      0002BC 85*15            [ 3]  970 	sta	*(_gmtime_sloc1_1_0 + 3)
+                                    971 ;	Raw cost for generated ic 162 : (15, 24.000000) count=1.000000
+                                    972 ;	skipping iCode since result will be rematerialized
+                                    973 ;	Raw cost for generated ic 14 : (0, 0.000000) count=1.000000
+                                    974 ;	genAssign
+                                    975 ;	genCopy
+      0002BE 8Dr03r00         [ 4]  976 	sta	(__modulong_PARM_1 + 3)
+      0002C1 A5*14            [ 3]  977 	lda	*(_gmtime_sloc1_1_0 + 2)
+      0002C3 8Dr02r00         [ 4]  978 	sta	(__modulong_PARM_1 + 2)
+      0002C6 8A               [ 2]  979 	txa
+      0002C7 8Dr01r00         [ 4]  980 	sta	(__modulong_PARM_1 + 1)
+      0002CA A5*12            [ 3]  981 	lda	*_gmtime_sloc1_1_0
+      0002CC 8Dr00r00         [ 4]  982 	sta	__modulong_PARM_1
+                                    983 ;	Raw cost for generated ic 163 : (17, 24.000000) count=1.000000
+                                    984 ;	genAssign
+                                    985 ;	genAssignLit
+      0002CF A2 3C            [ 2]  986 	ldx	#0x3c
+      0002D1 8Er00r00         [ 4]  987 	stx	__modulong_PARM_2
+      0002D4 9Cr01r00         [ 4]  988 	stz	(__modulong_PARM_2 + 1)
+      0002D7 9Cr02r00         [ 4]  989 	stz	(__modulong_PARM_2 + 2)
+      0002DA 9Cr03r00         [ 4]  990 	stz	(__modulong_PARM_2 + 3)
+                                    991 ;	Raw cost for generated ic 164 : (14, 18.000000) count=1.000000
+                                    992 ;	genCall
+      0002DD 20r00r00         [ 6]  993 	jsr	__modulong
+                                    994 ;	assignResultValue
+      0002E0 85*0E            [ 3]  995 	sta	*_gmtime_sloc0_1_0
+      0002E2 86*0F            [ 3]  996 	stx	*(_gmtime_sloc0_1_0 + 1)
+      0002E4 A5*00            [ 3]  997 	lda	*___SDCC_m6502_ret2
+      0002E6 85*10            [ 3]  998 	sta	*(_gmtime_sloc0_1_0 + 2)
+      0002E8 A5*00            [ 3]  999 	lda	*___SDCC_m6502_ret3
+      0002EA 85*11            [ 3] 1000 	sta	*(_gmtime_sloc0_1_0 + 3)
+                                   1001 ;	Raw cost for generated ic 165 : (15, 24.000000) count=1.000000
+                                   1002 ;	genCast
+                                   1003 ;	genCopy
+      0002EC A5*0E            [ 3] 1004 	lda	*_gmtime_sloc0_1_0
+                                   1005 ;	Raw cost for generated ic 16 : (2, 3.000000) count=1.000000
+                                   1006 ;	genPointerSet
+                                   1007 ;	genDataPointerSet
+      0002EE 8Dr37r00         [ 4] 1008 	sta	(_lastTime + 0x0001)
+                                   1009 ;	Raw cost for generated ic 17 : (3, 4.000000) count=1.000000
+                                   1010 ;	../time.c: 134: epoch/=60; // now it is hours
+                                   1011 ;	genAssign
+                                   1012 ;	genCopy
+      0002F1 A5*15            [ 3] 1013 	lda	*(_gmtime_sloc1_1_0 + 3)
+      0002F3 8Dr03r00         [ 4] 1014 	sta	(__divulong_PARM_1 + 3)
+      0002F6 A5*14            [ 3] 1015 	lda	*(_gmtime_sloc1_1_0 + 2)
+      0002F8 8Dr02r00         [ 4] 1016 	sta	(__divulong_PARM_1 + 2)
+      0002FB A5*13            [ 3] 1017 	lda	*(_gmtime_sloc1_1_0 + 1)
+      0002FD 8Dr01r00         [ 4] 1018 	sta	(__divulong_PARM_1 + 1)
+      000300 A5*12            [ 3] 1019 	lda	*_gmtime_sloc1_1_0
+      000302 8Dr00r00         [ 4] 1020 	sta	__divulong_PARM_1
+                                   1021 ;	Raw cost for generated ic 166 : (20, 28.000000) count=1.000000
+                                   1022 ;	genAssign
+                                   1023 ;	genAssignLit
+      000305 A2 3C            [ 2] 1024 	ldx	#0x3c
+      000307 8Er00r00         [ 4] 1025 	stx	__divulong_PARM_2
+      00030A 9Cr01r00         [ 4] 1026 	stz	(__divulong_PARM_2 + 1)
+      00030D 9Cr02r00         [ 4] 1027 	stz	(__divulong_PARM_2 + 2)
+      000310 9Cr03r00         [ 4] 1028 	stz	(__divulong_PARM_2 + 3)
+                                   1029 ;	Raw cost for generated ic 167 : (14, 18.000000) count=1.000000
+                                   1030 ;	../time.c: 135: lastTime.tm_hour=epoch%24;
+                                   1031 ;	genCall
+      000313 20r00r00         [ 6] 1032 	jsr	__divulong
+                                   1033 ;	assignResultValue
+      000316 85*12            [ 3] 1034 	sta	*_gmtime_sloc1_1_0
+      000318 86*13            [ 3] 1035 	stx	*(_gmtime_sloc1_1_0 + 1)
+      00031A A5*00            [ 3] 1036 	lda	*___SDCC_m6502_ret2
+      00031C 85*14            [ 3] 1037 	sta	*(_gmtime_sloc1_1_0 + 2)
+      00031E A5*00            [ 3] 1038 	lda	*___SDCC_m6502_ret3
+      000320 85*15            [ 3] 1039 	sta	*(_gmtime_sloc1_1_0 + 3)
+                                   1040 ;	Raw cost for generated ic 168 : (15, 24.000000) count=1.000000
+                                   1041 ;	skipping iCode since result will be rematerialized
+                                   1042 ;	Raw cost for generated ic 21 : (0, 0.000000) count=1.000000
+                                   1043 ;	genAssign
+                                   1044 ;	genCopy
+      000322 8Dr03r00         [ 4] 1045 	sta	(__modulong_PARM_1 + 3)
+      000325 A5*14            [ 3] 1046 	lda	*(_gmtime_sloc1_1_0 + 2)
+      000327 8Dr02r00         [ 4] 1047 	sta	(__modulong_PARM_1 + 2)
+      00032A 8A               [ 2] 1048 	txa
+      00032B 8Dr01r00         [ 4] 1049 	sta	(__modulong_PARM_1 + 1)
+      00032E A5*12            [ 3] 1050 	lda	*_gmtime_sloc1_1_0
+      000330 8Dr00r00         [ 4] 1051 	sta	__modulong_PARM_1
+                                   1052 ;	Raw cost for generated ic 169 : (17, 24.000000) count=1.000000
+                                   1053 ;	genAssign
+                                   1054 ;	genAssignLit
+      000333 A2 18            [ 2] 1055 	ldx	#0x18
+      000335 8Er00r00         [ 4] 1056 	stx	__modulong_PARM_2
+      000338 9Cr01r00         [ 4] 1057 	stz	(__modulong_PARM_2 + 1)
+      00033B 9Cr02r00         [ 4] 1058 	stz	(__modulong_PARM_2 + 2)
+      00033E 9Cr03r00         [ 4] 1059 	stz	(__modulong_PARM_2 + 3)
+                                   1060 ;	Raw cost for generated ic 170 : (14, 18.000000) count=1.000000
+                                   1061 ;	genCall
+      000341 20r00r00         [ 6] 1062 	jsr	__modulong
+                                   1063 ;	assignResultValue
+      000344 85*0E            [ 3] 1064 	sta	*_gmtime_sloc0_1_0
+      000346 86*0F            [ 3] 1065 	stx	*(_gmtime_sloc0_1_0 + 1)
+      000348 A5*00            [ 3] 1066 	lda	*___SDCC_m6502_ret2
+      00034A 85*10            [ 3] 1067 	sta	*(_gmtime_sloc0_1_0 + 2)
+      00034C A5*00            [ 3] 1068 	lda	*___SDCC_m6502_ret3
+      00034E 85*11            [ 3] 1069 	sta	*(_gmtime_sloc0_1_0 + 3)
+                                   1070 ;	Raw cost for generated ic 171 : (15, 24.000000) count=1.000000
+                                   1071 ;	genCast
+                                   1072 ;	genCopy
+      000350 A5*0E            [ 3] 1073 	lda	*_gmtime_sloc0_1_0
+                                   1074 ;	Raw cost for generated ic 23 : (2, 3.000000) count=1.000000
+                                   1075 ;	genPointerSet
+                                   1076 ;	genDataPointerSet
+      000352 8Dr38r00         [ 4] 1077 	sta	(_lastTime + 0x0002)
+                                   1078 ;	Raw cost for generated ic 24 : (3, 4.000000) count=1.000000
+                                   1079 ;	../time.c: 136: epoch/=24; // now it is days
+                                   1080 ;	genAssign
+                                   1081 ;	genCopy
+      000355 A5*15            [ 3] 1082 	lda	*(_gmtime_sloc1_1_0 + 3)
+      000357 8Dr03r00         [ 4] 1083 	sta	(__divulong_PARM_1 + 3)
+      00035A A5*14            [ 3] 1084 	lda	*(_gmtime_sloc1_1_0 + 2)
+      00035C 8Dr02r00         [ 4] 1085 	sta	(__divulong_PARM_1 + 2)
+      00035F A5*13            [ 3] 1086 	lda	*(_gmtime_sloc1_1_0 + 1)
+      000361 8Dr01r00         [ 4] 1087 	sta	(__divulong_PARM_1 + 1)
+      000364 A5*12            [ 3] 1088 	lda	*_gmtime_sloc1_1_0
+      000366 8Dr00r00         [ 4] 1089 	sta	__divulong_PARM_1
+                                   1090 ;	Raw cost for generated ic 172 : (20, 28.000000) count=1.000000
+                                   1091 ;	genAssign
+                                   1092 ;	genAssignLit
+      000369 A2 18            [ 2] 1093 	ldx	#0x18
+      00036B 8Er00r00         [ 4] 1094 	stx	__divulong_PARM_2
+      00036E 9Cr01r00         [ 4] 1095 	stz	(__divulong_PARM_2 + 1)
+      000371 9Cr02r00         [ 4] 1096 	stz	(__divulong_PARM_2 + 2)
+      000374 9Cr03r00         [ 4] 1097 	stz	(__divulong_PARM_2 + 3)
+                                   1098 ;	Raw cost for generated ic 173 : (14, 18.000000) count=1.000000
+                                   1099 ;	../time.c: 137: lastTime.tm_wday=(epoch+4)%7;
+                                   1100 ;	genCall
+      000377 20r00r00         [ 6] 1101 	jsr	__divulong
+                                   1102 ;	assignResultValue
+      00037A 85*12            [ 3] 1103 	sta	*_gmtime_sloc1_1_0
+      00037C 86*13            [ 3] 1104 	stx	*(_gmtime_sloc1_1_0 + 1)
+      00037E A5*00            [ 3] 1105 	lda	*___SDCC_m6502_ret2
+      000380 85*14            [ 3] 1106 	sta	*(_gmtime_sloc1_1_0 + 2)
+      000382 A5*00            [ 3] 1107 	lda	*___SDCC_m6502_ret3
+      000384 85*15            [ 3] 1108 	sta	*(_gmtime_sloc1_1_0 + 3)
+                                   1109 ;	Raw cost for generated ic 174 : (15, 24.000000) count=1.000000
+                                   1110 ;	skipping iCode since result will be rematerialized
+                                   1111 ;	Raw cost for generated ic 28 : (0, 0.000000) count=1.000000
+                                   1112 ;	genCast
+                                   1113 ;	genCopy
+      000386 A5*12            [ 3] 1114 	lda	*_gmtime_sloc1_1_0
+                                   1115 ;	Raw cost for generated ic 152 : (2, 3.000000) count=1.000000
+                                   1116 ;	genPlus
+                                   1117 ;	  genPlusInc
+      000388 18               [ 2] 1118 	clc
+      000389 69 04            [ 3] 1119 	adc	#0x04
+      00038B 90 01            [ 4] 1120 	bcc	00172$
+      00038D E8               [ 2] 1121 	inx
+      00038E                       1122 00172$:
+                                   1123 ;	Raw cost for generated ic 29 : (6, 8.600000) count=1.000000
+                                   1124 ;	genCast
+                                   1125 ;	genCopy
+                                   1126 ;	Raw cost for generated ic 175 : (0, 0.000000) count=1.000000
+                                   1127 ;	genAssign
+                                   1128 ;	genAssignLit
+      00038E A0 07            [ 2] 1129 	ldy	#0x07
+      000390 8Cr00r00         [ 4] 1130 	sty	__moduint_PARM_2
+      000393 9Cr01r00         [ 4] 1131 	stz	(__moduint_PARM_2 + 1)
+                                   1132 ;	Raw cost for generated ic 178 : (8, 10.000000) count=1.000000
+                                   1133 ;	Raw cost for generated ic 177 : (0, 0.000000) count=1.000000
+                                   1134 ;	genCall
+                                   1135 ;	genSend
+      000396 20r00r00         [ 6] 1136 	jsr	__moduint
+                                   1137 ;	assignResultValue
+                                   1138 ;	Raw cost for generated ic 179 : (3, 6.000000) count=1.000000
+                                   1139 ;	genCast
+                                   1140 ;	genCopy
+                                   1141 ;	Raw cost for generated ic 176 : (0, 0.000000) count=1.000000
+                                   1142 ;	genCast
+                                   1143 ;	genCopy
+                                   1144 ;	Raw cost for generated ic 149 : (0, 0.000000) count=1.000000
+                                   1145 ;	genPointerSet
+                                   1146 ;	genDataPointerSet
+      000399 8Dr3Dr00         [ 4] 1147 	sta	(_lastTime + 0x0007)
+                                   1148 ;	Raw cost for generated ic 32 : (3, 4.000000) count=1.000000
+                                   1149 ;	../time.c: 140: days=0;
+                                   1150 ;	genAssign
+                                   1151 ;	genAssignLit
+      00039C 9Cr46r00         [ 4] 1152 	stz	_gmtime_days_10000_42
+      00039F 9Cr47r00         [ 4] 1153 	stz	(_gmtime_days_10000_42 + 1)
+      0003A2 9Cr48r00         [ 4] 1154 	stz	(_gmtime_days_10000_42 + 2)
+      0003A5 9Cr49r00         [ 4] 1155 	stz	(_gmtime_days_10000_42 + 3)
+                                   1156 ;	Raw cost for generated ic 34 : (12, 16.000000) count=1.000000
+                                   1157 ;	../time.c: 141: while((days += (LEAP_YEAR(year) ? 366 : 365)) <= epoch) {
+                                   1158 ;	genAssign
+                                   1159 ;	genAssignLit
+      0003A8 A2 B2            [ 2] 1160 	ldx	#0xb2
+      0003AA 86*0E            [ 3] 1161 	stx	*_gmtime_sloc0_1_0
+      0003AC A2 07            [ 2] 1162 	ldx	#0x07
+      0003AE 86*0F            [ 3] 1163 	stx	*(_gmtime_sloc0_1_0 + 1)
+                                   1164 ;	Raw cost for generated ic 142 : (8, 10.000000) count=1.000000
+                                   1165 ;	genLabel
+      0003B0                       1166 00101$:
+                                   1167 ;	Raw cost for generated ic 35 : (0, 0.000000) count=3.999988
+                                   1168 ;	genAnd
+      0003B0 A5*0E            [ 3] 1169 	lda	*_gmtime_sloc0_1_0
+      0003B2 29 03            [ 2] 1170 	and	#0x03
+                                   1171 ;	genIfxJump : z
+      0003B4 D0 07            [ 4] 1172 	bne	00118$
+                                   1173 ;	Raw cost for generated ic 36 : (11, 13.200000) count=3.999988
+                                   1174 ;	skipping generated iCode
+                                   1175 ;	Raw cost for generated ic 38 : (0, 0.000000) count=3.999988
+                                   1176 ;	genAssign
+                                   1177 ;	genCopy
+      0003B6 A2 01            [ 2] 1178 	ldx	#0x01
+      0003B8 A9 6E            [ 2] 1179 	lda	#0x6e
+                                   1180 ;	Raw cost for generated ic 39 : (4, 4.000000) count=2.999989
+                                   1181 ;	genGoto
+      0003BA 4CrC1r03         [ 3] 1182 	jmp	00119$
+                                   1183 ;	Raw cost for generated ic 40 : (3, 3.000000) count=2.999989
+                                   1184 ;	genLabel
+      0003BD                       1185 00118$:
+                                   1186 ;	Raw cost for generated ic 41 : (0, 0.000000) count=0.999995
+                                   1187 ;	genAssign
+                                   1188 ;	genCopy
+      0003BD A2 01            [ 2] 1189 	ldx	#0x01
+      0003BF A9 6D            [ 2] 1190 	lda	#0x6d
+                                   1191 ;	Raw cost for generated ic 42 : (4, 4.000000) count=0.999995
+                                   1192 ;	genLabel
+      0003C1                       1193 00119$:
+                                   1194 ;	Raw cost for generated ic 43 : (0, 0.000000) count=3.999985
+                                   1195 ;	genCast
+      0003C1 85*16            [ 3] 1196 	sta	*_gmtime_sloc2_1_0
+      0003C3 86*17            [ 3] 1197 	stx	*(_gmtime_sloc2_1_0 + 1)
+      0003C5 E0 80            [ 2] 1198 	cpx	#0x80
+      0003C7 A2 00            [ 2] 1199 	ldx	#0x00
+      0003C9 90 01            [ 4] 1200 	bcc	00175$
+      0003CB CA               [ 2] 1201 	dex
+      0003CC                       1202 00175$:
+      0003CC 86*18            [ 3] 1203 	stx	*(_gmtime_sloc2_1_0 + 2)
+      0003CE 86*19            [ 3] 1204 	stx	*(_gmtime_sloc2_1_0 + 3)
+                                   1205 ;	Raw cost for generated ic 44 : (15, 20.600000) count=3.999985
+                                   1206 ;	genPlus
+      0003D0 ADr46r00         [ 4] 1207 	lda	_gmtime_days_10000_42
+      0003D3 18               [ 2] 1208 	clc
+      0003D4 65*16            [ 4] 1209 	adc	*_gmtime_sloc2_1_0
+      0003D6 85*16            [ 3] 1210 	sta	*_gmtime_sloc2_1_0
+      0003D8 ADr47r00         [ 4] 1211 	lda	(_gmtime_days_10000_42 + 1)
+      0003DB 65*17            [ 4] 1212 	adc	*(_gmtime_sloc2_1_0 + 1)
+      0003DD 85*17            [ 3] 1213 	sta	*(_gmtime_sloc2_1_0 + 1)
+      0003DF ADr48r00         [ 4] 1214 	lda	(_gmtime_days_10000_42 + 2)
+      0003E2 65*18            [ 4] 1215 	adc	*(_gmtime_sloc2_1_0 + 2)
+      0003E4 85*18            [ 3] 1216 	sta	*(_gmtime_sloc2_1_0 + 2)
+      0003E6 ADr49r00         [ 4] 1217 	lda	(_gmtime_days_10000_42 + 3)
+      0003E9 65*19            [ 4] 1218 	adc	*(_gmtime_sloc2_1_0 + 3)
+      0003EB 85*19            [ 3] 1219 	sta	*(_gmtime_sloc2_1_0 + 3)
+                                   1220 ;	Raw cost for generated ic 45 : (29, 42.000000) count=3.999985
+                                   1221 ;	genAssign
+                                   1222 ;	genCopy
+      0003ED 8Dr49r00         [ 4] 1223 	sta	(_gmtime_days_10000_42 + 3)
+      0003F0 A5*18            [ 3] 1224 	lda	*(_gmtime_sloc2_1_0 + 2)
+      0003F2 8Dr48r00         [ 4] 1225 	sta	(_gmtime_days_10000_42 + 2)
+      0003F5 A5*17            [ 3] 1226 	lda	*(_gmtime_sloc2_1_0 + 1)
+      0003F7 8Dr47r00         [ 4] 1227 	sta	(_gmtime_days_10000_42 + 1)
+      0003FA A5*16            [ 3] 1228 	lda	*_gmtime_sloc2_1_0
+      0003FC 8Dr46r00         [ 4] 1229 	sta	_gmtime_days_10000_42
+                                   1230 ;	Raw cost for generated ic 46 : (18, 25.000000) count=3.999985
+                                   1231 ;	genCmp
+      0003FF A5*12            [ 3] 1232 	lda	*_gmtime_sloc1_1_0
+      000401 38               [ 2] 1233 	sec
+      000402 E5*16            [ 4] 1234 	sbc	*_gmtime_sloc2_1_0
+      000404 A5*13            [ 3] 1235 	lda	*(_gmtime_sloc1_1_0 + 1)
+      000406 E5*17            [ 4] 1236 	sbc	*(_gmtime_sloc2_1_0 + 1)
+      000408 A5*14            [ 3] 1237 	lda	*(_gmtime_sloc1_1_0 + 2)
+      00040A E5*18            [ 4] 1238 	sbc	*(_gmtime_sloc2_1_0 + 2)
+      00040C A5*15            [ 3] 1239 	lda	*(_gmtime_sloc1_1_0 + 3)
+      00040E E5*19            [ 4] 1240 	sbc	*(_gmtime_sloc2_1_0 + 3)
+      000410 90 09            [ 4] 1241 	bcc	00103$
+                                   1242 ;	Raw cost for generated ic 47 : (22, 31.600000) count=3.999985
+                                   1243 ;	skipping generated iCode
+                                   1244 ;	Raw cost for generated ic 48 : (0, 0.000000) count=3.999985
+                                   1245 ;	../time.c: 142: year++;
+                                   1246 ;	genPlus
+                                   1247 ;	  genPlusInc
+      000412 E6*0E            [ 5] 1248 	inc	*_gmtime_sloc0_1_0
+      000414 D0 9A            [ 4] 1249 	bne	00101$
+      000416 E6*0F            [ 5] 1250 	inc	*(_gmtime_sloc0_1_0 + 1)
+                                   1251 ;	Raw cost for generated ic 52 : (6, 12.600000) count=2.999988
+                                   1252 ;	genGoto
+      000418 4CrB0r03         [ 3] 1253 	jmp	00101$
+                                   1254 ;	Raw cost for generated ic 54 : (3, 3.000000) count=2.999988
+                                   1255 ;	genLabel
+      00041B                       1256 00103$:
+                                   1257 ;	Raw cost for generated ic 55 : (0, 0.000000) count=0.999995
+                                   1258 ;	../time.c: 144: lastTime.tm_year=year-1900;
+                                   1259 ;	skipping iCode since result will be rematerialized
+                                   1260 ;	Raw cost for generated ic 57 : (0, 0.000000) count=0.999995
+                                   1261 ;	genMinus
+                                   1262 ;	  genMinusDec - size=2  icount=1900
+      00041B A5*0E            [ 3] 1263 	lda	*_gmtime_sloc0_1_0
+      00041D 38               [ 2] 1264 	sec
+      00041E E9 6C            [ 3] 1265 	sbc	#0x6c
+      000420 48               [ 3] 1266 	pha
+      000421 A5*0F            [ 3] 1267 	lda	*(_gmtime_sloc0_1_0 + 1)
+      000423 E9 07            [ 3] 1268 	sbc	#0x07
+      000425 AA               [ 2] 1269 	tax
+      000426 68               [ 4] 1270 	pla
+                                   1271 ;	Raw cost for generated ic 58 : (12, 21.000000) count=0.999995
+                                   1272 ;	genPointerSet
+                                   1273 ;	genDataPointerSet
+      000427 8Er3Cr00         [ 4] 1274 	stx	((_lastTime + 0x0005) + 1)
+      00042A 8Dr3Br00         [ 4] 1275 	sta	(_lastTime + 0x0005)
+                                   1276 ;	Raw cost for generated ic 59 : (6, 8.000000) count=0.999995
+                                   1277 ;	../time.c: 146: days -= LEAP_YEAR(year) ? 366 : 365;
+                                   1278 ;	genAnd
+      00042D A5*0E            [ 3] 1279 	lda	*_gmtime_sloc0_1_0
+      00042F 29 03            [ 2] 1280 	and	#0x03
+      000431 85*16            [ 3] 1281 	sta	*_gmtime_sloc2_1_0
+      000433 64*17            [ 3] 1282 	stz	*(_gmtime_sloc2_1_0 + 1)
+                                   1283 ;	Raw cost for generated ic 60 : (9, 12.000000) count=0.999995
+                                   1284 ;	genIfx
+      000435 A5*17            [ 3] 1285 	lda	*(_gmtime_sloc2_1_0 + 1)
+      000437 05*16            [ 3] 1286 	ora	*_gmtime_sloc2_1_0
+                                   1287 ;	genIfxJump : z
+      000439 D0 07            [ 4] 1288 	bne	00120$
+                                   1289 ;	Raw cost for generated ic 62 : (9, 11.600000) count=0.999995
+                                   1290 ;	genAssign
+                                   1291 ;	genCopy
+      00043B A2 01            [ 2] 1292 	ldx	#0x01
+      00043D A9 6E            [ 2] 1293 	lda	#0x6e
+                                   1294 ;	Raw cost for generated ic 63 : (4, 4.000000) count=0.749996
+                                   1295 ;	genGoto
+      00043F 4Cr46r04         [ 3] 1296 	jmp	00121$
+                                   1297 ;	Raw cost for generated ic 64 : (3, 3.000000) count=0.749996
+                                   1298 ;	genLabel
+      000442                       1299 00120$:
+                                   1300 ;	Raw cost for generated ic 65 : (0, 0.000000) count=0.249998
+                                   1301 ;	genAssign
+                                   1302 ;	genCopy
+      000442 A2 01            [ 2] 1303 	ldx	#0x01
+      000444 A9 6D            [ 2] 1304 	lda	#0x6d
+                                   1305 ;	Raw cost for generated ic 66 : (4, 4.000000) count=0.249998
+                                   1306 ;	genLabel
+      000446                       1307 00121$:
+                                   1308 ;	Raw cost for generated ic 67 : (0, 0.000000) count=0.999994
+                                   1309 ;	genCast
+      000446 85*0E            [ 3] 1310 	sta	*_gmtime_sloc0_1_0
+      000448 86*0F            [ 3] 1311 	stx	*(_gmtime_sloc0_1_0 + 1)
+      00044A E0 80            [ 2] 1312 	cpx	#0x80
+      00044C A2 00            [ 2] 1313 	ldx	#0x00
+      00044E 90 01            [ 4] 1314 	bcc	00180$
+      000450 CA               [ 2] 1315 	dex
+      000451                       1316 00180$:
+      000451 86*10            [ 3] 1317 	stx	*(_gmtime_sloc0_1_0 + 2)
+      000453 86*11            [ 3] 1318 	stx	*(_gmtime_sloc0_1_0 + 3)
+                                   1319 ;	Raw cost for generated ic 68 : (15, 20.600000) count=0.999994
+                                   1320 ;	genMinus
+      000455 ADr46r00         [ 4] 1321 	lda	_gmtime_days_10000_42
+      000458 38               [ 2] 1322 	sec
+      000459 E5*0E            [ 4] 1323 	sbc	*_gmtime_sloc0_1_0
+      00045B 8Dr46r00         [ 4] 1324 	sta	_gmtime_days_10000_42
+      00045E ADr47r00         [ 4] 1325 	lda	(_gmtime_days_10000_42 + 1)
+      000461 E5*0F            [ 4] 1326 	sbc	*(_gmtime_sloc0_1_0 + 1)
+      000463 8Dr47r00         [ 4] 1327 	sta	(_gmtime_days_10000_42 + 1)
+      000466 ADr48r00         [ 4] 1328 	lda	(_gmtime_days_10000_42 + 2)
+      000469 E5*10            [ 4] 1329 	sbc	*(_gmtime_sloc0_1_0 + 2)
+      00046B 8Dr48r00         [ 4] 1330 	sta	(_gmtime_days_10000_42 + 2)
+      00046E ADr49r00         [ 4] 1331 	lda	(_gmtime_days_10000_42 + 3)
+      000471 E5*11            [ 4] 1332 	sbc	*(_gmtime_sloc0_1_0 + 3)
+      000473 8Dr49r00         [ 4] 1333 	sta	(_gmtime_days_10000_42 + 3)
+                                   1334 ;	Raw cost for generated ic 69 : (33, 46.000000) count=0.999994
+                                   1335 ;	../time.c: 147: epoch -= days; // now it is days in this year, starting at 0
+                                   1336 ;	genMinus
+      000476 A5*12            [ 3] 1337 	lda	*_gmtime_sloc1_1_0
+      000478 38               [ 2] 1338 	sec
+      000479 EDr46r00         [ 5] 1339 	sbc	_gmtime_days_10000_42
+      00047C 85*12            [ 3] 1340 	sta	*_gmtime_sloc1_1_0
+      00047E A5*13            [ 3] 1341 	lda	*(_gmtime_sloc1_1_0 + 1)
+      000480 EDr47r00         [ 5] 1342 	sbc	(_gmtime_days_10000_42 + 1)
+      000483 85*13            [ 3] 1343 	sta	*(_gmtime_sloc1_1_0 + 1)
+      000485 A5*14            [ 3] 1344 	lda	*(_gmtime_sloc1_1_0 + 2)
+      000487 EDr48r00         [ 5] 1345 	sbc	(_gmtime_days_10000_42 + 2)
+      00048A 85*14            [ 3] 1346 	sta	*(_gmtime_sloc1_1_0 + 2)
+      00048C A5*15            [ 3] 1347 	lda	*(_gmtime_sloc1_1_0 + 3)
+      00048E EDr49r00         [ 5] 1348 	sbc	(_gmtime_days_10000_42 + 3)
+      000491 85*15            [ 3] 1349 	sta	*(_gmtime_sloc1_1_0 + 3)
+                                   1350 ;	Raw cost for generated ic 71 : (29, 42.000000) count=0.999994
+                                   1351 ;	genAssign
+                                   1352 ;	genCopy
+      000493 8Dr45r00         [ 4] 1353 	sta	(_gmtime_epoch_10000_42 + 3)
+      000496 A5*14            [ 3] 1354 	lda	*(_gmtime_sloc1_1_0 + 2)
+      000498 8Dr44r00         [ 4] 1355 	sta	(_gmtime_epoch_10000_42 + 2)
+      00049B A5*13            [ 3] 1356 	lda	*(_gmtime_sloc1_1_0 + 1)
+      00049D 8Dr43r00         [ 4] 1357 	sta	(_gmtime_epoch_10000_42 + 1)
+      0004A0 A5*12            [ 3] 1358 	lda	*_gmtime_sloc1_1_0
+      0004A2 8Dr42r00         [ 4] 1359 	sta	_gmtime_epoch_10000_42
+                                   1360 ;	Raw cost for generated ic 72 : (18, 25.000000) count=0.999994
+                                   1361 ;	../time.c: 148: lastTime.tm_yday=epoch;
+                                   1362 ;	skipping iCode since result will be rematerialized
+                                   1363 ;	Raw cost for generated ic 74 : (0, 0.000000) count=0.999994
+                                   1364 ;	genCast
+                                   1365 ;	genCopy
+      0004A5 A6*13            [ 3] 1366 	ldx	*(_gmtime_sloc1_1_0 + 1)
+      0004A7 A5*12            [ 3] 1367 	lda	*_gmtime_sloc1_1_0
+                                   1368 ;	Raw cost for generated ic 75 : (4, 6.000000) count=0.999994
+                                   1369 ;	genPointerSet
+                                   1370 ;	genDataPointerSet
+      0004A9 8Er3Fr00         [ 4] 1371 	stx	((_lastTime + 0x0008) + 1)
+      0004AC 8Dr3Er00         [ 4] 1372 	sta	(_lastTime + 0x0008)
+                                   1373 ;	Raw cost for generated ic 76 : (6, 8.000000) count=0.999994
+                                   1374 ;	../time.c: 153: for (month=0; month<12; month++) {
+                                   1375 ;	skipping iCode since result will be rematerialized
+                                   1376 ;	Raw cost for generated ic 97 : (0, 0.000000) count=0.999994
+                                   1377 ;	genAssign
+                                   1378 ;	genCopy
+      0004AF A2 00            [ 2] 1379 	ldx	#0x00
+                                   1380 ;	Raw cost for generated ic 145 : (2, 2.000000) count=0.999994
+                                   1381 ;	genLabel
+      0004B1                       1382 00114$:
+                                   1383 ;	Raw cost for generated ic 81 : (0, 0.000000) count=2.285690
+                                   1384 ;	../time.c: 154: if (month==1) { // februari
+                                   1385 ;	genCmpEQorNE
+      0004B1 E0 01            [ 2] 1386 	cpx	#0x01
+      0004B3 D0 10            [ 4] 1387 	bne	00108$
+                                   1388 ;	Raw cost for generated ic 82 : (7, 7.600000) count=2.285690
+                                   1389 ;	skipping generated iCode
+                                   1390 ;	Raw cost for generated ic 83 : (0, 0.000000) count=2.285690
+                                   1391 ;	../time.c: 155: if (LEAP_YEAR(year)) {
+                                   1392 ;	genIfx
+      0004B5 A5*17            [ 3] 1393 	lda	*(_gmtime_sloc2_1_0 + 1)
+      0004B7 05*16            [ 3] 1394 	ora	*_gmtime_sloc2_1_0
+                                   1395 ;	genIfxJump : z
+      0004B9 D0 05            [ 4] 1396 	bne	00105$
+                                   1397 ;	Raw cost for generated ic 87 : (9, 11.600000) count=1.714267
+                                   1398 ;	../time.c: 156: monthLength=29;
+                                   1399 ;	genAssign
+                                   1400 ;	genCopy
+      0004BB A9 1D            [ 2] 1401 	lda	#0x1d
+                                   1402 ;	Raw cost for generated ic 90 : (2, 2.000000) count=1.285700
+                                   1403 ;	genGoto
+      0004BD 4CrD9r04         [ 3] 1404 	jmp	00109$
+                                   1405 ;	Raw cost for generated ic 91 : (3, 3.000000) count=1.285700
+                                   1406 ;	genLabel
+      0004C0                       1407 00105$:
+                                   1408 ;	Raw cost for generated ic 92 : (0, 0.000000) count=0.428564
+                                   1409 ;	../time.c: 158: monthLength=28;
+                                   1410 ;	genAssign
+                                   1411 ;	genCopy
+      0004C0 A9 1C            [ 2] 1412 	lda	#0x1c
+                                   1413 ;	Raw cost for generated ic 93 : (2, 2.000000) count=0.428564
+                                   1414 ;	genGoto
+      0004C2 4CrD9r04         [ 3] 1415 	jmp	00109$
+                                   1416 ;	Raw cost for generated ic 95 : (3, 3.000000) count=0.428564
+                                   1417 ;	genLabel
+      0004C5                       1418 00108$:
+                                   1419 ;	Raw cost for generated ic 96 : (0, 0.000000) count=0.571421
+                                   1420 ;	../time.c: 161: monthLength = monthDays[month];
+                                   1421 ;	genAssign
+                                   1422 ;	genCopy
+      0004C5 64*13            [ 3] 1423 	stz	*(_gmtime_sloc1_1_0 + 1)
+      0004C7 86*12            [ 3] 1424 	stx	*_gmtime_sloc1_1_0
+                                   1425 ;	Raw cost for generated ic 98 : (5, 7.000000) count=0.571421
+                                   1426 ;	genPointerGet
+                                   1427 ;	  setupDPTR - off=0 remat=_monthDays savea=0
+      0004C9 18               [ 2] 1428 	clc
+      0004CA 8A               [ 2] 1429 	txa
+      0004CB 69r00            [ 3] 1430 	adc	#<(_monthDays+0)
+      0004CD 85*00            [ 3] 1431 	sta	*(DPTR+0)
+      0004CF A5*13            [ 3] 1432 	lda	*(_gmtime_sloc1_1_0 + 1)
+      0004D1 69s00            [ 3] 1433 	adc	#>(_monthDays+0)
+      0004D3 85*01            [ 3] 1434 	sta	*(DPTR+1)
+      0004D5 A0 00            [ 2] 1435 	ldy	#0x00
+      0004D7 B1*00            [ 6] 1436 	lda	[DPTR],y
+                                   1437 ;	Raw cost for generated ic 99 : (16, 24.000000) count=0.571421
+                                   1438 ;	genLabel
+      0004D9                       1439 00109$:
+                                   1440 ;	Raw cost for generated ic 101 : (0, 0.000000) count=2.285686
+                                   1441 ;	../time.c: 164: if (epoch>=monthLength) {
+                                   1442 ;	genCast
+      0004D9 85*12            [ 3] 1443 	sta	*_gmtime_sloc1_1_0
+      0004DB 64*13            [ 3] 1444 	stz	*(_gmtime_sloc1_1_0 + 1)
+      0004DD 64*14            [ 3] 1445 	stz	*(_gmtime_sloc1_1_0 + 2)
+      0004DF 64*15            [ 3] 1446 	stz	*(_gmtime_sloc1_1_0 + 3)
+                                   1447 ;	Raw cost for generated ic 102 : (11, 15.000000) count=2.285686
+                                   1448 ;	genCmp
+      0004E1 ADr42r00         [ 4] 1449 	lda	_gmtime_epoch_10000_42
+      0004E4 38               [ 2] 1450 	sec
+      0004E5 E5*12            [ 4] 1451 	sbc	*_gmtime_sloc1_1_0
+      0004E7 ADr43r00         [ 4] 1452 	lda	(_gmtime_epoch_10000_42 + 1)
+      0004EA E5*13            [ 4] 1453 	sbc	*(_gmtime_sloc1_1_0 + 1)
+      0004EC ADr44r00         [ 4] 1454 	lda	(_gmtime_epoch_10000_42 + 2)
+      0004EF E5*14            [ 4] 1455 	sbc	*(_gmtime_sloc1_1_0 + 2)
+      0004F1 ADr45r00         [ 4] 1456 	lda	(_gmtime_epoch_10000_42 + 3)
+      0004F4 E5*15            [ 4] 1457 	sbc	*(_gmtime_sloc1_1_0 + 3)
+      0004F6 90 26            [ 4] 1458 	bcc	00113$
+                                   1459 ;	Raw cost for generated ic 103 : (26, 35.599998) count=2.285686
+                                   1460 ;	skipping generated iCode
+                                   1461 ;	Raw cost for generated ic 104 : (0, 0.000000) count=2.285686
+                                   1462 ;	../time.c: 165: epoch-=monthLength;
+                                   1463 ;	genMinus
+      0004F8 ADr42r00         [ 4] 1464 	lda	_gmtime_epoch_10000_42
+      0004FB 38               [ 2] 1465 	sec
+      0004FC E5*12            [ 4] 1466 	sbc	*_gmtime_sloc1_1_0
+      0004FE 8Dr42r00         [ 4] 1467 	sta	_gmtime_epoch_10000_42
+      000501 ADr43r00         [ 4] 1468 	lda	(_gmtime_epoch_10000_42 + 1)
+      000504 E5*13            [ 4] 1469 	sbc	*(_gmtime_sloc1_1_0 + 1)
+      000506 8Dr43r00         [ 4] 1470 	sta	(_gmtime_epoch_10000_42 + 1)
+      000509 ADr44r00         [ 4] 1471 	lda	(_gmtime_epoch_10000_42 + 2)
+      00050C E5*14            [ 4] 1472 	sbc	*(_gmtime_sloc1_1_0 + 2)
+      00050E 8Dr44r00         [ 4] 1473 	sta	(_gmtime_epoch_10000_42 + 2)
+      000511 ADr45r00         [ 4] 1474 	lda	(_gmtime_epoch_10000_42 + 3)
+      000514 E5*15            [ 4] 1475 	sbc	*(_gmtime_sloc1_1_0 + 3)
+      000516 8Dr45r00         [ 4] 1476 	sta	(_gmtime_epoch_10000_42 + 3)
+                                   1477 ;	Raw cost for generated ic 109 : (33, 46.000000) count=1.714264
+                                   1478 ;	../time.c: 153: for (month=0; month<12; month++) {
+                                   1479 ;	genPlus
+                                   1480 ;	  genPlusInc
+      000519 E8               [ 2] 1481 	inx
+                                   1482 ;	Raw cost for generated ic 117 : (1, 2.000000) count=1.714264
+                                   1483 ;	genCmp
+      00051A E0 0C            [ 2] 1484 	cpx	#0x0c
+      00051C 90 93            [ 4] 1485 	bcc	00114$
+                                   1486 ;	Raw cost for generated ic 119 : (7, 7.600000) count=1.714264
+                                   1487 ;	skipping generated iCode
+                                   1488 ;	Raw cost for generated ic 120 : (0, 0.000000) count=1.714264
+                                   1489 ;	genLabel
+      00051E                       1490 00113$:
+                                   1491 ;	Raw cost for generated ic 122 : (0, 0.000000) count=0.999986
+                                   1492 ;	../time.c: 170: lastTime.tm_mon=month;
+                                   1493 ;	skipping iCode since result will be rematerialized
+                                   1494 ;	Raw cost for generated ic 124 : (0, 0.000000) count=0.999986
+                                   1495 ;	genPointerSet
+                                   1496 ;	genDataPointerSet
+      00051E 8Er3Ar00         [ 4] 1497 	stx	(_lastTime + 0x0004)
+                                   1498 ;	Raw cost for generated ic 125 : (3, 4.000000) count=0.999986
+                                   1499 ;	../time.c: 171: lastTime.tm_mday=epoch+1;
+                                   1500 ;	skipping iCode since result will be rematerialized
+                                   1501 ;	Raw cost for generated ic 127 : (0, 0.000000) count=0.999986
+                                   1502 ;	genCast
+                                   1503 ;	genCopy
+      000521 ADr42r00         [ 4] 1504 	lda	_gmtime_epoch_10000_42
+                                   1505 ;	Raw cost for generated ic 128 : (3, 4.000000) count=0.999986
+                                   1506 ;	genCast
+                                   1507 ;	genCopy
+                                   1508 ;	Raw cost for generated ic 129 : (0, 0.000000) count=0.999986
+                                   1509 ;	genPlus
+                                   1510 ;	  genPlusInc
+      000524 1A               [ 2] 1511 	inc	a
+                                   1512 ;	Raw cost for generated ic 130 : (1, 2.000000) count=0.999986
+                                   1513 ;	genPointerSet
+                                   1514 ;	genDataPointerSet
+      000525 8Dr39r00         [ 4] 1515 	sta	(_lastTime + 0x0003)
+                                   1516 ;	Raw cost for generated ic 131 : (3, 4.000000) count=0.999986
+                                   1517 ;	../time.c: 173: lastTime.tm_isdst=0;
+                                   1518 ;	skipping iCode since result will be rematerialized
+                                   1519 ;	Raw cost for generated ic 133 : (0, 0.000000) count=0.999986
+                                   1520 ;	genPointerSet
+                                   1521 ;	genDataPointerSet
+      000528 9Cr40r00         [ 4] 1522 	stz	(_lastTime + 0x000a)
+                                   1523 ;	Raw cost for generated ic 134 : (3, 4.000000) count=0.999986
+                                   1524 ;	../time.c: 175: return &lastTime;
+                                   1525 ;	skipping iCode since result will be rematerialized
+                                   1526 ;	Raw cost for generated ic 136 : (0, 0.000000) count=0.999986
+                                   1527 ;	genRet
+      00052B A2s00            [ 2] 1528 	ldx	#>_lastTime
+      00052D A9r36            [ 2] 1529 	lda	#_lastTime
+                                   1530 ;	Raw cost for generated ic 137 : (4, 4.000000) count=0.999986
+                                   1531 ;	genLabel
+                                   1532 ;	Raw cost for generated ic 138 : (0, 0.000000) count=0.999986
+                                   1533 ;	../time.c: 176: }
+                                   1534 ;	genEndFunction
+      00052F 60               [ 6] 1535 	rts
+                                   1536 ;	Raw cost for generated ic 139 : (1, 6.000000) count=0.999986
+                                   1537 ;------------------------------------------------------------
+                                   1538 ;Allocation info for local variables in function 'mktime'
+                                   1539 ;------------------------------------------------------------
+                                   1540 ;sloc0         Allocated with name '_mktime_sloc0_1_0'
+                                   1541 ;sloc1         Allocated with name '_mktime_sloc1_1_0'
+                                   1542 ;sloc2         Allocated with name '_mktime_sloc2_1_0'
+                                   1543 ;timeptr       Allocated with name '_mktime_timeptr_10000_55'
+                                   1544 ;year          Allocated with name '_mktime_year_10000_56'
+                                   1545 ;month         Allocated with name '_mktime_month_10000_56'
+                                   1546 ;i             Allocated to registers 
+                                   1547 ;seconds       Allocated with name '_mktime_seconds_10000_56'
+                                   1548 ;------------------------------------------------------------
+                                   1549 ;	../time.c: 179: time_t mktime(struct tm *timeptr) {
+                                   1550 ;	genLabel
+                                   1551 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1552 ;	-----------------------------------------
+                                   1553 ;	 function mktime
+                                   1554 ;	-----------------------------------------
+                                   1555 ;	Register assignment is optimal.
+                                   1556 ;	Stack space usage: 0 bytes.
+      000530                       1557 _mktime:
+                                   1558 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1559 ;	genReceive
+      000530 8Dr4Ar00         [ 4] 1560 	sta	_mktime_timeptr_10000_55
+      000533 8Er4Br00         [ 4] 1561 	stx	(_mktime_timeptr_10000_55 + 1)
+                                   1562 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1563 ;	../time.c: 180: int year=timeptr->tm_year+1900, month=timeptr->tm_mon, i;
+                                   1564 ;	genAssign
+                                   1565 ;	genCopy
+                                   1566 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                   1567 ;	genPointerGet
+                                   1568 ;	  setupDPTR - off=5 remat=(null) savea=0
+      000536 85*00            [ 3] 1569 	sta	*(DPTR+0)
+      000538 86*01            [ 3] 1570 	stx	*(DPTR+1)
+      00053A A0 06            [ 2] 1571 	ldy	#0x06
+      00053C B1*00            [ 6] 1572 	lda	[DPTR],y
+      00053E AA               [ 2] 1573 	tax
+      00053F 88               [ 2] 1574 	dey
+      000540 B1*00            [ 6] 1575 	lda	[DPTR],y
+                                   1576 ;	Raw cost for generated ic 5 : (12, 22.000000) count=1.000000
+                                   1577 ;	genPlus
+                                   1578 ;	  genPlusInc
+      000542 18               [ 2] 1579 	clc
+      000543 69 6C            [ 3] 1580 	adc	#0x6c
+      000545 8Dr4Cr00         [ 4] 1581 	sta	_mktime_year_10000_56
+      000548 8A               [ 2] 1582 	txa
+      000549 69 07            [ 3] 1583 	adc	#0x07
+      00054B 8Dr4Dr00         [ 4] 1584 	sta	(_mktime_year_10000_56 + 1)
+                                   1585 ;	Raw cost for generated ic 6 : (12, 16.000000) count=1.000000
+                                   1586 ;	genAssign
+                                   1587 ;	genCopy
+      00054E AEr4Br00         [ 4] 1588 	ldx	(_mktime_timeptr_10000_55 + 1)
+      000551 ADr4Ar00         [ 4] 1589 	lda	_mktime_timeptr_10000_55
+                                   1590 ;	Raw cost for generated ic 9 : (6, 8.000000) count=1.000000
+                                   1591 ;	genPointerGet
+                                   1592 ;	  setupDPTR - off=4 remat=(null) savea=0
+      000554 85*00            [ 3] 1593 	sta	*(DPTR+0)
+      000556 86*01            [ 3] 1594 	stx	*(DPTR+1)
+      000558 88               [ 2] 1595 	dey
+      000559 B1*00            [ 6] 1596 	lda	[DPTR],y
+                                   1597 ;	Raw cost for generated ic 10 : (7, 13.000000) count=1.000000
+                                   1598 ;	genCast
+      00055B 8Dr4Er00         [ 4] 1599 	sta	_mktime_month_10000_56
+      00055E 9Cr4Fr00         [ 4] 1600 	stz	(_mktime_month_10000_56 + 1)
+                                   1601 ;	Raw cost for generated ic 11 : (6, 8.000000) count=1.000000
+                                   1602 ;	../time.c: 183: CheckTime(timeptr);
+                                   1603 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                   1604 ;	genCall
+                                   1605 ;	genSend
+      000561 AEr4Br00         [ 4] 1606 	ldx	(_mktime_timeptr_10000_55 + 1)
+      000564 ADr4Ar00         [ 4] 1607 	lda	_mktime_timeptr_10000_55
+      000567 20r75r00         [ 6] 1608 	jsr	_CheckTime
+                                   1609 ;	Raw cost for generated ic 14 : (9, 14.000000) count=1.000000
+                                   1610 ;	../time.c: 186: seconds= (year-1970)*(60*60*24L*365);
+                                   1611 ;	genMinus
+                                   1612 ;	  genMinusDec - size=2  icount=1970
+      00056A ADr4Cr00         [ 4] 1613 	lda	_mktime_year_10000_56
+      00056D 38               [ 2] 1614 	sec
+      00056E E9 B2            [ 3] 1615 	sbc	#0xb2
+      000570 48               [ 3] 1616 	pha
+      000571 ADr4Dr00         [ 4] 1617 	lda	(_mktime_year_10000_56 + 1)
+      000574 E9 07            [ 3] 1618 	sbc	#0x07
+      000576 AA               [ 2] 1619 	tax
+      000577 68               [ 4] 1620 	pla
+                                   1621 ;	Raw cost for generated ic 15 : (14, 23.000000) count=1.000000
+                                   1622 ;	genCast
+      000578 8Dr00r00         [ 4] 1623 	sta	__mullong_PARM_2
+      00057B 8Er01r00         [ 4] 1624 	stx	(__mullong_PARM_2 + 1)
+      00057E E0 80            [ 2] 1625 	cpx	#0x80
+      000580 A2 00            [ 2] 1626 	ldx	#0x00
+      000582 90 01            [ 4] 1627 	bcc	00161$
+      000584 CA               [ 2] 1628 	dex
+      000585                       1629 00161$:
+      000585 8Er02r00         [ 4] 1630 	stx	(__mullong_PARM_2 + 2)
+      000588 8Er03r00         [ 4] 1631 	stx	(__mullong_PARM_2 + 3)
+                                   1632 ;	Raw cost for generated ic 16 : (19, 24.600000) count=1.000000
+                                   1633 ;	genAssign
+                                   1634 ;	genAssignLit
+      00058B A2 80            [ 2] 1635 	ldx	#0x80
+      00058D 8Er00r00         [ 4] 1636 	stx	__mullong_PARM_1
+      000590 A2 33            [ 2] 1637 	ldx	#0x33
+      000592 8Er01r00         [ 4] 1638 	stx	(__mullong_PARM_1 + 1)
+      000595 A2 E1            [ 2] 1639 	ldx	#0xe1
+      000597 8Er02r00         [ 4] 1640 	stx	(__mullong_PARM_1 + 2)
+      00059A A2 01            [ 2] 1641 	ldx	#0x01
+      00059C 8Er03r00         [ 4] 1642 	stx	(__mullong_PARM_1 + 3)
+                                   1643 ;	Raw cost for generated ic 120 : (20, 24.000000) count=1.000000
+                                   1644 ;	../time.c: 189: for (i=1970; i<year; i++) {
+                                   1645 ;	genCall
+      00059F 20r00r00         [ 6] 1646 	jsr	__mullong
+                                   1647 ;	assignResultValue
+      0005A2 85*1A            [ 3] 1648 	sta	*_mktime_sloc0_1_0
+      0005A4 86*1B            [ 3] 1649 	stx	*(_mktime_sloc0_1_0 + 1)
+      0005A6 A5*00            [ 3] 1650 	lda	*___SDCC_m6502_ret2
+      0005A8 85*1C            [ 3] 1651 	sta	*(_mktime_sloc0_1_0 + 2)
+      0005AA A5*00            [ 3] 1652 	lda	*___SDCC_m6502_ret3
+      0005AC 85*1D            [ 3] 1653 	sta	*(_mktime_sloc0_1_0 + 3)
+                                   1654 ;	Raw cost for generated ic 122 : (15, 24.000000) count=1.000000
+                                   1655 ;	genAssign
+                                   1656 ;	genAssignLit
+      0005AE A2 B2            [ 2] 1657 	ldx	#0xb2
+      0005B0 86*1E            [ 3] 1658 	stx	*_mktime_sloc1_1_0
+      0005B2 A2 07            [ 2] 1659 	ldx	#0x07
+      0005B4 86*1F            [ 3] 1660 	stx	*(_mktime_sloc1_1_0 + 1)
+                                   1661 ;	Raw cost for generated ic 109 : (8, 10.000000) count=1.000000
+                                   1662 ;	genLabel
+      0005B6                       1663 00110$:
+                                   1664 ;	Raw cost for generated ic 20 : (0, 0.000000) count=3.999993
+                                   1665 ;	genCmp
+      0005B6 A5*1E            [ 3] 1666 	lda	*_mktime_sloc1_1_0
+      0005B8 38               [ 2] 1667 	sec
+      0005B9 EDr4Cr00         [ 5] 1668 	sbc	_mktime_year_10000_56
+      0005BC A5*1F            [ 3] 1669 	lda	*(_mktime_sloc1_1_0 + 1)
+      0005BE EDr4Dr00         [ 5] 1670 	sbc	(_mktime_year_10000_56 + 1)
+      0005C1 50 04            [ 4] 1671 	bvc	00163$
+      0005C3 10 04            [ 4] 1672 	bpl	00162$
+      0005C5 30 3B            [ 4] 1673 	bmi	00124$
+      0005C7                       1674 00163$:
+      0005C7 10 39            [ 4] 1675 	bpl	00124$
+      0005C9                       1676 00162$:
+                                   1677 ;	Raw cost for generated ic 21 : (22, 29.400002) count=3.999993
+                                   1678 ;	skipping generated iCode
+                                   1679 ;	Raw cost for generated ic 22 : (0, 0.000000) count=3.999993
+                                   1680 ;	../time.c: 190: if (LEAP_YEAR(i)) {
+                                   1681 ;	genAssign
+                                   1682 ;	genAssignLit
+      0005C9 A2 04            [ 2] 1683 	ldx	#0x04
+      0005CB 8Er00r00         [ 4] 1684 	stx	__modsint_PARM_2
+      0005CE 9Cr01r00         [ 4] 1685 	stz	(__modsint_PARM_2 + 1)
+                                   1686 ;	Raw cost for generated ic 124 : (8, 10.000000) count=2.999995
+                                   1687 ;	Raw cost for generated ic 123 : (0, 0.000000) count=2.999995
+                                   1688 ;	genCall
+                                   1689 ;	genSend
+      0005D1 A6*1F            [ 3] 1690 	ldx	*(_mktime_sloc1_1_0 + 1)
+      0005D3 A5*1E            [ 3] 1691 	lda	*_mktime_sloc1_1_0
+      0005D5 20r00r00         [ 6] 1692 	jsr	__modsint
+                                   1693 ;	assignResultValue
+                                   1694 ;	Raw cost for generated ic 125 : (7, 12.000000) count=2.999995
+                                   1695 ;	genIfx
+      0005D8 C9 00            [ 2] 1696 	cmp	#0x00
+                                   1697 ;	genIfxJump : z
+      0005DA D0 1D            [ 4] 1698 	bne	00111$
+      0005DC E0 00            [ 2] 1699 	cpx	#0x00
+      0005DE D0 19            [ 4] 1700 	bne	00111$
+                                   1701 ;	Raw cost for generated ic 26 : (11, 12.200000) count=2.999995
+                                   1702 ;	../time.c: 191: seconds+= 60*60*24L;
+                                   1703 ;	genPlus
+                                   1704 ;	  genPlusInc
+      0005E0 A5*1A            [ 3] 1705 	lda	*_mktime_sloc0_1_0
+      0005E2 18               [ 2] 1706 	clc
+      0005E3 69 80            [ 3] 1707 	adc	#0x80
+      0005E5 85*1A            [ 3] 1708 	sta	*_mktime_sloc0_1_0
+      0005E7 A5*1B            [ 3] 1709 	lda	*(_mktime_sloc0_1_0 + 1)
+      0005E9 69 51            [ 3] 1710 	adc	#0x51
+      0005EB 85*1B            [ 3] 1711 	sta	*(_mktime_sloc0_1_0 + 1)
+      0005ED A5*1C            [ 3] 1712 	lda	*(_mktime_sloc0_1_0 + 2)
+      0005EF 69 01            [ 3] 1713 	adc	#0x01
+      0005F1 85*1C            [ 3] 1714 	sta	*(_mktime_sloc0_1_0 + 2)
+      0005F3 A5*1D            [ 3] 1715 	lda	*(_mktime_sloc0_1_0 + 3)
+      0005F5 69 00            [ 3] 1716 	adc	#0x00
+      0005F7 85*1D            [ 3] 1717 	sta	*(_mktime_sloc0_1_0 + 3)
+                                   1718 ;	Raw cost for generated ic 29 : (25, 34.000000) count=2.249995
+                                   1719 ;	genLabel
+      0005F9                       1720 00111$:
+                                   1721 ;	Raw cost for generated ic 32 : (0, 0.000000) count=2.999993
+                                   1722 ;	../time.c: 189: for (i=1970; i<year; i++) {
+                                   1723 ;	genPlus
+                                   1724 ;	  genPlusInc
+      0005F9 E6*1E            [ 5] 1725 	inc	*_mktime_sloc1_1_0
+      0005FB D0 B9            [ 4] 1726 	bne	00110$
+      0005FD E6*1F            [ 5] 1727 	inc	*(_mktime_sloc1_1_0 + 1)
+                                   1728 ;	Raw cost for generated ic 34 : (6, 12.600000) count=2.999993
+                                   1729 ;	genGoto
+      0005FF 4CrB6r05         [ 3] 1730 	jmp	00110$
+                                   1731 ;	Raw cost for generated ic 36 : (3, 3.000000) count=2.999993
+                                   1732 ;	genLabel
+      000602                       1733 00124$:
+                                   1734 ;	Raw cost for generated ic 107 : (0, 0.000000) count=0.999997
+                                   1735 ;	genAssign
+                                   1736 ;	genCopy
+      000602 A5*1D            [ 3] 1737 	lda	*(_mktime_sloc0_1_0 + 3)
+      000604 8Dr53r00         [ 4] 1738 	sta	(_mktime_seconds_10000_56 + 3)
+      000607 A5*1C            [ 3] 1739 	lda	*(_mktime_sloc0_1_0 + 2)
+      000609 8Dr52r00         [ 4] 1740 	sta	(_mktime_seconds_10000_56 + 2)
+      00060C A5*1B            [ 3] 1741 	lda	*(_mktime_sloc0_1_0 + 1)
+      00060E 8Dr51r00         [ 4] 1742 	sta	(_mktime_seconds_10000_56 + 1)
+      000611 A5*1A            [ 3] 1743 	lda	*_mktime_sloc0_1_0
+      000613 8Dr50r00         [ 4] 1744 	sta	_mktime_seconds_10000_56
+                                   1745 ;	Raw cost for generated ic 108 : (20, 28.000000) count=0.999997
+                                   1746 ;	../time.c: 196: for (i=0; i<month; i++) {
+                                   1747 ;	genAssign
+                                   1748 ;	genAssignLit
+      000616 A2 04            [ 2] 1749 	ldx	#0x04
+      000618 8Er00r00         [ 4] 1750 	stx	__modsint_PARM_2
+      00061B 9Cr01r00         [ 4] 1751 	stz	(__modsint_PARM_2 + 1)
+                                   1752 ;	Raw cost for generated ic 127 : (8, 10.000000) count=0.999997
+                                   1753 ;	Raw cost for generated ic 126 : (0, 0.000000) count=0.999997
+                                   1754 ;	genCall
+                                   1755 ;	genSend
+      00061E AEr4Dr00         [ 4] 1756 	ldx	(_mktime_year_10000_56 + 1)
+      000621 ADr4Cr00         [ 4] 1757 	lda	_mktime_year_10000_56
+      000624 20r00r00         [ 6] 1758 	jsr	__modsint
+                                   1759 ;	assignResultValue
+      000627 85*1E            [ 3] 1760 	sta	*_mktime_sloc1_1_0
+      000629 86*1F            [ 3] 1761 	stx	*(_mktime_sloc1_1_0 + 1)
+                                   1762 ;	Raw cost for generated ic 128 : (13, 20.000000) count=0.999997
+                                   1763 ;	skipping iCode since result will be rematerialized
+                                   1764 ;	Raw cost for generated ic 56 : (0, 0.000000) count=0.999997
+                                   1765 ;	genAssign
+                                   1766 ;	genAssignLit
+      00062B 64*1A            [ 3] 1767 	stz	*_mktime_sloc0_1_0
+      00062D 64*1B            [ 3] 1768 	stz	*(_mktime_sloc0_1_0 + 1)
+                                   1769 ;	Raw cost for generated ic 111 : (6, 8.000000) count=0.999997
+                                   1770 ;	genLabel
+      00062F                       1771 00113$:
+                                   1772 ;	Raw cost for generated ic 39 : (0, 0.000000) count=3.999964
+                                   1773 ;	genCmp
+      00062F A5*1A            [ 3] 1774 	lda	*_mktime_sloc0_1_0
+      000631 38               [ 2] 1775 	sec
+      000632 EDr4Er00         [ 5] 1776 	sbc	_mktime_month_10000_56
+      000635 A5*1B            [ 3] 1777 	lda	*(_mktime_sloc0_1_0 + 1)
+      000637 EDr4Fr00         [ 5] 1778 	sbc	(_mktime_month_10000_56 + 1)
+      00063A 50 04            [ 4] 1779 	bvc	00169$
+      00063C 10 07            [ 4] 1780 	bpl	00168$
+      00063E 30 02            [ 4] 1781 	bmi	00170$
+      000640                       1782 00169$:
+      000640 30 03            [ 4] 1783 	bmi	00168$
+      000642                       1784 00170$:
+      000642 4CrE2r06         [ 3] 1785 	jmp	00108$
+      000645                       1786 00168$:
+                                   1787 ;	Raw cost for generated ic 40 : (22, 29.400002) count=3.999964
+                                   1788 ;	skipping generated iCode
+                                   1789 ;	Raw cost for generated ic 41 : (0, 0.000000) count=3.999964
+                                   1790 ;	../time.c: 197: if (i==1 && LEAP_YEAR(year)) { 
+                                   1791 ;	genCmpEQorNE
+      000645 A5*1A            [ 3] 1792 	lda	*_mktime_sloc0_1_0
+      000647 C9 01            [ 2] 1793 	cmp	#0x01
+      000649 D0 2E            [ 4] 1794 	bne	00105$
+      00064B A5*1B            [ 3] 1795 	lda	*(_mktime_sloc0_1_0 + 1)
+      00064D D0 2A            [ 4] 1796 	bne	00105$
+                                   1797 ;	Raw cost for generated ic 44 : (16, 19.200001) count=2.999970
+                                   1798 ;	skipping generated iCode
+                                   1799 ;	Raw cost for generated ic 45 : (0, 0.000000) count=2.999970
+                                   1800 ;	genIfx
+      00064F A5*1F            [ 3] 1801 	lda	*(_mktime_sloc1_1_0 + 1)
+      000651 05*1E            [ 3] 1802 	ora	*_mktime_sloc1_1_0
+                                   1803 ;	genIfxJump : z
+      000653 D0 24            [ 4] 1804 	bne	00105$
+                                   1805 ;	Raw cost for generated ic 49 : (9, 11.600000) count=2.249978
+                                   1806 ;	../time.c: 198: seconds+= 60*60*24L*29;
+                                   1807 ;	genPlus
+                                   1808 ;	  genPlusInc
+      000655 ADr50r00         [ 4] 1809 	lda	_mktime_seconds_10000_56
+      000658 18               [ 2] 1810 	clc
+      000659 69 80            [ 3] 1811 	adc	#0x80
+      00065B 8Dr50r00         [ 4] 1812 	sta	_mktime_seconds_10000_56
+      00065E ADr51r00         [ 4] 1813 	lda	(_mktime_seconds_10000_56 + 1)
+      000661 69 3B            [ 3] 1814 	adc	#0x3b
+      000663 8Dr51r00         [ 4] 1815 	sta	(_mktime_seconds_10000_56 + 1)
+      000666 ADr52r00         [ 4] 1816 	lda	(_mktime_seconds_10000_56 + 2)
+      000669 69 26            [ 3] 1817 	adc	#0x26
+      00066B 8Dr52r00         [ 4] 1818 	sta	(_mktime_seconds_10000_56 + 2)
+      00066E ADr53r00         [ 4] 1819 	lda	(_mktime_seconds_10000_56 + 3)
+      000671 69 00            [ 3] 1820 	adc	#0x00
+      000673 8Dr53r00         [ 4] 1821 	sta	(_mktime_seconds_10000_56 + 3)
+                                   1822 ;	Raw cost for generated ic 52 : (33, 42.000000) count=1.687483
+                                   1823 ;	genGoto
+      000676 4CrD9r06         [ 3] 1824 	jmp	00114$
+                                   1825 ;	Raw cost for generated ic 54 : (3, 3.000000) count=1.687483
+                                   1826 ;	genLabel
+      000679                       1827 00105$:
+                                   1828 ;	Raw cost for generated ic 55 : (0, 0.000000) count=1.312484
+                                   1829 ;	../time.c: 200: seconds+= 60*60*24L*monthDays[i];
+                                   1830 ;	genAssign
+                                   1831 ;	genCopy
+      000679 A6*1B            [ 3] 1832 	ldx	*(_mktime_sloc0_1_0 + 1)
+      00067B A5*1A            [ 3] 1833 	lda	*_mktime_sloc0_1_0
+                                   1834 ;	Raw cost for generated ic 57 : (4, 6.000000) count=1.312484
+                                   1835 ;	genPointerGet
+                                   1836 ;	  setupDPTR - off=0 remat=_monthDays savea=0
+      00067D 18               [ 2] 1837 	clc
+      00067E 69r00            [ 3] 1838 	adc	#<(_monthDays+0)
+      000680 85*00            [ 3] 1839 	sta	*(DPTR+0)
+      000682 8A               [ 2] 1840 	txa
+      000683 69s00            [ 3] 1841 	adc	#>(_monthDays+0)
+      000685 85*01            [ 3] 1842 	sta	*(DPTR+1)
+      000687 A0 00            [ 2] 1843 	ldy	#0x00
+      000689 B1*00            [ 6] 1844 	lda	[DPTR],y
+                                   1845 ;	Raw cost for generated ic 58 : (14, 21.000000) count=1.312484
+                                   1846 ;	genCast
+      00068B 8Dr00r00         [ 4] 1847 	sta	__mullong_PARM_2
+      00068E 8Cr01r00         [ 4] 1848 	sty	(__mullong_PARM_2 + 1)
+      000691 8Cr02r00         [ 4] 1849 	sty	(__mullong_PARM_2 + 2)
+      000694 8Cr03r00         [ 4] 1850 	sty	(__mullong_PARM_2 + 3)
+                                   1851 ;	Raw cost for generated ic 59 : (12, 16.000000) count=1.312484
+                                   1852 ;	genAssign
+                                   1853 ;	genAssignLit
+      000697 A2 80            [ 2] 1854 	ldx	#0x80
+      000699 8Er00r00         [ 4] 1855 	stx	__mullong_PARM_1
+      00069C A2 51            [ 2] 1856 	ldx	#0x51
+      00069E 8Er01r00         [ 4] 1857 	stx	(__mullong_PARM_1 + 1)
+      0006A1 A2 01            [ 2] 1858 	ldx	#0x01
+      0006A3 8Er02r00         [ 4] 1859 	stx	(__mullong_PARM_1 + 2)
+      0006A6 8Cr03r00         [ 4] 1860 	sty	(__mullong_PARM_1 + 3)
+                                   1861 ;	Raw cost for generated ic 129 : (18, 22.000000) count=1.312484
+                                   1862 ;	genCall
+      0006A9 20r00r00         [ 6] 1863 	jsr	__mullong
+                                   1864 ;	assignResultValue
+      0006AC 85*20            [ 3] 1865 	sta	*_mktime_sloc2_1_0
+      0006AE 86*21            [ 3] 1866 	stx	*(_mktime_sloc2_1_0 + 1)
+      0006B0 A5*00            [ 3] 1867 	lda	*___SDCC_m6502_ret2
+      0006B2 85*22            [ 3] 1868 	sta	*(_mktime_sloc2_1_0 + 2)
+      0006B4 A5*00            [ 3] 1869 	lda	*___SDCC_m6502_ret3
+      0006B6 85*23            [ 3] 1870 	sta	*(_mktime_sloc2_1_0 + 3)
+                                   1871 ;	Raw cost for generated ic 131 : (15, 24.000000) count=1.312484
+                                   1872 ;	genPlus
+      0006B8 ADr50r00         [ 4] 1873 	lda	_mktime_seconds_10000_56
+      0006BB 18               [ 2] 1874 	clc
+      0006BC 65*20            [ 4] 1875 	adc	*_mktime_sloc2_1_0
+      0006BE 8Dr50r00         [ 4] 1876 	sta	_mktime_seconds_10000_56
+      0006C1 ADr51r00         [ 4] 1877 	lda	(_mktime_seconds_10000_56 + 1)
+      0006C4 65*21            [ 4] 1878 	adc	*(_mktime_sloc2_1_0 + 1)
+      0006C6 8Dr51r00         [ 4] 1879 	sta	(_mktime_seconds_10000_56 + 1)
+      0006C9 ADr52r00         [ 4] 1880 	lda	(_mktime_seconds_10000_56 + 2)
+      0006CC 65*22            [ 4] 1881 	adc	*(_mktime_sloc2_1_0 + 2)
+      0006CE 8Dr52r00         [ 4] 1882 	sta	(_mktime_seconds_10000_56 + 2)
+      0006D1 ADr53r00         [ 4] 1883 	lda	(_mktime_seconds_10000_56 + 3)
+      0006D4 65*23            [ 4] 1884 	adc	*(_mktime_sloc2_1_0 + 3)
+      0006D6 8Dr53r00         [ 4] 1885 	sta	(_mktime_seconds_10000_56 + 3)
+                                   1886 ;	Raw cost for generated ic 61 : (33, 46.000000) count=1.312484
+                                   1887 ;	genLabel
+      0006D9                       1888 00114$:
+                                   1889 ;	Raw cost for generated ic 64 : (0, 0.000000) count=2.999967
+                                   1890 ;	../time.c: 196: for (i=0; i<month; i++) {
+                                   1891 ;	genPlus
+                                   1892 ;	  genPlusInc
+      0006D9 E6*1A            [ 5] 1893 	inc	*_mktime_sloc0_1_0
+      0006DB D0 02            [ 4] 1894 	bne	00176$
+      0006DD E6*1B            [ 5] 1895 	inc	*(_mktime_sloc0_1_0 + 1)
+      0006DF                       1896 00176$:
+                                   1897 ;	Raw cost for generated ic 66 : (6, 12.600000) count=2.999967
+                                   1898 ;	genGoto
+      0006DF 4Cr2Fr06         [ 3] 1899 	jmp	00113$
+                                   1900 ;	Raw cost for generated ic 68 : (3, 3.000000) count=2.999967
+                                   1901 ;	genLabel
+      0006E2                       1902 00108$:
+                                   1903 ;	Raw cost for generated ic 69 : (0, 0.000000) count=0.999990
+                                   1904 ;	../time.c: 204: seconds+= (timeptr->tm_mday-1)*60*60*24L;
+                                   1905 ;	genAssign
+                                   1906 ;	genCopy
+      0006E2 AEr4Br00         [ 4] 1907 	ldx	(_mktime_timeptr_10000_55 + 1)
+      0006E5 ADr4Ar00         [ 4] 1908 	lda	_mktime_timeptr_10000_55
+                                   1909 ;	Raw cost for generated ic 71 : (6, 8.000000) count=0.999990
+                                   1910 ;	genPointerGet
+                                   1911 ;	  setupDPTR - off=3 remat=(null) savea=0
+      0006E8 85*00            [ 3] 1912 	sta	*(DPTR+0)
+      0006EA 86*01            [ 3] 1913 	stx	*(DPTR+1)
+      0006EC A0 03            [ 2] 1914 	ldy	#0x03
+      0006EE B1*00            [ 6] 1915 	lda	[DPTR],y
+                                   1916 ;	Raw cost for generated ic 72 : (8, 13.000000) count=0.999990
+                                   1917 ;	genCast
+                                   1918 ;	genCopy
+      0006F0 A2 00            [ 2] 1919 	ldx	#0x00
+                                   1920 ;	Raw cost for generated ic 73 : (2, 2.000000) count=0.999990
+                                   1921 ;	genMinus
+                                   1922 ;	  genMinusDec - size=2  icount=1
+      0006F2 38               [ 2] 1923 	sec
+      0006F3 E9 01            [ 3] 1924 	sbc	#0x01
+      0006F5 B0 01            [ 4] 1925 	bcs	00177$
+      0006F7 CA               [ 2] 1926 	dex
+      0006F8                       1927 00177$:
+                                   1928 ;	Raw cost for generated ic 74 : (6, 8.600000) count=0.999990
+                                   1929 ;	genCast
+      0006F8 8Dr00r00         [ 4] 1930 	sta	__mullong_PARM_2
+      0006FB 8Er01r00         [ 4] 1931 	stx	(__mullong_PARM_2 + 1)
+      0006FE E0 80            [ 2] 1932 	cpx	#0x80
+      000700 A2 00            [ 2] 1933 	ldx	#0x00
+      000702 90 01            [ 4] 1934 	bcc	00178$
+      000704 CA               [ 2] 1935 	dex
+      000705                       1936 00178$:
+      000705 8Er02r00         [ 4] 1937 	stx	(__mullong_PARM_2 + 2)
+      000708 8Er03r00         [ 4] 1938 	stx	(__mullong_PARM_2 + 3)
+                                   1939 ;	Raw cost for generated ic 75 : (19, 24.600000) count=0.999990
+                                   1940 ;	genAssign
+                                   1941 ;	genAssignLit
+      00070B A2 80            [ 2] 1942 	ldx	#0x80
+      00070D 8Er00r00         [ 4] 1943 	stx	__mullong_PARM_1
+      000710 A2 51            [ 2] 1944 	ldx	#0x51
+      000712 8Er01r00         [ 4] 1945 	stx	(__mullong_PARM_1 + 1)
+      000715 A2 01            [ 2] 1946 	ldx	#0x01
+      000717 8Er02r00         [ 4] 1947 	stx	(__mullong_PARM_1 + 2)
+      00071A 9Cr03r00         [ 4] 1948 	stz	(__mullong_PARM_1 + 3)
+                                   1949 ;	Raw cost for generated ic 132 : (18, 22.000000) count=0.999990
+                                   1950 ;	genCall
+      00071D 20r00r00         [ 6] 1951 	jsr	__mullong
+                                   1952 ;	assignResultValue
+      000720 85*20            [ 3] 1953 	sta	*_mktime_sloc2_1_0
+      000722 86*21            [ 3] 1954 	stx	*(_mktime_sloc2_1_0 + 1)
+      000724 A5*00            [ 3] 1955 	lda	*___SDCC_m6502_ret2
+      000726 85*22            [ 3] 1956 	sta	*(_mktime_sloc2_1_0 + 2)
+      000728 A5*00            [ 3] 1957 	lda	*___SDCC_m6502_ret3
+      00072A 85*23            [ 3] 1958 	sta	*(_mktime_sloc2_1_0 + 3)
+                                   1959 ;	Raw cost for generated ic 134 : (15, 24.000000) count=0.999990
+                                   1960 ;	genPlus
+      00072C ADr50r00         [ 4] 1961 	lda	_mktime_seconds_10000_56
+      00072F 18               [ 2] 1962 	clc
+      000730 65*20            [ 4] 1963 	adc	*_mktime_sloc2_1_0
+      000732 8Dr50r00         [ 4] 1964 	sta	_mktime_seconds_10000_56
+      000735 ADr51r00         [ 4] 1965 	lda	(_mktime_seconds_10000_56 + 1)
+      000738 65*21            [ 4] 1966 	adc	*(_mktime_sloc2_1_0 + 1)
+      00073A 8Dr51r00         [ 4] 1967 	sta	(_mktime_seconds_10000_56 + 1)
+      00073D ADr52r00         [ 4] 1968 	lda	(_mktime_seconds_10000_56 + 2)
+      000740 65*22            [ 4] 1969 	adc	*(_mktime_sloc2_1_0 + 2)
+      000742 8Dr52r00         [ 4] 1970 	sta	(_mktime_seconds_10000_56 + 2)
+      000745 ADr53r00         [ 4] 1971 	lda	(_mktime_seconds_10000_56 + 3)
+      000748 65*23            [ 4] 1972 	adc	*(_mktime_sloc2_1_0 + 3)
+      00074A 8Dr53r00         [ 4] 1973 	sta	(_mktime_seconds_10000_56 + 3)
+                                   1974 ;	Raw cost for generated ic 77 : (33, 46.000000) count=0.999990
+                                   1975 ;	../time.c: 205: seconds+= timeptr->tm_hour*60*60L;
+                                   1976 ;	genAssign
+                                   1977 ;	genCopy
+      00074D AEr4Br00         [ 4] 1978 	ldx	(_mktime_timeptr_10000_55 + 1)
+      000750 ADr4Ar00         [ 4] 1979 	lda	_mktime_timeptr_10000_55
+                                   1980 ;	Raw cost for generated ic 80 : (6, 8.000000) count=0.999990
+                                   1981 ;	genPointerGet
+                                   1982 ;	  setupDPTR - off=2 remat=(null) savea=0
+      000753 85*00            [ 3] 1983 	sta	*(DPTR+0)
+      000755 86*01            [ 3] 1984 	stx	*(DPTR+1)
+      000757 A0 02            [ 2] 1985 	ldy	#0x02
+      000759 B1*00            [ 6] 1986 	lda	[DPTR],y
+                                   1987 ;	Raw cost for generated ic 81 : (8, 13.000000) count=0.999990
+                                   1988 ;	genCast
+      00075B 8Dr00r00         [ 4] 1989 	sta	__mullong_PARM_2
+      00075E 9Cr01r00         [ 4] 1990 	stz	(__mullong_PARM_2 + 1)
+      000761 9Cr02r00         [ 4] 1991 	stz	(__mullong_PARM_2 + 2)
+      000764 9Cr03r00         [ 4] 1992 	stz	(__mullong_PARM_2 + 3)
+                                   1993 ;	Raw cost for generated ic 82 : (12, 16.000000) count=0.999990
+                                   1994 ;	genAssign
+                                   1995 ;	genAssignLit
+      000767 A2 10            [ 2] 1996 	ldx	#0x10
+      000769 8Er00r00         [ 4] 1997 	stx	__mullong_PARM_1
+      00076C A2 0E            [ 2] 1998 	ldx	#0x0e
+      00076E 8Er01r00         [ 4] 1999 	stx	(__mullong_PARM_1 + 1)
+      000771 9Cr02r00         [ 4] 2000 	stz	(__mullong_PARM_1 + 2)
+      000774 9Cr03r00         [ 4] 2001 	stz	(__mullong_PARM_1 + 3)
+                                   2002 ;	Raw cost for generated ic 135 : (16, 20.000000) count=0.999990
+                                   2003 ;	genCall
+      000777 20r00r00         [ 6] 2004 	jsr	__mullong
+                                   2005 ;	assignResultValue
+      00077A 85*20            [ 3] 2006 	sta	*_mktime_sloc2_1_0
+      00077C 86*21            [ 3] 2007 	stx	*(_mktime_sloc2_1_0 + 1)
+      00077E A5*00            [ 3] 2008 	lda	*___SDCC_m6502_ret2
+      000780 85*22            [ 3] 2009 	sta	*(_mktime_sloc2_1_0 + 2)
+      000782 A5*00            [ 3] 2010 	lda	*___SDCC_m6502_ret3
+      000784 85*23            [ 3] 2011 	sta	*(_mktime_sloc2_1_0 + 3)
+                                   2012 ;	Raw cost for generated ic 137 : (15, 24.000000) count=0.999990
+                                   2013 ;	genPlus
+      000786 ADr50r00         [ 4] 2014 	lda	_mktime_seconds_10000_56
+      000789 18               [ 2] 2015 	clc
+      00078A 65*20            [ 4] 2016 	adc	*_mktime_sloc2_1_0
+      00078C 8Dr50r00         [ 4] 2017 	sta	_mktime_seconds_10000_56
+      00078F ADr51r00         [ 4] 2018 	lda	(_mktime_seconds_10000_56 + 1)
+      000792 65*21            [ 4] 2019 	adc	*(_mktime_sloc2_1_0 + 1)
+      000794 8Dr51r00         [ 4] 2020 	sta	(_mktime_seconds_10000_56 + 1)
+      000797 ADr52r00         [ 4] 2021 	lda	(_mktime_seconds_10000_56 + 2)
+      00079A 65*22            [ 4] 2022 	adc	*(_mktime_sloc2_1_0 + 2)
+      00079C 8Dr52r00         [ 4] 2023 	sta	(_mktime_seconds_10000_56 + 2)
+      00079F ADr53r00         [ 4] 2024 	lda	(_mktime_seconds_10000_56 + 3)
+      0007A2 65*23            [ 4] 2025 	adc	*(_mktime_sloc2_1_0 + 3)
+      0007A4 8Dr53r00         [ 4] 2026 	sta	(_mktime_seconds_10000_56 + 3)
+                                   2027 ;	Raw cost for generated ic 84 : (33, 46.000000) count=0.999990
+                                   2028 ;	../time.c: 206: seconds+= timeptr->tm_min*60;
+                                   2029 ;	genAssign
+                                   2030 ;	genCopy
+      0007A7 AEr4Br00         [ 4] 2031 	ldx	(_mktime_timeptr_10000_55 + 1)
+      0007AA ADr4Ar00         [ 4] 2032 	lda	_mktime_timeptr_10000_55
+                                   2033 ;	Raw cost for generated ic 87 : (6, 8.000000) count=0.999990
+                                   2034 ;	genPointerGet
+                                   2035 ;	  setupDPTR - off=1 remat=(null) savea=0
+      0007AD 85*00            [ 3] 2036 	sta	*(DPTR+0)
+      0007AF 86*01            [ 3] 2037 	stx	*(DPTR+1)
+      0007B1 A0 01            [ 2] 2038 	ldy	#0x01
+      0007B3 B1*00            [ 6] 2039 	lda	[DPTR],y
+                                   2040 ;	Raw cost for generated ic 88 : (8, 13.000000) count=0.999990
+                                   2041 ;	genCast
+      0007B5 8Dr00r00         [ 4] 2042 	sta	__mulint_PARM_2
+      0007B8 9Cr01r00         [ 4] 2043 	stz	(__mulint_PARM_2 + 1)
+                                   2044 ;	Raw cost for generated ic 89 : (6, 8.000000) count=0.999990
+                                   2045 ;	Raw cost for generated ic 138 : (0, 0.000000) count=0.999990
+                                   2046 ;	genCall
+                                   2047 ;	genSend
+      0007BB A2 00            [ 2] 2048 	ldx	#0x00
+      0007BD A9 3C            [ 2] 2049 	lda	#0x3c
+      0007BF 20r00r00         [ 6] 2050 	jsr	__mulint
+                                   2051 ;	assignResultValue
+                                   2052 ;	Raw cost for generated ic 140 : (7, 10.000000) count=0.999990
+                                   2053 ;	genCast
+      0007C2 85*20            [ 3] 2054 	sta	*_mktime_sloc2_1_0
+      0007C4 86*21            [ 3] 2055 	stx	*(_mktime_sloc2_1_0 + 1)
+      0007C6 E0 80            [ 2] 2056 	cpx	#0x80
+      0007C8 A2 00            [ 2] 2057 	ldx	#0x00
+      0007CA 90 01            [ 4] 2058 	bcc	00179$
+      0007CC CA               [ 2] 2059 	dex
+      0007CD                       2060 00179$:
+      0007CD 86*22            [ 3] 2061 	stx	*(_mktime_sloc2_1_0 + 2)
+      0007CF 86*23            [ 3] 2062 	stx	*(_mktime_sloc2_1_0 + 3)
+                                   2063 ;	Raw cost for generated ic 91 : (15, 20.600000) count=0.999990
+                                   2064 ;	genPlus
+      0007D1 ADr50r00         [ 4] 2065 	lda	_mktime_seconds_10000_56
+      0007D4 18               [ 2] 2066 	clc
+      0007D5 65*20            [ 4] 2067 	adc	*_mktime_sloc2_1_0
+      0007D7 8Dr50r00         [ 4] 2068 	sta	_mktime_seconds_10000_56
+      0007DA ADr51r00         [ 4] 2069 	lda	(_mktime_seconds_10000_56 + 1)
+      0007DD 65*21            [ 4] 2070 	adc	*(_mktime_sloc2_1_0 + 1)
+      0007DF 8Dr51r00         [ 4] 2071 	sta	(_mktime_seconds_10000_56 + 1)
+      0007E2 ADr52r00         [ 4] 2072 	lda	(_mktime_seconds_10000_56 + 2)
+      0007E5 65*22            [ 4] 2073 	adc	*(_mktime_sloc2_1_0 + 2)
+      0007E7 8Dr52r00         [ 4] 2074 	sta	(_mktime_seconds_10000_56 + 2)
+      0007EA ADr53r00         [ 4] 2075 	lda	(_mktime_seconds_10000_56 + 3)
+      0007ED 65*23            [ 4] 2076 	adc	*(_mktime_sloc2_1_0 + 3)
+      0007EF 8Dr53r00         [ 4] 2077 	sta	(_mktime_seconds_10000_56 + 3)
+                                   2078 ;	Raw cost for generated ic 92 : (33, 46.000000) count=0.999990
+                                   2079 ;	../time.c: 207: seconds+= timeptr->tm_sec;
+                                   2080 ;	genPointerGet
+                                   2081 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0007F2 AEr4Ar00         [ 4] 2082 	ldx	_mktime_timeptr_10000_55
+      0007F5 86*00            [ 3] 2083 	stx	*(DPTR+0)
+      0007F7 AEr4Br00         [ 4] 2084 	ldx	(_mktime_timeptr_10000_55 + 1)
+      0007FA 86*01            [ 3] 2085 	stx	*(DPTR+1)
+      0007FC A0 00            [ 2] 2086 	ldy	#0x00
+      0007FE B1*00            [ 6] 2087 	lda	[DPTR],y
+                                   2088 ;	Raw cost for generated ic 96 : (14, 21.000000) count=0.999990
+                                   2089 ;	genCast
+                                   2090 ;	genCopy
+                                   2091 ;	Raw cost for generated ic 97 : (0, 0.000000) count=0.999990
+                                   2092 ;	genCast
+      000800 85*20            [ 3] 2093 	sta	*_mktime_sloc2_1_0
+      000802 84*21            [ 3] 2094 	sty	*(_mktime_sloc2_1_0 + 1)
+      000804 84*22            [ 3] 2095 	sty	*(_mktime_sloc2_1_0 + 2)
+      000806 84*23            [ 3] 2096 	sty	*(_mktime_sloc2_1_0 + 3)
+                                   2097 ;	Raw cost for generated ic 98 : (8, 12.000000) count=0.999990
+                                   2098 ;	genPlus
+      000808 ADr50r00         [ 4] 2099 	lda	_mktime_seconds_10000_56
+      00080B 18               [ 2] 2100 	clc
+      00080C 65*20            [ 4] 2101 	adc	*_mktime_sloc2_1_0
+      00080E 8Dr50r00         [ 4] 2102 	sta	_mktime_seconds_10000_56
+      000811 ADr51r00         [ 4] 2103 	lda	(_mktime_seconds_10000_56 + 1)
+      000814 65*21            [ 4] 2104 	adc	*(_mktime_sloc2_1_0 + 1)
+      000816 8Dr51r00         [ 4] 2105 	sta	(_mktime_seconds_10000_56 + 1)
+      000819 ADr52r00         [ 4] 2106 	lda	(_mktime_seconds_10000_56 + 2)
+      00081C 65*22            [ 4] 2107 	adc	*(_mktime_sloc2_1_0 + 2)
+      00081E 8Dr52r00         [ 4] 2108 	sta	(_mktime_seconds_10000_56 + 2)
+      000821 ADr53r00         [ 4] 2109 	lda	(_mktime_seconds_10000_56 + 3)
+      000824 65*23            [ 4] 2110 	adc	*(_mktime_sloc2_1_0 + 3)
+      000826 8Dr53r00         [ 4] 2111 	sta	(_mktime_seconds_10000_56 + 3)
+                                   2112 ;	Raw cost for generated ic 99 : (33, 46.000000) count=0.999990
+                                   2113 ;	../time.c: 208: return seconds;
+                                   2114 ;	genRet
+      000829 85*00            [ 3] 2115 	sta	*___SDCC_m6502_ret3
+      00082B ADr52r00         [ 4] 2116 	lda	(_mktime_seconds_10000_56 + 2)
+      00082E 85*00            [ 3] 2117 	sta	*___SDCC_m6502_ret2
+      000830 AEr51r00         [ 4] 2118 	ldx	(_mktime_seconds_10000_56 + 1)
+      000833 ADr50r00         [ 4] 2119 	lda	_mktime_seconds_10000_56
+                                   2120 ;	Raw cost for generated ic 101 : (13, 18.000000) count=0.999990
+                                   2121 ;	genLabel
+                                   2122 ;	Raw cost for generated ic 102 : (0, 0.000000) count=0.999990
+                                   2123 ;	../time.c: 209: }
+                                   2124 ;	genEndFunction
+      000836 60               [ 6] 2125 	rts
+                                   2126 ;	Raw cost for generated ic 103 : (1, 6.000000) count=0.999990
+                                   2127 	.area CODE
+                                   2128 	.area RODATA
+                                   2129 	.area RODATA
+      000000                       2130 _monthDays:
+      000000 1F                    2131 	.db #0x1f	; 31
+      000001 1C                    2132 	.db #0x1c	; 28
+      000002 1F                    2133 	.db #0x1f	; 31
+      000003 1E                    2134 	.db #0x1e	; 30
+      000004 1F                    2135 	.db #0x1f	; 31
+      000005 1E                    2136 	.db #0x1e	; 30
+      000006 1F                    2137 	.db #0x1f	; 31
+      000007 1F                    2138 	.db #0x1f	; 31
+      000008 1E                    2139 	.db #0x1e	; 30
+      000009 1F                    2140 	.db #0x1f	; 31
+      00000A 1E                    2141 	.db #0x1e	; 30
+      00000B 1F                    2142 	.db #0x1f	; 31
+                                   2143 	.area CODE
+                                   2144 	.area RODATA
+      00000C                       2145 ___month:
+      00000Cr51r00                 2146 	.dw __str_1
+      00000Er55r00                 2147 	.dw __str_2
+      000010r59r00                 2148 	.dw __str_3
+      000012r5Dr00                 2149 	.dw __str_4
+      000014r61r00                 2150 	.dw __str_5
+      000016r65r00                 2151 	.dw __str_6
+      000018r69r00                 2152 	.dw __str_7
+      00001Ar6Dr00                 2153 	.dw __str_8
+      00001Cr71r00                 2154 	.dw __str_9
+      00001Er75r00                 2155 	.dw __str_10
+      000020r79r00                 2156 	.dw __str_11
+      000022r7Dr00                 2157 	.dw __str_12
+                                   2158 	.area CODE
+                                   2159 	.area RODATA
+      000024                       2160 ___day:
+      000024r81r00                 2161 	.dw __str_13
+      000026r85r00                 2162 	.dw __str_14
+      000028r89r00                 2163 	.dw __str_15
+      00002Ar8Dr00                 2164 	.dw __str_16
+      00002Cr91r00                 2165 	.dw __str_17
+      00002Er95r00                 2166 	.dw __str_18
+      000030r99r00                 2167 	.dw __str_19
+                                   2168 	.area CODE
+                                   2169 	.area RODATA
+      000032                       2170 ___str_0:
+      000032 25 73 20 25 73 20 25  2171 	.ascii "%s %s %2d %02d:%02d:%02d %04d"
+             32 64 20 25 30 32 64
+             3A 25 30 32 64 3A 25
+             30 32 64 20 25 30 34
+             64
+      00004F 0A                    2172 	.db 0x0a
+      000050 00                    2173 	.db 0x00
+                                   2174 	.area CODE
+                                   2175 	.area RODATA
+      000051                       2176 __str_1:
+      000051 4A 61 6E              2177 	.ascii "Jan"
+      000054 00                    2178 	.db 0x00
+                                   2179 	.area CODE
+                                   2180 	.area RODATA
+      000055                       2181 __str_2:
+      000055 46 65 62              2182 	.ascii "Feb"
+      000058 00                    2183 	.db 0x00
+                                   2184 	.area CODE
+                                   2185 	.area RODATA
+      000059                       2186 __str_3:
+      000059 4D 61 72              2187 	.ascii "Mar"
+      00005C 00                    2188 	.db 0x00
+                                   2189 	.area CODE
+                                   2190 	.area RODATA
+      00005D                       2191 __str_4:
+      00005D 41 70 72              2192 	.ascii "Apr"
+      000060 00                    2193 	.db 0x00
+                                   2194 	.area CODE
+                                   2195 	.area RODATA
+      000061                       2196 __str_5:
+      000061 4D 61 79              2197 	.ascii "May"
+      000064 00                    2198 	.db 0x00
+                                   2199 	.area CODE
+                                   2200 	.area RODATA
+      000065                       2201 __str_6:
+      000065 4A 75 6E              2202 	.ascii "Jun"
+      000068 00                    2203 	.db 0x00
+                                   2204 	.area CODE
+                                   2205 	.area RODATA
+      000069                       2206 __str_7:
+      000069 4A 75 6C              2207 	.ascii "Jul"
+      00006C 00                    2208 	.db 0x00
+                                   2209 	.area CODE
+                                   2210 	.area RODATA
+      00006D                       2211 __str_8:
+      00006D 41 75 67              2212 	.ascii "Aug"
+      000070 00                    2213 	.db 0x00
+                                   2214 	.area CODE
+                                   2215 	.area RODATA
+      000071                       2216 __str_9:
+      000071 53 65 70              2217 	.ascii "Sep"
+      000074 00                    2218 	.db 0x00
+                                   2219 	.area CODE
+                                   2220 	.area RODATA
+      000075                       2221 __str_10:
+      000075 4F 63 74              2222 	.ascii "Oct"
+      000078 00                    2223 	.db 0x00
+                                   2224 	.area CODE
+                                   2225 	.area RODATA
+      000079                       2226 __str_11:
+      000079 4E 6F 76              2227 	.ascii "Nov"
+      00007C 00                    2228 	.db 0x00
+                                   2229 	.area CODE
+                                   2230 	.area RODATA
+      00007D                       2231 __str_12:
+      00007D 44 65 63              2232 	.ascii "Dec"
+      000080 00                    2233 	.db 0x00
+                                   2234 	.area CODE
+                                   2235 	.area RODATA
+      000081                       2236 __str_13:
+      000081 53 75 6E              2237 	.ascii "Sun"
+      000084 00                    2238 	.db 0x00
+                                   2239 	.area CODE
+                                   2240 	.area RODATA
+      000085                       2241 __str_14:
+      000085 4D 6F 6E              2242 	.ascii "Mon"
+      000088 00                    2243 	.db 0x00
+                                   2244 	.area CODE
+                                   2245 	.area RODATA
+      000089                       2246 __str_15:
+      000089 54 75 65              2247 	.ascii "Tue"
+      00008C 00                    2248 	.db 0x00
+                                   2249 	.area CODE
+                                   2250 	.area RODATA
+      00008D                       2251 __str_16:
+      00008D 57 65 64              2252 	.ascii "Wed"
+      000090 00                    2253 	.db 0x00
+                                   2254 	.area CODE
+                                   2255 	.area RODATA
+      000091                       2256 __str_17:
+      000091 54 68 75              2257 	.ascii "Thu"
+      000094 00                    2258 	.db 0x00
+                                   2259 	.area CODE
+                                   2260 	.area RODATA
+      000095                       2261 __str_18:
+      000095 46 72 69              2262 	.ascii "Fri"
+      000098 00                    2263 	.db 0x00
+                                   2264 	.area CODE
+                                   2265 	.area RODATA
+      000099                       2266 __str_19:
+      000099 53 61 74              2267 	.ascii "Sat"
+      00009C 00                    2268 	.db 0x00
+                                   2269 	.area CODE
+                                   2270 	.area XINIT
+                                   2271 	.area CABS    (ABS)

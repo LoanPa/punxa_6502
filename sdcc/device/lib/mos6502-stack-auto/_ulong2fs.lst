@@ -1,0 +1,369 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module _ulong2fs
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl ___ulong2fs
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function '__ulong2fs'
+                                     64 ;------------------------------------------------------------
+                                     65 ;a             Allocated to stack - sp +13 +4 
+                                     66 ;exp           Allocated to registers y 
+                                     67 ;fl            Allocated to stack - sp +1 +4 
+                                     68 ;sloc0         Allocated to stack - sp +9 +2 
+                                     69 ;sloc1         Allocated to stack - sp +5 +4 
+                                     70 ;------------------------------------------------------------
+                                     71 ;	../_ulong2fs.c: 84: float __ulong2fs (unsigned long a ) __SDCC_FLOAT_NONBANKED
+                                     72 ;	genLabel
+                                     73 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     74 ;	-----------------------------------------
+                                     75 ;	 function __ulong2fs
+                                     76 ;	-----------------------------------------
+                                     77 ;	Register assignment is optimal.
+                                     78 ;	Stack space usage: 10 bytes.
+      000000                         79 ___ulong2fs:
+                                     80 ;	  adjustStack : cycles stk:30  incdec:24  adc:12
+      000000 BA               [ 2]   81 	tsx
+      000001 8A               [ 2]   82 	txa
+      000002 18               [ 2]   83 	clc
+      000003 69 F6            [ 2]   84 	adc	#0xf6
+      000005 AA               [ 2]   85 	tax
+      000006 9A               [ 2]   86 	txs
+                                     87 ;	Raw cost for generated ic 1 : (7, 12.000000) count=1.000000
+                                     88 ;	../_ulong2fs.c: 89: if (!a)
+                                     89 ;	genIfx
+      000007 BD 10 01         [ 5]   90 	lda	0x110,x
+      00000A 1D 0F 01         [ 5]   91 	ora	0x10f,x
+      00000D 1D 0E 01         [ 5]   92 	ora	0x10e,x
+      000010 1D 0D 01         [ 5]   93 	ora	0x10d,x
+                                     94 ;	genIfxJump : z
+      000013 D0 0A            [ 4]   95 	bne	00102$
+                                     96 ;	Raw cost for generated ic 3 : (17, 21.600000) count=1.000000
+                                     97 ;	../_ulong2fs.c: 91: return 0.0;
+                                     98 ;	genRet
+      000015 A9 00            [ 2]   99 	lda	#0x00
+      000017 AA               [ 2]  100 	tax
+      000018 85*00            [ 3]  101 	sta	*___SDCC_m6502_ret2
+      00001A 85*00            [ 3]  102 	sta	*___SDCC_m6502_ret3
+      00001C 4Cr5Fr01         [ 3]  103 	jmp	00113$
+                                    104 ;	Raw cost for generated ic 6 : (10, 13.000000) count=0.750000
+                                    105 ;	genLabel
+      00001F                        106 00102$:
+                                    107 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    108 ;	../_ulong2fs.c: 94: if (a == 0xfffffffful)
+                                    109 ;	genCmpEQorNE
+      00001F BA               [ 2]  110 	tsx
+      000020 BD 0D 01         [ 5]  111 	lda	0x10d,x
+      000023 C9 FF            [ 2]  112 	cmp	#0xff
+      000025 D0 23            [ 4]  113 	bne	00118$
+      000027 BD 0E 01         [ 5]  114 	lda	0x10e,x
+      00002A C9 FF            [ 2]  115 	cmp	#0xff
+      00002C D0 1C            [ 4]  116 	bne	00118$
+      00002E BD 0F 01         [ 5]  117 	lda	0x10f,x
+      000031 C9 FF            [ 2]  118 	cmp	#0xff
+      000033 D0 15            [ 4]  119 	bne	00118$
+      000035 BD 10 01         [ 5]  120 	lda	0x110,x
+      000038 C9 FF            [ 2]  121 	cmp	#0xff
+      00003A D0 0E            [ 4]  122 	bne	00118$
+                                    123 ;	Raw cost for generated ic 8 : (41, 48.399998) count=1.000000
+                                    124 ;	skipping generated iCode
+                                    125 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                    126 ;	../_ulong2fs.c: 96: return 4294967296.0f;
+                                    127 ;	genRet
+      00003C A9 00            [ 2]  128 	lda	#0x00
+      00003E AA               [ 2]  129 	tax
+      00003F A0 80            [ 2]  130 	ldy	#0x80
+      000041 84*00            [ 3]  131 	sty	*___SDCC_m6502_ret2
+      000043 A0 4F            [ 2]  132 	ldy	#0x4f
+      000045 84*00            [ 3]  133 	sty	*___SDCC_m6502_ret3
+      000047 4Cr5Fr01         [ 3]  134 	jmp	00113$
+                                    135 ;	Raw cost for generated ic 12 : (14, 17.000000) count=0.750000
+                                    136 ;	../_ulong2fs.c: 99: while (a < HIDDEN)
+                                    137 ;	genLabel
+      00004A                        138 00118$:
+                                    139 ;	Raw cost for generated ic 60 : (0, 0.000000) count=1.000000
+                                    140 ;	genAssign
+                                    141 ;	genCopy
+      00004A A0 96            [ 2]  142 	ldy	#0x96
+                                    143 ;	Raw cost for generated ic 62 : (2, 2.000000) count=1.000000
+                                    144 ;	genLabel
+      00004C                        145 00105$:
+                                    146 ;	Raw cost for generated ic 14 : (0, 0.000000) count=3.999997
+                                    147 ;	genCmp
+      00004C BA               [ 2]  148 	tsx
+      00004D BD 0F 01         [ 5]  149 	lda	0x10f,x
+      000050 38               [ 2]  150 	sec
+      000051 E9 80            [ 2]  151 	sbc	#0x80
+      000053 BD 10 01         [ 5]  152 	lda	0x110,x
+      000056 E9 00            [ 2]  153 	sbc	#0x00
+      000058 B0 10            [ 4]  154 	bcs	00121$
+                                    155 ;	Raw cost for generated ic 15 : (17, 21.600000) count=3.999997
+                                    156 ;	skipping generated iCode
+                                    157 ;	Raw cost for generated ic 16 : (0, 0.000000) count=3.999997
+                                    158 ;	../_ulong2fs.c: 101: a <<= 1;
+                                    159 ;	genLeftShift
+                                    160 ;	genLeftShiftLiteral
+                                    161 ;	  genlsh32 - shift=1
+      00005A 1E 0D 01         [ 7]  162 	asl	0x10d,x
+      00005D 3E 0E 01         [ 7]  163 	rol	0x10e,x
+      000060 3E 0F 01         [ 7]  164 	rol	0x10f,x
+      000063 3E 10 01         [ 7]  165 	rol	0x110,x
+                                    166 ;	Raw cost for generated ic 19 : (12, 24.000000) count=2.999997
+                                    167 ;	../_ulong2fs.c: 102: exp--;
+                                    168 ;	genMinus
+                                    169 ;	  genMinusDec - size=1  icount=1
+      000066 88               [ 2]  170 	dey
+                                    171 ;	Raw cost for generated ic 22 : (1, 2.000000) count=2.999997
+                                    172 ;	genGoto
+      000067 4Cr4Cr00         [ 3]  173 	jmp	00105$
+                                    174 ;	Raw cost for generated ic 24 : (3, 3.000000) count=2.999997
+                                    175 ;	../_ulong2fs.c: 105: while (a & NORM)
+                                    176 ;	genLabel
+      00006A                        177 00121$:
+                                    178 ;	Raw cost for generated ic 61 : (0, 0.000000) count=0.999999
+                                    179 ;	genAssign
+                                    180 ;	genCopy
+                                    181 ;	Raw cost for generated ic 65 : (0, 0.000000) count=0.999999
+                                    182 ;	genLabel
+      00006A                        183 00110$:
+                                    184 ;	Raw cost for generated ic 26 : (0, 0.000000) count=3.999991
+                                    185 ;	genAnd
+      00006A BA               [ 2]  186 	tsx
+      00006B BD 10 01         [ 5]  187 	lda	0x110,x
+                                    188 ;	genIfxJump : z
+      00006E F0 3D            [ 4]  189 	beq	00112$
+                                    190 ;	Raw cost for generated ic 27 : (9, 11.600000) count=3.999991
+                                    191 ;	skipping generated iCode
+                                    192 ;	Raw cost for generated ic 28 : (0, 0.000000) count=3.999991
+                                    193 ;	../_ulong2fs.c: 108: if (a & 1)
+                                    194 ;	genAnd
+      000070 BD 0D 01         [ 5]  195 	lda	0x10d,x
+      000073 29 01            [ 2]  196 	and	#0x01
+                                    197 ;	genIfxJump : z
+      000075 F0 21            [ 4]  198 	beq	00109$
+                                    199 ;	Raw cost for generated ic 31 : (12, 14.200001) count=2.999994
+                                    200 ;	skipping generated iCode
+                                    201 ;	Raw cost for generated ic 32 : (0, 0.000000) count=2.999994
+                                    202 ;	../_ulong2fs.c: 109: a += 2;
+                                    203 ;	genPlus
+                                    204 ;	  genPlusInc
+      000077 BD 0D 01         [ 5]  205 	lda	0x10d,x
+      00007A 18               [ 2]  206 	clc
+      00007B 69 02            [ 2]  207 	adc	#0x02
+      00007D 9D 0D 01         [ 5]  208 	sta	0x10d,x
+      000080 BD 0E 01         [ 5]  209 	lda	0x10e,x
+      000083 69 00            [ 2]  210 	adc	#0x00
+      000085 9D 0E 01         [ 5]  211 	sta	0x10e,x
+      000088 BD 0F 01         [ 5]  212 	lda	0x10f,x
+      00008B 69 00            [ 2]  213 	adc	#0x00
+      00008D 9D 0F 01         [ 5]  214 	sta	0x10f,x
+      000090 BD 10 01         [ 5]  215 	lda	0x110,x
+      000093 69 00            [ 2]  216 	adc	#0x00
+      000095 9D 10 01         [ 5]  217 	sta	0x110,x
+                                    218 ;	Raw cost for generated ic 35 : (33, 46.000000) count=2.249994
+                                    219 ;	genLabel
+      000098                        220 00109$:
+                                    221 ;	Raw cost for generated ic 37 : (0, 0.000000) count=2.999992
+                                    222 ;	../_ulong2fs.c: 110: a >>= 1;
+                                    223 ;	genRightShift
+                                    224 ;	genRightShiftLiteral
+                                    225 ;	  genrsh32 - shift=1
+      000098 BA               [ 2]  226 	tsx
+      000099 BD 10 01         [ 5]  227 	lda	0x110,x
+      00009C 4A               [ 2]  228 	lsr	a
+      00009D 7E 0F 01         [ 7]  229 	ror	0x10f,x
+      0000A0 7E 0E 01         [ 7]  230 	ror	0x10e,x
+      0000A3 7E 0D 01         [ 7]  231 	ror	0x10d,x
+      0000A6 9D 10 01         [ 5]  232 	sta	0x110,x
+                                    233 ;	Raw cost for generated ic 38 : (17, 31.000000) count=2.999992
+                                    234 ;	../_ulong2fs.c: 111: exp++;
+                                    235 ;	genPlus
+                                    236 ;	  genPlusInc
+      0000A9 C8               [ 2]  237 	iny
+                                    238 ;	Raw cost for generated ic 41 : (1, 2.000000) count=2.999992
+                                    239 ;	genGoto
+      0000AA 4Cr6Ar00         [ 3]  240 	jmp	00110$
+                                    241 ;	Raw cost for generated ic 43 : (3, 3.000000) count=2.999992
+                                    242 ;	genLabel
+      0000AD                        243 00112$:
+                                    244 ;	Raw cost for generated ic 44 : (0, 0.000000) count=0.999997
+                                    245 ;	../_ulong2fs.c: 114: a &= ~HIDDEN ;
+                                    246 ;	genAnd
+      0000AD BA               [ 2]  247 	tsx
+      0000AE BD 0F 01         [ 5]  248 	lda	0x10f,x
+      0000B1 29 7F            [ 2]  249 	and	#0x7f
+      0000B3 9D 0F 01         [ 5]  250 	sta	0x10f,x
+                                    251 ;	Raw cost for generated ic 45 : (9, 13.000000) count=0.999997
+                                    252 ;	../_ulong2fs.c: 116: fl.l = PACK(0,(unsigned long)exp, a);
+                                    253 ;	genAddrOf
+      0000B6 E8               [ 2]  254 	inx
+      0000B7 8A               [ 2]  255 	txa
+      0000B8 9D 08 01         [ 5]  256 	sta	0x108,x
+      0000BB A9 01            [ 2]  257 	lda	#0x01
+      0000BD 9D 09 01         [ 5]  258 	sta	0x109,x
+                                    259 ;	Raw cost for generated ic 47 : (10, 16.000000) count=0.999997
+                                    260 ;	genCast
+                                    261 ;	genCopy
+      0000C0 A9 00            [ 2]  262 	lda	#0x00
+      0000C2 9D 07 01         [ 5]  263 	sta	0x107,x
+      0000C5 9D 06 01         [ 5]  264 	sta	0x106,x
+      0000C8 9D 05 01         [ 5]  265 	sta	0x105,x
+      0000CB 98               [ 2]  266 	tya
+      0000CC 9D 04 01         [ 5]  267 	sta	0x104,x
+                                    268 ;	Raw cost for generated ic 49 : (15, 24.000000) count=0.999997
+                                    269 ;	genLeftShift
+                                    270 ;	genLeftShiftLiteral
+                                    271 ;	  genlsh32 - shift=23
+      0000CF BD 05 01         [ 5]  272 	lda	0x105,x
+      0000D2 4A               [ 2]  273 	lsr	a
+      0000D3 BD 04 01         [ 5]  274 	lda	0x104,x
+      0000D6 6A               [ 2]  275 	ror	a
+      0000D7 9D 07 01         [ 5]  276 	sta	0x107,x
+      0000DA A9 00            [ 2]  277 	lda	#0x00
+      0000DC 9D 05 01         [ 5]  278 	sta	0x105,x
+      0000DF 9D 04 01         [ 5]  279 	sta	0x104,x
+      0000E2 6A               [ 2]  280 	ror	a
+      0000E3 9D 06 01         [ 5]  281 	sta	0x106,x
+                                    282 ;	Raw cost for generated ic 50 : (23, 36.000000) count=0.999997
+                                    283 ;	genOr
+      0000E6 BD 04 01         [ 5]  284 	lda	0x104,x
+      0000E9 1D 0C 01         [ 5]  285 	ora	0x10c,x
+      0000EC 9D 04 01         [ 5]  286 	sta	0x104,x
+      0000EF BD 05 01         [ 5]  287 	lda	0x105,x
+      0000F2 1D 0D 01         [ 5]  288 	ora	0x10d,x
+      0000F5 9D 05 01         [ 5]  289 	sta	0x105,x
+      0000F8 BD 06 01         [ 5]  290 	lda	0x106,x
+      0000FB 1D 0E 01         [ 5]  291 	ora	0x10e,x
+      0000FE 9D 06 01         [ 5]  292 	sta	0x106,x
+      000101 BD 07 01         [ 5]  293 	lda	0x107,x
+      000104 1D 0F 01         [ 5]  294 	ora	0x10f,x
+      000107 9D 07 01         [ 5]  295 	sta	0x107,x
+                                    296 ;	Raw cost for generated ic 52 : (36, 52.000000) count=0.999997
+                                    297 ;	genPointerSet
+                                    298 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00010A BD 08 01         [ 5]  299 	lda	0x108,x
+      00010D 85*00            [ 3]  300 	sta	*(DPTR+0)
+      00010F BD 09 01         [ 5]  301 	lda	0x109,x
+      000112 85*01            [ 3]  302 	sta	*(DPTR+1)
+      000114 BD 04 01         [ 5]  303 	lda	0x104,x
+      000117 A0 00            [ 2]  304 	ldy	#0x00
+      000119 91*00            [ 6]  305 	sta	[DPTR],y
+      00011B BD 05 01         [ 5]  306 	lda	0x105,x
+      00011E C8               [ 2]  307 	iny
+      00011F 91*00            [ 6]  308 	sta	[DPTR],y
+      000121 BD 06 01         [ 5]  309 	lda	0x106,x
+      000124 C8               [ 2]  310 	iny
+      000125 91*00            [ 6]  311 	sta	[DPTR],y
+      000127 BD 07 01         [ 5]  312 	lda	0x107,x
+      00012A C8               [ 2]  313 	iny
+      00012B 91*00            [ 6]  314 	sta	[DPTR],y
+                                    315 ;	Raw cost for generated ic 53 : (35, 62.000000) count=0.999997
+                                    316 ;	../_ulong2fs.c: 118: return (fl.f);
+                                    317 ;	genAddrOf
+      00012D 8A               [ 2]  318 	txa
+      00012E A2 01            [ 2]  319 	ldx	#0x01
+                                    320 ;	Raw cost for generated ic 54 : (3, 4.000000) count=0.999997
+                                    321 ;	genPointerGet
+                                    322 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000130 85*00            [ 3]  323 	sta	*(DPTR+0)
+      000132 86*01            [ 3]  324 	stx	*(DPTR+1)
+      000134 A0 00            [ 2]  325 	ldy	#0x00
+      000136 B1*00            [ 6]  326 	lda	[DPTR],y
+      000138 BA               [ 2]  327 	tsx
+      000139 9D 05 01         [ 5]  328 	sta	0x105,x
+      00013C C8               [ 2]  329 	iny
+      00013D B1*00            [ 6]  330 	lda	[DPTR],y
+      00013F 9D 06 01         [ 5]  331 	sta	0x106,x
+      000142 C8               [ 2]  332 	iny
+      000143 B1*00            [ 6]  333 	lda	[DPTR],y
+      000145 9D 07 01         [ 5]  334 	sta	0x107,x
+      000148 C8               [ 2]  335 	iny
+      000149 B1*00            [ 6]  336 	lda	[DPTR],y
+      00014B 9D 08 01         [ 5]  337 	sta	0x108,x
+                                    338 ;	Raw cost for generated ic 56 : (30, 56.000000) count=0.999997
+                                    339 ;	genRet
+      00014E 85*00            [ 3]  340 	sta	*___SDCC_m6502_ret3
+      000150 BD 07 01         [ 5]  341 	lda	0x107,x
+      000153 85*00            [ 3]  342 	sta	*___SDCC_m6502_ret2
+      000155 BD 06 01         [ 5]  343 	lda	0x106,x
+      000158 85*00            [ 3]  344 	sta	*(REGTEMP+0)
+      00015A BD 05 01         [ 5]  345 	lda	0x105,x
+      00015D A6*00            [ 3]  346 	ldx	*(REGTEMP+0)
+                                    347 ;	Raw cost for generated ic 57 : (17, 24.000000) count=0.999997
+                                    348 ;	genLabel
+      00015F                        349 00113$:
+                                    350 ;	Raw cost for generated ic 58 : (0, 0.000000) count=0.999997
+                                    351 ;	../_ulong2fs.c: 119: }
+                                    352 ;	genEndFunction
+                                    353 ;	  adjustStack : cycles stk:46  incdec:30  adc:24
+      00015F 86*00            [ 3]  354 	stx	*(REGTEMP+0)
+      000161 85*01            [ 3]  355 	sta	*(REGTEMP+1)
+      000163 BA               [ 2]  356 	tsx
+      000164 8A               [ 2]  357 	txa
+      000165 18               [ 2]  358 	clc
+      000166 69 0A            [ 2]  359 	adc	#0x0a
+      000168 AA               [ 2]  360 	tax
+      000169 9A               [ 2]  361 	txs
+      00016A A5*01            [ 3]  362 	lda	*(REGTEMP+1)
+      00016C A6*00            [ 3]  363 	ldx	*(REGTEMP+0)
+      00016E 60               [ 6]  364 	rts
+                                    365 ;	Raw cost for generated ic 59 : (16, 30.000000) count=0.999997
+                                    366 	.area CODE
+                                    367 	.area RODATA
+                                    368 	.area XINIT
+                                    369 	.area CABS    (ABS)

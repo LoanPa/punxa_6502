@@ -1,0 +1,109 @@
+                                      1 ;--------------------------------------------------------------------------
+                                      2 ;  crt0.s - Generic crt0.s for a bare metal 6502
+                                      3 ;
+                                      4 ;  Copyright (C) 2021-2023, Gabriele Gorla
+                                      5 ;  Copyright (C) 2023, Maarten Brock
+                                      6 ;
+                                      7 ;  This library is free software; you can redistribute it and/or modify it
+                                      8 ;  under the terms of the GNU General Public License as published by the
+                                      9 ;  Free Software Foundation; either version 2, or (at your option) any
+                                     10 ;  later version.
+                                     11 ;
+                                     12 ;  This library is distributed in the hope that it will be useful,
+                                     13 ;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     14 ;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+                                     15 ;  GNU General Public License for more details.
+                                     16 ;
+                                     17 ;  You should have received a copy of the GNU General Public License
+                                     18 ;  along with this library; see the file COPYING. If not, write to the
+                                     19 ;  Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     20 ;   MA 02110-1301, USA.
+                                     21 ;
+                                     22 ;  As a special exception, if you link this library with other files,
+                                     23 ;  some of which are compiled with SDCC, to produce an executable,
+                                     24 ;  this library does not by itself cause the resulting executable to
+                                     25 ;  be covered by the GNU General Public License. This exception does
+                                     26 ;  not however invalidate any other reasons why the executable file
+                                     27 ;   might be covered by the GNU General Public License.
+                                     28 ;--------------------------------------------------------------------------
+                                     29 
+                                     30 	.module crt0
+                                     31 
+                                     32 	;; Ordering of segments for the linker.
+                                     33 	.area ZP      (PAG)
+                                     34 	.area OSEG    (PAG, OVR)
+                                     35 
+                                     36 	.area _DATA
+                                     37 	.area DATA
+                                     38 	.area BSS
+                                     39 
+                                     40 	.area _CODE
+                                     41 	.area GSINIT
+                                     42 	.area GSFINAL
+                                     43 	.area CODE
+                                     44 	.area RODATA
+                                     45 	.area XINIT
+                                     46 
+                                     47 	;; Reset/interrupt vectors
+                                     48 	.area CODEIVT (ABS)
+      00FFFA                         49 	.org  0xfffa
+      00FFFAr00r00                   50 	.dw	__sdcc_gs_init_startup ; NMI
+      00FFFCr00r00                   51 	.dw	__sdcc_gs_init_startup ; RESET
+      00FFFEr00r00                   52 	.dw	__sdcc_gs_init_startup ; IRQ/BRK
+                                     53 
+                                     54 	.area GSINIT
+      000000                         55 __sdcc_gs_init_startup:
+      000000 A2 FF            [ 2]   56 	ldx	#0xff
+      000002 9A               [ 2]   57 	txs
+                                     58 ;	ldx	#0x01         ; MSB of stack ptr
+                                     59 ;	stx	__BASEPTR+1
+                                     60 
+                                     61 ;; Skip initialisation of global variables if __sdcc_external_startup
+                                     62 ;; returned non-zero value.
+      000003 20r00r00         [ 6]   63 	jsr	___sdcc_external_startup
+      000006 09 00            [ 2]   64 	ora	#0
+      000008 F0 03            [ 4]   65 	beq	__sdcc_init_data
+      00000A 4Cr00r00         [ 3]   66 	jmp	__sdcc_program_startup
+                                     67 
+      00000D                         68 __sdcc_init_data:
+                                     69 ;; clear ZP
+      00000D A9 00            [ 2]   70 	lda	#0x00
+      00000F A2r00            [ 2]   71 	ldx	#<s_ZP
+      000011 A0r00            [ 2]   72 	ldy	#<l_ZP
+      000013 F0 06            [ 4]   73 	beq	00101$
+      000015                         74 00100$:
+      000015 95 00            [ 4]   75 	sta	*0,X
+      000017 E8               [ 2]   76 	inx
+      000018 88               [ 2]   77 	dey
+      000019 D0 FA            [ 4]   78 	bne	00100$
+      00001B                         79 00101$:
+                                     80 
+                                     81 ;; initialize DATA
+      00001B A9s00            [ 2]   82 	lda	#>l_XINIT
+      00001D 85*01            [ 3]   83 	sta	*___memcpy_PARM_3+1
+      00001F A9r00            [ 2]   84 	lda	#<l_XINIT
+      000021 85*00            [ 3]   85 	sta	*___memcpy_PARM_3
+      000023 A9s00            [ 2]   86 	lda	#>s_XINIT
+      000025 85*01            [ 3]   87 	sta	*___memcpy_PARM_2+1
+      000027 A9r00            [ 2]   88 	lda	#<s_XINIT
+      000029 85*00            [ 3]   89 	sta	*___memcpy_PARM_2
+      00002B A9r00            [ 2]   90 	lda	#<s_DATA
+      00002D A2s00            [ 2]   91 	ldx	#>s_DATA
+      00002F 20r00r00         [ 6]   92 	jsr	___memcpy
+                                     93 
+                                     94 ;; clear BSS
+      000032 A9s00            [ 2]   95 	lda	#>l_BSS
+      000034 85*01            [ 3]   96 	sta	*_memset_PARM_3+1
+      000036 A9r00            [ 2]   97 	lda	#<l_BSS
+      000038 85*00            [ 3]   98 	sta	*_memset_PARM_3
+      00003A A9 00            [ 2]   99 	lda	#0x00
+      00003C 85*00            [ 3]  100 	sta	*_memset_PARM_2
+      00003E A9r00            [ 2]  101 	lda	#<s_BSS
+      000040 A2s00            [ 2]  102 	ldx	#>s_BSS
+      000042 20r00r00         [ 6]  103 	jsr	_memset
+                                    104 
+                                    105 	.area GSFINAL
+      000000                        106 __sdcc_program_startup:
+      000000 20r00r00         [ 6]  107 	jsr	_main
+      000003 4Cr03r00         [ 3]  108 	jmp	.
+                                    109 

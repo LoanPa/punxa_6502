@@ -1,0 +1,1041 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module _fsdiv
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl ___fsdiv_PARM_2
+                                     28 	.globl ___fsdiv_PARM_1
+                                     29 	.globl ___fsdiv
+                                     30 ;--------------------------------------------------------
+                                     31 ; ZP ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area ZP      (PAG)
+      000000                         34 ___fsdiv_sloc0_1_0:
+      000000                         35 	.ds 4
+                                     36 ;--------------------------------------------------------
+                                     37 ; overlayable items in ram
+                                     38 ;--------------------------------------------------------
+                                     39 	.area	OSEG    (PAG, OVR)
+      000000                         40 ___fsdiv_org_sloc0_1_0:
+      000000                         41 	.ds 4
+      000004                         42 ___fsdiv_org_sloc1_1_0:
+      000004                         43 	.ds 4
+      000008                         44 ___fsdiv_org_sloc2_1_0:
+      000008                         45 	.ds 4
+                                     46 ;--------------------------------------------------------
+                                     47 ; uninitialized external ram data
+                                     48 ;--------------------------------------------------------
+                                     49 	.area BSS
+      000000                         50 ___fsdiv_org_PARM_1:
+      000000                         51 	.ds 4
+      000004                         52 ___fsdiv_org_PARM_2:
+      000004                         53 	.ds 4
+      000008                         54 ___fsdiv_org_fl1_10000_21:
+      000008                         55 	.ds 4
+      00000C                         56 ___fsdiv_org_fl2_10000_21:
+      00000C                         57 	.ds 4
+      000010                         58 ___fsdiv_org_result_10000_21:
+      000010                         59 	.ds 4
+      000014                         60 ___fsdiv_org_mask_10000_21:
+      000014                         61 	.ds 4
+      000018                         62 ___fsdiv_org_mant1_10000_21:
+      000018                         63 	.ds 4
+      00001C                         64 ___fsdiv_org_mant2_10000_21:
+      00001C                         65 	.ds 4
+      000020                         66 ___fsdiv_org_diff_40000_30:
+      000020                         67 	.ds 4
+      000024                         68 ___fsdiv_PARM_1:
+      000024                         69 	.ds 4
+      000028                         70 ___fsdiv_PARM_2:
+      000028                         71 	.ds 4
+      00002C                         72 ___fsdiv_f_30000_37:
+      00002C                         73 	.ds 4
+                                     74 ;--------------------------------------------------------
+                                     75 ; absolute external ram data
+                                     76 ;--------------------------------------------------------
+                                     77 	.area DABS    (ABS)
+                                     78 ;--------------------------------------------------------
+                                     79 ; initialized external ram data
+                                     80 ;--------------------------------------------------------
+                                     81 	.area DATA
+                                     82 ;--------------------------------------------------------
+                                     83 ; global & static initialisations
+                                     84 ;--------------------------------------------------------
+                                     85 	.area _CODE
+                                     86 	.area GSINIT
+                                     87 	.area GSFINAL
+                                     88 	.area GSINIT
+                                     89 ;--------------------------------------------------------
+                                     90 ; Home
+                                     91 ;--------------------------------------------------------
+                                     92 	.area _CODE
+                                     93 	.area _CODE
+                                     94 ;--------------------------------------------------------
+                                     95 ; code
+                                     96 ;--------------------------------------------------------
+                                     97 	.area CODE
+                                     98 ;------------------------------------------------------------
+                                     99 ;Allocation info for local variables in function '__fsdiv_org'
+                                    100 ;------------------------------------------------------------
+                                    101 ;a1            Allocated with name '___fsdiv_org_PARM_1'
+                                    102 ;a2            Allocated with name '___fsdiv_org_PARM_2'
+                                    103 ;fl1           Allocated with name '___fsdiv_org_fl1_10000_21'
+                                    104 ;fl2           Allocated with name '___fsdiv_org_fl2_10000_21'
+                                    105 ;result        Allocated with name '___fsdiv_org_result_10000_21'
+                                    106 ;mask          Allocated with name '___fsdiv_org_mask_10000_21'
+                                    107 ;mant1         Allocated with name '___fsdiv_org_mant1_10000_21'
+                                    108 ;mant2         Allocated with name '___fsdiv_org_mant2_10000_21'
+                                    109 ;exp           Allocated to registers a x 
+                                    110 ;sign          Allocated to registers x 
+                                    111 ;diff          Allocated with name '___fsdiv_org_diff_40000_30'
+                                    112 ;sloc0         Allocated with name '___fsdiv_org_sloc0_1_0'
+                                    113 ;sloc1         Allocated with name '___fsdiv_org_sloc1_1_0'
+                                    114 ;sloc2         Allocated with name '___fsdiv_org_sloc2_1_0'
+                                    115 ;------------------------------------------------------------
+                                    116 ;	../_fsdiv.c: 274: static float __fsdiv_org (float a1, float a2) __SDCC_FLOAT_NONBANKED
+                                    117 ;	genLabel
+                                    118 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    119 ;	-----------------------------------------
+                                    120 ;	 function __fsdiv_org
+                                    121 ;	-----------------------------------------
+                                    122 ;	Register assignment might be sub-optimal.
+                                    123 ;	Stack space usage: 0 bytes.
+      000000                        124 ___fsdiv_org:
+                                    125 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    126 ;	../_fsdiv.c: 283: fl1.f = a1;
+                                    127 ;	skipping iCode since result will be rematerialized
+                                    128 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    129 ;	genPointerSet
+                                    130 ;	genDataPointerSet
+      000000 ADr03r00         [ 4]  131 	lda	(___fsdiv_org_PARM_1 + 3)
+      000003 8Dr0Br00         [ 4]  132 	sta	(___fsdiv_org_fl1_10000_21 + 3)
+      000006 ADr02r00         [ 4]  133 	lda	(___fsdiv_org_PARM_1 + 2)
+      000009 8Dr0Ar00         [ 4]  134 	sta	(___fsdiv_org_fl1_10000_21 + 2)
+      00000C ADr01r00         [ 4]  135 	lda	(___fsdiv_org_PARM_1 + 1)
+      00000F 8Dr09r00         [ 4]  136 	sta	(___fsdiv_org_fl1_10000_21 + 1)
+      000012 ADr00r00         [ 4]  137 	lda	___fsdiv_org_PARM_1
+      000015 8Dr08r00         [ 4]  138 	sta	___fsdiv_org_fl1_10000_21
+                                    139 ;	Raw cost for generated ic 4 : (24, 32.000000) count=1.000000
+                                    140 ;	../_fsdiv.c: 285: exp = EXP (fl1.l);
+                                    141 ;	skipping iCode since result will be rematerialized
+                                    142 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                    143 ;	genPointerGet
+                                    144 ;	genDataPointerGet
+      000018 ADr0Br00         [ 4]  145 	lda	(___fsdiv_org_fl1_10000_21 + 3)
+      00001B 85*03            [ 3]  146 	sta	*(___fsdiv_org_sloc0_1_0 + 3)
+      00001D ADr0Ar00         [ 4]  147 	lda	(___fsdiv_org_fl1_10000_21 + 2)
+      000020 85*02            [ 3]  148 	sta	*(___fsdiv_org_sloc0_1_0 + 2)
+      000022 ADr09r00         [ 4]  149 	lda	(___fsdiv_org_fl1_10000_21 + 1)
+      000025 85*01            [ 3]  150 	sta	*(___fsdiv_org_sloc0_1_0 + 1)
+      000027 ADr08r00         [ 4]  151 	lda	___fsdiv_org_fl1_10000_21
+      00002A 85*00            [ 3]  152 	sta	*___fsdiv_org_sloc0_1_0
+                                    153 ;	Raw cost for generated ic 7 : (20, 28.000000) count=1.000000
+                                    154 ;	genCast
+                                    155 ;	genCopy
+                                    156 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    157 ;	genRightShift
+                                    158 ;	genRightShiftLiteral
+                                    159 ;	  genrsh32 - shift=23
+      00002C A5*02            [ 3]  160 	lda	*(___fsdiv_org_sloc0_1_0 + 2)
+      00002E 2A               [ 2]  161 	rol	a
+      00002F A5*03            [ 3]  162 	lda	*(___fsdiv_org_sloc0_1_0 + 3)
+      000031 2A               [ 2]  163 	rol	a
+      000032 85*00            [ 3]  164 	sta	*___fsdiv_org_sloc0_1_0
+      000034 A9 00            [ 2]  165 	lda	#0x00
+      000036 85*02            [ 3]  166 	sta	*(___fsdiv_org_sloc0_1_0 + 2)
+      000038 85*03            [ 3]  167 	sta	*(___fsdiv_org_sloc0_1_0 + 3)
+      00003A 2A               [ 2]  168 	rol	a
+      00003B 85*01            [ 3]  169 	sta	*(___fsdiv_org_sloc0_1_0 + 1)
+                                    170 ;	Raw cost for generated ic 9 : (17, 26.000000) count=1.000000
+                                    171 ;	genCast
+                                    172 ;	genCopy
+      00003D AA               [ 2]  173 	tax
+                                    174 ;	Raw cost for generated ic 143 : (3, 5.000000) count=1.000000
+                                    175 ;	genAnd
+                                    176 ;	Raw cost for generated ic 10 : (5, 7.000000) count=1.000000
+                                    177 ;	../_fsdiv.c: 287: if (!exp)
+                                    178 ;	genIfx
+      00003E 64*01            [ 3]  179 	stz	*(___fsdiv_org_sloc0_1_0 + 1)
+      000040 A5*01            [ 3]  180 	lda	*(___fsdiv_org_sloc0_1_0 + 1)
+      000042 05*00            [ 3]  181 	ora	*___fsdiv_org_sloc0_1_0
+                                    182 ;	genIfxJump : z
+      000044 D0 08            [ 4]  183 	bne	00102$
+                                    184 ;	Raw cost for generated ic 13 : (9, 11.600000) count=1.000000
+                                    185 ;	../_fsdiv.c: 288: return (0);
+                                    186 ;	genRet
+      000046 A9 00            [ 2]  187 	lda	#0x00
+      000048 AA               [ 2]  188 	tax
+      000049 85*00            [ 3]  189 	sta	*___SDCC_m6502_ret2
+      00004B 85*00            [ 3]  190 	sta	*___SDCC_m6502_ret3
+      00004D 60               [ 6]  191 	rts
+                                    192 ;	Raw cost for generated ic 16 : (10, 13.000000) count=0.750000
+                                    193 ;	genLabel
+      00004E                        194 00102$:
+                                    195 ;	Raw cost for generated ic 17 : (0, 0.000000) count=1.000000
+                                    196 ;	../_fsdiv.c: 290: fl2.f = a2;
+                                    197 ;	skipping iCode since result will be rematerialized
+                                    198 ;	Raw cost for generated ic 18 : (0, 0.000000) count=1.000000
+                                    199 ;	genPointerSet
+                                    200 ;	genDataPointerSet
+      00004E ADr07r00         [ 4]  201 	lda	(___fsdiv_org_PARM_2 + 3)
+      000051 8Dr0Fr00         [ 4]  202 	sta	(___fsdiv_org_fl2_10000_21 + 3)
+      000054 ADr06r00         [ 4]  203 	lda	(___fsdiv_org_PARM_2 + 2)
+      000057 8Dr0Er00         [ 4]  204 	sta	(___fsdiv_org_fl2_10000_21 + 2)
+      00005A ADr05r00         [ 4]  205 	lda	(___fsdiv_org_PARM_2 + 1)
+      00005D 8Dr0Dr00         [ 4]  206 	sta	(___fsdiv_org_fl2_10000_21 + 1)
+      000060 ADr04r00         [ 4]  207 	lda	___fsdiv_org_PARM_2
+      000063 8Dr0Cr00         [ 4]  208 	sta	___fsdiv_org_fl2_10000_21
+                                    209 ;	Raw cost for generated ic 20 : (24, 32.000000) count=1.000000
+                                    210 ;	../_fsdiv.c: 292: exp -= EXP (fl2.l);
+                                    211 ;	skipping iCode since result will be rematerialized
+                                    212 ;	Raw cost for generated ic 21 : (0, 0.000000) count=1.000000
+                                    213 ;	genPointerGet
+                                    214 ;	genDataPointerGet
+      000066 ADr0Fr00         [ 4]  215 	lda	(___fsdiv_org_fl2_10000_21 + 3)
+      000069 85*07            [ 3]  216 	sta	*(___fsdiv_org_sloc1_1_0 + 3)
+      00006B ADr0Er00         [ 4]  217 	lda	(___fsdiv_org_fl2_10000_21 + 2)
+      00006E 85*06            [ 3]  218 	sta	*(___fsdiv_org_sloc1_1_0 + 2)
+      000070 ADr0Dr00         [ 4]  219 	lda	(___fsdiv_org_fl2_10000_21 + 1)
+      000073 85*05            [ 3]  220 	sta	*(___fsdiv_org_sloc1_1_0 + 1)
+      000075 ADr0Cr00         [ 4]  221 	lda	___fsdiv_org_fl2_10000_21
+      000078 85*04            [ 3]  222 	sta	*___fsdiv_org_sloc1_1_0
+                                    223 ;	Raw cost for generated ic 23 : (20, 28.000000) count=1.000000
+                                    224 ;	genCast
+                                    225 ;	genCopy
+                                    226 ;	Raw cost for generated ic 24 : (0, 0.000000) count=1.000000
+                                    227 ;	genRightShift
+                                    228 ;	genRightShiftLiteral
+                                    229 ;	  genrsh32 - shift=23
+      00007A A5*06            [ 3]  230 	lda	*(___fsdiv_org_sloc1_1_0 + 2)
+      00007C 2A               [ 2]  231 	rol	a
+      00007D A5*07            [ 3]  232 	lda	*(___fsdiv_org_sloc1_1_0 + 3)
+      00007F 2A               [ 2]  233 	rol	a
+      000080 85*04            [ 3]  234 	sta	*___fsdiv_org_sloc1_1_0
+      000082 A9 00            [ 2]  235 	lda	#0x00
+      000084 85*06            [ 3]  236 	sta	*(___fsdiv_org_sloc1_1_0 + 2)
+      000086 85*07            [ 3]  237 	sta	*(___fsdiv_org_sloc1_1_0 + 3)
+      000088 2A               [ 2]  238 	rol	a
+      000089 85*05            [ 3]  239 	sta	*(___fsdiv_org_sloc1_1_0 + 1)
+                                    240 ;	Raw cost for generated ic 25 : (17, 26.000000) count=1.000000
+                                    241 ;	genCast
+                                    242 ;	genCopy
+                                    243 ;	Raw cost for generated ic 148 : (3, 5.000000) count=1.000000
+                                    244 ;	genAnd
+      00008B A5*04            [ 3]  245 	lda *___fsdiv_org_sloc1_1_0
+      00008D A2 00            [ 2]  246 	ldx #0x00
+                                    247 ;	Raw cost for generated ic 26 : (2, 2.000000) count=1.000000
+                                    248 ;	genMinus
+      00008F 85*00            [ 3]  249 	sta	*(REGTEMP+0)
+      000091 A5*00            [ 3]  250 	lda	*___fsdiv_org_sloc0_1_0
+      000093 38               [ 2]  251 	sec
+      000094 E5*00            [ 4]  252 	sbc	*(REGTEMP+0)
+      000096 48               [ 3]  253 	pha
+      000097 A5*01            [ 3]  254 	lda	*(___fsdiv_org_sloc0_1_0 + 1)
+      000099 E9 00            [ 3]  255 	sbc	#0x00
+      00009B AA               [ 2]  256 	tax
+      00009C 68               [ 4]  257 	pla
+                                    258 ;	Raw cost for generated ic 28 : (14, 25.000000) count=1.000000
+                                    259 ;	../_fsdiv.c: 293: exp += EXCESS;
+                                    260 ;	genPlus
+                                    261 ;	  genPlusInc
+      00009D 18               [ 2]  262 	clc
+      00009E 69 7E            [ 3]  263 	adc	#0x7e
+      0000A0 85*04            [ 3]  264 	sta	*___fsdiv_org_sloc1_1_0
+      0000A2 8A               [ 2]  265 	txa
+      0000A3 69 00            [ 3]  266 	adc	#0x00
+      0000A5 85*05            [ 3]  267 	sta	*(___fsdiv_org_sloc1_1_0 + 1)
+                                    268 ;	Raw cost for generated ic 31 : (10, 14.000000) count=1.000000
+                                    269 ;	../_fsdiv.c: 296: sign = SIGN (fl1.l) ^ SIGN (fl2.l);
+                                    270 ;	skipping iCode since result will be rematerialized
+                                    271 ;	Raw cost for generated ic 33 : (0, 0.000000) count=1.000000
+                                    272 ;	genPointerGet
+                                    273 ;	genDataPointerGet
+      0000A7 ADr0Br00         [ 4]  274 	lda	(___fsdiv_org_fl1_10000_21 + 3)
+      0000AA 85*03            [ 3]  275 	sta	*(___fsdiv_org_sloc0_1_0 + 3)
+      0000AC ADr0Ar00         [ 4]  276 	lda	(___fsdiv_org_fl1_10000_21 + 2)
+      0000AF 85*02            [ 3]  277 	sta	*(___fsdiv_org_sloc0_1_0 + 2)
+      0000B1 ADr09r00         [ 4]  278 	lda	(___fsdiv_org_fl1_10000_21 + 1)
+      0000B4 85*01            [ 3]  279 	sta	*(___fsdiv_org_sloc0_1_0 + 1)
+      0000B6 ADr08r00         [ 4]  280 	lda	___fsdiv_org_fl1_10000_21
+      0000B9 85*00            [ 3]  281 	sta	*___fsdiv_org_sloc0_1_0
+                                    282 ;	Raw cost for generated ic 35 : (20, 28.000000) count=1.000000
+                                    283 ;	genCast
+                                    284 ;	genCopy
+                                    285 ;	Raw cost for generated ic 36 : (0, 0.000000) count=1.000000
+                                    286 ;	genRightShift
+                                    287 ;	genRightShiftLiteral
+                                    288 ;	  genrsh32 - shift=31
+      0000BB A5*03            [ 3]  289 	lda	*(___fsdiv_org_sloc0_1_0 + 3)
+      0000BD 0A               [ 2]  290 	asl	a
+      0000BE A9 00            [ 2]  291 	lda	#0x00
+      0000C0 85*03            [ 3]  292 	sta	*(___fsdiv_org_sloc0_1_0 + 3)
+      0000C2 85*02            [ 3]  293 	sta	*(___fsdiv_org_sloc0_1_0 + 2)
+      0000C4 85*01            [ 3]  294 	sta	*(___fsdiv_org_sloc0_1_0 + 1)
+      0000C6 2A               [ 2]  295 	rol	a
+      0000C7 85*00            [ 3]  296 	sta	*___fsdiv_org_sloc0_1_0
+                                    297 ;	Raw cost for generated ic 37 : (14, 21.000000) count=1.000000
+                                    298 ;	genCast
+                                    299 ;	genCopy
+                                    300 ;	Raw cost for generated ic 149 : (0, 0.000000) count=1.000000
+                                    301 ;	genAnd
+      0000C9 29 01            [ 2]  302 	and	#0x01
+      0000CB 85*00            [ 3]  303 	sta	*___fsdiv_org_sloc0_1_0
+                                    304 ;	Raw cost for generated ic 38 : (4, 5.000000) count=1.000000
+                                    305 ;	skipping iCode since result will be rematerialized
+                                    306 ;	Raw cost for generated ic 39 : (0, 0.000000) count=1.000000
+                                    307 ;	genPointerGet
+                                    308 ;	genDataPointerGet
+      0000CD ADr0Fr00         [ 4]  309 	lda	(___fsdiv_org_fl2_10000_21 + 3)
+      0000D0 85*0B            [ 3]  310 	sta	*(___fsdiv_org_sloc2_1_0 + 3)
+      0000D2 ADr0Er00         [ 4]  311 	lda	(___fsdiv_org_fl2_10000_21 + 2)
+      0000D5 85*0A            [ 3]  312 	sta	*(___fsdiv_org_sloc2_1_0 + 2)
+      0000D7 ADr0Dr00         [ 4]  313 	lda	(___fsdiv_org_fl2_10000_21 + 1)
+      0000DA 85*09            [ 3]  314 	sta	*(___fsdiv_org_sloc2_1_0 + 1)
+      0000DC ADr0Cr00         [ 4]  315 	lda	___fsdiv_org_fl2_10000_21
+      0000DF 85*08            [ 3]  316 	sta	*___fsdiv_org_sloc2_1_0
+                                    317 ;	Raw cost for generated ic 41 : (20, 28.000000) count=1.000000
+                                    318 ;	genCast
+                                    319 ;	genCopy
+                                    320 ;	Raw cost for generated ic 42 : (0, 0.000000) count=1.000000
+                                    321 ;	genRightShift
+                                    322 ;	genRightShiftLiteral
+                                    323 ;	  genrsh32 - shift=31
+      0000E1 A5*0B            [ 3]  324 	lda	*(___fsdiv_org_sloc2_1_0 + 3)
+      0000E3 0A               [ 2]  325 	asl	a
+      0000E4 A9 00            [ 2]  326 	lda	#0x00
+      0000E6 85*0B            [ 3]  327 	sta	*(___fsdiv_org_sloc2_1_0 + 3)
+      0000E8 85*0A            [ 3]  328 	sta	*(___fsdiv_org_sloc2_1_0 + 2)
+      0000EA 85*09            [ 3]  329 	sta	*(___fsdiv_org_sloc2_1_0 + 1)
+      0000EC 2A               [ 2]  330 	rol	a
+      0000ED 85*08            [ 3]  331 	sta	*___fsdiv_org_sloc2_1_0
+                                    332 ;	Raw cost for generated ic 43 : (14, 21.000000) count=1.000000
+                                    333 ;	genCast
+                                    334 ;	genCopy
+                                    335 ;	Raw cost for generated ic 150 : (0, 0.000000) count=1.000000
+                                    336 ;	genAnd
+      0000EF 29 01            [ 2]  337 	and	#0x01
+                                    338 ;	Raw cost for generated ic 44 : (2, 2.000000) count=1.000000
+                                    339 ;	genXor
+      0000F1 45*00            [ 3]  340 	eor	*___fsdiv_org_sloc0_1_0
+      0000F3 AA               [ 2]  341 	tax
+                                    342 ;	Raw cost for generated ic 45 : (3, 5.000000) count=1.000000
+                                    343 ;	../_fsdiv.c: 299: mant1 = MANT (fl1.l);
+                                    344 ;	skipping iCode since result will be rematerialized
+                                    345 ;	Raw cost for generated ic 48 : (0, 0.000000) count=1.000000
+                                    346 ;	genPointerGet
+                                    347 ;	genDataPointerGet
+      0000F4 ADr0Br00         [ 4]  348 	lda	(___fsdiv_org_fl1_10000_21 + 3)
+      0000F7 85*0B            [ 3]  349 	sta	*(___fsdiv_org_sloc2_1_0 + 3)
+      0000F9 ADr0Ar00         [ 4]  350 	lda	(___fsdiv_org_fl1_10000_21 + 2)
+      0000FC 85*0A            [ 3]  351 	sta	*(___fsdiv_org_sloc2_1_0 + 2)
+      0000FE ADr09r00         [ 4]  352 	lda	(___fsdiv_org_fl1_10000_21 + 1)
+      000101 85*09            [ 3]  353 	sta	*(___fsdiv_org_sloc2_1_0 + 1)
+      000103 ADr08r00         [ 4]  354 	lda	___fsdiv_org_fl1_10000_21
+      000106 85*08            [ 3]  355 	sta	*___fsdiv_org_sloc2_1_0
+                                    356 ;	Raw cost for generated ic 50 : (20, 28.000000) count=1.000000
+                                    357 ;	genAnd
+      000108 64*0B            [ 3]  358 	stz	*(___fsdiv_org_sloc2_1_0 + 3)
+                                    359 ;	Raw cost for generated ic 51 : (3, 4.000000) count=1.000000
+                                    360 ;	genOr
+      00010A A5*08            [ 3]  361 	lda	*___fsdiv_org_sloc2_1_0
+      00010C 8Dr18r00         [ 4]  362 	sta	___fsdiv_org_mant1_10000_21
+      00010F A5*09            [ 3]  363 	lda	*(___fsdiv_org_sloc2_1_0 + 1)
+      000111 8Dr19r00         [ 4]  364 	sta	(___fsdiv_org_mant1_10000_21 + 1)
+      000114 A5*0A            [ 3]  365 	lda	*(___fsdiv_org_sloc2_1_0 + 2)
+      000116 09 80            [ 2]  366 	ora	#0x80
+      000118 8Dr1Ar00         [ 4]  367 	sta	(___fsdiv_org_mant1_10000_21 + 2)
+      00011B A4*0B            [ 3]  368 	ldy	*(___fsdiv_org_sloc2_1_0 + 3)
+      00011D 8Cr1Br00         [ 4]  369 	sty	(___fsdiv_org_mant1_10000_21 + 3)
+                                    370 ;	Raw cost for generated ic 52 : (22, 30.000000) count=1.000000
+                                    371 ;	../_fsdiv.c: 300: mant2 = MANT (fl2.l);
+                                    372 ;	skipping iCode since result will be rematerialized
+                                    373 ;	Raw cost for generated ic 54 : (0, 0.000000) count=1.000000
+                                    374 ;	genPointerGet
+                                    375 ;	genDataPointerGet
+      000120 ADr0Fr00         [ 4]  376 	lda	(___fsdiv_org_fl2_10000_21 + 3)
+      000123 85*0B            [ 3]  377 	sta	*(___fsdiv_org_sloc2_1_0 + 3)
+      000125 ADr0Er00         [ 4]  378 	lda	(___fsdiv_org_fl2_10000_21 + 2)
+      000128 85*0A            [ 3]  379 	sta	*(___fsdiv_org_sloc2_1_0 + 2)
+      00012A ADr0Dr00         [ 4]  380 	lda	(___fsdiv_org_fl2_10000_21 + 1)
+      00012D 85*09            [ 3]  381 	sta	*(___fsdiv_org_sloc2_1_0 + 1)
+      00012F ADr0Cr00         [ 4]  382 	lda	___fsdiv_org_fl2_10000_21
+      000132 85*08            [ 3]  383 	sta	*___fsdiv_org_sloc2_1_0
+                                    384 ;	Raw cost for generated ic 56 : (20, 28.000000) count=1.000000
+                                    385 ;	genAnd
+      000134 64*0B            [ 3]  386 	stz	*(___fsdiv_org_sloc2_1_0 + 3)
+                                    387 ;	Raw cost for generated ic 57 : (3, 4.000000) count=1.000000
+                                    388 ;	genOr
+      000136 A5*0A            [ 3]  389 	lda	*(___fsdiv_org_sloc2_1_0 + 2)
+      000138 09 80            [ 2]  390 	ora	#0x80
+      00013A 85*0A            [ 3]  391 	sta	*(___fsdiv_org_sloc2_1_0 + 2)
+                                    392 ;	Raw cost for generated ic 58 : (6, 8.000000) count=1.000000
+                                    393 ;	genAssign
+                                    394 ;	genCopy
+      00013C A5*0B            [ 3]  395 	lda	*(___fsdiv_org_sloc2_1_0 + 3)
+      00013E 8Dr1Fr00         [ 4]  396 	sta	(___fsdiv_org_mant2_10000_21 + 3)
+      000141 A5*0A            [ 3]  397 	lda	*(___fsdiv_org_sloc2_1_0 + 2)
+      000143 8Dr1Er00         [ 4]  398 	sta	(___fsdiv_org_mant2_10000_21 + 2)
+      000146 A5*09            [ 3]  399 	lda	*(___fsdiv_org_sloc2_1_0 + 1)
+      000148 8Dr1Dr00         [ 4]  400 	sta	(___fsdiv_org_mant2_10000_21 + 1)
+      00014B A5*08            [ 3]  401 	lda	*___fsdiv_org_sloc2_1_0
+      00014D 8Dr1Cr00         [ 4]  402 	sta	___fsdiv_org_mant2_10000_21
+                                    403 ;	Raw cost for generated ic 59 : (20, 28.000000) count=1.000000
+                                    404 ;	../_fsdiv.c: 303: if (mant1 < mant2)
+                                    405 ;	genCmp
+      000150 ADr18r00         [ 4]  406 	lda	___fsdiv_org_mant1_10000_21
+      000153 38               [ 2]  407 	sec
+      000154 EDr1Cr00         [ 5]  408 	sbc	___fsdiv_org_mant2_10000_21
+      000157 ADr19r00         [ 4]  409 	lda	(___fsdiv_org_mant1_10000_21 + 1)
+      00015A EDr1Dr00         [ 5]  410 	sbc	(___fsdiv_org_mant2_10000_21 + 1)
+      00015D ADr1Ar00         [ 4]  411 	lda	(___fsdiv_org_mant1_10000_21 + 2)
+      000160 EDr1Er00         [ 5]  412 	sbc	(___fsdiv_org_mant2_10000_21 + 2)
+      000163 98               [ 2]  413 	tya
+      000164 EDr1Fr00         [ 5]  414 	sbc	(___fsdiv_org_mant2_10000_21 + 3)
+      000167 B0 11            [ 4]  415 	bcs	00104$
+                                    416 ;	Raw cost for generated ic 60 : (28, 37.599998) count=1.000000
+                                    417 ;	skipping generated iCode
+                                    418 ;	Raw cost for generated ic 61 : (0, 0.000000) count=1.000000
+                                    419 ;	../_fsdiv.c: 305: mask = 0x1000000;
+                                    420 ;	genAssign
+                                    421 ;	genAssignLit
+      000169 9Cr14r00         [ 4]  422 	stz	___fsdiv_org_mask_10000_21
+      00016C 9Cr15r00         [ 4]  423 	stz	(___fsdiv_org_mask_10000_21 + 1)
+      00016F 9Cr16r00         [ 4]  424 	stz	(___fsdiv_org_mask_10000_21 + 2)
+      000172 A0 01            [ 2]  425 	ldy	#0x01
+      000174 8Cr17r00         [ 4]  426 	sty	(___fsdiv_org_mask_10000_21 + 3)
+                                    427 ;	Raw cost for generated ic 64 : (14, 18.000000) count=0.750000
+                                    428 ;	genGoto
+      000177 4Cr8Er01         [ 3]  429 	jmp	00105$
+                                    430 ;	Raw cost for generated ic 65 : (3, 3.000000) count=0.750000
+                                    431 ;	genLabel
+      00017A                        432 00104$:
+                                    433 ;	Raw cost for generated ic 66 : (0, 0.000000) count=0.250000
+                                    434 ;	../_fsdiv.c: 309: mask = 0x0800000;
+                                    435 ;	genAssign
+                                    436 ;	genAssignLit
+      00017A 9Cr14r00         [ 4]  437 	stz	___fsdiv_org_mask_10000_21
+      00017D 9Cr15r00         [ 4]  438 	stz	(___fsdiv_org_mask_10000_21 + 1)
+      000180 9Cr17r00         [ 4]  439 	stz	(___fsdiv_org_mask_10000_21 + 3)
+      000183 A0 80            [ 2]  440 	ldy	#0x80
+      000185 8Cr16r00         [ 4]  441 	sty	(___fsdiv_org_mask_10000_21 + 2)
+                                    442 ;	Raw cost for generated ic 67 : (14, 18.000000) count=0.250000
+                                    443 ;	../_fsdiv.c: 310: exp++;
+                                    444 ;	genPlus
+                                    445 ;	  genPlusInc
+      000188 E6*04            [ 5]  446 	inc	*___fsdiv_org_sloc1_1_0
+      00018A D0 02            [ 4]  447 	bne	00197$
+      00018C E6*05            [ 5]  448 	inc	*(___fsdiv_org_sloc1_1_0 + 1)
+      00018E                        449 00197$:
+                                    450 ;	Raw cost for generated ic 69 : (6, 12.600000) count=0.250000
+                                    451 ;	genLabel
+      00018E                        452 00105$:
+                                    453 ;	Raw cost for generated ic 71 : (0, 0.000000) count=1.000000
+                                    454 ;	../_fsdiv.c: 313: if (exp < 1) /* denormal */
+                                    455 ;	genCmp
+      00018E A5*04            [ 3]  456 	lda	*___fsdiv_org_sloc1_1_0
+      000190 38               [ 2]  457 	sec
+      000191 E9 01            [ 3]  458 	sbc	#0x01
+      000193 A5*05            [ 3]  459 	lda	*(___fsdiv_org_sloc1_1_0 + 1)
+      000195 E9 00            [ 3]  460 	sbc	#0x00
+      000197 50 04            [ 4]  461 	bvc	00199$
+      000199 10 04            [ 4]  462 	bpl	00198$
+      00019B 30 0A            [ 4]  463 	bmi	00107$
+      00019D                        464 00199$:
+      00019D 10 08            [ 4]  465 	bpl	00107$
+      00019F                        466 00198$:
+                                    467 ;	Raw cost for generated ic 72 : (20, 25.400002) count=1.000000
+                                    468 ;	skipping generated iCode
+                                    469 ;	Raw cost for generated ic 73 : (0, 0.000000) count=1.000000
+                                    470 ;	../_fsdiv.c: 314: return (0);
+                                    471 ;	genRet
+      00019F A9 00            [ 2]  472 	lda	#0x00
+      0001A1 AA               [ 2]  473 	tax
+      0001A2 85*00            [ 3]  474 	sta	*___SDCC_m6502_ret2
+      0001A4 85*00            [ 3]  475 	sta	*___SDCC_m6502_ret3
+      0001A6 60               [ 6]  476 	rts
+                                    477 ;	Raw cost for generated ic 76 : (10, 13.000000) count=0.750000
+                                    478 ;	genLabel
+      0001A7                        479 00107$:
+                                    480 ;	Raw cost for generated ic 77 : (0, 0.000000) count=1.000000
+                                    481 ;	../_fsdiv.c: 316: if (exp >= 255)
+                                    482 ;	genCmp
+      0001A7 A5*04            [ 3]  483 	lda	*___fsdiv_org_sloc1_1_0
+      0001A9 38               [ 2]  484 	sec
+      0001AA E9 FF            [ 3]  485 	sbc	#0xff
+      0001AC A5*05            [ 3]  486 	lda	*(___fsdiv_org_sloc1_1_0 + 1)
+      0001AE E9 00            [ 3]  487 	sbc	#0x00
+      0001B0 70 04            [ 4]  488 	bvs	00202$
+      0001B2 10 04            [ 4]  489 	bpl	00201$
+      0001B4 30 37            [ 4]  490 	bmi	00116$
+      0001B6                        491 00202$:
+      0001B6 10 35            [ 4]  492 	bpl	00116$
+      0001B8                        493 00201$:
+                                    494 ;	Raw cost for generated ic 78 : (20, 25.400002) count=1.000000
+                                    495 ;	skipping generated iCode
+                                    496 ;	Raw cost for generated ic 79 : (0, 0.000000) count=1.000000
+                                    497 ;	../_fsdiv.c: 318: fl1.l = sign ? SIGNBIT | __INFINITY : __INFINITY;
+                                    498 ;	skipping iCode since result will be rematerialized
+                                    499 ;	Raw cost for generated ic 82 : (0, 0.000000) count=0.750000
+                                    500 ;	genIfx
+      0001B8 E0 00            [ 2]  501 	cpx	#0x00
+                                    502 ;	genIfxJump : z
+      0001BA F0 0F            [ 4]  503 	beq	00120$
+                                    504 ;	Raw cost for generated ic 84 : (7, 7.600000) count=0.750000
+                                    505 ;	genAssign
+                                    506 ;	genAssignLit
+      0001BC 64*00            [ 3]  507 	stz	*___fsdiv_org_sloc0_1_0
+      0001BE 64*01            [ 3]  508 	stz	*(___fsdiv_org_sloc0_1_0 + 1)
+      0001C0 A2 80            [ 2]  509 	ldx	#0x80
+      0001C2 86*02            [ 3]  510 	stx	*(___fsdiv_org_sloc0_1_0 + 2)
+      0001C4 A2 FF            [ 2]  511 	ldx	#0xff
+      0001C6 86*03            [ 3]  512 	stx	*(___fsdiv_org_sloc0_1_0 + 3)
+                                    513 ;	Raw cost for generated ic 85 : (14, 18.000000) count=0.562500
+                                    514 ;	genGoto
+      0001C8 4CrD6r01         [ 3]  515 	jmp	00121$
+                                    516 ;	Raw cost for generated ic 86 : (3, 3.000000) count=0.562500
+                                    517 ;	genLabel
+      0001CB                        518 00120$:
+                                    519 ;	Raw cost for generated ic 87 : (0, 0.000000) count=0.187500
+                                    520 ;	genAssign
+                                    521 ;	genAssignLit
+      0001CB 64*00            [ 3]  522 	stz	*___fsdiv_org_sloc0_1_0
+      0001CD 64*01            [ 3]  523 	stz	*(___fsdiv_org_sloc0_1_0 + 1)
+      0001CF A2 80            [ 2]  524 	ldx	#0x80
+      0001D1 86*02            [ 3]  525 	stx	*(___fsdiv_org_sloc0_1_0 + 2)
+      0001D3 CA               [ 2]  526 	dex
+      0001D4 86*03            [ 3]  527 	stx	*(___fsdiv_org_sloc0_1_0 + 3)
+                                    528 ;	Raw cost for generated ic 88 : (13, 18.000000) count=0.187500
+                                    529 ;	genLabel
+      0001D6                        530 00121$:
+                                    531 ;	Raw cost for generated ic 89 : (0, 0.000000) count=0.750000
+                                    532 ;	genPointerSet
+                                    533 ;	genDataPointerSet
+      0001D6 A5*03            [ 3]  534 	lda	*(___fsdiv_org_sloc0_1_0 + 3)
+      0001D8 8Dr0Br00         [ 4]  535 	sta	(___fsdiv_org_fl1_10000_21 + 3)
+      0001DB A5*02            [ 3]  536 	lda	*(___fsdiv_org_sloc0_1_0 + 2)
+      0001DD 8Dr0Ar00         [ 4]  537 	sta	(___fsdiv_org_fl1_10000_21 + 2)
+      0001E0 A5*01            [ 3]  538 	lda	*(___fsdiv_org_sloc0_1_0 + 1)
+      0001E2 8Dr09r00         [ 4]  539 	sta	(___fsdiv_org_fl1_10000_21 + 1)
+      0001E5 A5*00            [ 3]  540 	lda	*___fsdiv_org_sloc0_1_0
+      0001E7 8Dr08r00         [ 4]  541 	sta	___fsdiv_org_fl1_10000_21
+                                    542 ;	Raw cost for generated ic 90 : (20, 28.000000) count=0.750000
+                                    543 ;	genGoto
+      0001EA 4Cr41r03         [ 3]  544 	jmp	00117$
+                                    545 ;	Raw cost for generated ic 91 : (3, 3.000000) count=0.750000
+                                    546 ;	genLabel
+      0001ED                        547 00116$:
+                                    548 ;	Raw cost for generated ic 92 : (0, 0.000000) count=0.250000
+                                    549 ;	../_fsdiv.c: 323: result = 0;
+                                    550 ;	genAssign
+                                    551 ;	genAssignLit
+      0001ED 9Cr10r00         [ 4]  552 	stz	___fsdiv_org_result_10000_21
+      0001F0 9Cr11r00         [ 4]  553 	stz	(___fsdiv_org_result_10000_21 + 1)
+      0001F3 9Cr12r00         [ 4]  554 	stz	(___fsdiv_org_result_10000_21 + 2)
+      0001F6 9Cr13r00         [ 4]  555 	stz	(___fsdiv_org_result_10000_21 + 3)
+                                    556 ;	Raw cost for generated ic 93 : (12, 16.000000) count=0.250000
+                                    557 ;	../_fsdiv.c: 324: do
+                                    558 ;	genLabel
+      0001F9                        559 00110$:
+                                    560 ;	Raw cost for generated ic 94 : (0, 0.000000) count=0.999944
+                                    561 ;	../_fsdiv.c: 326: long diff = mant1 - mant2;
+                                    562 ;	genMinus
+      0001F9 ADr18r00         [ 4]  563 	lda	___fsdiv_org_mant1_10000_21
+      0001FC 38               [ 2]  564 	sec
+      0001FD E5*08            [ 4]  565 	sbc	*___fsdiv_org_sloc2_1_0
+      0001FF 85*00            [ 3]  566 	sta	*___fsdiv_org_sloc0_1_0
+      000201 ADr19r00         [ 4]  567 	lda	(___fsdiv_org_mant1_10000_21 + 1)
+      000204 E5*09            [ 4]  568 	sbc	*(___fsdiv_org_sloc2_1_0 + 1)
+      000206 85*01            [ 3]  569 	sta	*(___fsdiv_org_sloc0_1_0 + 1)
+      000208 ADr1Ar00         [ 4]  570 	lda	(___fsdiv_org_mant1_10000_21 + 2)
+      00020B E5*0A            [ 4]  571 	sbc	*(___fsdiv_org_sloc2_1_0 + 2)
+      00020D 85*02            [ 3]  572 	sta	*(___fsdiv_org_sloc0_1_0 + 2)
+      00020F ADr1Br00         [ 4]  573 	lda	(___fsdiv_org_mant1_10000_21 + 3)
+      000212 E5*0B            [ 4]  574 	sbc	*(___fsdiv_org_sloc2_1_0 + 3)
+      000214 85*03            [ 3]  575 	sta	*(___fsdiv_org_sloc0_1_0 + 3)
+                                    576 ;	Raw cost for generated ic 95 : (29, 42.000000) count=0.999944
+                                    577 ;	genAssign
+                                    578 ;	genCopy
+      000216 8Dr23r00         [ 4]  579 	sta	(___fsdiv_org_diff_40000_30 + 3)
+      000219 A5*02            [ 3]  580 	lda	*(___fsdiv_org_sloc0_1_0 + 2)
+      00021B 8Dr22r00         [ 4]  581 	sta	(___fsdiv_org_diff_40000_30 + 2)
+      00021E A5*01            [ 3]  582 	lda	*(___fsdiv_org_sloc0_1_0 + 1)
+      000220 8Dr21r00         [ 4]  583 	sta	(___fsdiv_org_diff_40000_30 + 1)
+      000223 A5*00            [ 3]  584 	lda	*___fsdiv_org_sloc0_1_0
+      000225 8Dr20r00         [ 4]  585 	sta	___fsdiv_org_diff_40000_30
+                                    586 ;	Raw cost for generated ic 96 : (18, 25.000000) count=0.999944
+                                    587 ;	../_fsdiv.c: 327: if (diff >= 0)
+                                    588 ;	genCmp
+      000228 2Cr23r00         [ 4]  589 	bit	(___fsdiv_org_diff_40000_30 + 3)
+      00022B 30 38            [ 4]  590 	bmi	00109$
+                                    591 ;	Raw cost for generated ic 97 : (8, 9.600000) count=0.999944
+                                    592 ;	skipping generated iCode
+                                    593 ;	Raw cost for generated ic 98 : (0, 0.000000) count=0.999944
+                                    594 ;	../_fsdiv.c: 329: mant1 = diff;
+                                    595 ;	genAssign
+                                    596 ;	genCopy
+      00022D A5*03            [ 3]  597 	lda	*(___fsdiv_org_sloc0_1_0 + 3)
+      00022F 8Dr1Br00         [ 4]  598 	sta	(___fsdiv_org_mant1_10000_21 + 3)
+      000232 A5*02            [ 3]  599 	lda	*(___fsdiv_org_sloc0_1_0 + 2)
+      000234 8Dr1Ar00         [ 4]  600 	sta	(___fsdiv_org_mant1_10000_21 + 2)
+      000237 A5*01            [ 3]  601 	lda	*(___fsdiv_org_sloc0_1_0 + 1)
+      000239 8Dr19r00         [ 4]  602 	sta	(___fsdiv_org_mant1_10000_21 + 1)
+      00023C A5*00            [ 3]  603 	lda	*___fsdiv_org_sloc0_1_0
+      00023E 8Dr18r00         [ 4]  604 	sta	___fsdiv_org_mant1_10000_21
+                                    605 ;	Raw cost for generated ic 101 : (20, 28.000000) count=0.749943
+                                    606 ;	../_fsdiv.c: 330: result |= mask;
+                                    607 ;	genOr
+      000241 ADr10r00         [ 4]  608 	lda	___fsdiv_org_result_10000_21
+      000244 0Dr14r00         [ 4]  609 	ora	___fsdiv_org_mask_10000_21
+      000247 8Dr10r00         [ 4]  610 	sta	___fsdiv_org_result_10000_21
+      00024A ADr11r00         [ 4]  611 	lda	(___fsdiv_org_result_10000_21 + 1)
+      00024D 0Dr15r00         [ 4]  612 	ora	(___fsdiv_org_mask_10000_21 + 1)
+      000250 8Dr11r00         [ 4]  613 	sta	(___fsdiv_org_result_10000_21 + 1)
+      000253 ADr12r00         [ 4]  614 	lda	(___fsdiv_org_result_10000_21 + 2)
+      000256 0Dr16r00         [ 4]  615 	ora	(___fsdiv_org_mask_10000_21 + 2)
+      000259 8Dr12r00         [ 4]  616 	sta	(___fsdiv_org_result_10000_21 + 2)
+      00025C ADr13r00         [ 4]  617 	lda	(___fsdiv_org_result_10000_21 + 3)
+      00025F 0Dr17r00         [ 4]  618 	ora	(___fsdiv_org_mask_10000_21 + 3)
+      000262 8Dr13r00         [ 4]  619 	sta	(___fsdiv_org_result_10000_21 + 3)
+                                    620 ;	Raw cost for generated ic 102 : (36, 48.000000) count=0.749943
+                                    621 ;	genLabel
+      000265                        622 00109$:
+                                    623 ;	Raw cost for generated ic 104 : (0, 0.000000) count=0.999925
+                                    624 ;	../_fsdiv.c: 332: mant1 <<= 1;
+                                    625 ;	genLeftShift
+                                    626 ;	genLeftShiftLiteral
+                                    627 ;	  genlsh32 - shift=1
+      000265 0Er18r00         [ 6]  628 	asl	___fsdiv_org_mant1_10000_21
+      000268 2Er19r00         [ 6]  629 	rol	(___fsdiv_org_mant1_10000_21 + 1)
+      00026B 2Er1Ar00         [ 6]  630 	rol	(___fsdiv_org_mant1_10000_21 + 2)
+      00026E 2Er1Br00         [ 6]  631 	rol	(___fsdiv_org_mant1_10000_21 + 3)
+                                    632 ;	Raw cost for generated ic 105 : (12, 24.000000) count=0.999925
+                                    633 ;	../_fsdiv.c: 333: mask >>= 1;
+                                    634 ;	genRightShift
+                                    635 ;	genRightShiftLiteral
+                                    636 ;	  genrsh32 - shift=1
+      000271 ADr17r00         [ 4]  637 	lda	(___fsdiv_org_mask_10000_21 + 3)
+      000274 4A               [ 2]  638 	lsr	a
+      000275 6Er16r00         [ 6]  639 	ror	(___fsdiv_org_mask_10000_21 + 2)
+      000278 6Er15r00         [ 6]  640 	ror	(___fsdiv_org_mask_10000_21 + 1)
+      00027B 6Er14r00         [ 6]  641 	ror	___fsdiv_org_mask_10000_21
+      00027E 8Dr17r00         [ 4]  642 	sta	(___fsdiv_org_mask_10000_21 + 3)
+                                    643 ;	Raw cost for generated ic 107 : (16, 28.000000) count=0.999925
+                                    644 ;	../_fsdiv.c: 335: while (mask);
+                                    645 ;	genIfx
+      000281 0Dr16r00         [ 4]  646 	ora	(___fsdiv_org_mask_10000_21 + 2)
+      000284 0Dr15r00         [ 4]  647 	ora	(___fsdiv_org_mask_10000_21 + 1)
+      000287 0Dr14r00         [ 4]  648 	ora	___fsdiv_org_mask_10000_21
+                                    649 ;	genIfxJump : z
+      00028A F0 03            [ 4]  650 	beq	00208$
+      00028C 4CrF9r01         [ 3]  651 	jmp	00110$
+      00028F                        652 00208$:
+                                    653 ;	Raw cost for generated ic 110 : (14, 17.600000) count=0.999925
+                                    654 ;	../_fsdiv.c: 338: if (mant1 >= mant2)
+                                    655 ;	genCmp
+      00028F ADr18r00         [ 4]  656 	lda	___fsdiv_org_mant1_10000_21
+      000292 38               [ 2]  657 	sec
+      000293 EDr1Cr00         [ 5]  658 	sbc	___fsdiv_org_mant2_10000_21
+      000296 ADr19r00         [ 4]  659 	lda	(___fsdiv_org_mant1_10000_21 + 1)
+      000299 EDr1Dr00         [ 5]  660 	sbc	(___fsdiv_org_mant2_10000_21 + 1)
+      00029C ADr1Ar00         [ 4]  661 	lda	(___fsdiv_org_mant1_10000_21 + 2)
+      00029F EDr1Er00         [ 5]  662 	sbc	(___fsdiv_org_mant2_10000_21 + 2)
+      0002A2 ADr1Br00         [ 4]  663 	lda	(___fsdiv_org_mant1_10000_21 + 3)
+      0002A5 EDr1Fr00         [ 5]  664 	sbc	(___fsdiv_org_mant2_10000_21 + 3)
+      0002A8 90 12            [ 4]  665 	bcc	00114$
+                                    666 ;	Raw cost for generated ic 113 : (30, 39.599998) count=0.249967
+                                    667 ;	skipping generated iCode
+                                    668 ;	Raw cost for generated ic 114 : (0, 0.000000) count=0.249967
+                                    669 ;	../_fsdiv.c: 339: result += 1;
+                                    670 ;	genPlus
+                                    671 ;	  genPlusInc
+      0002AA EEr10r00         [ 6]  672 	inc	___fsdiv_org_result_10000_21
+      0002AD D0 0D            [ 4]  673 	bne	00210$
+      0002AF EEr11r00         [ 6]  674 	inc	(___fsdiv_org_result_10000_21 + 1)
+      0002B2 D0 08            [ 4]  675 	bne	00210$
+      0002B4 EEr12r00         [ 6]  676 	inc	(___fsdiv_org_result_10000_21 + 2)
+      0002B7 D0 03            [ 4]  677 	bne	00210$
+      0002B9 EEr13r00         [ 6]  678 	inc	(___fsdiv_org_result_10000_21 + 3)
+      0002BC                        679 00210$:
+                                    680 ;	Raw cost for generated ic 117 : (18, 31.800001) count=0.187475
+                                    681 ;	genLabel
+      0002BC                        682 00114$:
+                                    683 ;	Raw cost for generated ic 119 : (0, 0.000000) count=0.249967
+                                    684 ;	../_fsdiv.c: 341: result &= ~HIDDEN;
+                                    685 ;	genAnd
+      0002BC ADr12r00         [ 4]  686 	lda	(___fsdiv_org_result_10000_21 + 2)
+      0002BF 29 7F            [ 2]  687 	and	#0x7f
+      0002C1 8Dr12r00         [ 4]  688 	sta	(___fsdiv_org_result_10000_21 + 2)
+                                    689 ;	Raw cost for generated ic 120 : (8, 10.000000) count=0.249967
+                                    690 ;	../_fsdiv.c: 344: fl1.l = PACK (sign ? SIGNBIT : 0 , exp, result);
+                                    691 ;	skipping iCode since result will be rematerialized
+                                    692 ;	Raw cost for generated ic 122 : (0, 0.000000) count=0.249967
+                                    693 ;	genIfx
+      0002C4 E0 00            [ 2]  694 	cpx	#0x00
+                                    695 ;	genIfxJump : z
+      0002C6 F0 0D            [ 4]  696 	beq	00122$
+                                    697 ;	Raw cost for generated ic 124 : (7, 7.600000) count=0.249967
+                                    698 ;	genAssign
+                                    699 ;	genAssignLit
+      0002C8 64*08            [ 3]  700 	stz	*___fsdiv_org_sloc2_1_0
+      0002CA 64*09            [ 3]  701 	stz	*(___fsdiv_org_sloc2_1_0 + 1)
+      0002CC 64*0A            [ 3]  702 	stz	*(___fsdiv_org_sloc2_1_0 + 2)
+      0002CE A2 80            [ 2]  703 	ldx	#0x80
+      0002D0 86*0B            [ 3]  704 	stx	*(___fsdiv_org_sloc2_1_0 + 3)
+                                    705 ;	Raw cost for generated ic 125 : (13, 17.000000) count=0.187475
+                                    706 ;	genGoto
+      0002D2 4CrDDr02         [ 3]  707 	jmp	00123$
+                                    708 ;	Raw cost for generated ic 126 : (3, 3.000000) count=0.187475
+                                    709 ;	genLabel
+      0002D5                        710 00122$:
+                                    711 ;	Raw cost for generated ic 127 : (0, 0.000000) count=0.062492
+                                    712 ;	genAssign
+                                    713 ;	genAssignLit
+      0002D5 64*08            [ 3]  714 	stz	*___fsdiv_org_sloc2_1_0
+      0002D7 64*09            [ 3]  715 	stz	*(___fsdiv_org_sloc2_1_0 + 1)
+      0002D9 64*0A            [ 3]  716 	stz	*(___fsdiv_org_sloc2_1_0 + 2)
+      0002DB 64*0B            [ 3]  717 	stz	*(___fsdiv_org_sloc2_1_0 + 3)
+                                    718 ;	Raw cost for generated ic 128 : (12, 16.000000) count=0.062492
+                                    719 ;	genLabel
+      0002DD                        720 00123$:
+                                    721 ;	Raw cost for generated ic 129 : (0, 0.000000) count=0.249967
+                                    722 ;	genCast
+      0002DD A5*05            [ 3]  723 	lda	*(___fsdiv_org_sloc1_1_0 + 1)
+      0002DF 0A               [ 2]  724 	asl	a
+      0002E0 A9 00            [ 2]  725 	lda	#0x00
+      0002E2 69 FF            [ 3]  726 	adc	#0xff
+      0002E4 49 FF            [ 2]  727 	eor	#0xff
+      0002E6 85*06            [ 3]  728 	sta	*(___fsdiv_org_sloc1_1_0 + 2)
+      0002E8 85*07            [ 3]  729 	sta	*(___fsdiv_org_sloc1_1_0 + 3)
+                                    730 ;	Raw cost for generated ic 130 : (19, 26.000000) count=0.249967
+                                    731 ;	genLeftShift
+                                    732 ;	genLeftShiftLiteral
+                                    733 ;	  genlsh32 - shift=23
+      0002EA A5*05            [ 3]  734 	lda	*(___fsdiv_org_sloc1_1_0 + 1)
+      0002EC 4A               [ 2]  735 	lsr	a
+      0002ED A5*04            [ 3]  736 	lda	*___fsdiv_org_sloc1_1_0
+      0002EF 6A               [ 2]  737 	ror	a
+      0002F0 85*07            [ 3]  738 	sta	*(___fsdiv_org_sloc1_1_0 + 3)
+      0002F2 A9 00            [ 2]  739 	lda	#0x00
+      0002F4 85*05            [ 3]  740 	sta	*(___fsdiv_org_sloc1_1_0 + 1)
+      0002F6 85*04            [ 3]  741 	sta	*___fsdiv_org_sloc1_1_0
+      0002F8 6A               [ 2]  742 	ror	a
+      0002F9 85*06            [ 3]  743 	sta	*(___fsdiv_org_sloc1_1_0 + 2)
+                                    744 ;	Raw cost for generated ic 131 : (17, 26.000000) count=0.249967
+                                    745 ;	genOr
+      0002FB A5*08            [ 3]  746 	lda	*___fsdiv_org_sloc2_1_0
+      0002FD 05*04            [ 3]  747 	ora	*___fsdiv_org_sloc1_1_0
+      0002FF 85*08            [ 3]  748 	sta	*___fsdiv_org_sloc2_1_0
+      000301 A5*09            [ 3]  749 	lda	*(___fsdiv_org_sloc2_1_0 + 1)
+      000303 05*05            [ 3]  750 	ora	*(___fsdiv_org_sloc1_1_0 + 1)
+      000305 85*09            [ 3]  751 	sta	*(___fsdiv_org_sloc2_1_0 + 1)
+      000307 A5*0A            [ 3]  752 	lda	*(___fsdiv_org_sloc2_1_0 + 2)
+      000309 05*06            [ 3]  753 	ora	*(___fsdiv_org_sloc1_1_0 + 2)
+      00030B 85*0A            [ 3]  754 	sta	*(___fsdiv_org_sloc2_1_0 + 2)
+      00030D A5*0B            [ 3]  755 	lda	*(___fsdiv_org_sloc2_1_0 + 3)
+      00030F 05*07            [ 3]  756 	ora	*(___fsdiv_org_sloc1_1_0 + 3)
+      000311 85*0B            [ 3]  757 	sta	*(___fsdiv_org_sloc2_1_0 + 3)
+                                    758 ;	Raw cost for generated ic 132 : (24, 36.000000) count=0.249967
+                                    759 ;	genOr
+      000313 A5*08            [ 3]  760 	lda	*___fsdiv_org_sloc2_1_0
+      000315 0Dr10r00         [ 4]  761 	ora	___fsdiv_org_result_10000_21
+      000318 85*08            [ 3]  762 	sta	*___fsdiv_org_sloc2_1_0
+      00031A A5*09            [ 3]  763 	lda	*(___fsdiv_org_sloc2_1_0 + 1)
+      00031C 0Dr11r00         [ 4]  764 	ora	(___fsdiv_org_result_10000_21 + 1)
+      00031F 85*09            [ 3]  765 	sta	*(___fsdiv_org_sloc2_1_0 + 1)
+      000321 A5*0A            [ 3]  766 	lda	*(___fsdiv_org_sloc2_1_0 + 2)
+      000323 0Dr12r00         [ 4]  767 	ora	(___fsdiv_org_result_10000_21 + 2)
+      000326 85*0A            [ 3]  768 	sta	*(___fsdiv_org_sloc2_1_0 + 2)
+      000328 A5*0B            [ 3]  769 	lda	*(___fsdiv_org_sloc2_1_0 + 3)
+      00032A 0Dr13r00         [ 4]  770 	ora	(___fsdiv_org_result_10000_21 + 3)
+      00032D 85*0B            [ 3]  771 	sta	*(___fsdiv_org_sloc2_1_0 + 3)
+                                    772 ;	Raw cost for generated ic 133 : (28, 40.000000) count=0.249967
+                                    773 ;	genPointerSet
+                                    774 ;	genDataPointerSet
+      00032F 8Dr0Br00         [ 4]  775 	sta	(___fsdiv_org_fl1_10000_21 + 3)
+      000332 A5*0A            [ 3]  776 	lda	*(___fsdiv_org_sloc2_1_0 + 2)
+      000334 8Dr0Ar00         [ 4]  777 	sta	(___fsdiv_org_fl1_10000_21 + 2)
+      000337 A5*09            [ 3]  778 	lda	*(___fsdiv_org_sloc2_1_0 + 1)
+      000339 8Dr09r00         [ 4]  779 	sta	(___fsdiv_org_fl1_10000_21 + 1)
+      00033C A5*08            [ 3]  780 	lda	*___fsdiv_org_sloc2_1_0
+      00033E 8Dr08r00         [ 4]  781 	sta	___fsdiv_org_fl1_10000_21
+                                    782 ;	Raw cost for generated ic 134 : (18, 25.000000) count=0.249967
+                                    783 ;	genLabel
+      000341                        784 00117$:
+                                    785 ;	Raw cost for generated ic 135 : (0, 0.000000) count=0.999967
+                                    786 ;	../_fsdiv.c: 346: return (fl1.f);
+                                    787 ;	skipping iCode since result will be rematerialized
+                                    788 ;	Raw cost for generated ic 136 : (0, 0.000000) count=0.999967
+                                    789 ;	genPointerGet
+                                    790 ;	genDataPointerGet
+      000341 ADr0Br00         [ 4]  791 	lda	(___fsdiv_org_fl1_10000_21 + 3)
+      000344 85*0B            [ 3]  792 	sta	*(___fsdiv_org_sloc2_1_0 + 3)
+      000346 ADr0Ar00         [ 4]  793 	lda	(___fsdiv_org_fl1_10000_21 + 2)
+      000349 85*0A            [ 3]  794 	sta	*(___fsdiv_org_sloc2_1_0 + 2)
+      00034B ADr09r00         [ 4]  795 	lda	(___fsdiv_org_fl1_10000_21 + 1)
+      00034E 85*09            [ 3]  796 	sta	*(___fsdiv_org_sloc2_1_0 + 1)
+      000350 ADr08r00         [ 4]  797 	lda	___fsdiv_org_fl1_10000_21
+      000353 85*08            [ 3]  798 	sta	*___fsdiv_org_sloc2_1_0
+                                    799 ;	Raw cost for generated ic 138 : (20, 28.000000) count=0.999967
+                                    800 ;	genRet
+      000355 A5*0B            [ 3]  801 	lda	*(___fsdiv_org_sloc2_1_0 + 3)
+      000357 85*00            [ 3]  802 	sta	*___SDCC_m6502_ret3
+      000359 A5*0A            [ 3]  803 	lda	*(___fsdiv_org_sloc2_1_0 + 2)
+      00035B 85*00            [ 3]  804 	sta	*___SDCC_m6502_ret2
+      00035D A6*09            [ 3]  805 	ldx	*(___fsdiv_org_sloc2_1_0 + 1)
+      00035F A5*08            [ 3]  806 	lda	*___fsdiv_org_sloc2_1_0
+                                    807 ;	Raw cost for generated ic 139 : (12, 18.000000) count=0.999967
+                                    808 ;	genLabel
+                                    809 ;	Raw cost for generated ic 140 : (0, 0.000000) count=0.999967
+                                    810 ;	../_fsdiv.c: 347: }
+                                    811 ;	genEndFunction
+      000361 60               [ 6]  812 	rts
+                                    813 ;	Raw cost for generated ic 141 : (1, 6.000000) count=0.999967
+                                    814 ;------------------------------------------------------------
+                                    815 ;Allocation info for local variables in function '__fsdiv'
+                                    816 ;------------------------------------------------------------
+                                    817 ;sloc0         Allocated with name '___fsdiv_sloc0_1_0'
+                                    818 ;a1            Allocated with name '___fsdiv_PARM_1'
+                                    819 ;a2            Allocated with name '___fsdiv_PARM_2'
+                                    820 ;p2            Allocated to registers 
+                                    821 ;f             Allocated with name '___fsdiv_f_30000_37'
+                                    822 ;p             Allocated to registers 
+                                    823 ;------------------------------------------------------------
+                                    824 ;	../_fsdiv.c: 349: float __fsdiv (float a1, float a2) __SDCC_FLOAT_NONBANKED
+                                    825 ;	genLabel
+                                    826 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    827 ;	-----------------------------------------
+                                    828 ;	 function __fsdiv
+                                    829 ;	-----------------------------------------
+                                    830 ;	Register assignment is optimal.
+                                    831 ;	Stack space usage: 0 bytes.
+      000362                        832 ___fsdiv:
+                                    833 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    834 ;	../_fsdiv.c: 351: unsigned long _AUTOMEM *p2 = (unsigned long *) &a2;
+                                    835 ;	skipping iCode since result will be rematerialized
+                                    836 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    837 ;	skipping iCode since result will be rematerialized
+                                    838 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    839 ;	../_fsdiv.c: 353: if (EXP (*p2) == 0) // a2 is denormal or zero, treat as zero
+                                    840 ;	genPointerGet
+                                    841 ;	genDataPointerGet
+      000362 ADr2Br00         [ 4]  842 	lda	(___fsdiv_PARM_2 + 3)
+      000365 85*03            [ 3]  843 	sta	*(___fsdiv_sloc0_1_0 + 3)
+      000367 ADr2Ar00         [ 4]  844 	lda	(___fsdiv_PARM_2 + 2)
+      00036A 85*02            [ 3]  845 	sta	*(___fsdiv_sloc0_1_0 + 2)
+      00036C ADr29r00         [ 4]  846 	lda	(___fsdiv_PARM_2 + 1)
+      00036F 85*01            [ 3]  847 	sta	*(___fsdiv_sloc0_1_0 + 1)
+      000371 ADr28r00         [ 4]  848 	lda	___fsdiv_PARM_2
+      000374 85*00            [ 3]  849 	sta	*___fsdiv_sloc0_1_0
+                                    850 ;	Raw cost for generated ic 7 : (20, 28.000000) count=1.000000
+                                    851 ;	genRightShift
+                                    852 ;	genRightShiftLiteral
+                                    853 ;	  genrsh32 - shift=23
+      000376 A5*02            [ 3]  854 	lda	*(___fsdiv_sloc0_1_0 + 2)
+      000378 2A               [ 2]  855 	rol	a
+      000379 A5*03            [ 3]  856 	lda	*(___fsdiv_sloc0_1_0 + 3)
+      00037B 2A               [ 2]  857 	rol	a
+      00037C 85*00            [ 3]  858 	sta	*___fsdiv_sloc0_1_0
+      00037E A9 00            [ 2]  859 	lda	#0x00
+      000380 85*02            [ 3]  860 	sta	*(___fsdiv_sloc0_1_0 + 2)
+      000382 85*03            [ 3]  861 	sta	*(___fsdiv_sloc0_1_0 + 3)
+      000384 2A               [ 2]  862 	rol	a
+      000385 85*01            [ 3]  863 	sta	*(___fsdiv_sloc0_1_0 + 1)
+                                    864 ;	Raw cost for generated ic 8 : (17, 26.000000) count=1.000000
+                                    865 ;	genAnd
+      000387 A5*00            [ 3]  866 	lda	*___fsdiv_sloc0_1_0
+                                    867 ;	genIfxJump : z
+      000389 F0 03            [ 4]  868 	beq	00130$
+      00038B 4Cr2Ar04         [ 3]  869 	jmp	00108$
+      00038E                        870 00130$:
+                                    871 ;	Raw cost for generated ic 9 : (9, 11.200000) count=1.000000
+                                    872 ;	skipping generated iCode
+                                    873 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    874 ;	../_fsdiv.c: 356: unsigned long _AUTOMEM *p = (unsigned long *) &f;
+                                    875 ;	skipping iCode since result will be rematerialized
+                                    876 ;	Raw cost for generated ic 13 : (0, 0.000000) count=0.750000
+                                    877 ;	skipping iCode since result will be rematerialized
+                                    878 ;	Raw cost for generated ic 15 : (0, 0.000000) count=0.750000
+                                    879 ;	../_fsdiv.c: 357: if (a1 > 0.0f)
+                                    880 ;	genAssign
+                                    881 ;	genAssignLit
+      00038E 9Cr00r00         [ 4]  882 	stz	___fslt_PARM_1
+      000391 9Cr01r00         [ 4]  883 	stz	(___fslt_PARM_1 + 1)
+      000394 9Cr02r00         [ 4]  884 	stz	(___fslt_PARM_1 + 2)
+      000397 9Cr03r00         [ 4]  885 	stz	(___fslt_PARM_1 + 3)
+                                    886 ;	Raw cost for generated ic 45 : (12, 16.000000) count=0.750000
+                                    887 ;	genAssign
+                                    888 ;	genCopy
+      00039A ADr27r00         [ 4]  889 	lda	(___fsdiv_PARM_1 + 3)
+      00039D 8Dr03r00         [ 4]  890 	sta	(___fslt_PARM_2 + 3)
+      0003A0 ADr26r00         [ 4]  891 	lda	(___fsdiv_PARM_1 + 2)
+      0003A3 8Dr02r00         [ 4]  892 	sta	(___fslt_PARM_2 + 2)
+      0003A6 ADr25r00         [ 4]  893 	lda	(___fsdiv_PARM_1 + 1)
+      0003A9 8Dr01r00         [ 4]  894 	sta	(___fslt_PARM_2 + 1)
+      0003AC ADr24r00         [ 4]  895 	lda	___fsdiv_PARM_1
+      0003AF 8Dr00r00         [ 4]  896 	sta	___fslt_PARM_2
+                                    897 ;	Raw cost for generated ic 46 : (24, 32.000000) count=0.750000
+                                    898 ;	genCall
+      0003B2 20r00r00         [ 6]  899 	jsr	___fslt
+                                    900 ;	assignResultValue
+                                    901 ;	Raw cost for generated ic 47 : (3, 6.000000) count=0.750000
+                                    902 ;	genIfx
+      0003B5 C9 00            [ 2]  903 	cmp	#0x00
+                                    904 ;	genIfxJump : z
+      0003B7 F0 12            [ 4]  905 	beq	00105$
+                                    906 ;	Raw cost for generated ic 18 : (7, 7.600000) count=0.750000
+                                    907 ;	../_fsdiv.c: 358: *p = __INFINITY;           // +inf
+                                    908 ;	genPointerSet
+                                    909 ;	genDataPointerSet
+      0003B9 A2 7F            [ 2]  910 	ldx	#0x7f
+      0003BB 8Er2Fr00         [ 4]  911 	stx	(___fsdiv_f_30000_37 + 3)
+      0003BE E8               [ 2]  912 	inx
+      0003BF 8Er2Er00         [ 4]  913 	stx	(___fsdiv_f_30000_37 + 2)
+      0003C2 9Cr2Dr00         [ 4]  914 	stz	(___fsdiv_f_30000_37 + 1)
+      0003C5 9Cr2Cr00         [ 4]  915 	stz	___fsdiv_f_30000_37
+                                    916 ;	Raw cost for generated ic 22 : (15, 20.000000) count=0.562500
+                                    917 ;	genGoto
+      0003C8 4Cr19r04         [ 3]  918 	jmp	00106$
+                                    919 ;	Raw cost for generated ic 23 : (3, 3.000000) count=0.562500
+                                    920 ;	genLabel
+      0003CB                        921 00105$:
+                                    922 ;	Raw cost for generated ic 24 : (0, 0.000000) count=0.187500
+                                    923 ;	../_fsdiv.c: 359: else if (a1 < 0.0f)
+                                    924 ;	genAssign
+                                    925 ;	genCopy
+      0003CB ADr27r00         [ 4]  926 	lda	(___fsdiv_PARM_1 + 3)
+      0003CE 8Dr03r00         [ 4]  927 	sta	(___fslt_PARM_1 + 3)
+      0003D1 ADr26r00         [ 4]  928 	lda	(___fsdiv_PARM_1 + 2)
+      0003D4 8Dr02r00         [ 4]  929 	sta	(___fslt_PARM_1 + 2)
+      0003D7 ADr25r00         [ 4]  930 	lda	(___fsdiv_PARM_1 + 1)
+      0003DA 8Dr01r00         [ 4]  931 	sta	(___fslt_PARM_1 + 1)
+      0003DD ADr24r00         [ 4]  932 	lda	___fsdiv_PARM_1
+      0003E0 8Dr00r00         [ 4]  933 	sta	___fslt_PARM_1
+                                    934 ;	Raw cost for generated ic 48 : (24, 32.000000) count=0.187500
+                                    935 ;	genAssign
+                                    936 ;	genAssignLit
+      0003E3 9Cr00r00         [ 4]  937 	stz	___fslt_PARM_2
+      0003E6 9Cr01r00         [ 4]  938 	stz	(___fslt_PARM_2 + 1)
+      0003E9 9Cr02r00         [ 4]  939 	stz	(___fslt_PARM_2 + 2)
+      0003EC 9Cr03r00         [ 4]  940 	stz	(___fslt_PARM_2 + 3)
+                                    941 ;	Raw cost for generated ic 49 : (12, 16.000000) count=0.187500
+                                    942 ;	genCall
+      0003EF 20r00r00         [ 6]  943 	jsr	___fslt
+                                    944 ;	assignResultValue
+                                    945 ;	Raw cost for generated ic 50 : (3, 6.000000) count=0.187500
+                                    946 ;	genIfx
+      0003F2 C9 00            [ 2]  947 	cmp	#0x00
+                                    948 ;	genIfxJump : z
+      0003F4 F0 13            [ 4]  949 	beq	00102$
+                                    950 ;	Raw cost for generated ic 26 : (7, 7.600000) count=0.187500
+                                    951 ;	../_fsdiv.c: 360: *p = SIGNBIT | __INFINITY; // -inf
+                                    952 ;	genPointerSet
+                                    953 ;	genDataPointerSet
+      0003F6 A2 FF            [ 2]  954 	ldx	#0xff
+      0003F8 8Er2Fr00         [ 4]  955 	stx	(___fsdiv_f_30000_37 + 3)
+      0003FB A2 80            [ 2]  956 	ldx	#0x80
+      0003FD 8Er2Er00         [ 4]  957 	stx	(___fsdiv_f_30000_37 + 2)
+      000400 9Cr2Dr00         [ 4]  958 	stz	(___fsdiv_f_30000_37 + 1)
+      000403 9Cr2Cr00         [ 4]  959 	stz	___fsdiv_f_30000_37
+                                    960 ;	Raw cost for generated ic 30 : (16, 20.000000) count=0.140625
+                                    961 ;	genGoto
+      000406 4Cr19r04         [ 3]  962 	jmp	00106$
+                                    963 ;	Raw cost for generated ic 31 : (3, 3.000000) count=0.140625
+                                    964 ;	genLabel
+      000409                        965 00102$:
+                                    966 ;	Raw cost for generated ic 32 : (0, 0.000000) count=0.046875
+                                    967 ;	../_fsdiv.c: 362: *p = __NAN;                // nan
+                                    968 ;	genPointerSet
+                                    969 ;	genDataPointerSet
+      000409 A2 FF            [ 2]  970 	ldx	#0xff
+      00040B 8Er2Fr00         [ 4]  971 	stx	(___fsdiv_f_30000_37 + 3)
+      00040E A2 C0            [ 2]  972 	ldx	#0xc0
+      000410 8Er2Er00         [ 4]  973 	stx	(___fsdiv_f_30000_37 + 2)
+      000413 9Cr2Dr00         [ 4]  974 	stz	(___fsdiv_f_30000_37 + 1)
+      000416 9Cr2Cr00         [ 4]  975 	stz	___fsdiv_f_30000_37
+                                    976 ;	Raw cost for generated ic 34 : (16, 20.000000) count=0.046875
+                                    977 ;	genLabel
+      000419                        978 00106$:
+                                    979 ;	Raw cost for generated ic 36 : (0, 0.000000) count=0.750000
+                                    980 ;	../_fsdiv.c: 363: return f;
+                                    981 ;	genRet
+      000419 ADr2Fr00         [ 4]  982 	lda	(___fsdiv_f_30000_37 + 3)
+      00041C 85*00            [ 3]  983 	sta	*___SDCC_m6502_ret3
+      00041E ADr2Er00         [ 4]  984 	lda	(___fsdiv_f_30000_37 + 2)
+      000421 85*00            [ 3]  985 	sta	*___SDCC_m6502_ret2
+      000423 AEr2Dr00         [ 4]  986 	ldx	(___fsdiv_f_30000_37 + 1)
+      000426 ADr2Cr00         [ 4]  987 	lda	___fsdiv_f_30000_37
+      000429 60               [ 6]  988 	rts
+                                    989 ;	Raw cost for generated ic 37 : (19, 25.000000) count=0.750000
+                                    990 ;	genLabel
+      00042A                        991 00108$:
+                                    992 ;	Raw cost for generated ic 38 : (0, 0.000000) count=1.000000
+                                    993 ;	../_fsdiv.c: 365: return __fsdiv_org (a1, a2);
+                                    994 ;	genAssign
+                                    995 ;	genCopy
+      00042A ADr27r00         [ 4]  996 	lda	(___fsdiv_PARM_1 + 3)
+      00042D 8Dr03r00         [ 4]  997 	sta	(___fsdiv_org_PARM_1 + 3)
+      000430 ADr26r00         [ 4]  998 	lda	(___fsdiv_PARM_1 + 2)
+      000433 8Dr02r00         [ 4]  999 	sta	(___fsdiv_org_PARM_1 + 2)
+      000436 ADr25r00         [ 4] 1000 	lda	(___fsdiv_PARM_1 + 1)
+      000439 8Dr01r00         [ 4] 1001 	sta	(___fsdiv_org_PARM_1 + 1)
+      00043C ADr24r00         [ 4] 1002 	lda	___fsdiv_PARM_1
+      00043F 8Dr00r00         [ 4] 1003 	sta	___fsdiv_org_PARM_1
+                                   1004 ;	Raw cost for generated ic 39 : (24, 32.000000) count=1.000000
+                                   1005 ;	genAssign
+                                   1006 ;	genCopy
+      000442 ADr2Br00         [ 4] 1007 	lda	(___fsdiv_PARM_2 + 3)
+      000445 8Dr07r00         [ 4] 1008 	sta	(___fsdiv_org_PARM_2 + 3)
+      000448 ADr2Ar00         [ 4] 1009 	lda	(___fsdiv_PARM_2 + 2)
+      00044B 8Dr06r00         [ 4] 1010 	sta	(___fsdiv_org_PARM_2 + 2)
+      00044E ADr29r00         [ 4] 1011 	lda	(___fsdiv_PARM_2 + 1)
+      000451 8Dr05r00         [ 4] 1012 	sta	(___fsdiv_org_PARM_2 + 1)
+      000454 ADr28r00         [ 4] 1013 	lda	___fsdiv_PARM_2
+      000457 8Dr04r00         [ 4] 1014 	sta	___fsdiv_org_PARM_2
+                                   1015 ;	Raw cost for generated ic 40 : (24, 32.000000) count=1.000000
+                                   1016 ;	genCall
+      00045A 20r00r00         [ 6] 1017 	jsr	___fsdiv_org
+                                   1018 ;	assignResultValue
+      00045D 85*00            [ 3] 1019 	sta	*___fsdiv_sloc0_1_0
+      00045F 86*01            [ 3] 1020 	stx	*(___fsdiv_sloc0_1_0 + 1)
+      000461 A5*00            [ 3] 1021 	lda	*___SDCC_m6502_ret2
+      000463 85*02            [ 3] 1022 	sta	*(___fsdiv_sloc0_1_0 + 2)
+      000465 A5*00            [ 3] 1023 	lda	*___SDCC_m6502_ret3
+      000467 85*03            [ 3] 1024 	sta	*(___fsdiv_sloc0_1_0 + 3)
+                                   1025 ;	Raw cost for generated ic 41 : (15, 24.000000) count=1.000000
+                                   1026 ;	genRet
+      000469 85*00            [ 3] 1027 	sta	*___SDCC_m6502_ret3
+      00046B A5*02            [ 3] 1028 	lda	*(___fsdiv_sloc0_1_0 + 2)
+      00046D 85*00            [ 3] 1029 	sta	*___SDCC_m6502_ret2
+      00046F A5*00            [ 3] 1030 	lda	*___fsdiv_sloc0_1_0
+                                   1031 ;	Raw cost for generated ic 42 : (8, 12.000000) count=1.000000
+                                   1032 ;	genLabel
+                                   1033 ;	Raw cost for generated ic 43 : (0, 0.000000) count=1.000000
+                                   1034 ;	../_fsdiv.c: 366: }
+                                   1035 ;	genEndFunction
+      000471 60               [ 6] 1036 	rts
+                                   1037 ;	Raw cost for generated ic 44 : (1, 6.000000) count=1.000000
+                                   1038 	.area CODE
+                                   1039 	.area RODATA
+                                   1040 	.area XINIT
+                                   1041 	.area CABS    (ABS)

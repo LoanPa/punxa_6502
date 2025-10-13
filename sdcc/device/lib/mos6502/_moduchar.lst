@@ -1,0 +1,54 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _moduchar.s - routine for 8 bit (unsigned char) modulo
+                                      3 ;
+                                      4 ;   Copyright (C) 2023, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module _moduchar
+                                     30 
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl __moduchar   ; arguments in A and X, result in AX
+                                     35 	
+                                     36 ;--------------------------------------------------------
+                                     37 ; overlayable function parameters in zero page
+                                     38 ;--------------------------------------------------------
+                                     39 	.area	OSEG    (PAG, OVR)
+                                     40 
+                                     41 ;--------------------------------------------------------
+                                     42 ; local aliases
+                                     43 ;--------------------------------------------------------
+                                     44 
+                                     45 ;--------------------------------------------------------
+                                     46 ; code
+                                     47 ;--------------------------------------------------------
+                                     48 	.area CODE
+      000000                         49 __moduchar:
+      000000 86*00            [ 3]   50 	stx	*__moduint_PARM_2
+      000002 A2 00            [ 2]   51 	ldx	#0x00
+      000004 86*01            [ 3]   52 	stx	*(__moduint_PARM_2 + 1)
+      000006 4Cr00r00         [ 3]   53 	jmp	__moduint
+                                     54 

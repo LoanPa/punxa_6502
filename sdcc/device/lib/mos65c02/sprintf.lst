@@ -1,0 +1,367 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module sprintf
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl __print_format
+                                     28 	.globl _vsprintf_PARM_3
+                                     29 	.globl _vsprintf_PARM_2
+                                     30 	.globl _vsprintf
+                                     31 	.globl _sprintf
+                                     32 ;--------------------------------------------------------
+                                     33 ; ZP ram data
+                                     34 ;--------------------------------------------------------
+                                     35 	.area ZP      (PAG)
+      000000                         36 _vsprintf_sloc0_1_0:
+      000000                         37 	.ds 2
+                                     38 ;--------------------------------------------------------
+                                     39 ; overlayable items in ram
+                                     40 ;--------------------------------------------------------
+                                     41 ;--------------------------------------------------------
+                                     42 ; uninitialized external ram data
+                                     43 ;--------------------------------------------------------
+                                     44 	.area BSS
+      000000                         45 _vsprintf_PARM_2:
+      000000                         46 	.ds 2
+      000002                         47 _vsprintf_PARM_3:
+      000002                         48 	.ds 2
+      000004                         49 _vsprintf_buf_10000_13:
+      000004                         50 	.ds 2
+                                     51 ;--------------------------------------------------------
+                                     52 ; absolute external ram data
+                                     53 ;--------------------------------------------------------
+                                     54 	.area DABS    (ABS)
+                                     55 ;--------------------------------------------------------
+                                     56 ; initialized external ram data
+                                     57 ;--------------------------------------------------------
+                                     58 	.area DATA
+                                     59 ;--------------------------------------------------------
+                                     60 ; global & static initialisations
+                                     61 ;--------------------------------------------------------
+                                     62 	.area _CODE
+                                     63 	.area GSINIT
+                                     64 	.area GSFINAL
+                                     65 	.area GSINIT
+                                     66 ;--------------------------------------------------------
+                                     67 ; Home
+                                     68 ;--------------------------------------------------------
+                                     69 	.area _CODE
+                                     70 	.area _CODE
+                                     71 ;--------------------------------------------------------
+                                     72 ; code
+                                     73 ;--------------------------------------------------------
+                                     74 	.area CODE
+                                     75 ;------------------------------------------------------------
+                                     76 ;Allocation info for local variables in function 'put_char_to_string'
+                                     77 ;------------------------------------------------------------
+                                     78 ;p             Allocated to stack - sp +9 +2 
+                                     79 ;c             Allocated to registers a 
+                                     80 ;buf           Allocated to stack - sp +5 +2 
+                                     81 ;sloc0         Allocated to stack - sp +3 +2 
+                                     82 ;sloc1         Allocated to stack - sp +1 +2 
+                                     83 ;------------------------------------------------------------
+                                     84 ;	../sprintf.c: 34: put_char_to_string (char c, void* p) _REENTRANT
+                                     85 ;	genLabel
+                                     86 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     87 ;	-----------------------------------------
+                                     88 ;	 function put_char_to_string
+                                     89 ;	-----------------------------------------
+                                     90 ;	Register assignment is optimal.
+                                     91 ;	Stack space usage: 6 bytes.
+      000000                         92 _put_char_to_string:
+                                     93 ;	  adjustStack : cycles stk:18  incdec:16  adc:18
+      000000 BA               [ 2]   94 	tsx
+      000001 CA               [ 2]   95 	dex
+      000002 CA               [ 2]   96 	dex
+      000003 CA               [ 2]   97 	dex
+      000004 CA               [ 2]   98 	dex
+      000005 CA               [ 2]   99 	dex
+      000006 CA               [ 2]  100 	dex
+      000007 9A               [ 2]  101 	txs
+                                    102 ;	Raw cost for generated ic 1 : (8, 16.000000) count=1.000000
+                                    103 ;	genReceive
+                                    104 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    105 ;	../sprintf.c: 36: char **buf = (char **)p;
+                                    106 ;	genCast
+                                    107 ;	genCopy
+      000008 85*00            [ 3]  108 	sta	*(REGTEMP+0)
+      00000A BD 0A 01         [ 5]  109 	lda	0x10a,x
+      00000D 9D 06 01         [ 5]  110 	sta	0x106,x
+      000010 BD 09 01         [ 5]  111 	lda	0x109,x
+                                    112 ;	Raw cost for generated ic 3 : (16, 24.000000) count=1.000000
+                                    113 ;	../sprintf.c: 37: *(*buf)++ = c;
+                                    114 ;	genPointerGet
+                                    115 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000013 9D 05 01         [ 5]  116 	sta	0x105,x
+      000016 09 00            [ 2]  117 	ora	#0x00
+      000018 85*00            [ 3]  118 	sta	*(DPTR+0)
+      00001A BD 06 01         [ 5]  119 	lda	0x106,x
+      00001D 85*01            [ 3]  120 	sta	*(DPTR+1)
+      00001F A0 00            [ 2]  121 	ldy	#0x00
+      000021 B1*00            [ 6]  122 	lda	[DPTR],y
+      000023 9D 03 01         [ 5]  123 	sta	0x103,x
+      000026 C8               [ 2]  124 	iny
+      000027 B1*00            [ 6]  125 	lda	[DPTR],y
+      000029 9D 04 01         [ 5]  126 	sta	0x104,x
+      00002C A5*00            [ 3]  127 	lda	*(REGTEMP+0)
+                                    128 ;	Raw cost for generated ic 6 : (27, 44.000000) count=1.000000
+                                    129 ;	genPlus
+                                    130 ;	  genPlusInc
+      00002E 48               [ 3]  131 	pha
+      00002F BD 03 01         [ 5]  132 	lda	0x103,x
+      000032 18               [ 2]  133 	clc
+      000033 69 01            [ 3]  134 	adc	#0x01
+      000035 9D 01 01         [ 5]  135 	sta	0x101,x
+      000038 BD 04 01         [ 5]  136 	lda	0x104,x
+      00003B 69 00            [ 3]  137 	adc	#0x00
+      00003D 9D 02 01         [ 5]  138 	sta	0x102,x
+      000040 68               [ 4]  139 	pla
+                                    140 ;	Raw cost for generated ic 8 : (19, 31.000000) count=1.000000
+                                    141 ;	genPointerSet
+      000041 85*00            [ 3]  142 	sta	*(REGTEMP+0)
+                                    143 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000043 BD 01 01         [ 5]  144 	lda	0x101,x
+      000046 88               [ 2]  145 	dey
+      000047 91*00            [ 6]  146 	sta	[DPTR],y
+      000049 BD 02 01         [ 5]  147 	lda	0x102,x
+      00004C C8               [ 2]  148 	iny
+      00004D 91*00            [ 6]  149 	sta	[DPTR],y
+                                    150 ;	Raw cost for generated ic 9 : (16, 30.000000) count=1.000000
+                                    151 ;	genPointerSet
+                                    152 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00004F BD 03 01         [ 5]  153 	lda	0x103,x
+      000052 85*00            [ 3]  154 	sta	*(DPTR+0)
+      000054 BD 04 01         [ 5]  155 	lda	0x104,x
+      000057 85*01            [ 3]  156 	sta	*(DPTR+1)
+      000059 A5*00            [ 3]  157 	lda	*(REGTEMP+0)
+      00005B 88               [ 2]  158 	dey
+      00005C 91*00            [ 6]  159 	sta	[DPTR],y
+                                    160 ;	Raw cost for generated ic 10 : (17, 28.000000) count=1.000000
+                                    161 ;	genLabel
+                                    162 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.000000
+                                    163 ;	../sprintf.c: 38: }
+                                    164 ;	genEndFunction
+                                    165 ;	  adjustStack : cycles stk:30  incdec:22  adc:24
+      00005E 86*00            [ 3]  166 	stx	*(REGTEMP+0)
+      000060 BA               [ 2]  167 	tsx
+      000061 E8               [ 2]  168 	inx
+      000062 E8               [ 2]  169 	inx
+      000063 E8               [ 2]  170 	inx
+      000064 E8               [ 2]  171 	inx
+      000065 E8               [ 2]  172 	inx
+      000066 E8               [ 2]  173 	inx
+      000067 9A               [ 2]  174 	txs
+      000068 A6*00            [ 3]  175 	ldx	*(REGTEMP+0)
+      00006A 60               [ 6]  176 	rts
+                                    177 ;	Raw cost for generated ic 12 : (13, 28.000000) count=1.000000
+                                    178 ;------------------------------------------------------------
+                                    179 ;Allocation info for local variables in function 'vsprintf'
+                                    180 ;------------------------------------------------------------
+                                    181 ;sloc0         Allocated with name '_vsprintf_sloc0_1_0'
+                                    182 ;format        Allocated with name '_vsprintf_PARM_2'
+                                    183 ;ap            Allocated with name '_vsprintf_PARM_3'
+                                    184 ;buf           Allocated with name '_vsprintf_buf_10000_13'
+                                    185 ;i             Allocated to registers a x 
+                                    186 ;------------------------------------------------------------
+                                    187 ;	../sprintf.c: 41: vsprintf (char *buf, const char *format, va_list ap)
+                                    188 ;	genLabel
+                                    189 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    190 ;	-----------------------------------------
+                                    191 ;	 function vsprintf
+                                    192 ;	-----------------------------------------
+                                    193 ;	Register assignment is optimal.
+                                    194 ;	Stack space usage: 0 bytes.
+      00006B                        195 _vsprintf:
+                                    196 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    197 ;	genReceive
+      00006B 8Dr04r00         [ 4]  198 	sta	_vsprintf_buf_10000_13
+      00006E 8Er05r00         [ 4]  199 	stx	(_vsprintf_buf_10000_13 + 1)
+                                    200 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    201 ;	../sprintf.c: 44: i = _print_format (put_char_to_string, &buf, format, ap);
+                                    202 ;	skipping iCode since result will be rematerialized
+                                    203 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                    204 ;	genCast
+                                    205 ;	genCopy
+      000071 A9s00            [ 2]  206 	lda	#>_vsprintf_buf_10000_13
+      000073 8Dr01r00         [ 4]  207 	sta	(__print_format_PARM_2 + 1)
+      000076 A9r04            [ 2]  208 	lda	#_vsprintf_buf_10000_13
+      000078 8Dr00r00         [ 4]  209 	sta	__print_format_PARM_2
+                                    210 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                    211 ;	genAssign
+                                    212 ;	genCopy
+      00007B ADr01r00         [ 4]  213 	lda	(_vsprintf_PARM_2 + 1)
+      00007E 8Dr01r00         [ 4]  214 	sta	(__print_format_PARM_3 + 1)
+      000081 ADr00r00         [ 4]  215 	lda	_vsprintf_PARM_2
+      000084 8Dr00r00         [ 4]  216 	sta	__print_format_PARM_3
+                                    217 ;	Raw cost for generated ic 7 : (12, 16.000000) count=1.000000
+                                    218 ;	genAssign
+                                    219 ;	genCopy
+      000087 ADr03r00         [ 4]  220 	lda	(_vsprintf_PARM_3 + 1)
+      00008A 8Dr01r00         [ 4]  221 	sta	(__print_format_PARM_4 + 1)
+      00008D ADr02r00         [ 4]  222 	lda	_vsprintf_PARM_3
+      000090 8Dr00r00         [ 4]  223 	sta	__print_format_PARM_4
+                                    224 ;	Raw cost for generated ic 8 : (12, 16.000000) count=1.000000
+                                    225 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                    226 ;	genCall
+                                    227 ;	genSend
+      000093 A2s00            [ 2]  228 	ldx	#>(_put_char_to_string)
+      000095 A9r00            [ 2]  229 	lda	#(_put_char_to_string)
+      000097 20r00r00         [ 6]  230 	jsr	__print_format
+                                    231 ;	assignResultValue
+                                    232 ;	Raw cost for generated ic 9 : (7, 10.000000) count=1.000000
+                                    233 ;	../sprintf.c: 45: *buf = 0;
+                                    234 ;	genAssign
+                                    235 ;	genCopy
+      00009A ACr05r00         [ 4]  236 	ldy	(_vsprintf_buf_10000_13 + 1)
+      00009D 84*01            [ 3]  237 	sty	*(_vsprintf_sloc0_1_0 + 1)
+      00009F ACr04r00         [ 4]  238 	ldy	_vsprintf_buf_10000_13
+      0000A2 84*00            [ 3]  239 	sty	*_vsprintf_sloc0_1_0
+                                    240 ;	Raw cost for generated ic 11 : (10, 14.000000) count=1.000000
+                                    241 ;	genPointerSet
+      0000A4 85*00            [ 3]  242 	sta	*(REGTEMP+0)
+      0000A6 A9 00            [ 2]  243 	lda	#0x00
+      0000A8 A8               [ 2]  244 	tay
+      0000A9 91*00            [ 6]  245 	sta	[*_vsprintf_sloc0_1_0],y
+      0000AB A5*00            [ 3]  246 	lda	*(REGTEMP+0)
+                                    247 ;	Raw cost for generated ic 12 : (9, 16.000000) count=1.000000
+                                    248 ;	../sprintf.c: 46: return i;
+                                    249 ;	genRet
+                                    250 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    251 ;	genLabel
+                                    252 ;	Raw cost for generated ic 14 : (0, 0.000000) count=1.000000
+                                    253 ;	../sprintf.c: 47: }
+                                    254 ;	genEndFunction
+      0000AD 60               [ 6]  255 	rts
+                                    256 ;	Raw cost for generated ic 15 : (1, 6.000000) count=1.000000
+                                    257 ;------------------------------------------------------------
+                                    258 ;Allocation info for local variables in function 'sprintf'
+                                    259 ;------------------------------------------------------------
+                                    260 ;buf           Allocated to stack - sp +5 +2 
+                                    261 ;format        Allocated to stack - sp +7 +2 
+                                    262 ;arg           Allocated to registers 
+                                    263 ;i             Allocated to registers a x 
+                                    264 ;sloc0         Allocated to stack - sp +1 +2 
+                                    265 ;------------------------------------------------------------
+                                    266 ;	../sprintf.c: 50: sprintf (char *buf, const char *format, ...)
+                                    267 ;	genLabel
+                                    268 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    269 ;	-----------------------------------------
+                                    270 ;	 function sprintf
+                                    271 ;	-----------------------------------------
+                                    272 ;	Register assignment is optimal.
+                                    273 ;	Stack space usage: 2 bytes.
+      0000AE                        274 _sprintf:
+                                    275 ;	  adjustStack : cycles stk:6  incdec:8  adc:12
+      0000AE 48               [ 3]  276 	pha
+      0000AF 48               [ 3]  277 	pha
+                                    278 ;	Raw cost for generated ic 1 : (2, 6.000000) count=1.000000
+                                    279 ;	../sprintf.c: 55: va_start (arg, format);
+                                    280 ;	genAddrOf
+      0000B0 BA               [ 2]  281 	tsx
+      0000B1 8A               [ 2]  282 	txa
+      0000B2 18               [ 2]  283 	clc
+      0000B3 69 07            [ 3]  284 	adc	#0x07
+      0000B5 A2 01            [ 2]  285 	ldx	#0x01
+                                    286 ;	Raw cost for generated ic 2 : (7, 10.000000) count=1.000000
+                                    287 ;	genCast
+                                    288 ;	genCopy
+                                    289 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                    290 ;	genPlus
+                                    291 ;	  genPlusInc
+      0000B7 18               [ 2]  292 	clc
+      0000B8 69 02            [ 3]  293 	adc	#0x02
+      0000BA 8Dr00r00         [ 4]  294 	sta	__print_format_PARM_4
+      0000BD 8A               [ 2]  295 	txa
+      0000BE 69 00            [ 3]  296 	adc	#0x00
+      0000C0 8Dr01r00         [ 4]  297 	sta	(__print_format_PARM_4 + 1)
+                                    298 ;	Raw cost for generated ic 4 : (12, 16.000000) count=1.000000
+                                    299 ;	../sprintf.c: 56: i = _print_format (put_char_to_string, &buf, format, arg);
+                                    300 ;	genAddrOf
+      0000C3 BA               [ 2]  301 	tsx
+      0000C4 8A               [ 2]  302 	txa
+      0000C5 18               [ 2]  303 	clc
+      0000C6 69 05            [ 3]  304 	adc	#0x05
+      0000C8 A2 01            [ 2]  305 	ldx	#0x01
+                                    306 ;	Raw cost for generated ic 6 : (7, 10.000000) count=1.000000
+                                    307 ;	genCast
+                                    308 ;	genCopy
+      0000CA 8Dr00r00         [ 4]  309 	sta	__print_format_PARM_2
+      0000CD 8Er01r00         [ 4]  310 	stx	(__print_format_PARM_2 + 1)
+                                    311 ;	Raw cost for generated ic 7 : (6, 8.000000) count=1.000000
+                                    312 ;	genAssign
+                                    313 ;	genCopy
+      0000D0 BA               [ 2]  314 	tsx
+      0000D1 BD 08 01         [ 5]  315 	lda	0x108,x
+      0000D4 8Dr01r00         [ 4]  316 	sta	(__print_format_PARM_3 + 1)
+      0000D7 BD 07 01         [ 5]  317 	lda	0x107,x
+      0000DA 8Dr00r00         [ 4]  318 	sta	__print_format_PARM_3
+                                    319 ;	Raw cost for generated ic 10 : (13, 18.000000) count=1.000000
+                                    320 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    321 ;	genCall
+                                    322 ;	genSend
+      0000DD A2s00            [ 2]  323 	ldx	#>(_put_char_to_string)
+      0000DF A9r00            [ 2]  324 	lda	#(_put_char_to_string)
+      0000E1 20r00r00         [ 6]  325 	jsr	__print_format
+                                    326 ;	assignResultValue
+                                    327 ;	Raw cost for generated ic 12 : (7, 10.000000) count=1.000000
+                                    328 ;	../sprintf.c: 57: *buf = 0;
+                                    329 ;	genAssign
+                                    330 ;	genCopy
+      0000E4 85*00            [ 3]  331 	sta	*(REGTEMP+0)
+      0000E6 86*01            [ 3]  332 	stx	*(REGTEMP+1)
+      0000E8 BA               [ 2]  333 	tsx
+      0000E9 BD 06 01         [ 5]  334 	lda	0x106,x
+      0000EC 9D 02 01         [ 5]  335 	sta	0x102,x
+      0000EF BD 05 01         [ 5]  336 	lda	0x105,x
+      0000F2 9D 01 01         [ 5]  337 	sta	0x101,x
+                                    338 ;	Raw cost for generated ic 14 : (21, 32.000000) count=1.000000
+                                    339 ;	genPointerSet
+                                    340 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0000F5 BA               [ 2]  341 	tsx
+      0000F6 BD 01 01         [ 5]  342 	lda	0x101,x
+      0000F9 85*00            [ 3]  343 	sta	*(DPTR+0)
+      0000FB BD 02 01         [ 5]  344 	lda	0x102,x
+      0000FE 85*01            [ 3]  345 	sta	*(DPTR+1)
+      000100 A9 00            [ 2]  346 	lda	#0x00
+      000102 A8               [ 2]  347 	tay
+      000103 91*00            [ 6]  348 	sta	[DPTR],y
+      000105 A6*01            [ 3]  349 	ldx	*(REGTEMP+1)
+                                    350 ;	Raw cost for generated ic 15 : (24, 38.000000) count=1.000000
+                                    351 ;	../sprintf.c: 60: return i;
+                                    352 ;	genRet
+                                    353 ;	Raw cost for generated ic 17 : (0, 0.000000) count=1.000000
+                                    354 ;	genLabel
+                                    355 ;	Raw cost for generated ic 18 : (0, 0.000000) count=1.000000
+                                    356 ;	../sprintf.c: 61: }
+                                    357 ;	genEndFunction
+                                    358 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000107 68               [ 4]  359 	pla
+      000108 68               [ 4]  360 	pla
+      000109 A5*00            [ 3]  361 	lda	*(REGTEMP+0)
+      00010B 60               [ 6]  362 	rts
+                                    363 ;	Raw cost for generated ic 19 : (7, 20.000000) count=1.000000
+                                    364 	.area CODE
+                                    365 	.area RODATA
+                                    366 	.area XINIT
+                                    367 	.area CABS    (ABS)

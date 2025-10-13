@@ -1,0 +1,191 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module modff
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _modff_PARM_2
+                                     27 	.globl _modff_PARM_1
+                                     28 	.globl _modff
+                                     29 ;--------------------------------------------------------
+                                     30 ; ZP ram data
+                                     31 ;--------------------------------------------------------
+                                     32 	.area ZP      (PAG)
+      000000                         33 _modff_sloc0_1_0:
+      000000                         34 	.ds 2
+      000002                         35 _modff_sloc1_1_0:
+      000002                         36 	.ds 4
+                                     37 ;--------------------------------------------------------
+                                     38 ; overlayable items in ram
+                                     39 ;--------------------------------------------------------
+                                     40 ;--------------------------------------------------------
+                                     41 ; uninitialized external ram data
+                                     42 ;--------------------------------------------------------
+                                     43 	.area BSS
+      000000                         44 _modff_PARM_1:
+      000000                         45 	.ds 4
+      000004                         46 _modff_PARM_2:
+      000004                         47 	.ds 2
+                                     48 ;--------------------------------------------------------
+                                     49 ; absolute external ram data
+                                     50 ;--------------------------------------------------------
+                                     51 	.area DABS    (ABS)
+                                     52 ;--------------------------------------------------------
+                                     53 ; initialized external ram data
+                                     54 ;--------------------------------------------------------
+                                     55 	.area DATA
+                                     56 ;--------------------------------------------------------
+                                     57 ; global & static initialisations
+                                     58 ;--------------------------------------------------------
+                                     59 	.area _CODE
+                                     60 	.area GSINIT
+                                     61 	.area GSFINAL
+                                     62 	.area GSINIT
+                                     63 ;--------------------------------------------------------
+                                     64 ; Home
+                                     65 ;--------------------------------------------------------
+                                     66 	.area _CODE
+                                     67 	.area _CODE
+                                     68 ;--------------------------------------------------------
+                                     69 ; code
+                                     70 ;--------------------------------------------------------
+                                     71 	.area CODE
+                                     72 ;------------------------------------------------------------
+                                     73 ;Allocation info for local variables in function 'modff'
+                                     74 ;------------------------------------------------------------
+                                     75 ;sloc0         Allocated with name '_modff_sloc0_1_0'
+                                     76 ;sloc1         Allocated with name '_modff_sloc1_1_0'
+                                     77 ;x             Allocated with name '_modff_PARM_1'
+                                     78 ;y             Allocated with name '_modff_PARM_2'
+                                     79 ;------------------------------------------------------------
+                                     80 ;	../modff.c: 33: float modff(float x, float * y)
+                                     81 ;	genLabel
+                                     82 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     83 ;	-----------------------------------------
+                                     84 ;	 function modff
+                                     85 ;	-----------------------------------------
+                                     86 ;	Register assignment is optimal.
+                                     87 ;	Stack space usage: 0 bytes.
+      000000                         88 _modff:
+                                     89 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     90 ;	../modff.c: 35: *y=(long)x;
+                                     91 ;	genAssign
+                                     92 ;	genCopy
+      000000 ADr05r00         [ 4]   93 	lda	(_modff_PARM_2 + 1)
+      000003 85*01            [ 3]   94 	sta	*(_modff_sloc0_1_0 + 1)
+      000005 ADr04r00         [ 4]   95 	lda	_modff_PARM_2
+      000008 85*00            [ 3]   96 	sta	*_modff_sloc0_1_0
+                                     97 ;	Raw cost for generated ic 2 : (10, 14.000000) count=1.000000
+                                     98 ;	genAssign
+                                     99 ;	genCopy
+      00000A ADr03r00         [ 4]  100 	lda	(_modff_PARM_1 + 3)
+      00000D 8Dr03r00         [ 4]  101 	sta	(___fs2slong_PARM_1 + 3)
+      000010 ADr02r00         [ 4]  102 	lda	(_modff_PARM_1 + 2)
+      000013 8Dr02r00         [ 4]  103 	sta	(___fs2slong_PARM_1 + 2)
+      000016 ADr01r00         [ 4]  104 	lda	(_modff_PARM_1 + 1)
+      000019 8Dr01r00         [ 4]  105 	sta	(___fs2slong_PARM_1 + 1)
+      00001C ADr00r00         [ 4]  106 	lda	_modff_PARM_1
+      00001F 8Dr00r00         [ 4]  107 	sta	___fs2slong_PARM_1
+                                    108 ;	Raw cost for generated ic 12 : (24, 32.000000) count=1.000000
+                                    109 ;	genCall
+      000022 20r00r00         [ 6]  110 	jsr	___fs2slong
+                                    111 ;	assignResultValue
+      000025 8Dr00r00         [ 4]  112 	sta	___slong2fs_PARM_1
+      000028 8Er01r00         [ 4]  113 	stx	(___slong2fs_PARM_1 + 1)
+      00002B A5*00            [ 3]  114 	lda	*___SDCC_m6502_ret2
+      00002D 8Dr02r00         [ 4]  115 	sta	(___slong2fs_PARM_1 + 2)
+      000030 A5*00            [ 3]  116 	lda	*___SDCC_m6502_ret3
+      000032 8Dr03r00         [ 4]  117 	sta	(___slong2fs_PARM_1 + 3)
+                                    118 ;	Raw cost for generated ic 13 : (19, 28.000000) count=1.000000
+                                    119 ;	genCall
+      000035 20r00r00         [ 6]  120 	jsr	___slong2fs
+                                    121 ;	assignResultValue
+      000038 85*02            [ 3]  122 	sta	*_modff_sloc1_1_0
+      00003A 86*03            [ 3]  123 	stx	*(_modff_sloc1_1_0 + 1)
+      00003C A5*00            [ 3]  124 	lda	*___SDCC_m6502_ret2
+      00003E 85*04            [ 3]  125 	sta	*(_modff_sloc1_1_0 + 2)
+      000040 A5*00            [ 3]  126 	lda	*___SDCC_m6502_ret3
+      000042 85*05            [ 3]  127 	sta	*(_modff_sloc1_1_0 + 3)
+                                    128 ;	Raw cost for generated ic 15 : (15, 24.000000) count=1.000000
+                                    129 ;	genPointerSet
+      000044 A5*02            [ 3]  130 	lda	*_modff_sloc1_1_0
+      000046 A0 00            [ 2]  131 	ldy	#0x00
+      000048 91*00            [ 6]  132 	sta	[*_modff_sloc0_1_0],y
+      00004A 8A               [ 2]  133 	txa
+      00004B C8               [ 2]  134 	iny
+      00004C 91*00            [ 6]  135 	sta	[*_modff_sloc0_1_0],y
+      00004E A5*04            [ 3]  136 	lda	*(_modff_sloc1_1_0 + 2)
+      000050 C8               [ 2]  137 	iny
+      000051 91*00            [ 6]  138 	sta	[*_modff_sloc0_1_0],y
+      000053 A5*05            [ 3]  139 	lda	*(_modff_sloc1_1_0 + 3)
+      000055 C8               [ 2]  140 	iny
+      000056 91*00            [ 6]  141 	sta	[*_modff_sloc0_1_0],y
+                                    142 ;	Raw cost for generated ic 5 : (20, 43.000000) count=1.000000
+                                    143 ;	../modff.c: 36: return (x-*y);
+                                    144 ;	genAssign
+                                    145 ;	genCopy
+      000058 ADr03r00         [ 4]  146 	lda	(_modff_PARM_1 + 3)
+      00005B 8Dr03r00         [ 4]  147 	sta	(___fssub_PARM_1 + 3)
+      00005E ADr02r00         [ 4]  148 	lda	(_modff_PARM_1 + 2)
+      000061 8Dr02r00         [ 4]  149 	sta	(___fssub_PARM_1 + 2)
+      000064 ADr01r00         [ 4]  150 	lda	(_modff_PARM_1 + 1)
+      000067 8Dr01r00         [ 4]  151 	sta	(___fssub_PARM_1 + 1)
+      00006A ADr00r00         [ 4]  152 	lda	_modff_PARM_1
+      00006D 8Dr00r00         [ 4]  153 	sta	___fssub_PARM_1
+                                    154 ;	Raw cost for generated ic 16 : (24, 32.000000) count=1.000000
+                                    155 ;	genAssign
+                                    156 ;	genCopy
+      000070 A5*05            [ 3]  157 	lda	*(_modff_sloc1_1_0 + 3)
+      000072 8Dr03r00         [ 4]  158 	sta	(___fssub_PARM_2 + 3)
+      000075 A5*04            [ 3]  159 	lda	*(_modff_sloc1_1_0 + 2)
+      000077 8Dr02r00         [ 4]  160 	sta	(___fssub_PARM_2 + 2)
+      00007A 8A               [ 2]  161 	txa
+      00007B 8Dr01r00         [ 4]  162 	sta	(___fssub_PARM_2 + 1)
+      00007E A5*02            [ 3]  163 	lda	*_modff_sloc1_1_0
+      000080 8Dr00r00         [ 4]  164 	sta	___fssub_PARM_2
+                                    165 ;	Raw cost for generated ic 17 : (19, 27.000000) count=1.000000
+                                    166 ;	genCall
+      000083 20r00r00         [ 6]  167 	jsr	___fssub
+                                    168 ;	assignResultValue
+      000086 85*02            [ 3]  169 	sta	*_modff_sloc1_1_0
+      000088 86*03            [ 3]  170 	stx	*(_modff_sloc1_1_0 + 1)
+      00008A A5*00            [ 3]  171 	lda	*___SDCC_m6502_ret2
+      00008C 85*04            [ 3]  172 	sta	*(_modff_sloc1_1_0 + 2)
+      00008E A5*00            [ 3]  173 	lda	*___SDCC_m6502_ret3
+      000090 85*05            [ 3]  174 	sta	*(_modff_sloc1_1_0 + 3)
+                                    175 ;	Raw cost for generated ic 18 : (15, 24.000000) count=1.000000
+                                    176 ;	genRet
+      000092 85*00            [ 3]  177 	sta	*___SDCC_m6502_ret3
+      000094 A5*04            [ 3]  178 	lda	*(_modff_sloc1_1_0 + 2)
+      000096 85*00            [ 3]  179 	sta	*___SDCC_m6502_ret2
+      000098 A5*02            [ 3]  180 	lda	*_modff_sloc1_1_0
+                                    181 ;	Raw cost for generated ic 9 : (8, 12.000000) count=1.000000
+                                    182 ;	genLabel
+                                    183 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    184 ;	../modff.c: 37: }
+                                    185 ;	genEndFunction
+      00009A 60               [ 6]  186 	rts
+                                    187 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                    188 	.area CODE
+                                    189 	.area RODATA
+                                    190 	.area XINIT
+                                    191 	.area CABS    (ABS)

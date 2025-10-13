@@ -1,0 +1,155 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module _strchr
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl _strchr_PARM_2
+                                     28 	.globl _strchr
+                                     29 ;--------------------------------------------------------
+                                     30 ; ZP ram data
+                                     31 ;--------------------------------------------------------
+                                     32 	.area ZP      (PAG)
+                                     33 ;--------------------------------------------------------
+                                     34 ; overlayable items in ram
+                                     35 ;--------------------------------------------------------
+                                     36 	.area	OSEG    (PAG, OVR)
+      000000                         37 _strchr_sloc0_1_0:
+      000000                         38 	.ds 2
+                                     39 ;--------------------------------------------------------
+                                     40 ; uninitialized external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area BSS
+      000000                         43 _strchr_PARM_2:
+      000000                         44 	.ds 1
+                                     45 ;--------------------------------------------------------
+                                     46 ; absolute external ram data
+                                     47 ;--------------------------------------------------------
+                                     48 	.area DABS    (ABS)
+                                     49 ;--------------------------------------------------------
+                                     50 ; initialized external ram data
+                                     51 ;--------------------------------------------------------
+                                     52 	.area DATA
+                                     53 ;--------------------------------------------------------
+                                     54 ; global & static initialisations
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area GSINIT
+                                     58 	.area GSFINAL
+                                     59 	.area GSINIT
+                                     60 ;--------------------------------------------------------
+                                     61 ; Home
+                                     62 ;--------------------------------------------------------
+                                     63 	.area _CODE
+                                     64 	.area _CODE
+                                     65 ;--------------------------------------------------------
+                                     66 ; code
+                                     67 ;--------------------------------------------------------
+                                     68 	.area CODE
+                                     69 ;------------------------------------------------------------
+                                     70 ;Allocation info for local variables in function 'strchr'
+                                     71 ;------------------------------------------------------------
+                                     72 ;ch            Allocated with name '_strchr_PARM_2'
+                                     73 ;string        Allocated to registers 
+                                     74 ;sloc0         Allocated with name '_strchr_sloc0_1_0'
+                                     75 ;------------------------------------------------------------
+                                     76 ;	../_strchr.c: 34: char * strchr ( const char * string, char ch )
+                                     77 ;	genLabel
+                                     78 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     79 ;	-----------------------------------------
+                                     80 ;	 function strchr
+                                     81 ;	-----------------------------------------
+                                     82 ;	Register assignment is optimal.
+                                     83 ;	Stack space usage: 0 bytes.
+      000000                         84 _strchr:
+                                     85 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     86 ;	genReceive
+      000000 85*00            [ 3]   87 	sta	*_strchr_sloc0_1_0
+      000002 86*01            [ 3]   88 	stx	*(_strchr_sloc0_1_0 + 1)
+                                     89 ;	Raw cost for generated ic 2 : (4, 6.000000) count=1.000000
+                                     90 ;	../_strchr.c: 39: while (*string && *string != (char)ch)
+                                     91 ;	genLabel
+      000004                         92 00102$:
+                                     93 ;	Raw cost for generated ic 3 : (0, 0.000000) count=2.285713
+                                     94 ;	genPointerGet
+      000004 A0 00            [ 2]   95 	ldy	#0x00
+      000006 B1*00            [ 6]   96 	lda	[*_strchr_sloc0_1_0],y
+                                     97 ;	Raw cost for generated ic 5 : (4, 7.000000) count=2.285713
+                                     98 ;	genIfx
+                                     99 ;	genIfxJump : z
+      000008 F0 0E            [ 4]  100 	beq	00104$
+                                    101 ;	Raw cost for generated ic 6 : (5, 5.600000) count=2.285713
+                                    102 ;	genCmpEQorNE
+      00000A CDr00r00         [ 4]  103 	cmp	_strchr_PARM_2
+      00000D F0 09            [ 4]  104 	beq	00104$
+                                    105 ;	Raw cost for generated ic 11 : (8, 9.600000) count=1.714284
+                                    106 ;	skipping generated iCode
+                                    107 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.714284
+                                    108 ;	../_strchr.c: 40: string++;
+                                    109 ;	genPlus
+                                    110 ;	  genPlusInc
+      00000F E6*00            [ 5]  111 	inc	*_strchr_sloc0_1_0
+      000011 D0 F1            [ 4]  112 	bne	00102$
+      000013 E6*01            [ 5]  113 	inc	*(_strchr_sloc0_1_0 + 1)
+                                    114 ;	Raw cost for generated ic 16 : (6, 12.600000) count=1.285713
+                                    115 ;	genGoto
+      000015 4Cr04r00         [ 3]  116 	jmp	00102$
+                                    117 ;	Raw cost for generated ic 18 : (3, 3.000000) count=1.285713
+                                    118 ;	genLabel
+      000018                        119 00104$:
+                                    120 ;	Raw cost for generated ic 19 : (0, 0.000000) count=0.999999
+                                    121 ;	../_strchr.c: 42: if (*string == (char)ch)
+                                    122 ;	genPointerGet
+      000018 A0 00            [ 2]  123 	ldy	#0x00
+      00001A B1*00            [ 6]  124 	lda	[*_strchr_sloc0_1_0],y
+                                    125 ;	Raw cost for generated ic 21 : (4, 7.000000) count=0.999999
+                                    126 ;	genCmpEQorNE
+      00001C CDr00r00         [ 4]  127 	cmp	_strchr_PARM_2
+      00001F D0 05            [ 4]  128 	bne	00106$
+                                    129 ;	Raw cost for generated ic 22 : (8, 9.600000) count=0.999999
+                                    130 ;	skipping generated iCode
+                                    131 ;	Raw cost for generated ic 23 : (0, 0.000000) count=0.999999
+                                    132 ;	../_strchr.c: 43: return((char *)string);
+                                    133 ;	genRet
+      000021 A6*01            [ 3]  134 	ldx	*(_strchr_sloc0_1_0 + 1)
+      000023 A5*00            [ 3]  135 	lda	*_strchr_sloc0_1_0
+      000025 60               [ 6]  136 	rts
+                                    137 ;	Raw cost for generated ic 26 : (7, 9.000000) count=0.749999
+                                    138 ;	genLabel
+      000026                        139 00106$:
+                                    140 ;	Raw cost for generated ic 27 : (0, 0.000000) count=0.999998
+                                    141 ;	../_strchr.c: 44: return ( NULL );
+                                    142 ;	genRet
+      000026 A9 00            [ 2]  143 	lda	#0x00
+      000028 AA               [ 2]  144 	tax
+                                    145 ;	Raw cost for generated ic 28 : (3, 4.000000) count=0.999998
+                                    146 ;	genLabel
+                                    147 ;	Raw cost for generated ic 29 : (0, 0.000000) count=0.999998
+                                    148 ;	../_strchr.c: 45: }
+                                    149 ;	genEndFunction
+      000029 60               [ 6]  150 	rts
+                                    151 ;	Raw cost for generated ic 30 : (1, 6.000000) count=0.999998
+                                    152 	.area CODE
+                                    153 	.area RODATA
+                                    154 	.area XINIT
+                                    155 	.area CABS    (ABS)

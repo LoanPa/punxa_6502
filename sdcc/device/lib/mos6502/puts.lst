@@ -1,0 +1,154 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module puts
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _putchar
+                                     27 	.globl _puts
+                                     28 ;--------------------------------------------------------
+                                     29 ; ZP ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area ZP      (PAG)
+      000000                         32 _puts_sloc0_1_0:
+      000000                         33 	.ds 2
+                                     34 ;--------------------------------------------------------
+                                     35 ; overlayable items in ram
+                                     36 ;--------------------------------------------------------
+                                     37 ;--------------------------------------------------------
+                                     38 ; uninitialized external ram data
+                                     39 ;--------------------------------------------------------
+                                     40 	.area BSS
+                                     41 ;--------------------------------------------------------
+                                     42 ; absolute external ram data
+                                     43 ;--------------------------------------------------------
+                                     44 	.area DABS    (ABS)
+                                     45 ;--------------------------------------------------------
+                                     46 ; initialized external ram data
+                                     47 ;--------------------------------------------------------
+                                     48 	.area DATA
+                                     49 ;--------------------------------------------------------
+                                     50 ; global & static initialisations
+                                     51 ;--------------------------------------------------------
+                                     52 	.area _CODE
+                                     53 	.area GSINIT
+                                     54 	.area GSFINAL
+                                     55 	.area GSINIT
+                                     56 ;--------------------------------------------------------
+                                     57 ; Home
+                                     58 ;--------------------------------------------------------
+                                     59 	.area _CODE
+                                     60 	.area _CODE
+                                     61 ;--------------------------------------------------------
+                                     62 ; code
+                                     63 ;--------------------------------------------------------
+                                     64 	.area CODE
+                                     65 ;------------------------------------------------------------
+                                     66 ;Allocation info for local variables in function 'puts'
+                                     67 ;------------------------------------------------------------
+                                     68 ;sloc0         Allocated with name '_puts_sloc0_1_0'
+                                     69 ;s             Allocated to registers 
+                                     70 ;------------------------------------------------------------
+                                     71 ;	../puts.c: 31: int puts (const char *s)
+                                     72 ;	genLabel
+                                     73 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     74 ;	-----------------------------------------
+                                     75 ;	 function puts
+                                     76 ;	-----------------------------------------
+                                     77 ;	Register assignment is optimal.
+                                     78 ;	Stack space usage: 0 bytes.
+      000000                         79 _puts:
+                                     80 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     81 ;	genReceive
+      000000 85*00            [ 3]   82 	sta	*_puts_sloc0_1_0
+      000002 86*01            [ 3]   83 	stx	*(_puts_sloc0_1_0 + 1)
+                                     84 ;	Raw cost for generated ic 2 : (4, 6.000000) count=1.000000
+                                     85 ;	../puts.c: 33: while (*s)
+                                     86 ;	genLabel
+      000004                         87 00103$:
+                                     88 ;	Raw cost for generated ic 3 : (0, 0.000000) count=2.285713
+                                     89 ;	genPointerGet
+      000004 A0 00            [ 2]   90 	ldy	#0x00
+      000006 B1*00            [ 6]   91 	lda	[*_puts_sloc0_1_0],y
+                                     92 ;	Raw cost for generated ic 5 : (4, 7.000000) count=2.285713
+                                     93 ;	genIfx
+                                     94 ;	genIfxJump : z
+      000008 F0 17            [ 4]   95 	beq	00105$
+                                     96 ;	Raw cost for generated ic 6 : (5, 5.600000) count=2.285713
+                                     97 ;	../puts.c: 34: if (putchar(*s++) == EOF)
+                                     98 ;	genAssign
+                                     99 ;	genCopy
+                                    100 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.714284
+                                    101 ;	genPlus
+                                    102 ;	  genPlusInc
+      00000A E6*00            [ 5]  103 	inc	*_puts_sloc0_1_0
+      00000C D0 02            [ 4]  104 	bne	00128$
+      00000E E6*01            [ 5]  105 	inc	*(_puts_sloc0_1_0 + 1)
+      000010                        106 00128$:
+                                    107 ;	Raw cost for generated ic 10 : (6, 12.600000) count=1.714284
+                                    108 ;	genCast
+                                    109 ;	genCopy
+      000010 A2 00            [ 2]  110 	ldx	#0x00
+                                    111 ;	Raw cost for generated ic 13 : (2, 2.000000) count=1.714284
+                                    112 ;	Raw cost for generated ic 14 : (0, 0.000000) count=1.714284
+                                    113 ;	genCall
+                                    114 ;	genSend
+      000012 20r00r00         [ 6]  115 	jsr	_putchar
+                                    116 ;	assignResultValue
+                                    117 ;	Raw cost for generated ic 15 : (3, 6.000000) count=1.714284
+                                    118 ;	genCmpEQorNE
+      000015 C9 FF            [ 2]  119 	cmp	#0xff
+      000017 D0 EB            [ 4]  120 	bne	00103$
+      000019 E0 FF            [ 2]  121 	cpx	#0xff
+      00001B D0 E7            [ 4]  122 	bne	00103$
+                                    123 ;	Raw cost for generated ic 16 : (14, 15.200001) count=1.714284
+                                    124 ;	skipping generated iCode
+                                    125 ;	Raw cost for generated ic 17 : (0, 0.000000) count=1.714284
+                                    126 ;	../puts.c: 35: return EOF;
+                                    127 ;	genRet
+      00001D A9 FF            [ 2]  128 	lda	#0xff
+      00001F AA               [ 2]  129 	tax
+      000020 60               [ 6]  130 	rts
+                                    131 ;	Raw cost for generated ic 20 : (6, 7.000000) count=0.428570
+                                    132 ;	genLabel
+      000021                        133 00105$:
+                                    134 ;	Raw cost for generated ic 23 : (0, 0.000000) count=0.999998
+                                    135 ;	../puts.c: 36: return putchar('\n');
+                                    136 ;	Raw cost for generated ic 24 : (0, 0.000000) count=0.999998
+                                    137 ;	genCall
+                                    138 ;	genSend
+      000021 A2 00            [ 2]  139 	ldx	#0x00
+      000023 A9 0A            [ 2]  140 	lda	#0x0a
+                                    141 ;	assignResultValue
+                                    142 ;	Raw cost for generated ic 25 : (7, 10.000000) count=0.999998
+                                    143 ;	genRet
+                                    144 ;	Raw cost for generated ic 26 : (0, 0.000000) count=0.999998
+                                    145 ;	genLabel
+                                    146 ;	Raw cost for generated ic 27 : (0, 0.000000) count=0.999998
+                                    147 ;	../puts.c: 37: }
+                                    148 ;	genEndFunction
+      000025 4Cr00r00         [ 3]  149 	jmp	_putchar
+                                    150 ;	Raw cost for generated ic 28 : (1, 6.000000) count=0.999998
+                                    151 	.area CODE
+                                    152 	.area RODATA
+                                    153 	.area XINIT
+                                    154 	.area CABS    (ABS)

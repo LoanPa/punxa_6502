@@ -1,0 +1,149 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module btowc
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _btowc
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'btowc'
+                                     64 ;------------------------------------------------------------
+                                     65 ;c             Allocated to registers a x 
+                                     66 ;d             Allocated to registers a 
+                                     67 ;sloc0         Allocated to stack - sp +1 +4 
+                                     68 ;------------------------------------------------------------
+                                     69 ;	../btowc.c: 35: wint_t btowc(int c)
+                                     70 ;	genLabel
+                                     71 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     72 ;	-----------------------------------------
+                                     73 ;	 function btowc
+                                     74 ;	-----------------------------------------
+                                     75 ;	Register assignment is optimal.
+                                     76 ;	Stack space usage: 4 bytes.
+      000000                         77 _btowc:
+                                     78 ;	  adjustStack : cycles stk:12  incdec:18  adc:24
+      000000 48               [ 3]   79 	pha
+      000001 48               [ 3]   80 	pha
+      000002 48               [ 3]   81 	pha
+      000003 48               [ 3]   82 	pha
+                                     83 ;	Raw cost for generated ic 1 : (4, 12.000000) count=1.000000
+                                     84 ;	genReceive
+                                     85 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     86 ;	../btowc.c: 37: char d = (unsigned char)c;
+                                     87 ;	genCast
+                                     88 ;	genCopy
+                                     89 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                     90 ;	genCast
+                                     91 ;	genCopy
+                                     92 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                     93 ;	../btowc.c: 38: if(d & 0x80)
+                                     94 ;	genAnd
+      000004 C9 00            [ 2]   95 	cmp	#0x00
+                                     96 ;	genIfxJump : n
+      000006 10 0A            [ 4]   97 	bpl	00102$
+                                     98 ;	Raw cost for generated ic 6 : (7, 7.600000) count=1.000000
+                                     99 ;	skipping generated iCode
+                                    100 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    101 ;	../btowc.c: 39: return WEOF;
+                                    102 ;	genRet
+      000008 A9 FF            [ 2]  103 	lda	#0xff
+      00000A AA               [ 2]  104 	tax
+      00000B 85*00            [ 3]  105 	sta	*___SDCC_m6502_ret2
+      00000D 85*00            [ 3]  106 	sta	*___SDCC_m6502_ret3
+      00000F 4Cr32r00         [ 3]  107 	jmp	00103$
+                                    108 ;	Raw cost for generated ic 10 : (10, 13.000000) count=0.750000
+                                    109 ;	genLabel
+      000012                        110 00102$:
+                                    111 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.000000
+                                    112 ;	../btowc.c: 40: return d;
+                                    113 ;	genCast
+      000012 BA               [ 2]  114 	tsx
+      000013 9D 01 01         [ 5]  115 	sta	0x101,x
+      000016 A9 00            [ 2]  116 	lda	#0x00
+      000018 9D 02 01         [ 5]  117 	sta	0x102,x
+      00001B 9D 03 01         [ 5]  118 	sta	0x103,x
+                                    119 ;	Raw cost for generated ic 12 : (15, 24.000000) count=1.000000
+                                    120 ;	genRet
+      00001E 9D 04 01         [ 5]  121 	sta	0x104,x
+      000021 85*00            [ 3]  122 	sta	*___SDCC_m6502_ret3
+      000023 BD 03 01         [ 5]  123 	lda	0x103,x
+      000026 85*00            [ 3]  124 	sta	*___SDCC_m6502_ret2
+      000028 BD 02 01         [ 5]  125 	lda	0x102,x
+      00002B 85*00            [ 3]  126 	sta	*(REGTEMP+0)
+      00002D BD 01 01         [ 5]  127 	lda	0x101,x
+      000030 A6*00            [ 3]  128 	ldx	*(REGTEMP+0)
+                                    129 ;	Raw cost for generated ic 13 : (20, 28.000000) count=1.000000
+                                    130 ;	genLabel
+      000032                        131 00103$:
+                                    132 ;	Raw cost for generated ic 14 : (0, 0.000000) count=1.000000
+                                    133 ;	../btowc.c: 41: }
+                                    134 ;	genEndFunction
+                                    135 ;	  adjustStack : cycles stk:22  incdec:18  adc:24
+      000032 86*00            [ 3]  136 	stx	*(REGTEMP+0)
+      000034 BA               [ 2]  137 	tsx
+      000035 E8               [ 2]  138 	inx
+      000036 E8               [ 2]  139 	inx
+      000037 E8               [ 2]  140 	inx
+      000038 E8               [ 2]  141 	inx
+      000039 9A               [ 2]  142 	txs
+      00003A A6*00            [ 3]  143 	ldx	*(REGTEMP+0)
+      00003C 60               [ 6]  144 	rts
+                                    145 ;	Raw cost for generated ic 15 : (11, 24.000000) count=1.000000
+                                    146 	.area CODE
+                                    147 	.area RODATA
+                                    148 	.area XINIT
+                                    149 	.area CABS    (ABS)

@@ -70,7 +70,7 @@ def buildHw(arch):
     
     serial = punxa.SerialInterface(hw, 'serial')
     
-    memory = punxa.SparseMemory(hw, 'main_memory', mem_width, 32, port_m, mem_base=mem_base)
+    memory = punxa.SparseMemory(hw, 'main_memory', mem_width, 12, port_m, mem_base=mem_base)
     
     uart = punxa.Uart6551(hw, 'uart', port_u, reset, serial)
     

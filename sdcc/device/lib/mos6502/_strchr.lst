@@ -1,0 +1,79 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _strchr.s - standard C library function
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 	.module _strchr
+                                     29 	
+                                     30 ;--------------------------------------------------------
+                                     31 ; exported symbols
+                                     32 ;--------------------------------------------------------
+                                     33 	.globl _strchr_PARM_2
+                                     34 	.globl _strchr
+                                     35 
+                                     36 ;--------------------------------------------------------
+                                     37 ; overlayable function parameters in zero page
+                                     38 ;--------------------------------------------------------
+                                     39 	.area	OSEG    (PAG, OVR)
+      000000                         40 _strchr_PARM_2:
+      000000                         41 	.ds 2
+                                     42 
+                                     43 ;--------------------------------------------------------
+                                     44 ; code
+                                     45 ;--------------------------------------------------------
+                                     46 	.area CODE
+                                     47 
+      000000                         48 _strchr:
+      000000 85*00            [ 3]   49 	sta	*DPTR+0
+      000002 86*01            [ 3]   50 	stx	*DPTR+1
+                                     51 
+      000004 A0 00            [ 2]   52 	ldy	#0x00
+                                     53 ;	ldx	#0x00
+      000006                         54 loop:
+      000006 B1*00            [ 6]   55 	lda	[DPTR],y
+      000008 F0 0C            [ 4]   56 	beq	not_found
+      00000A CDr00r00         [ 4]   57     cmp _strchr_PARM_2
+      00000D F0 0E            [ 4]   58     beq found
+      00000F C8               [ 2]   59 	iny
+      000010 D0 F4            [ 4]   60 	bne	loop
+      000012 E6*01            [ 5]   61 	inc	*DPTR+1
+                                     62 ;	inx
+      000014 D0 F0            [ 4]   63 	bne	loop
+      000016                         64 not_found:
+      000016 AEr00r00         [ 4]   65     ldx _strchr_PARM_2
+      000019 F0 02            [ 4]   66     beq found
+      00001B AA               [ 2]   67 	tax
+      00001C 60               [ 6]   68 	rts
+                                     69 	
+      00001D                         70 found:
+      00001D 98               [ 2]   71     tya
+      00001E A6*01            [ 3]   72     ldx *DPTR+1
+      000020 18               [ 2]   73     clc
+      000021 65*00            [ 3]   74     adc *DPTR+0
+      000023 90 01            [ 4]   75     bcc no_carry
+      000025 E8               [ 2]   76     inx
+      000026                         77 no_carry:
+      000026 60               [ 6]   78 	rts
+                                     79 	

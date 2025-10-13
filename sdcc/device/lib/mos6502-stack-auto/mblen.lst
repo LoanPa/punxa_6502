@@ -1,0 +1,338 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module mblen
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _mblen
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'mblen'
+                                     64 ;------------------------------------------------------------
+                                     65 ;n             Allocated to stack - sp +10 +2 
+                                     66 ;s             Allocated to stack - sp +6 +2 
+                                     67 ;m             Allocated to stack - sp +5 +1 
+                                     68 ;c             Allocated to registers x 
+                                     69 ;sloc0         Allocated to stack - sp +3 +2 
+                                     70 ;sloc1         Allocated to stack - sp +1 +2 
+                                     71 ;------------------------------------------------------------
+                                     72 ;	../mblen.c: 31: int mblen(const char *s, size_t n)
+                                     73 ;	genLabel
+                                     74 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     75 ;	-----------------------------------------
+                                     76 ;	 function mblen
+                                     77 ;	-----------------------------------------
+                                     78 ;	Register assignment is optimal.
+                                     79 ;	Stack space usage: 7 bytes.
+      000000                         80 _mblen:
+                                     81 ;	genReceive: size=2
+                                     82 ;	pushreg: ofs=1
+      000000 85*00            [ 3]   83 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   84 	txa
+      000003 48               [ 3]   85 	pha
+      000004 A5*00            [ 3]   86 	lda	*(REGTEMP+0)
+                                     87 ;	pushreg: ofs=0
+      000006 48               [ 3]   88 	pha
+                                     89 ;	  adjustStack : cycles stk:15  incdec:14  adc:12
+      000007 BA               [ 2]   90 	tsx
+      000008 8A               [ 2]   91 	txa
+      000009 18               [ 2]   92 	clc
+      00000A 69 FB            [ 2]   93 	adc	#0xfb
+      00000C AA               [ 2]   94 	tax
+      00000D 9A               [ 2]   95 	txs
+                                     96 ;	Raw cost for generated ic 1 : (14, 26.000000) count=1.000000
+                                     97 ;	skipping generated iCode
+                                     98 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     99 ;	../mblen.c: 36: if(!s)
+                                    100 ;	genIfx
+      00000E BD 07 01         [ 5]  101 	lda	0x107,x
+      000011 1D 06 01         [ 5]  102 	ora	0x106,x
+                                    103 ;	genIfxJump : z
+      000014 D0 06            [ 4]  104 	bne	00102$
+                                    105 ;	Raw cost for generated ic 4 : (11, 13.600000) count=1.000000
+                                    106 ;	../mblen.c: 37: return(0);
+                                    107 ;	genRet
+      000016 A9 00            [ 2]  108 	lda	#0x00
+      000018 AA               [ 2]  109 	tax
+      000019 4CrCCr00         [ 3]  110 	jmp	00119$
+                                    111 ;	Raw cost for generated ic 7 : (6, 7.000000) count=0.750000
+                                    112 ;	genLabel
+      00001C                        113 00102$:
+                                    114 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    115 ;	../mblen.c: 39: if(!n)
+                                    116 ;	genIfx
+      00001C BA               [ 2]  117 	tsx
+      00001D BD 0B 01         [ 5]  118 	lda	0x10b,x
+      000020 1D 0A 01         [ 5]  119 	ora	0x10a,x
+                                    120 ;	genIfxJump : z
+      000023 D0 06            [ 4]  121 	bne	00104$
+                                    122 ;	Raw cost for generated ic 9 : (12, 15.600000) count=1.000000
+                                    123 ;	../mblen.c: 40: return(-1);
+                                    124 ;	genRet
+      000025 A9 FF            [ 2]  125 	lda	#0xff
+      000027 AA               [ 2]  126 	tax
+      000028 4CrCCr00         [ 3]  127 	jmp	00119$
+                                    128 ;	Raw cost for generated ic 12 : (6, 7.000000) count=0.750000
+                                    129 ;	genLabel
+      00002B                        130 00104$:
+                                    131 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    132 ;	../mblen.c: 42: c = *s;
+                                    133 ;	genPointerGet
+                                    134 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00002B BA               [ 2]  135 	tsx
+      00002C BD 06 01         [ 5]  136 	lda	0x106,x
+      00002F 85*00            [ 3]  137 	sta	*(DPTR+0)
+      000031 BD 07 01         [ 5]  138 	lda	0x107,x
+      000034 85*01            [ 3]  139 	sta	*(DPTR+1)
+      000036 A0 00            [ 2]  140 	ldy	#0x00
+      000038 B1*00            [ 6]  141 	lda	[DPTR],y
+      00003A AA               [ 2]  142 	tax
+                                    143 ;	Raw cost for generated ic 15 : (16, 25.000000) count=1.000000
+                                    144 ;	../mblen.c: 44: if(!c)
+                                    145 ;	genIfx
+                                    146 ;	genIfxJump : z
+      00003B D0 05            [ 4]  147 	bne	00106$
+                                    148 ;	Raw cost for generated ic 17 : (5, 5.600000) count=1.000000
+                                    149 ;	../mblen.c: 45: return(0);
+                                    150 ;	genRet
+      00003D 98               [ 2]  151 	tya
+      00003E AA               [ 2]  152 	tax
+      00003F 4CrCCr00         [ 3]  153 	jmp	00119$
+                                    154 ;	Raw cost for generated ic 20 : (5, 7.000000) count=0.750000
+                                    155 ;	genLabel
+      000042                        156 00106$:
+                                    157 ;	Raw cost for generated ic 21 : (0, 0.000000) count=1.000000
+                                    158 ;	../mblen.c: 47: if(c <= 0x7f)
+                                    159 ;	genCmp
+      000042 E0 7F            [ 2]  160 	cpx	#0x7f
+      000044 F0 02            [ 4]  161 	beq	00188$
+      000046 B0 07            [ 4]  162 	bcs	00126$
+      000048                        163 00188$:
+                                    164 ;	Raw cost for generated ic 22 : (9, 10.200000) count=1.000000
+                                    165 ;	skipping generated iCode
+                                    166 ;	Raw cost for generated ic 23 : (0, 0.000000) count=1.000000
+                                    167 ;	../mblen.c: 48: return(1);
+                                    168 ;	genRet
+      000048 A9 01            [ 2]  169 	lda	#0x01
+      00004A A2 00            [ 2]  170 	ldx	#0x00
+      00004C 4CrCCr00         [ 3]  171 	jmp	00119$
+                                    172 ;	Raw cost for generated ic 26 : (7, 7.000000) count=0.750000
+                                    173 ;	../mblen.c: 50: while(c & 0x80)
+                                    174 ;	genLabel
+      00004F                        175 00126$:
+                                    176 ;	Raw cost for generated ic 73 : (0, 0.000000) count=1.000000
+                                    177 ;	genAssign
+                                    178 ;	genCopy
+      00004F A0 00            [ 2]  179 	ldy	#0x00
+                                    180 ;	Raw cost for generated ic 75 : (2, 2.000000) count=1.000000
+                                    181 ;	genLabel
+      000051                        182 00109$:
+                                    183 ;	Raw cost for generated ic 28 : (0, 0.000000) count=3.999997
+                                    184 ;	genAnd
+      000051 8A               [ 2]  185 	txa
+      000052 29 80            [ 2]  186 	and	#0x80
+                                    187 ;	genIfxJump : z
+      000054 F0 07            [ 4]  188 	beq	00111$
+                                    189 ;	Raw cost for generated ic 30 : (8, 9.600000) count=3.999997
+                                    190 ;	skipping generated iCode
+                                    191 ;	Raw cost for generated ic 31 : (0, 0.000000) count=3.999997
+                                    192 ;	../mblen.c: 52: c <<= 1;
+                                    193 ;	genLeftShift
+                                    194 ;	genLeftShiftLiteral
+                                    195 ;	  genlsh8 - shift=1
+      000056 8A               [ 2]  196 	txa
+      000057 0A               [ 2]  197 	asl	a
+      000058 AA               [ 2]  198 	tax
+                                    199 ;	Raw cost for generated ic 34 : (3, 6.000000) count=2.999997
+                                    200 ;	../mblen.c: 53: m++;
+                                    201 ;	genPlus
+                                    202 ;	  genPlusInc
+      000059 C8               [ 2]  203 	iny
+                                    204 ;	Raw cost for generated ic 37 : (1, 2.000000) count=2.999997
+                                    205 ;	genGoto
+      00005A 4Cr51r00         [ 3]  206 	jmp	00109$
+                                    207 ;	Raw cost for generated ic 39 : (3, 3.000000) count=2.999997
+                                    208 ;	genLabel
+      00005D                        209 00111$:
+                                    210 ;	Raw cost for generated ic 40 : (0, 0.000000) count=0.999999
+                                    211 ;	../mblen.c: 56: if(m > n)
+                                    212 ;	genCast
+                                    213 ;	genCopy
+      00005D A9 00            [ 2]  214 	lda	#0x00
+      00005F BA               [ 2]  215 	tsx
+      000060 9D 04 01         [ 5]  216 	sta	0x104,x
+      000063 98               [ 2]  217 	tya
+      000064 9D 03 01         [ 5]  218 	sta	0x103,x
+                                    219 ;	Raw cost for generated ic 41 : (10, 16.000000) count=0.999999
+                                    220 ;	genCmp
+      000067 BD 0A 01         [ 5]  221 	lda	0x10a,x
+      00006A 38               [ 2]  222 	sec
+      00006B FD 03 01         [ 5]  223 	sbc	0x103,x
+      00006E BD 0B 01         [ 5]  224 	lda	0x10b,x
+      000071 FD 04 01         [ 5]  225 	sbc	0x104,x
+      000074 B0 06            [ 4]  226 	bcs	00129$
+                                    227 ;	Raw cost for generated ic 42 : (18, 23.600000) count=0.999999
+                                    228 ;	skipping generated iCode
+                                    229 ;	Raw cost for generated ic 43 : (0, 0.000000) count=0.999999
+                                    230 ;	../mblen.c: 57: return(-1);
+                                    231 ;	genRet
+      000076 A9 FF            [ 2]  232 	lda	#0xff
+      000078 AA               [ 2]  233 	tax
+      000079 4CrCCr00         [ 3]  234 	jmp	00119$
+                                    235 ;	Raw cost for generated ic 46 : (6, 7.000000) count=0.749999
+                                    236 ;	../mblen.c: 60: while(--m)
+                                    237 ;	genLabel
+      00007C                        238 00129$:
+                                    239 ;	Raw cost for generated ic 74 : (0, 0.000000) count=0.999998
+                                    240 ;	genAssign
+                                    241 ;	genCopy
+      00007C BA               [ 2]  242 	tsx
+      00007D BD 07 01         [ 5]  243 	lda	0x107,x
+      000080 9D 02 01         [ 5]  244 	sta	0x102,x
+      000083 BD 06 01         [ 5]  245 	lda	0x106,x
+      000086 9D 01 01         [ 5]  246 	sta	0x101,x
+                                    247 ;	Raw cost for generated ic 78 : (13, 20.000000) count=0.999998
+                                    248 ;	genAssign
+                                    249 ;	genCopy
+      000089 98               [ 2]  250 	tya
+      00008A 9D 05 01         [ 5]  251 	sta	0x105,x
+                                    252 ;	Raw cost for generated ic 79 : (4, 7.000000) count=0.999998
+                                    253 ;	genLabel
+      00008D                        254 00116$:
+                                    255 ;	Raw cost for generated ic 50 : (0, 0.000000) count=2.285708
+                                    256 ;	genMinus
+                                    257 ;	  genMinusDec - size=1  icount=1
+      00008D BA               [ 2]  258 	tsx
+      00008E BD 05 01         [ 5]  259 	lda	0x105,x
+      000091 38               [ 2]  260 	sec
+      000092 E9 01            [ 2]  261 	sbc	#0x01
+      000094 9D 05 01         [ 5]  262 	sta	0x105,x
+                                    263 ;	Raw cost for generated ic 51 : (10, 15.000000) count=2.285708
+                                    264 ;	genIfx
+                                    265 ;	genIfxJump : z
+      000097 F0 28            [ 4]  266 	beq	00118$
+                                    267 ;	Raw cost for generated ic 53 : (5, 5.600000) count=2.285708
+                                    268 ;	../mblen.c: 61: if((*++s & 0xc0) != 0x80)
+                                    269 ;	genPlus
+                                    270 ;	  genPlusInc
+      000099 BD 01 01         [ 5]  271 	lda	0x101,x
+      00009C 18               [ 2]  272 	clc
+      00009D 69 01            [ 2]  273 	adc	#0x01
+      00009F 9D 01 01         [ 5]  274 	sta	0x101,x
+      0000A2 BD 02 01         [ 5]  275 	lda	0x102,x
+      0000A5 69 00            [ 2]  276 	adc	#0x00
+      0000A7 9D 02 01         [ 5]  277 	sta	0x102,x
+                                    278 ;	Raw cost for generated ic 56 : (17, 24.000000) count=1.714281
+                                    279 ;	genPointerGet
+                                    280 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0000AA 85*01            [ 3]  281 	sta	*(DPTR+1)
+      0000AC BD 01 01         [ 5]  282 	lda	0x101,x
+      0000AF 85*00            [ 3]  283 	sta	*(DPTR+0)
+      0000B1 A0 00            [ 2]  284 	ldy	#0x00
+      0000B3 B1*00            [ 6]  285 	lda	[DPTR],y
+                                    286 ;	Raw cost for generated ic 59 : (11, 17.000000) count=1.714281
+                                    287 ;	genCast
+                                    288 ;	genCopy
+                                    289 ;	Raw cost for generated ic 60 : (0, 0.000000) count=1.714281
+                                    290 ;	genAnd
+      0000B5 29 C0            [ 2]  291 	and	#0xc0
+                                    292 ;	Raw cost for generated ic 61 : (2, 2.000000) count=1.714281
+                                    293 ;	genCmpEQorNE
+      0000B7 C9 80            [ 2]  294 	cmp	#0x80
+      0000B9 F0 D2            [ 4]  295 	beq	00116$
+                                    296 ;	Raw cost for generated ic 62 : (7, 7.600000) count=1.714281
+                                    297 ;	skipping generated iCode
+                                    298 ;	Raw cost for generated ic 63 : (0, 0.000000) count=1.714281
+                                    299 ;	../mblen.c: 62: return(-1);
+                                    300 ;	genRet
+      0000BB A9 FF            [ 2]  301 	lda	#0xff
+      0000BD AA               [ 2]  302 	tax
+      0000BE 4CrCCr00         [ 3]  303 	jmp	00119$
+                                    304 ;	Raw cost for generated ic 66 : (6, 7.000000) count=0.428570
+                                    305 ;	genLabel
+      0000C1                        306 00118$:
+                                    307 ;	Raw cost for generated ic 69 : (0, 0.000000) count=0.999996
+                                    308 ;	../mblen.c: 64: return(n);
+                                    309 ;	genRet
+      0000C1 BA               [ 2]  310 	tsx
+      0000C2 BD 04 01         [ 5]  311 	lda	0x104,x
+      0000C5 85*00            [ 3]  312 	sta	*(REGTEMP+0)
+      0000C7 BD 03 01         [ 5]  313 	lda	0x103,x
+      0000CA A6*00            [ 3]  314 	ldx	*(REGTEMP+0)
+                                    315 ;	Raw cost for generated ic 70 : (11, 16.000000) count=0.999996
+                                    316 ;	genLabel
+      0000CC                        317 00119$:
+                                    318 ;	Raw cost for generated ic 71 : (0, 0.000000) count=0.999996
+                                    319 ;	../mblen.c: 65: }
+                                    320 ;	genEndFunction
+                                    321 ;	  adjustStack : cycles stk:34  incdec:24  adc:24
+      0000CC 86*00            [ 3]  322 	stx	*(REGTEMP+0)
+      0000CE BA               [ 2]  323 	tsx
+      0000CF E8               [ 2]  324 	inx
+      0000D0 E8               [ 2]  325 	inx
+      0000D1 E8               [ 2]  326 	inx
+      0000D2 E8               [ 2]  327 	inx
+      0000D3 E8               [ 2]  328 	inx
+      0000D4 E8               [ 2]  329 	inx
+      0000D5 E8               [ 2]  330 	inx
+      0000D6 9A               [ 2]  331 	txs
+      0000D7 A6*00            [ 3]  332 	ldx	*(REGTEMP+0)
+      0000D9 60               [ 6]  333 	rts
+                                    334 ;	Raw cost for generated ic 72 : (14, 30.000000) count=0.999996
+                                    335 	.area CODE
+                                    336 	.area RODATA
+                                    337 	.area XINIT
+                                    338 	.area CABS    (ABS)

@@ -1,0 +1,304 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module _divschar
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl __divschar
+                                     27 	.globl __divuschar
+                                     28 	.globl __divsuchar
+                                     29 ;--------------------------------------------------------
+                                     30 ; ZP ram data
+                                     31 ;--------------------------------------------------------
+                                     32 	.area ZP      (PAG)
+                                     33 ;--------------------------------------------------------
+                                     34 ; overlayable items in ram
+                                     35 ;--------------------------------------------------------
+                                     36 ;--------------------------------------------------------
+                                     37 ; uninitialized external ram data
+                                     38 ;--------------------------------------------------------
+                                     39 	.area BSS
+                                     40 ;--------------------------------------------------------
+                                     41 ; absolute external ram data
+                                     42 ;--------------------------------------------------------
+                                     43 	.area DABS    (ABS)
+                                     44 ;--------------------------------------------------------
+                                     45 ; initialized external ram data
+                                     46 ;--------------------------------------------------------
+                                     47 	.area DATA
+                                     48 ;--------------------------------------------------------
+                                     49 ; global & static initialisations
+                                     50 ;--------------------------------------------------------
+                                     51 	.area _CODE
+                                     52 	.area GSINIT
+                                     53 	.area GSFINAL
+                                     54 	.area GSINIT
+                                     55 ;--------------------------------------------------------
+                                     56 ; Home
+                                     57 ;--------------------------------------------------------
+                                     58 	.area _CODE
+                                     59 	.area _CODE
+                                     60 ;--------------------------------------------------------
+                                     61 ; code
+                                     62 ;--------------------------------------------------------
+                                     63 	.area CODE
+                                     64 ;------------------------------------------------------------
+                                     65 ;Allocation info for local variables in function '_divschar'
+                                     66 ;------------------------------------------------------------
+                                     67 ;y             Allocated to registers y 
+                                     68 ;x             Allocated to registers a 
+                                     69 ;sloc0         Allocated to stack - sp +1 +2 
+                                     70 ;------------------------------------------------------------
+                                     71 ;	../_divschar.c: 31: _divschar (signed char x, signed char y)
+                                     72 ;	genLabel
+                                     73 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     74 ;	-----------------------------------------
+                                     75 ;	 function _divschar
+                                     76 ;	-----------------------------------------
+                                     77 ;	Register assignment is optimal.
+                                     78 ;	Stack space usage: 2 bytes.
+      000000                         79 __divschar:
+                                     80 ;	  adjustStack : cycles stk:6  incdec:8  adc:18
+      000000 48               [ 3]   81 	pha
+      000001 48               [ 3]   82 	pha
+                                     83 ;	Raw cost for generated ic 1 : (2, 6.000000) count=1.000000
+                                     84 ;	genReceive
+                                     85 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     86 ;	genReceive
+      000002 86*00            [ 3]   87 	stx	*(REGTEMP+0)
+      000004 A4*00            [ 3]   88 	ldy	*(REGTEMP+0)
+                                     89 ;	Raw cost for generated ic 3 : (4, 6.000000) count=1.000000
+                                     90 ;	../_divschar.c: 33: return ((int)x / (int)y);
+                                     91 ;	genCast
+      000006 BA               [ 2]   92 	tsx
+      000007 9D 01 01         [ 5]   93 	sta	0x101,x
+      00000A 0A               [ 2]   94 	asl	a
+      00000B A9 00            [ 2]   95 	lda	#0x00
+      00000D 69 FF            [ 2]   96 	adc	#0xff
+      00000F 49 FF            [ 2]   97 	eor	#0xff
+      000011 9D 02 01         [ 5]   98 	sta	0x102,x
+                                     99 ;	Raw cost for generated ic 4 : (14, 20.000000) count=1.000000
+                                    100 ;	genCast
+                                    101 ;	genCopy
+      000014 A2 00            [ 2]  102 	ldx	#0x00
+      000016 98               [ 2]  103 	tya
+      000017 10 01            [ 4]  104 	bpl	00103$
+      000019 CA               [ 2]  105 	dex
+      00001A                        106 00103$:
+                                    107 ;	Raw cost for generated ic 5 : (6, 8.600000) count=1.000000
+                                    108 ;	genIpush
+      00001A A8               [ 2]  109 	tay
+      00001B 8A               [ 2]  110 	txa
+      00001C 48               [ 3]  111 	pha
+      00001D 98               [ 2]  112 	tya
+      00001E 48               [ 3]  113 	pha
+                                    114 ;	Raw cost for generated ic 10 : (5, 12.000000) count=1.000000
+                                    115 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.000000
+                                    116 ;	genCall
+                                    117 ;	genSend
+      00001F BA               [ 2]  118 	tsx
+      000020 BD 03 01         [ 5]  119 	lda	0x103,x
+      000023 A8               [ 2]  120 	tay
+      000024 BD 04 01         [ 5]  121 	lda	0x104,x
+      000027 AA               [ 2]  122 	tax
+      000028 98               [ 2]  123 	tya
+      000029 20r00r00         [ 6]  124 	jsr	__divsint
+                                    125 ;	assignResultValue
+                                    126 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      00002C 85*00            [ 3]  127 	sta	*(REGTEMP+0)
+      00002E 68               [ 4]  128 	pla
+      00002F 68               [ 4]  129 	pla
+                                    130 ;	Raw cost for generated ic 12 : (19, 36.000000) count=1.000000
+                                    131 ;	genRet
+                                    132 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    133 ;	genLabel
+                                    134 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    135 ;	../_divschar.c: 34: }
+                                    136 ;	genEndFunction
+                                    137 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000030 68               [ 4]  138 	pla
+      000031 68               [ 4]  139 	pla
+      000032 A5*00            [ 3]  140 	lda	*(REGTEMP+0)
+      000034 60               [ 6]  141 	rts
+                                    142 ;	Raw cost for generated ic 9 : (7, 20.000000) count=1.000000
+                                    143 ;------------------------------------------------------------
+                                    144 ;Allocation info for local variables in function '_divuschar'
+                                    145 ;------------------------------------------------------------
+                                    146 ;y             Allocated to registers y 
+                                    147 ;x             Allocated to registers a 
+                                    148 ;sloc0         Allocated to stack - sp +1 +2 
+                                    149 ;------------------------------------------------------------
+                                    150 ;	../_divschar.c: 37: _divuschar (unsigned char x, unsigned char y)
+                                    151 ;	genLabel
+                                    152 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    153 ;	-----------------------------------------
+                                    154 ;	 function _divuschar
+                                    155 ;	-----------------------------------------
+                                    156 ;	Register assignment is optimal.
+                                    157 ;	Stack space usage: 2 bytes.
+      000035                        158 __divuschar:
+                                    159 ;	  adjustStack : cycles stk:6  incdec:8  adc:18
+      000035 48               [ 3]  160 	pha
+      000036 48               [ 3]  161 	pha
+                                    162 ;	Raw cost for generated ic 1 : (2, 6.000000) count=1.000000
+                                    163 ;	genReceive
+                                    164 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    165 ;	genReceive
+      000037 86*00            [ 3]  166 	stx	*(REGTEMP+0)
+      000039 A4*00            [ 3]  167 	ldy	*(REGTEMP+0)
+                                    168 ;	Raw cost for generated ic 3 : (4, 6.000000) count=1.000000
+                                    169 ;	../_divschar.c: 39: return ((int)((signed char)x) / (int)y);
+                                    170 ;	genCast
+                                    171 ;	genCopy
+                                    172 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    173 ;	genCast
+      00003B BA               [ 2]  174 	tsx
+      00003C 9D 01 01         [ 5]  175 	sta	0x101,x
+      00003F 0A               [ 2]  176 	asl	a
+      000040 A9 00            [ 2]  177 	lda	#0x00
+      000042 69 FF            [ 2]  178 	adc	#0xff
+      000044 49 FF            [ 2]  179 	eor	#0xff
+      000046 9D 02 01         [ 5]  180 	sta	0x102,x
+                                    181 ;	Raw cost for generated ic 5 : (14, 20.000000) count=1.000000
+                                    182 ;	genCast
+                                    183 ;	genCopy
+      000049 A2 00            [ 2]  184 	ldx	#0x00
+      00004B 98               [ 2]  185 	tya
+                                    186 ;	Raw cost for generated ic 6 : (3, 4.000000) count=1.000000
+                                    187 ;	genIpush
+      00004C A8               [ 2]  188 	tay
+      00004D 8A               [ 2]  189 	txa
+      00004E 48               [ 3]  190 	pha
+      00004F 98               [ 2]  191 	tya
+      000050 48               [ 3]  192 	pha
+                                    193 ;	Raw cost for generated ic 11 : (5, 12.000000) count=1.000000
+                                    194 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                    195 ;	genCall
+                                    196 ;	genSend
+      000051 BA               [ 2]  197 	tsx
+      000052 BD 03 01         [ 5]  198 	lda	0x103,x
+      000055 A8               [ 2]  199 	tay
+      000056 BD 04 01         [ 5]  200 	lda	0x104,x
+      000059 AA               [ 2]  201 	tax
+      00005A 98               [ 2]  202 	tya
+      00005B 20r00r00         [ 6]  203 	jsr	__divsint
+                                    204 ;	assignResultValue
+                                    205 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      00005E 85*00            [ 3]  206 	sta	*(REGTEMP+0)
+      000060 68               [ 4]  207 	pla
+      000061 68               [ 4]  208 	pla
+                                    209 ;	Raw cost for generated ic 13 : (19, 36.000000) count=1.000000
+                                    210 ;	genRet
+                                    211 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    212 ;	genLabel
+                                    213 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                    214 ;	../_divschar.c: 40: }
+                                    215 ;	genEndFunction
+                                    216 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000062 68               [ 4]  217 	pla
+      000063 68               [ 4]  218 	pla
+      000064 A5*00            [ 3]  219 	lda	*(REGTEMP+0)
+      000066 60               [ 6]  220 	rts
+                                    221 ;	Raw cost for generated ic 10 : (7, 20.000000) count=1.000000
+                                    222 ;------------------------------------------------------------
+                                    223 ;Allocation info for local variables in function '_divsuchar'
+                                    224 ;------------------------------------------------------------
+                                    225 ;y             Allocated to registers y 
+                                    226 ;x             Allocated to registers a 
+                                    227 ;sloc0         Allocated to stack - sp +1 +2 
+                                    228 ;------------------------------------------------------------
+                                    229 ;	../_divschar.c: 43: _divsuchar (signed char x, signed char y)
+                                    230 ;	genLabel
+                                    231 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    232 ;	-----------------------------------------
+                                    233 ;	 function _divsuchar
+                                    234 ;	-----------------------------------------
+                                    235 ;	Register assignment is optimal.
+                                    236 ;	Stack space usage: 2 bytes.
+      000067                        237 __divsuchar:
+                                    238 ;	  adjustStack : cycles stk:6  incdec:8  adc:18
+      000067 48               [ 3]  239 	pha
+      000068 48               [ 3]  240 	pha
+                                    241 ;	Raw cost for generated ic 1 : (2, 6.000000) count=1.000000
+                                    242 ;	genReceive
+                                    243 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    244 ;	genReceive
+      000069 86*00            [ 3]  245 	stx	*(REGTEMP+0)
+      00006B A4*00            [ 3]  246 	ldy	*(REGTEMP+0)
+                                    247 ;	Raw cost for generated ic 3 : (4, 6.000000) count=1.000000
+                                    248 ;	../_divschar.c: 45: return ((int)((unsigned char)x) / (int)y);
+                                    249 ;	genCast
+                                    250 ;	genCopy
+                                    251 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    252 ;	genCast
+      00006D BA               [ 2]  253 	tsx
+      00006E 9D 01 01         [ 5]  254 	sta	0x101,x
+      000071 A9 00            [ 2]  255 	lda	#0x00
+      000073 9D 02 01         [ 5]  256 	sta	0x102,x
+                                    257 ;	Raw cost for generated ic 5 : (9, 14.000000) count=1.000000
+                                    258 ;	genCast
+                                    259 ;	genCopy
+      000076 AA               [ 2]  260 	tax
+      000077 98               [ 2]  261 	tya
+      000078 10 01            [ 4]  262 	bpl	00103$
+      00007A CA               [ 2]  263 	dex
+      00007B                        264 00103$:
+                                    265 ;	Raw cost for generated ic 6 : (5, 8.600000) count=1.000000
+                                    266 ;	genIpush
+      00007B A8               [ 2]  267 	tay
+      00007C 8A               [ 2]  268 	txa
+      00007D 48               [ 3]  269 	pha
+      00007E 98               [ 2]  270 	tya
+      00007F 48               [ 3]  271 	pha
+                                    272 ;	Raw cost for generated ic 11 : (5, 12.000000) count=1.000000
+                                    273 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                    274 ;	genCall
+                                    275 ;	genSend
+      000080 BA               [ 2]  276 	tsx
+      000081 BD 03 01         [ 5]  277 	lda	0x103,x
+      000084 A8               [ 2]  278 	tay
+      000085 BD 04 01         [ 5]  279 	lda	0x104,x
+      000088 AA               [ 2]  280 	tax
+      000089 98               [ 2]  281 	tya
+      00008A 20r00r00         [ 6]  282 	jsr	__divsint
+                                    283 ;	assignResultValue
+                                    284 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      00008D 85*00            [ 3]  285 	sta	*(REGTEMP+0)
+      00008F 68               [ 4]  286 	pla
+      000090 68               [ 4]  287 	pla
+                                    288 ;	Raw cost for generated ic 13 : (19, 36.000000) count=1.000000
+                                    289 ;	genRet
+                                    290 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    291 ;	genLabel
+                                    292 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                    293 ;	../_divschar.c: 46: }
+                                    294 ;	genEndFunction
+                                    295 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000091 68               [ 4]  296 	pla
+      000092 68               [ 4]  297 	pla
+      000093 A5*00            [ 3]  298 	lda	*(REGTEMP+0)
+      000095 60               [ 6]  299 	rts
+                                    300 ;	Raw cost for generated ic 10 : (7, 20.000000) count=1.000000
+                                    301 	.area CODE
+                                    302 	.area RODATA
+                                    303 	.area XINIT
+                                    304 	.area CABS    (ABS)

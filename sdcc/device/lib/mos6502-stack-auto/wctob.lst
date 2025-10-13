@@ -1,0 +1,124 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module wctob
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _wctob
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'wctob'
+                                     64 ;------------------------------------------------------------
+                                     65 ;c             Allocated to stack - sp +3 +4 
+                                     66 ;------------------------------------------------------------
+                                     67 ;	../wctob.c: 35: int wctob(wint_t c)
+                                     68 ;	genLabel
+                                     69 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     70 ;	-----------------------------------------
+                                     71 ;	 function wctob
+                                     72 ;	-----------------------------------------
+                                     73 ;	Register assignment is optimal.
+                                     74 ;	Stack space usage: 0 bytes.
+      000000                         75 _wctob:
+                                     76 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     77 ;	../wctob.c: 37: if(c & 0xffffff80)
+                                     78 ;	genAnd
+      000000 BA               [ 2]   79 	tsx
+      000001 BD 03 01         [ 5]   80 	lda	0x103,x
+      000004 29 80            [ 2]   81 	and	#0x80
+      000006 D0 0D            [ 4]   82 	bne	00111$
+      000008 BD 04 01         [ 5]   83 	lda	0x104,x
+      00000B D0 08            [ 4]   84 	bne	00111$
+      00000D BD 05 01         [ 5]   85 	lda	0x105,x
+      000010 D0 03            [ 4]   86 	bne	00111$
+      000012 BD 06 01         [ 5]   87 	lda	0x106,x
+      000015                         88 00111$:
+                                     89 ;	genIfxJump : z
+      000015 F0 04            [ 4]   90 	beq	00102$
+                                     91 ;	Raw cost for generated ic 2 : (26, 33.400002) count=1.000000
+                                     92 ;	skipping generated iCode
+                                     93 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                     94 ;	../wctob.c: 38: return WEOF;
+                                     95 ;	genRet
+      000017 A9 FF            [ 2]   96 	lda	#0xff
+      000019 AA               [ 2]   97 	tax
+      00001A 60               [ 6]   98 	rts
+                                     99 ;	Raw cost for generated ic 6 : (6, 7.000000) count=0.750000
+                                    100 ;	genLabel
+      00001B                        101 00102$:
+                                    102 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    103 ;	../wctob.c: 39: return c;
+                                    104 ;	genCast
+                                    105 ;	genCopy
+      00001B BA               [ 2]  106 	tsx
+      00001C BD 03 01         [ 5]  107 	lda	0x103,x
+      00001F A8               [ 2]  108 	tay
+      000020 BD 04 01         [ 5]  109 	lda	0x104,x
+      000023 AA               [ 2]  110 	tax
+      000024 98               [ 2]  111 	tya
+                                    112 ;	Raw cost for generated ic 8 : (10, 16.000000) count=1.000000
+                                    113 ;	genRet
+                                    114 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                    115 ;	genLabel
+                                    116 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    117 ;	../wctob.c: 40: }
+                                    118 ;	genEndFunction
+      000025 60               [ 6]  119 	rts
+                                    120 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                    121 	.area CODE
+                                    122 	.area RODATA
+                                    123 	.area XINIT
+                                    124 	.area CABS    (ABS)

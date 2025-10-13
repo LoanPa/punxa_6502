@@ -1,0 +1,169 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module sinf
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _sincosf
+                                     27 	.globl _sinf
+                                     28 ;--------------------------------------------------------
+                                     29 ; ZP ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area ZP      (PAG)
+                                     32 ;--------------------------------------------------------
+                                     33 ; overlayable items in ram
+                                     34 ;--------------------------------------------------------
+                                     35 ;--------------------------------------------------------
+                                     36 ; uninitialized external ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area BSS
+                                     39 ;--------------------------------------------------------
+                                     40 ; absolute external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area DABS    (ABS)
+                                     43 ;--------------------------------------------------------
+                                     44 ; initialized external ram data
+                                     45 ;--------------------------------------------------------
+                                     46 	.area DATA
+                                     47 ;--------------------------------------------------------
+                                     48 ; global & static initialisations
+                                     49 ;--------------------------------------------------------
+                                     50 	.area _CODE
+                                     51 	.area GSINIT
+                                     52 	.area GSFINAL
+                                     53 	.area GSINIT
+                                     54 ;--------------------------------------------------------
+                                     55 ; Home
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _CODE
+                                     58 	.area _CODE
+                                     59 ;--------------------------------------------------------
+                                     60 ; code
+                                     61 ;--------------------------------------------------------
+                                     62 	.area CODE
+                                     63 ;------------------------------------------------------------
+                                     64 ;Allocation info for local variables in function 'sinf'
+                                     65 ;------------------------------------------------------------
+                                     66 ;x             Allocated to stack - sp +7 +4 
+                                     67 ;sloc0         Allocated to stack - sp +1 +4 
+                                     68 ;------------------------------------------------------------
+                                     69 ;	../sinf.c: 36: float sinf(float x) _FLOAT_FUNC_REENTRANT
+                                     70 ;	genLabel
+                                     71 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     72 ;	-----------------------------------------
+                                     73 ;	 function sinf
+                                     74 ;	-----------------------------------------
+                                     75 ;	Register assignment is optimal.
+                                     76 ;	Stack space usage: 4 bytes.
+      000000                         77 _sinf:
+                                     78 ;	  adjustStack : cycles stk:12  incdec:12  adc:12
+      000000 48               [ 3]   79 	pha
+      000001 48               [ 3]   80 	pha
+      000002 48               [ 3]   81 	pha
+      000003 48               [ 3]   82 	pha
+                                     83 ;	Raw cost for generated ic 1 : (4, 12.000000) count=1.000000
+                                     84 ;	../sinf.c: 38: if (x==0.0) return 0.0;
+                                     85 ;	genIfx
+      000004 BA               [ 2]   86 	tsx
+      000005 BD 0A 01         [ 5]   87 	lda	0x10a,x
+      000008 29 7F            [ 2]   88 	and	#0x7F
+      00000A 1D 09 01         [ 5]   89 	ora	0x109,x
+      00000D 1D 08 01         [ 5]   90 	ora	0x108,x
+      000010 1D 07 01         [ 5]   91 	ora	0x107,x
+                                     92 ;	genIfxJump : z
+      000013 D0 0A            [ 4]   93 	bne	00102$
+                                     94 ;	Raw cost for generated ic 2 : (20, 25.600000) count=1.000000
+                                     95 ;	genRet
+      000015 A9 00            [ 2]   96 	lda	#0x00
+      000017 AA               [ 2]   97 	tax
+      000018 85*00            [ 3]   98 	sta	*___SDCC_m6502_ret2
+      00001A 85*00            [ 3]   99 	sta	*___SDCC_m6502_ret3
+      00001C 4Cr65r00         [ 3]  100 	jmp	00103$
+                                    101 ;	Raw cost for generated ic 5 : (10, 13.000000) count=0.750000
+                                    102 ;	genLabel
+      00001F                        103 00102$:
+                                    104 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    105 ;	../sinf.c: 39: return sincosf(x, 0);
+                                    106 ;	genIpush
+      00001F A9 00            [ 2]  107 	lda	#0x00
+      000021 48               [ 3]  108 	pha
+                                    109 ;	Raw cost for generated ic 7 : (3, 5.000000) count=1.000000
+                                    110 ;	genIpush
+      000022 BA               [ 2]  111 	tsx
+      000023 BD 0B 01         [ 5]  112 	lda	0x10b,x
+      000026 48               [ 3]  113 	pha
+      000027 BD 0A 01         [ 5]  114 	lda	0x10a,x
+      00002A 48               [ 3]  115 	pha
+      00002B BD 09 01         [ 5]  116 	lda	0x109,x
+      00002E 48               [ 3]  117 	pha
+      00002F BD 08 01         [ 5]  118 	lda	0x108,x
+      000032 48               [ 3]  119 	pha
+                                    120 ;	Raw cost for generated ic 8 : (17, 30.000000) count=1.000000
+                                    121 ;	genCall
+      000033 20r00r00         [ 6]  122 	jsr	_sincosf
+                                    123 ;	assignResultValue
+      000036 86*00            [ 3]  124 	stx	*(REGTEMP+0)
+      000038 BA               [ 2]  125 	tsx
+      000039 9D 06 01         [ 5]  126 	sta	0x106,x
+      00003C A5*00            [ 3]  127 	lda	*(REGTEMP+0)
+      00003E 9D 07 01         [ 5]  128 	sta	0x107,x
+      000041 A5*00            [ 3]  129 	lda	*___SDCC_m6502_ret2
+      000043 9D 08 01         [ 5]  130 	sta	0x108,x
+      000046 A5*00            [ 3]  131 	lda	*___SDCC_m6502_ret3
+      000048 9D 09 01         [ 5]  132 	sta	0x109,x
+                                    133 ;	  adjustStack : cycles stk:20  incdec:12  adc:10
+      00004B 8A               [ 2]  134 	txa
+      00004C 18               [ 2]  135 	clc
+      00004D 69 05            [ 2]  136 	adc	#0x05
+      00004F AA               [ 2]  137 	tax
+      000050 9A               [ 2]  138 	txs
+                                    139 ;	Raw cost for generated ic 9 : (30, 50.000000) count=1.000000
+                                    140 ;	genRet
+      000051 BD 04 01         [ 5]  141 	lda	0x104,x
+      000054 85*00            [ 3]  142 	sta	*___SDCC_m6502_ret3
+      000056 BD 03 01         [ 5]  143 	lda	0x103,x
+      000059 85*00            [ 3]  144 	sta	*___SDCC_m6502_ret2
+      00005B BD 02 01         [ 5]  145 	lda	0x102,x
+      00005E 85*00            [ 3]  146 	sta	*(REGTEMP+0)
+      000060 BD 01 01         [ 5]  147 	lda	0x101,x
+      000063 A6*00            [ 3]  148 	ldx	*(REGTEMP+0)
+                                    149 ;	Raw cost for generated ic 10 : (20, 28.000000) count=1.000000
+                                    150 ;	genLabel
+      000065                        151 00103$:
+                                    152 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.000000
+                                    153 ;	../sinf.c: 40: }
+                                    154 ;	genEndFunction
+                                    155 ;	  adjustStack : cycles stk:22  incdec:18  adc:24
+      000065 86*00            [ 3]  156 	stx	*(REGTEMP+0)
+      000067 BA               [ 2]  157 	tsx
+      000068 E8               [ 2]  158 	inx
+      000069 E8               [ 2]  159 	inx
+      00006A E8               [ 2]  160 	inx
+      00006B E8               [ 2]  161 	inx
+      00006C 9A               [ 2]  162 	txs
+      00006D A6*00            [ 3]  163 	ldx	*(REGTEMP+0)
+      00006F 60               [ 6]  164 	rts
+                                    165 ;	Raw cost for generated ic 12 : (11, 24.000000) count=1.000000
+                                    166 	.area CODE
+                                    167 	.area RODATA
+                                    168 	.area XINIT
+                                    169 	.area CABS    (ABS)

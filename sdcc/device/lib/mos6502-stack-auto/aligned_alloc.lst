@@ -1,0 +1,102 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module aligned_alloc
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _malloc
+                                     27 	.globl _aligned_alloc
+                                     28 ;--------------------------------------------------------
+                                     29 ; ZP ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area ZP      (PAG)
+                                     32 ;--------------------------------------------------------
+                                     33 ; overlayable items in ram
+                                     34 ;--------------------------------------------------------
+                                     35 ;--------------------------------------------------------
+                                     36 ; uninitialized external ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area BSS
+                                     39 ;--------------------------------------------------------
+                                     40 ; absolute external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area DABS    (ABS)
+                                     43 ;--------------------------------------------------------
+                                     44 ; initialized external ram data
+                                     45 ;--------------------------------------------------------
+                                     46 	.area DATA
+                                     47 ;--------------------------------------------------------
+                                     48 ; global & static initialisations
+                                     49 ;--------------------------------------------------------
+                                     50 	.area _CODE
+                                     51 	.area GSINIT
+                                     52 	.area GSFINAL
+                                     53 	.area GSINIT
+                                     54 ;--------------------------------------------------------
+                                     55 ; Home
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _CODE
+                                     58 	.area _CODE
+                                     59 ;--------------------------------------------------------
+                                     60 ; code
+                                     61 ;--------------------------------------------------------
+                                     62 	.area CODE
+                                     63 ;------------------------------------------------------------
+                                     64 ;Allocation info for local variables in function 'aligned_alloc'
+                                     65 ;------------------------------------------------------------
+                                     66 ;size          Allocated to stack - sp +3 +2 
+                                     67 ;alignment     Allocated to registers 
+                                     68 ;------------------------------------------------------------
+                                     69 ;	./../../include/stdlib.h: 100: inline void *aligned_alloc(size_t alignment, size_t size)
+                                     70 ;	genLabel
+                                     71 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     72 ;	-----------------------------------------
+                                     73 ;	 function aligned_alloc
+                                     74 ;	-----------------------------------------
+                                     75 ;	Register assignment is optimal.
+                                     76 ;	Stack space usage: 0 bytes.
+      000000                         77 _aligned_alloc:
+                                     78 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     79 ;	./../../include/stdlib.h: 103: return malloc(size);
+                                     80 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                     81 ;	genCall
+                                     82 ;	genSend
+      000000 BA               [ 2]   83 	tsx
+      000001 BD 03 01         [ 5]   84 	lda	0x103,x
+      000004 A8               [ 2]   85 	tay
+      000005 BD 04 01         [ 5]   86 	lda	0x104,x
+      000008 AA               [ 2]   87 	tax
+      000009 98               [ 2]   88 	tya
+                                     89 ;	assignResultValue
+                                     90 ;	Raw cost for generated ic 5 : (13, 22.000000) count=1.000000
+                                     91 ;	genRet
+                                     92 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                     93 ;	genLabel
+                                     94 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                     95 ;	./../../include/stdlib.h: 104: }
+                                     96 ;	genEndFunction
+      00000A 4Cr00r00         [ 3]   97 	jmp	_malloc
+                                     98 ;	Raw cost for generated ic 8 : (1, 6.000000) count=1.000000
+                                     99 	.area CODE
+                                    100 	.area RODATA
+                                    101 	.area XINIT
+                                    102 	.area CABS    (ABS)

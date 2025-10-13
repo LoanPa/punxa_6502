@@ -1,0 +1,137 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _floatlib.s - common code for floating point support
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla 
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module _floatlib
+                                     30 	
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl _float_PARM_1
+                                     35 	.globl ___fsadd_PARM_1
+                                     36 	.globl ___fssub_PARM_1
+                                     37 	.globl ___fsmul_PARM_1
+                                     38 	.globl ___fslt_PARM_1
+                                     39 	.globl _fabsf_PARM_1
+                                     40 
+                                     41 	.globl _float_PARM_2
+                                     42 	.globl ___fsadd_PARM_2
+                                     43 	.globl ___fssub_PARM_2
+                                     44 	.globl ___fsmul_PARM_2
+                                     45 	.globl ___fslt_PARM_2
+                                     46 	
+                                     47 	.globl ___fs_ret_zero
+                                     48 	.globl ___fs_ret_inf
+                                     49 	.globl ___fs_pack_ret
+                                     50 	.globl ___fs_unpack_2P
+                                     51 	.globl ___fs_unpack_1P
+                                     52 
+                                     53 ;--------------------------------------------------------
+                                     54 ; overlayable items in ram
+                                     55 ;--------------------------------------------------------
+                                     56 	.area	OSEG    (PAG, OVR)
+      000000                         57 _float_PARM_1:
+      000000                         58 _fabsf_PARM_1:
+      000000                         59 ___fsadd_PARM_1:
+      000000                         60 ___fssub_PARM_1:
+      000000                         61 ___fsmul_PARM_1:
+      000000                         62 ___fslt_PARM_1:
+      000000                         63 	.ds 4
+                                     64 	
+      000004                         65 _float_PARM_2:
+      000004                         66 ___fsadd_PARM_2:
+      000004                         67 ___fssub_PARM_2:
+      000004                         68 ___fsmul_PARM_2:
+      000004                         69 ___fslt_PARM_2:
+      000004                         70 	.ds 4
+                                     71 
+                                     72 ;--------------------------------------------------------
+                                     73 ; local aliases
+                                     74 ;--------------------------------------------------------
+                                     75 	.define res0  "___SDCC_m6502_ret0"
+                                     76 	.define res1  "___SDCC_m6502_ret1"
+                                     77 	.define res2  "___SDCC_m6502_ret2"
+                                     78 	.define res3  "___SDCC_m6502_ret3"
+                                     79 	.define s1    "___SDCC_m6502_ret4"
+                                     80 	.define exp1  "___SDCC_m6502_ret5"
+                                     81 	.define s2    "___SDCC_m6502_ret6"
+                                     82 	.define exp2  "___SDCC_m6502_ret7"
+                                     83 
+                                     84 ;--------------------------------------------------------
+                                     85 ; code
+                                     86 ;--------------------------------------------------------
+                                     87 	.area CODE
+                                     88 
+      000000                         89 ___fs_unpack_2P:	
+      000000 A5*06            [ 3]   90 	lda	*(_float_PARM_2 + 2) ; get exp2
+      000002 2A               [ 2]   91 	rol	a
+      000003 A5*07            [ 3]   92 	lda	*(_float_PARM_2 + 3)
+      000005 2A               [ 2]   93 	rol	a
+      000006 85*00            [ 3]   94 	sta	*exp2
+      000008 98               [ 2]   95 	tya			; get sign2 - sign is 0x80
+      000009 6A               [ 2]   96 	ror	a
+      00000A 85*00            [ 3]   97 	sta	*s2
+                                     98 
+      00000C                         99 ___fs_unpack_1P:
+      00000C A5*02            [ 3]  100 	lda	*(_float_PARM_1 + 2) ; get exp1
+      00000E 2A               [ 2]  101 	rol	a
+      00000F A5*03            [ 3]  102 	lda	*(_float_PARM_1 + 3)
+      000011 2A               [ 2]  103 	rol	a
+      000012 85*00            [ 3]  104 	sta	*exp1
+      000014 98               [ 2]  105 	tya			; get sign1 - sign is 0x80 
+      000015 6A               [ 2]  106 	ror	a
+      000016 85*00            [ 3]  107 	sta	*s1
+      000018 60               [ 6]  108 	rts
+                                    109 	
+      000019                        110 ___fs_ret_zero:
+      000019 A9 00            [ 2]  111 	lda	#0x00
+      00001B AA               [ 2]  112 	tax
+      00001C 85*00            [ 3]  113 	sta	*___SDCC_m6502_ret2
+      00001E 85*00            [ 3]  114 	sta	*___SDCC_m6502_ret3
+      000020 60               [ 6]  115 	rts
+                                    116 	
+      000021                        117 ___fs_ret_inf:
+      000021 09 7F            [ 2]  118 	ora	#0x7f		; A contains sign
+      000023 85*00            [ 3]  119 	sta	*___SDCC_m6502_ret3
+      000025 A9 80            [ 2]  120 	lda	#0x80
+      000027 85*00            [ 3]  121 	sta	*___SDCC_m6502_ret2
+      000029 A9 00            [ 2]  122 	lda	#0x00
+      00002B AA               [ 2]  123 	tax
+      00002C 60               [ 6]  124 	rts
+                                    125 
+      00002D                        126 ___fs_pack_ret:
+      00002D A5*00            [ 3]  127 	lda	*exp1
+      00002F 4A               [ 2]  128 	lsr	a
+      000030 05*00            [ 3]  129 	ora	*s1
+      000032 85*00            [ 3]  130 	sta	*___SDCC_m6502_ret3
+      000034 A9 00            [ 2]  131 	lda	#0x00
+      000036 6A               [ 2]  132 	ror	a
+      000037 05*00            [ 3]  133 	ora	*___SDCC_m6502_ret2
+      000039 85*00            [ 3]  134 	sta	*___SDCC_m6502_ret2
+      00003B A6*00            [ 3]  135 	ldx	*res1
+      00003D A5*00            [ 3]  136 	lda	*res0
+      00003F 60               [ 6]  137 	rts

@@ -1,0 +1,348 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module bsearch
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _bsearch
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'bsearch'
+                                     64 ;------------------------------------------------------------
+                                     65 ;base          Allocated to stack - sp +13 +2 
+                                     66 ;nmemb         Allocated to stack - sp +15 +2 
+                                     67 ;size          Allocated to stack - sp +17 +2 
+                                     68 ;compar        Allocated to stack - sp +19 +2 
+                                     69 ;key           Allocated to stack - sp +9 +2 
+                                     70 ;left          Allocated to stack - sp +5 +2 
+                                     71 ;middle        Allocated to stack - sp +7 +2 
+                                     72 ;c             Allocated to registers a x 
+                                     73 ;sloc0         Allocated to stack - sp +5 +2 
+                                     74 ;sloc1         Allocated to stack - sp +3 +2 
+                                     75 ;sloc2         Allocated to stack - sp +1 +2 
+                                     76 ;------------------------------------------------------------
+                                     77 ;	../bsearch.c: 31: void *bsearch(const void *key, const void *base, size_t nmemb, size_t size, int (*compar)(const void *, const void *) __reentrant)
+                                     78 ;	genLabel
+                                     79 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     80 ;	-----------------------------------------
+                                     81 ;	 function bsearch
+                                     82 ;	-----------------------------------------
+                                     83 ;	Register assignment is optimal.
+                                     84 ;	Stack space usage: 10 bytes.
+      000000                         85 _bsearch:
+                                     86 ;	genReceive: size=2
+                                     87 ;	pushreg: ofs=1
+      000000 85*00            [ 3]   88 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   89 	txa
+      000003 48               [ 3]   90 	pha
+      000004 A5*00            [ 3]   91 	lda	*(REGTEMP+0)
+                                     92 ;	pushreg: ofs=0
+      000006 48               [ 3]   93 	pha
+                                     94 ;	  adjustStack : cycles stk:24  incdec:20  adc:12
+      000007 BA               [ 2]   95 	tsx
+      000008 8A               [ 2]   96 	txa
+      000009 18               [ 2]   97 	clc
+      00000A 69 F8            [ 2]   98 	adc	#0xf8
+      00000C AA               [ 2]   99 	tax
+      00000D 9A               [ 2]  100 	txs
+                                    101 ;	Raw cost for generated ic 1 : (14, 26.000000) count=1.000000
+                                    102 ;	skipping generated iCode
+                                    103 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    104 ;	../bsearch.c: 33: for(const char *left = base; nmemb;)
+                                    105 ;	genCast
+                                    106 ;	genCopy
+      00000E BD 0E 01         [ 5]  107 	lda	0x10e,x
+      000011 9D 06 01         [ 5]  108 	sta	0x106,x
+      000014 BD 0D 01         [ 5]  109 	lda	0x10d,x
+      000017 9D 05 01         [ 5]  110 	sta	0x105,x
+                                    111 ;	Raw cost for generated ic 3 : (12, 18.000000) count=1.000000
+                                    112 ;	genLabel
+      00001A                        113 00109$:
+                                    114 ;	Raw cost for generated ic 5 : (0, 0.000000) count=3.369007
+                                    115 ;	genIfx
+      00001A BA               [ 2]  116 	tsx
+      00001B BD 10 01         [ 5]  117 	lda	0x110,x
+      00001E 1D 0F 01         [ 5]  118 	ora	0x10f,x
+                                    119 ;	genIfxJump : z
+      000021 D0 03            [ 4]  120 	bne	00138$
+      000023 4Cr19r01         [ 3]  121 	jmp	00107$
+      000026                        122 00138$:
+                                    123 ;	Raw cost for generated ic 6 : (12, 15.600000) count=3.369007
+                                    124 ;	../bsearch.c: 35: const char *middle = left + nmemb / 2 * size;
+                                    125 ;	genRightShift
+                                    126 ;	genRightShiftLiteral
+                                    127 ;	  genrsh16 - shift=1
+      000026 BD 0F 01         [ 5]  128 	lda	0x10f,x
+      000029 A8               [ 2]  129 	tay
+      00002A BD 10 01         [ 5]  130 	lda	0x110,x
+      00002D AA               [ 2]  131 	tax
+      00002E 98               [ 2]  132 	tya
+      00002F 86*00            [ 3]  133 	stx	*(REGTEMP+0)
+      000031 46*00            [ 5]  134 	lsr	*(REGTEMP+0)
+      000033 6A               [ 2]  135 	ror	a
+      000034 A6*00            [ 3]  136 	ldx	*(REGTEMP+0)
+      000036 85*01            [ 3]  137 	sta	*(REGTEMP+1)
+      000038 8A               [ 2]  138 	txa
+      000039 BA               [ 2]  139 	tsx
+      00003A 9D 04 01         [ 5]  140 	sta	0x104,x
+      00003D A5*01            [ 3]  141 	lda	*(REGTEMP+1)
+      00003F 9D 03 01         [ 5]  142 	sta	0x103,x
+                                    143 ;	Raw cost for generated ic 9 : (32, 53.000000) count=2.526755
+                                    144 ;	genIpush
+      000042 BA               [ 2]  145 	tsx
+      000043 BD 12 01         [ 5]  146 	lda	0x112,x
+      000046 48               [ 3]  147 	pha
+      000047 BD 11 01         [ 5]  148 	lda	0x111,x
+      00004A 48               [ 3]  149 	pha
+                                    150 ;	Raw cost for generated ic 51 : (9, 16.000000) count=2.526755
+                                    151 ;	Raw cost for generated ic 52 : (0, 0.000000) count=2.526755
+                                    152 ;	genCall
+                                    153 ;	genSend
+      00004B BD 03 01         [ 5]  154 	lda	0x103,x
+      00004E A8               [ 2]  155 	tay
+      00004F BD 04 01         [ 5]  156 	lda	0x104,x
+      000052 AA               [ 2]  157 	tax
+      000053 98               [ 2]  158 	tya
+      000054 20r00r00         [ 6]  159 	jsr	__mulint
+                                    160 ;	assignResultValue
+                                    161 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000057 85*00            [ 3]  162 	sta	*(REGTEMP+0)
+      000059 68               [ 4]  163 	pla
+      00005A 68               [ 4]  164 	pla
+      00005B A5*00            [ 3]  165 	lda	*(REGTEMP+0)
+                                    166 ;	Raw cost for generated ic 53 : (18, 34.000000) count=2.526755
+                                    167 ;	genPlus
+      00005D 86*00            [ 3]  168 	stx	*(REGTEMP+0)
+      00005F 18               [ 2]  169 	clc
+      000060 BA               [ 2]  170 	tsx
+      000061 7D 05 01         [ 5]  171 	adc	0x105,x
+      000064 9D 07 01         [ 5]  172 	sta	0x107,x
+      000067 A5*00            [ 3]  173 	lda	*(REGTEMP+0)
+      000069 7D 06 01         [ 5]  174 	adc	0x106,x
+      00006C 9D 08 01         [ 5]  175 	sta	0x108,x
+                                    176 ;	Raw cost for generated ic 11 : (18, 28.000000) count=2.526755
+                                    177 ;	../bsearch.c: 36: int c = (*compar)(key, middle);
+                                    178 ;	genCast
+                                    179 ;	genCopy
+      00006F 9D 02 01         [ 5]  180 	sta	0x102,x
+      000072 BD 07 01         [ 5]  181 	lda	0x107,x
+      000075 9D 01 01         [ 5]  182 	sta	0x101,x
+                                    183 ;	Raw cost for generated ic 13 : (9, 14.000000) count=2.526755
+                                    184 ;	genIpush
+      000078 BD 02 01         [ 5]  185 	lda	0x102,x
+      00007B 48               [ 3]  186 	pha
+      00007C BD 01 01         [ 5]  187 	lda	0x101,x
+      00007F 48               [ 3]  188 	pha
+                                    189 ;	Raw cost for generated ic 14 : (8, 14.000000) count=2.526755
+                                    190 ;	Raw cost for generated ic 15 : (0, 0.000000) count=2.526755
+                                    191 ;	genPcall
+      000080 BD 13 01         [ 5]  192 	lda	0x113,x
+      000083 85*00            [ 3]  193 	sta	*(REGTEMP+0)
+      000085 BD 14 01         [ 5]  194 	lda	0x114,x
+      000088 85*01            [ 3]  195 	sta	*(REGTEMP+1)
+                                    196 ;	genSend
+      00008A BD 09 01         [ 5]  197 	lda	0x109,x
+      00008D A8               [ 2]  198 	tay
+      00008E BD 0A 01         [ 5]  199 	lda	0x10a,x
+      000091 AA               [ 2]  200 	tax
+      000092 98               [ 2]  201 	tya
+      000093 20r00r00         [ 6]  202 	jsr	__sdcc_indirect_jsr
+                                    203 ;	assignResultValue
+                                    204 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000096 85*00            [ 3]  205 	sta	*(REGTEMP+0)
+      000098 68               [ 4]  206 	pla
+      000099 68               [ 4]  207 	pla
+                                    208 ;	Raw cost for generated ic 16 : (28, 48.000000) count=2.526755
+                                    209 ;	../bsearch.c: 38: if(c < 0)
+                                    210 ;	genCmp
+      00009A 8A               [ 2]  211 	txa
+      00009B 38               [ 2]  212 	sec
+      00009C E9 00            [ 2]  213 	sbc	#0x00
+      00009E 08               [ 3]  214 	php
+      00009F A5*00            [ 3]  215 	lda	*(REGTEMP+0)
+      0000A1 28               [ 4]  216 	plp
+      0000A2 50 04            [ 4]  217 	bvc	00140$
+      0000A4 10 04            [ 4]  218 	bpl	00139$
+      0000A6 30 12            [ 4]  219 	bmi	00105$
+      0000A8                        220 00140$:
+      0000A8 10 10            [ 4]  221 	bpl	00105$
+      0000AA                        222 00139$:
+                                    223 ;	Raw cost for generated ic 18 : (21, 32.400002) count=2.526755
+                                    224 ;	skipping generated iCode
+                                    225 ;	Raw cost for generated ic 19 : (0, 0.000000) count=2.526755
+                                    226 ;	../bsearch.c: 39: nmemb = nmemb / 2;	
+                                    227 ;	genAssign
+                                    228 ;	genCopy
+      0000AA BA               [ 2]  229 	tsx
+      0000AB BD 04 01         [ 5]  230 	lda	0x104,x
+      0000AE 9D 10 01         [ 5]  231 	sta	0x110,x
+      0000B1 BD 03 01         [ 5]  232 	lda	0x103,x
+      0000B4 9D 0F 01         [ 5]  233 	sta	0x10f,x
+                                    234 ;	Raw cost for generated ic 23 : (13, 20.000000) count=1.895169
+                                    235 ;	genGoto
+      0000B7 4Cr1Ar00         [ 3]  236 	jmp	00109$
+                                    237 ;	Raw cost for generated ic 24 : (3, 3.000000) count=1.895169
+                                    238 ;	genLabel
+      0000BA                        239 00105$:
+                                    240 ;	Raw cost for generated ic 25 : (0, 0.000000) count=0.631784
+                                    241 ;	../bsearch.c: 40: else if(c > 0)
+                                    242 ;	genCmp
+      0000BA 85*00            [ 3]  243 	sta	*(REGTEMP+0)
+      0000BC A9 00            [ 2]  244 	lda	#0x00
+      0000BE 38               [ 2]  245 	sec
+      0000BF E5*00            [ 3]  246 	sbc	*(REGTEMP+0)
+      0000C1 A9 00            [ 2]  247 	lda	#0x00
+      0000C3 86*00            [ 3]  248 	stx	*(REGTEMP+0)
+      0000C5 E5*00            [ 3]  249 	sbc	*(REGTEMP+0)
+      0000C7 50 04            [ 4]  250 	bvc	00143$
+      0000C9 10 04            [ 4]  251 	bpl	00142$
+      0000CB 30 3F            [ 4]  252 	bmi	00102$
+      0000CD                        253 00143$:
+      0000CD 10 3D            [ 4]  254 	bpl	00102$
+      0000CF                        255 00142$:
+                                    256 ;	Raw cost for generated ic 26 : (24, 31.400002) count=0.631784
+                                    257 ;	skipping generated iCode
+                                    258 ;	Raw cost for generated ic 27 : (0, 0.000000) count=0.631784
+                                    259 ;	../bsearch.c: 42: left = middle + size;
+                                    260 ;	genPlus
+      0000CF BA               [ 2]  261 	tsx
+      0000D0 BD 07 01         [ 5]  262 	lda	0x107,x
+      0000D3 18               [ 2]  263 	clc
+      0000D4 7D 11 01         [ 5]  264 	adc	0x111,x
+      0000D7 9D 05 01         [ 5]  265 	sta	0x105,x
+      0000DA BD 08 01         [ 5]  266 	lda	0x108,x
+      0000DD 7D 12 01         [ 5]  267 	adc	0x112,x
+      0000E0 9D 06 01         [ 5]  268 	sta	0x106,x
+                                    269 ;	Raw cost for generated ic 30 : (20, 30.000000) count=0.473838
+                                    270 ;	../bsearch.c: 43: nmemb = (nmemb - 1) / 2;
+                                    271 ;	genMinus
+                                    272 ;	  genMinusDec - size=2  icount=1
+      0000E3 BD 0F 01         [ 5]  273 	lda	0x10f,x
+      0000E6 A8               [ 2]  274 	tay
+      0000E7 BD 10 01         [ 5]  275 	lda	0x110,x
+      0000EA AA               [ 2]  276 	tax
+      0000EB 98               [ 2]  277 	tya
+      0000EC 38               [ 2]  278 	sec
+      0000ED E9 01            [ 2]  279 	sbc	#0x01
+      0000EF B0 01            [ 4]  280 	bcs	00145$
+      0000F1 CA               [ 2]  281 	dex
+      0000F2                        282 00145$:
+                                    283 ;	Raw cost for generated ic 32 : (15, 22.600000) count=0.473838
+                                    284 ;	genRightShift
+                                    285 ;	genRightShiftLiteral
+      0000F2 86*00            [ 3]  286 	stx	*(REGTEMP+0)
+                                    287 ;	  genrsh16 - shift=1
+      0000F4 86*01            [ 3]  288 	stx	*(REGTEMP+1)
+      0000F6 46*01            [ 5]  289 	lsr	*(REGTEMP+1)
+      0000F8 6A               [ 2]  290 	ror	a
+      0000F9 A6*01            [ 3]  291 	ldx	*(REGTEMP+1)
+      0000FB 85*02            [ 3]  292 	sta	*(REGTEMP+2)
+      0000FD 8A               [ 2]  293 	txa
+      0000FE BA               [ 2]  294 	tsx
+      0000FF 9D 10 01         [ 5]  295 	sta	0x110,x
+      000102 A5*02            [ 3]  296 	lda	*(REGTEMP+2)
+      000104 9D 0F 01         [ 5]  297 	sta	0x10f,x
+      000107 A6*00            [ 3]  298 	ldx	*(REGTEMP+0)
+                                    299 ;	Raw cost for generated ic 33 : (27, 45.000000) count=0.473838
+                                    300 ;	genGoto
+      000109 4Cr1Ar00         [ 3]  301 	jmp	00109$
+                                    302 ;	Raw cost for generated ic 35 : (3, 3.000000) count=0.473838
+                                    303 ;	genLabel
+      00010C                        304 00102$:
+                                    305 ;	Raw cost for generated ic 36 : (0, 0.000000) count=0.158059
+                                    306 ;	../bsearch.c: 46: return(middle);
+                                    307 ;	genCast
+                                    308 ;	genCopy
+      00010C BA               [ 2]  309 	tsx
+      00010D BD 07 01         [ 5]  310 	lda	0x107,x
+      000110 A8               [ 2]  311 	tay
+      000111 BD 08 01         [ 5]  312 	lda	0x108,x
+      000114 AA               [ 2]  313 	tax
+      000115 98               [ 2]  314 	tya
+                                    315 ;	Raw cost for generated ic 37 : (10, 16.000000) count=0.158059
+                                    316 ;	genRet
+      000116 4Cr1Cr01         [ 3]  317 	jmp	00111$
+                                    318 ;	Raw cost for generated ic 38 : (3, 3.000000) count=0.158059
+                                    319 ;	genLabel
+      000119                        320 00107$:
+                                    321 ;	Raw cost for generated ic 43 : (0, 0.000000) count=1.000311
+                                    322 ;	../bsearch.c: 49: return(0);
+                                    323 ;	genRet
+      000119 A9 00            [ 2]  324 	lda	#0x00
+      00011B AA               [ 2]  325 	tax
+                                    326 ;	Raw cost for generated ic 44 : (3, 4.000000) count=1.000311
+                                    327 ;	genLabel
+      00011C                        328 00111$:
+                                    329 ;	Raw cost for generated ic 45 : (0, 0.000000) count=1.000311
+                                    330 ;	../bsearch.c: 50: }
+                                    331 ;	genEndFunction
+                                    332 ;	  adjustStack : cycles stk:46  incdec:30  adc:24
+      00011C 86*00            [ 3]  333 	stx	*(REGTEMP+0)
+      00011E 85*01            [ 3]  334 	sta	*(REGTEMP+1)
+      000120 BA               [ 2]  335 	tsx
+      000121 8A               [ 2]  336 	txa
+      000122 18               [ 2]  337 	clc
+      000123 69 0A            [ 2]  338 	adc	#0x0a
+      000125 AA               [ 2]  339 	tax
+      000126 9A               [ 2]  340 	txs
+      000127 A5*01            [ 3]  341 	lda	*(REGTEMP+1)
+      000129 A6*00            [ 3]  342 	ldx	*(REGTEMP+0)
+      00012B 60               [ 6]  343 	rts
+                                    344 ;	Raw cost for generated ic 46 : (16, 30.000000) count=1.000311
+                                    345 	.area CODE
+                                    346 	.area RODATA
+                                    347 	.area XINIT
+                                    348 	.area CABS    (ABS)

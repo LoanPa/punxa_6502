@@ -1,0 +1,589 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module malloc
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl ___sdcc_heap_init
+                                     27 	.globl ___sdcc_heap_free
+                                     28 	.globl _malloc
+                                     29 ;--------------------------------------------------------
+                                     30 ; ZP ram data
+                                     31 ;--------------------------------------------------------
+                                     32 	.area ZP      (PAG)
+                                     33 ;--------------------------------------------------------
+                                     34 ; overlayable items in ram
+                                     35 ;--------------------------------------------------------
+                                     36 ;--------------------------------------------------------
+                                     37 ; uninitialized external ram data
+                                     38 ;--------------------------------------------------------
+                                     39 	.area BSS
+      000000                         40 ___sdcc_heap_free::
+      000000                         41 	.ds 2
+                                     42 ;--------------------------------------------------------
+                                     43 ; absolute external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DABS    (ABS)
+                                     46 ;--------------------------------------------------------
+                                     47 ; initialized external ram data
+                                     48 ;--------------------------------------------------------
+                                     49 	.area DATA
+                                     50 ;--------------------------------------------------------
+                                     51 ; global & static initialisations
+                                     52 ;--------------------------------------------------------
+                                     53 	.area _CODE
+                                     54 	.area GSINIT
+                                     55 	.area GSFINAL
+                                     56 	.area GSINIT
+                                     57 ;--------------------------------------------------------
+                                     58 ; Home
+                                     59 ;--------------------------------------------------------
+                                     60 	.area _CODE
+                                     61 	.area _CODE
+                                     62 ;--------------------------------------------------------
+                                     63 ; code
+                                     64 ;--------------------------------------------------------
+                                     65 	.area CODE
+                                     66 ;------------------------------------------------------------
+                                     67 ;Allocation info for local variables in function '__sdcc_heap_init'
+                                     68 ;------------------------------------------------------------
+                                     69 ;	../malloc.c: 65: void __sdcc_heap_init(void)
+                                     70 ;	genLabel
+                                     71 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     72 ;	-----------------------------------------
+                                     73 ;	 function __sdcc_heap_init
+                                     74 ;	-----------------------------------------
+                                     75 ;	Register assignment is optimal.
+                                     76 ;	Stack space usage: 0 bytes.
+      000000                         77 ___sdcc_heap_init:
+                                     78 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     79 ;	../malloc.c: 67: __sdcc_heap_free = HEAP_START;
+                                     80 ;	skipping iCode since result will be rematerialized
+                                     81 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     82 ;	skipping iCode since result will be rematerialized
+                                     83 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                     84 ;	genAssign
+                                     85 ;	genCopy
+      000000 A9s00            [ 2]   86 	lda	#>___sdcc_heap
+      000002 8Dr01r00         [ 4]   87 	sta	(___sdcc_heap_free + 1)
+      000005 A9r00            [ 2]   88 	lda	#___sdcc_heap
+      000007 8Dr00r00         [ 4]   89 	sta	___sdcc_heap_free
+                                     90 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                     91 ;	../malloc.c: 68: __sdcc_heap_free->next = HEAP_END;
+                                     92 ;	skipping iCode since result will be rematerialized
+                                     93 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                     94 ;	skipping iCode since result will be rematerialized
+                                     95 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                     96 ;	genMinus
+                                     97 ;	  genMinusDec - size=2  icount=1
+      00000A AEr01r00         [ 4]   98 	ldx	(___sdcc_heap_size + 1)
+      00000D ADr00r00         [ 4]   99 	lda	___sdcc_heap_size
+      000010 38               [ 2]  100 	sec
+      000011 E9 01            [ 2]  101 	sbc	#0x01
+      000013 B0 01            [ 4]  102 	bcs	00103$
+      000015 CA               [ 2]  103 	dex
+      000016                        104 00103$:
+                                    105 ;	Raw cost for generated ic 10 : (12, 16.600000) count=1.000000
+                                    106 ;	genPlus
+      000016 18               [ 2]  107 	clc
+      000017 69r00            [ 2]  108 	adc	#___sdcc_heap
+      000019 48               [ 3]  109 	pha
+      00001A 8A               [ 2]  110 	txa
+      00001B 69s00            [ 2]  111 	adc	#>___sdcc_heap
+      00001D AA               [ 2]  112 	tax
+      00001E 68               [ 4]  113 	pla
+                                    114 ;	Raw cost for generated ic 11 : (9, 17.000000) count=1.000000
+                                    115 ;	genPointerSet
+                                    116 ;	genDataPointerSet
+      00001F 8Er01r00         [ 4]  117 	stx	(___sdcc_heap + 1)
+      000022 8Dr00r00         [ 4]  118 	sta	___sdcc_heap
+                                    119 ;	Raw cost for generated ic 13 : (6, 8.000000) count=1.000000
+                                    120 ;	../malloc.c: 69: __sdcc_heap_free->next_free = 0;
+                                    121 ;	genAssign
+                                    122 ;	genCopy
+      000025 AEr01r00         [ 4]  123 	ldx	(___sdcc_heap_free + 1)
+      000028 ADr00r00         [ 4]  124 	lda	___sdcc_heap_free
+                                    125 ;	Raw cost for generated ic 15 : (6, 8.000000) count=1.000000
+                                    126 ;	genPointerSet
+                                    127 ;	  setupDPTR - off=2 remat=(null) savea=0
+      00002B 85*00            [ 3]  128 	sta	*(DPTR+0)
+      00002D 86*01            [ 3]  129 	stx	*(DPTR+1)
+      00002F A9 00            [ 2]  130 	lda	#0x00
+      000031 A0 02            [ 2]  131 	ldy	#0x02
+      000033 91*00            [ 6]  132 	sta	[DPTR],y
+      000035 C8               [ 2]  133 	iny
+      000036 91*00            [ 6]  134 	sta	[DPTR],y
+                                    135 ;	Raw cost for generated ic 17 : (13, 24.000000) count=1.000000
+                                    136 ;	genLabel
+                                    137 ;	Raw cost for generated ic 18 : (0, 0.000000) count=1.000000
+                                    138 ;	../malloc.c: 70: }
+                                    139 ;	genEndFunction
+      000038 60               [ 6]  140 	rts
+                                    141 ;	Raw cost for generated ic 19 : (1, 6.000000) count=1.000000
+                                    142 ;------------------------------------------------------------
+                                    143 ;Allocation info for local variables in function 'malloc'
+                                    144 ;------------------------------------------------------------
+                                    145 ;size          Allocated to stack - sp +19 +2 
+                                    146 ;h             Allocated to stack - sp +17 +2 
+                                    147 ;f             Allocated to stack - sp +15 +2 
+                                    148 ;blocksize     Allocated to stack - sp +13 +2 
+                                    149 ;newheader     Allocated to stack - sp +11 +2 
+                                    150 ;sloc0         Allocated to stack - sp +9 +2 
+                                    151 ;sloc1         Allocated to stack - sp +7 +2 
+                                    152 ;sloc2         Allocated to stack - sp +5 +2 
+                                    153 ;sloc3         Allocated to stack - sp +3 +2 
+                                    154 ;sloc4         Allocated to stack - sp +1 +2 
+                                    155 ;------------------------------------------------------------
+                                    156 ;	../malloc.c: 75: void *malloc(size_t size)
+                                    157 ;	genLabel
+                                    158 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    159 ;	-----------------------------------------
+                                    160 ;	 function malloc
+                                    161 ;	-----------------------------------------
+                                    162 ;	Register assignment is optimal.
+                                    163 ;	Stack space usage: 20 bytes.
+      000039                        164 _malloc:
+                                    165 ;	  adjustStack : cycles stk:60  incdec:50  adc:24
+      000039 86*00            [ 3]  166 	stx	*(REGTEMP+0)
+      00003B 85*01            [ 3]  167 	sta	*(REGTEMP+1)
+      00003D BA               [ 2]  168 	tsx
+      00003E 8A               [ 2]  169 	txa
+      00003F 18               [ 2]  170 	clc
+      000040 69 EC            [ 2]  171 	adc	#0xec
+      000042 AA               [ 2]  172 	tax
+      000043 9A               [ 2]  173 	txs
+      000044 A5*01            [ 3]  174 	lda	*(REGTEMP+1)
+                                    175 ;	Raw cost for generated ic 1 : (15, 24.000000) count=1.000000
+                                    176 ;	genReceive
+      000046 BA               [ 2]  177 	tsx
+      000047 9D 09 01         [ 5]  178 	sta	0x109,x
+      00004A A5*00            [ 3]  179 	lda	*(REGTEMP+0)
+      00004C 9D 0A 01         [ 5]  180 	sta	0x10a,x
+                                    181 ;	Raw cost for generated ic 2 : (11, 18.000000) count=1.000000
+                                    182 ;	../malloc.c: 82: if(!__sdcc_heap_free)
+                                    183 ;	genIfx
+      00004F ADr01r00         [ 4]  184 	lda	(___sdcc_heap_free + 1)
+      000052 0Dr00r00         [ 4]  185 	ora	___sdcc_heap_free
+                                    186 ;	genIfxJump : z
+      000055 D0 03            [ 4]  187 	bne	00102$
+                                    188 ;	Raw cost for generated ic 3 : (11, 13.600000) count=1.000000
+                                    189 ;	../malloc.c: 83: __sdcc_heap_init();
+                                    190 ;	genCall
+      000057 20r00r00         [ 6]  191 	jsr	___sdcc_heap_init
+                                    192 ;	Raw cost for generated ic 6 : (3, 6.000000) count=0.750000
+                                    193 ;	genLabel
+      00005A                        194 00102$:
+                                    195 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    196 ;	../malloc.c: 86: if(/*!size || implementation choice - allow 0-sized allocations - makes it easier to have consitency between malloc and realloc */ size + offsetof(struct header, next_free) < size)
+                                    197 ;	genPlus
+                                    198 ;	  genPlusInc
+      00005A BA               [ 2]  199 	tsx
+      00005B BD 09 01         [ 5]  200 	lda	0x109,x
+      00005E 18               [ 2]  201 	clc
+      00005F 69 02            [ 2]  202 	adc	#0x02
+      000061 9D 07 01         [ 5]  203 	sta	0x107,x
+      000064 BD 0A 01         [ 5]  204 	lda	0x10a,x
+      000067 69 00            [ 2]  205 	adc	#0x00
+      000069 9D 08 01         [ 5]  206 	sta	0x108,x
+                                    207 ;	Raw cost for generated ic 8 : (18, 26.000000) count=1.000000
+                                    208 ;	genCmp
+      00006C BD 07 01         [ 5]  209 	lda	0x107,x
+      00006F 38               [ 2]  210 	sec
+      000070 FD 09 01         [ 5]  211 	sbc	0x109,x
+      000073 BD 08 01         [ 5]  212 	lda	0x108,x
+      000076 FD 0A 01         [ 5]  213 	sbc	0x10a,x
+      000079 B0 06            [ 4]  214 	bcs	00104$
+                                    215 ;	Raw cost for generated ic 9 : (18, 23.600000) count=1.000000
+                                    216 ;	skipping generated iCode
+                                    217 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    218 ;	../malloc.c: 87: return(0);
+                                    219 ;	genRet
+      00007B A9 00            [ 2]  220 	lda	#0x00
+      00007D AA               [ 2]  221 	tax
+      00007E 4Cr62r02         [ 3]  222 	jmp	00116$
+                                    223 ;	Raw cost for generated ic 13 : (6, 7.000000) count=0.750000
+                                    224 ;	genLabel
+      000081                        225 00104$:
+                                    226 ;	Raw cost for generated ic 14 : (0, 0.000000) count=1.000000
+                                    227 ;	../malloc.c: 88: size += offsetof(struct header, next_free);
+                                    228 ;	genPlus
+                                    229 ;	  genPlusInc
+      000081 BA               [ 2]  230 	tsx
+      000082 BD 09 01         [ 5]  231 	lda	0x109,x
+      000085 18               [ 2]  232 	clc
+      000086 69 02            [ 2]  233 	adc	#0x02
+      000088 9D 13 01         [ 5]  234 	sta	0x113,x
+      00008B BD 0A 01         [ 5]  235 	lda	0x10a,x
+      00008E 69 00            [ 2]  236 	adc	#0x00
+      000090 9D 14 01         [ 5]  237 	sta	0x114,x
+                                    238 ;	Raw cost for generated ic 15 : (18, 26.000000) count=1.000000
+                                    239 ;	../malloc.c: 89: if(size < sizeof(struct header)) // Requiring a minimum size makes it easier to implement free(), and avoid memory leaks.
+                                    240 ;	genCmp
+      000093 BD 13 01         [ 5]  241 	lda	0x113,x
+      000096 38               [ 2]  242 	sec
+      000097 E9 04            [ 2]  243 	sbc	#0x04
+      000099 BD 14 01         [ 5]  244 	lda	0x114,x
+      00009C E9 00            [ 2]  245 	sbc	#0x00
+      00009E B0 0A            [ 4]  246 	bcs	00106$
+                                    247 ;	Raw cost for generated ic 17 : (16, 19.600000) count=1.000000
+                                    248 ;	skipping generated iCode
+                                    249 ;	Raw cost for generated ic 18 : (0, 0.000000) count=1.000000
+                                    250 ;	../malloc.c: 90: size = sizeof(struct header);
+                                    251 ;	genAssign
+                                    252 ;	genAssignLit
+      0000A0 A9 04            [ 2]  253 	lda	#0x04
+      0000A2 9D 13 01         [ 5]  254 	sta	0x113,x
+      0000A5 A9 00            [ 2]  255 	lda	#0x00
+      0000A7 9D 14 01         [ 5]  256 	sta	0x114,x
+                                    257 ;	Raw cost for generated ic 21 : (10, 14.000000) count=0.750000
+                                    258 ;	genLabel
+      0000AA                        259 00106$:
+                                    260 ;	Raw cost for generated ic 22 : (0, 0.000000) count=1.000000
+                                    261 ;	../malloc.c: 92: for(h = __sdcc_heap_free, f = &__sdcc_heap_free; h; f = &(h->next_free), h = h->next_free)
+                                    262 ;	genAssign
+                                    263 ;	genCopy
+      0000AA ADr01r00         [ 4]  264 	lda	(___sdcc_heap_free + 1)
+      0000AD BA               [ 2]  265 	tsx
+      0000AE 9D 12 01         [ 5]  266 	sta	0x112,x
+      0000B1 ADr00r00         [ 4]  267 	lda	___sdcc_heap_free
+      0000B4 9D 11 01         [ 5]  268 	sta	0x111,x
+                                    269 ;	Raw cost for generated ic 23 : (13, 20.000000) count=1.000000
+                                    270 ;	skipping iCode since result will be rematerialized
+                                    271 ;	Raw cost for generated ic 24 : (0, 0.000000) count=1.000000
+                                    272 ;	genCast
+                                    273 ;	genCopy
+      0000B7 A9s00            [ 2]  274 	lda	#>___sdcc_heap_free
+      0000B9 9D 08 01         [ 5]  275 	sta	0x108,x
+      0000BC A9r00            [ 2]  276 	lda	#___sdcc_heap_free
+      0000BE 9D 07 01         [ 5]  277 	sta	0x107,x
+                                    278 ;	Raw cost for generated ic 25 : (10, 14.000000) count=1.000000
+                                    279 ;	genLabel
+      0000C1                        280 00114$:
+                                    281 ;	Raw cost for generated ic 27 : (0, 0.000000) count=3.999942
+                                    282 ;	genIfx
+      0000C1 BA               [ 2]  283 	tsx
+      0000C2 BD 12 01         [ 5]  284 	lda	0x112,x
+      0000C5 1D 11 01         [ 5]  285 	ora	0x111,x
+                                    286 ;	genIfxJump : z
+      0000C8 D0 03            [ 4]  287 	bne	00172$
+      0000CA 4Cr5Fr02         [ 3]  288 	jmp	00112$
+      0000CD                        289 00172$:
+                                    290 ;	Raw cost for generated ic 28 : (12, 15.600000) count=3.999942
+                                    291 ;	../malloc.c: 94: size_t blocksize = (char HEAPSPACE *)(h->next) - (char HEAPSPACE *)h;
+                                    292 ;	genCast
+                                    293 ;	genCopy
+      0000CD BD 12 01         [ 5]  294 	lda	0x112,x
+      0000D0 9D 0A 01         [ 5]  295 	sta	0x10a,x
+      0000D3 BD 11 01         [ 5]  296 	lda	0x111,x
+      0000D6 9D 09 01         [ 5]  297 	sta	0x109,x
+                                    298 ;	Raw cost for generated ic 32 : (12, 18.000000) count=2.999957
+                                    299 ;	genPointerGet
+                                    300 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0000D9 85*00            [ 3]  301 	sta	*(DPTR+0)
+      0000DB BD 0A 01         [ 5]  302 	lda	0x10a,x
+      0000DE 85*01            [ 3]  303 	sta	*(DPTR+1)
+      0000E0 A0 00            [ 2]  304 	ldy	#0x00
+      0000E2 B1*00            [ 6]  305 	lda	[DPTR],y
+      0000E4 9D 05 01         [ 5]  306 	sta	0x105,x
+      0000E7 C8               [ 2]  307 	iny
+      0000E8 B1*00            [ 6]  308 	lda	[DPTR],y
+      0000EA 9D 06 01         [ 5]  309 	sta	0x106,x
+                                    310 ;	Raw cost for generated ic 33 : (20, 34.000000) count=2.999957
+                                    311 ;	genCast
+                                    312 ;	genCopy
+      0000ED 9D 04 01         [ 5]  313 	sta	0x104,x
+      0000F0 BD 05 01         [ 5]  314 	lda	0x105,x
+      0000F3 9D 03 01         [ 5]  315 	sta	0x103,x
+                                    316 ;	Raw cost for generated ic 34 : (9, 14.000000) count=2.999957
+                                    317 ;	genCast
+                                    318 ;	genCopy
+      0000F6 BD 12 01         [ 5]  319 	lda	0x112,x
+      0000F9 9D 02 01         [ 5]  320 	sta	0x102,x
+      0000FC BD 11 01         [ 5]  321 	lda	0x111,x
+      0000FF 9D 01 01         [ 5]  322 	sta	0x101,x
+                                    323 ;	Raw cost for generated ic 35 : (12, 18.000000) count=2.999957
+                                    324 ;	genMinus
+      000102 BD 03 01         [ 5]  325 	lda	0x103,x
+      000105 38               [ 2]  326 	sec
+      000106 FD 01 01         [ 5]  327 	sbc	0x101,x
+      000109 9D 0D 01         [ 5]  328 	sta	0x10d,x
+      00010C BD 04 01         [ 5]  329 	lda	0x104,x
+      00010F FD 02 01         [ 5]  330 	sbc	0x102,x
+      000112 9D 0E 01         [ 5]  331 	sta	0x10e,x
+                                    332 ;	Raw cost for generated ic 36 : (19, 28.000000) count=2.999957
+                                    333 ;	../malloc.c: 95: if(blocksize >= size) // Found free block of sufficient size.
+                                    334 ;	genCmp
+      000115 BD 0D 01         [ 5]  335 	lda	0x10d,x
+      000118 38               [ 2]  336 	sec
+      000119 FD 13 01         [ 5]  337 	sbc	0x113,x
+      00011C BD 0E 01         [ 5]  338 	lda	0x10e,x
+      00011F FD 14 01         [ 5]  339 	sbc	0x114,x
+      000122 B0 03            [ 4]  340 	bcs	00173$
+      000124 4Cr2Dr02         [ 3]  341 	jmp	00115$
+      000127                        342 00173$:
+                                    343 ;	Raw cost for generated ic 39 : (18, 23.600000) count=2.999957
+                                    344 ;	skipping generated iCode
+                                    345 ;	Raw cost for generated ic 40 : (0, 0.000000) count=2.999957
+                                    346 ;	../malloc.c: 97: if(blocksize >= size + sizeof(struct header)) // It is worth creating a new free block
+                                    347 ;	genPlus
+                                    348 ;	  genPlusInc
+      000127 BD 13 01         [ 5]  349 	lda	0x113,x
+      00012A 18               [ 2]  350 	clc
+      00012B 69 04            [ 2]  351 	adc	#0x04
+      00012D 9D 01 01         [ 5]  352 	sta	0x101,x
+      000130 BD 14 01         [ 5]  353 	lda	0x114,x
+      000133 69 00            [ 2]  354 	adc	#0x00
+      000135 9D 02 01         [ 5]  355 	sta	0x102,x
+                                    356 ;	Raw cost for generated ic 43 : (17, 24.000000) count=2.249967
+                                    357 ;	genCmp
+      000138 BD 0D 01         [ 5]  358 	lda	0x10d,x
+      00013B 38               [ 2]  359 	sec
+      00013C FD 01 01         [ 5]  360 	sbc	0x101,x
+      00013F BD 0E 01         [ 5]  361 	lda	0x10e,x
+      000142 FD 02 01         [ 5]  362 	sbc	0x102,x
+      000145 B0 03            [ 4]  363 	bcs	00174$
+      000147 4CrE1r01         [ 3]  364 	jmp	00108$
+      00014A                        365 00174$:
+                                    366 ;	Raw cost for generated ic 44 : (18, 23.600000) count=2.249967
+                                    367 ;	skipping generated iCode
+                                    368 ;	Raw cost for generated ic 45 : (0, 0.000000) count=2.249967
+                                    369 ;	../malloc.c: 99: header_t *const newheader = (header_t *const)((char HEAPSPACE *)h + size);
+                                    370 ;	genPlus
+      00014A BD 11 01         [ 5]  371 	lda	0x111,x
+      00014D 18               [ 2]  372 	clc
+      00014E 7D 13 01         [ 5]  373 	adc	0x113,x
+      000151 9D 0B 01         [ 5]  374 	sta	0x10b,x
+      000154 BD 12 01         [ 5]  375 	lda	0x112,x
+      000157 7D 14 01         [ 5]  376 	adc	0x114,x
+      00015A 9D 0C 01         [ 5]  377 	sta	0x10c,x
+                                    378 ;	Raw cost for generated ic 49 : (19, 28.000000) count=1.687469
+                                    379 ;	../malloc.c: 100: newheader->next = h->next;
+                                    380 ;	genPointerSet
+                                    381 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00015D 85*01            [ 3]  382 	sta	*(DPTR+1)
+      00015F BD 0B 01         [ 5]  383 	lda	0x10b,x
+      000162 85*00            [ 3]  384 	sta	*(DPTR+0)
+      000164 BD 05 01         [ 5]  385 	lda	0x105,x
+      000167 88               [ 2]  386 	dey
+      000168 91*00            [ 6]  387 	sta	[DPTR],y
+      00016A BD 06 01         [ 5]  388 	lda	0x106,x
+      00016D C8               [ 2]  389 	iny
+      00016E 91*00            [ 6]  390 	sta	[DPTR],y
+                                    391 ;	Raw cost for generated ic 57 : (19, 34.000000) count=1.687469
+                                    392 ;	../malloc.c: 101: newheader->next_free = h->next_free;
+                                    393 ;	genAssign
+                                    394 ;	genCopy
+      000170 BD 0C 01         [ 5]  395 	lda	0x10c,x
+      000173 9D 02 01         [ 5]  396 	sta	0x102,x
+      000176 BD 0B 01         [ 5]  397 	lda	0x10b,x
+      000179 9D 01 01         [ 5]  398 	sta	0x101,x
+                                    399 ;	Raw cost for generated ic 59 : (12, 18.000000) count=1.687469
+                                    400 ;	genAssign
+                                    401 ;	genCopy
+      00017C BD 12 01         [ 5]  402 	lda	0x112,x
+      00017F 9D 04 01         [ 5]  403 	sta	0x104,x
+      000182 BD 11 01         [ 5]  404 	lda	0x111,x
+                                    405 ;	Raw cost for generated ic 61 : (12, 18.000000) count=1.687469
+                                    406 ;	genPointerGet
+                                    407 ;	  setupDPTR - off=2 remat=(null) savea=0
+      000185 9D 03 01         [ 5]  408 	sta	0x103,x
+      000188 85*00            [ 3]  409 	sta	*(DPTR+0)
+      00018A BD 04 01         [ 5]  410 	lda	0x104,x
+      00018D 85*01            [ 3]  411 	sta	*(DPTR+1)
+      00018F C8               [ 2]  412 	iny
+      000190 B1*00            [ 6]  413 	lda	[DPTR],y
+      000192 9D 03 01         [ 5]  414 	sta	0x103,x
+      000195 C8               [ 2]  415 	iny
+      000196 B1*00            [ 6]  416 	lda	[DPTR],y
+      000198 9D 04 01         [ 5]  417 	sta	0x104,x
+                                    418 ;	Raw cost for generated ic 62 : (22, 38.000000) count=1.687469
+                                    419 ;	genPointerSet
+                                    420 ;	  setupDPTR - off=2 remat=(null) savea=0
+      00019B BD 01 01         [ 5]  421 	lda	0x101,x
+      00019E 85*00            [ 3]  422 	sta	*(DPTR+0)
+      0001A0 BD 02 01         [ 5]  423 	lda	0x102,x
+      0001A3 85*01            [ 3]  424 	sta	*(DPTR+1)
+      0001A5 BD 03 01         [ 5]  425 	lda	0x103,x
+      0001A8 88               [ 2]  426 	dey
+      0001A9 91*00            [ 6]  427 	sta	[DPTR],y
+      0001AB BD 04 01         [ 5]  428 	lda	0x104,x
+      0001AE C8               [ 2]  429 	iny
+      0001AF 91*00            [ 6]  430 	sta	[DPTR],y
+                                    431 ;	Raw cost for generated ic 63 : (22, 38.000000) count=1.687469
+                                    432 ;	../malloc.c: 102: *f = newheader;
+                                    433 ;	genPointerSet
+                                    434 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0001B1 BD 07 01         [ 5]  435 	lda	0x107,x
+      0001B4 85*00            [ 3]  436 	sta	*(DPTR+0)
+      0001B6 BD 08 01         [ 5]  437 	lda	0x108,x
+      0001B9 85*01            [ 3]  438 	sta	*(DPTR+1)
+      0001BB BD 0B 01         [ 5]  439 	lda	0x10b,x
+      0001BE A0 00            [ 2]  440 	ldy	#0x00
+      0001C0 91*00            [ 6]  441 	sta	[DPTR],y
+      0001C2 BD 0C 01         [ 5]  442 	lda	0x10c,x
+      0001C5 C8               [ 2]  443 	iny
+      0001C6 91*00            [ 6]  444 	sta	[DPTR],y
+                                    445 ;	Raw cost for generated ic 65 : (23, 38.000000) count=1.687469
+                                    446 ;	../malloc.c: 103: h->next = newheader;
+                                    447 ;	genPointerSet
+                                    448 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0001C8 BD 09 01         [ 5]  449 	lda	0x109,x
+      0001CB 85*00            [ 3]  450 	sta	*(DPTR+0)
+      0001CD BD 0A 01         [ 5]  451 	lda	0x10a,x
+      0001D0 85*01            [ 3]  452 	sta	*(DPTR+1)
+      0001D2 BD 0B 01         [ 5]  453 	lda	0x10b,x
+      0001D5 88               [ 2]  454 	dey
+      0001D6 91*00            [ 6]  455 	sta	[DPTR],y
+      0001D8 BD 0C 01         [ 5]  456 	lda	0x10c,x
+      0001DB C8               [ 2]  457 	iny
+      0001DC 91*00            [ 6]  458 	sta	[DPTR],y
+                                    459 ;	Raw cost for generated ic 68 : (22, 38.000000) count=1.687469
+                                    460 ;	genGoto
+      0001DE 4Cr1Ar02         [ 3]  461 	jmp	00109$
+                                    462 ;	Raw cost for generated ic 69 : (3, 3.000000) count=1.687469
+                                    463 ;	genLabel
+      0001E1                        464 00108$:
+                                    465 ;	Raw cost for generated ic 70 : (0, 0.000000) count=0.562486
+                                    466 ;	../malloc.c: 106: *f = h->next_free;
+                                    467 ;	genAssign
+                                    468 ;	genCopy
+      0001E1 BA               [ 2]  469 	tsx
+      0001E2 BD 12 01         [ 5]  470 	lda	0x112,x
+      0001E5 9D 02 01         [ 5]  471 	sta	0x102,x
+      0001E8 BD 11 01         [ 5]  472 	lda	0x111,x
+      0001EB 9D 01 01         [ 5]  473 	sta	0x101,x
+                                    474 ;	Raw cost for generated ic 73 : (13, 20.000000) count=0.562486
+                                    475 ;	genPointerGet
+                                    476 ;	  setupDPTR - off=2 remat=(null) savea=0
+      0001EE 85*00            [ 3]  477 	sta	*(DPTR+0)
+      0001F0 BD 02 01         [ 5]  478 	lda	0x102,x
+      0001F3 85*01            [ 3]  479 	sta	*(DPTR+1)
+      0001F5 A0 03            [ 2]  480 	ldy	#0x03
+      0001F7 B1*00            [ 6]  481 	lda	[DPTR],y
+      0001F9 AA               [ 2]  482 	tax
+      0001FA 88               [ 2]  483 	dey
+      0001FB B1*00            [ 6]  484 	lda	[DPTR],y
+                                    485 ;	Raw cost for generated ic 74 : (15, 26.000000) count=0.562486
+                                    486 ;	genPointerSet
+      0001FD 85*00            [ 3]  487 	sta	*(REGTEMP+0)
+      0001FF 86*01            [ 3]  488 	stx	*(REGTEMP+1)
+                                    489 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000201 BA               [ 2]  490 	tsx
+      000202 BD 07 01         [ 5]  491 	lda	0x107,x
+      000205 85*00            [ 3]  492 	sta	*(DPTR+0)
+      000207 BD 08 01         [ 5]  493 	lda	0x108,x
+      00020A 85*01            [ 3]  494 	sta	*(DPTR+1)
+      00020C A5*00            [ 3]  495 	lda	*(REGTEMP+0)
+      00020E A6*01            [ 3]  496 	ldx	*(REGTEMP+1)
+      000210 A0 00            [ 2]  497 	ldy	#0x00
+      000212 91*00            [ 6]  498 	sta	[DPTR],y
+      000214 8A               [ 2]  499 	txa
+      000215 C8               [ 2]  500 	iny
+      000216 91*00            [ 6]  501 	sta	[DPTR],y
+      000218 A6*01            [ 3]  502 	ldx	*(REGTEMP+1)
+                                    503 ;	Raw cost for generated ic 75 : (29, 49.000000) count=0.562486
+                                    504 ;	genLabel
+      00021A                        505 00109$:
+                                    506 ;	Raw cost for generated ic 76 : (0, 0.000000) count=2.249956
+                                    507 ;	../malloc.c: 108: return(&(h->next_free));
+                                    508 ;	genPlus
+                                    509 ;	  genPlusInc
+      00021A BA               [ 2]  510 	tsx
+      00021B BD 11 01         [ 5]  511 	lda	0x111,x
+      00021E A8               [ 2]  512 	tay
+      00021F BD 12 01         [ 5]  513 	lda	0x112,x
+      000222 AA               [ 2]  514 	tax
+      000223 98               [ 2]  515 	tya
+      000224 18               [ 2]  516 	clc
+      000225 69 02            [ 2]  517 	adc	#0x02
+      000227 90 39            [ 4]  518 	bcc	00116$
+      000229 E8               [ 2]  519 	inx
+                                    520 ;	Raw cost for generated ic 78 : (16, 24.600000) count=2.249956
+                                    521 ;	genRet
+      00022A 4Cr62r02         [ 3]  522 	jmp	00116$
+                                    523 ;	Raw cost for generated ic 80 : (3, 3.000000) count=2.249956
+                                    524 ;	genLabel
+      00022D                        525 00115$:
+                                    526 ;	Raw cost for generated ic 82 : (0, 0.000000) count=2.999943
+                                    527 ;	../malloc.c: 92: for(h = __sdcc_heap_free, f = &__sdcc_heap_free; h; f = &(h->next_free), h = h->next_free)
+                                    528 ;	genPlus
+                                    529 ;	  genPlusInc
+      00022D BA               [ 2]  530 	tsx
+      00022E BD 11 01         [ 5]  531 	lda	0x111,x
+      000231 18               [ 2]  532 	clc
+      000232 69 02            [ 2]  533 	adc	#0x02
+      000234 9D 0F 01         [ 5]  534 	sta	0x10f,x
+      000237 BD 12 01         [ 5]  535 	lda	0x112,x
+      00023A 69 00            [ 2]  536 	adc	#0x00
+      00023C 9D 10 01         [ 5]  537 	sta	0x110,x
+                                    538 ;	Raw cost for generated ic 84 : (18, 26.000000) count=2.999943
+                                    539 ;	genAssign
+                                    540 ;	genCopy
+      00023F 9D 08 01         [ 5]  541 	sta	0x108,x
+                                    542 ;	Raw cost for generated ic 85 : (9, 14.000000) count=2.999943
+                                    543 ;	genPointerGet
+                                    544 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000242 BD 0F 01         [ 5]  545 	lda	0x10f,x
+      000245 9D 07 01         [ 5]  546 	sta	0x107,x
+      000248 85*00            [ 3]  547 	sta	*(DPTR+0)
+      00024A BD 10 01         [ 5]  548 	lda	0x110,x
+      00024D 85*01            [ 3]  549 	sta	*(DPTR+1)
+      00024F A0 00            [ 2]  550 	ldy	#0x00
+      000251 B1*00            [ 6]  551 	lda	[DPTR],y
+      000253 9D 11 01         [ 5]  552 	sta	0x111,x
+      000256 C8               [ 2]  553 	iny
+      000257 B1*00            [ 6]  554 	lda	[DPTR],y
+      000259 9D 12 01         [ 5]  555 	sta	0x112,x
+                                    556 ;	Raw cost for generated ic 88 : (23, 38.000000) count=2.999943
+                                    557 ;	genGoto
+      00025C 4CrC1r00         [ 3]  558 	jmp	00114$
+                                    559 ;	Raw cost for generated ic 90 : (3, 3.000000) count=2.999943
+                                    560 ;	genLabel
+      00025F                        561 00112$:
+                                    562 ;	Raw cost for generated ic 91 : (0, 0.000000) count=0.999982
+                                    563 ;	../malloc.c: 112: return(0);
+                                    564 ;	genRet
+      00025F A9 00            [ 2]  565 	lda	#0x00
+      000261 AA               [ 2]  566 	tax
+                                    567 ;	Raw cost for generated ic 92 : (3, 4.000000) count=0.999982
+                                    568 ;	genLabel
+      000262                        569 00116$:
+                                    570 ;	Raw cost for generated ic 93 : (0, 0.000000) count=0.999982
+                                    571 ;	../malloc.c: 113: }
+                                    572 ;	genEndFunction
+                                    573 ;	  adjustStack : cycles stk:86  incdec:50  adc:24
+      000262 86*00            [ 3]  574 	stx	*(REGTEMP+0)
+      000264 85*01            [ 3]  575 	sta	*(REGTEMP+1)
+      000266 BA               [ 2]  576 	tsx
+      000267 8A               [ 2]  577 	txa
+      000268 18               [ 2]  578 	clc
+      000269 69 14            [ 2]  579 	adc	#0x14
+      00026B AA               [ 2]  580 	tax
+      00026C 9A               [ 2]  581 	txs
+      00026D A5*01            [ 3]  582 	lda	*(REGTEMP+1)
+      00026F A6*00            [ 3]  583 	ldx	*(REGTEMP+0)
+      000271 60               [ 6]  584 	rts
+                                    585 ;	Raw cost for generated ic 94 : (16, 30.000000) count=0.999982
+                                    586 	.area CODE
+                                    587 	.area RODATA
+                                    588 	.area XINIT
+                                    589 	.area CABS    (ABS)

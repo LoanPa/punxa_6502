@@ -1,0 +1,976 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module sincosf
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _sincosf
+                                     27 	.globl _fabsf
+                                     28 	.globl _sincosf_PARM_2
+                                     29 	.globl _sincosf_PARM_1
+                                     30 ;--------------------------------------------------------
+                                     31 ; ZP ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area ZP      (PAG)
+      000000                         34 _sincosf_sloc0_1_0:
+      000000                         35 	.ds 4
+      000004                         36 _sincosf_sloc1_1_0:
+      000004                         37 	.ds 4
+                                     38 ;--------------------------------------------------------
+                                     39 ; overlayable items in ram
+                                     40 ;--------------------------------------------------------
+                                     41 ;--------------------------------------------------------
+                                     42 ; uninitialized external ram data
+                                     43 ;--------------------------------------------------------
+                                     44 	.area BSS
+      000000                         45 _sincosf_PARM_1:
+      000000                         46 	.ds 4
+      000004                         47 _sincosf_PARM_2:
+      000004                         48 	.ds 1
+      000005                         49 _sincosf_y_10000_26:
+      000005                         50 	.ds 4
+      000009                         51 _sincosf_f_10000_26:
+      000009                         52 	.ds 4
+      00000D                         53 _sincosf_XN_10000_26:
+      00000D                         54 	.ds 4
+      000011                         55 _sincosf_sign_10000_26:
+      000011                         56 	.ds 1
+                                     57 ;--------------------------------------------------------
+                                     58 ; absolute external ram data
+                                     59 ;--------------------------------------------------------
+                                     60 	.area DABS    (ABS)
+                                     61 ;--------------------------------------------------------
+                                     62 ; initialized external ram data
+                                     63 ;--------------------------------------------------------
+                                     64 	.area DATA
+                                     65 ;--------------------------------------------------------
+                                     66 ; global & static initialisations
+                                     67 ;--------------------------------------------------------
+                                     68 	.area _CODE
+                                     69 	.area GSINIT
+                                     70 	.area GSFINAL
+                                     71 	.area GSINIT
+                                     72 ;--------------------------------------------------------
+                                     73 ; Home
+                                     74 ;--------------------------------------------------------
+                                     75 	.area _CODE
+                                     76 	.area _CODE
+                                     77 ;--------------------------------------------------------
+                                     78 ; code
+                                     79 ;--------------------------------------------------------
+                                     80 	.area CODE
+                                     81 ;------------------------------------------------------------
+                                     82 ;Allocation info for local variables in function 'sincosf'
+                                     83 ;------------------------------------------------------------
+                                     84 ;sloc0         Allocated with name '_sincosf_sloc0_1_0'
+                                     85 ;sloc1         Allocated with name '_sincosf_sloc1_1_0'
+                                     86 ;x             Allocated with name '_sincosf_PARM_1'
+                                     87 ;iscos         Allocated with name '_sincosf_PARM_2'
+                                     88 ;y             Allocated with name '_sincosf_y_10000_26'
+                                     89 ;f             Allocated with name '_sincosf_f_10000_26'
+                                     90 ;r             Allocated with name '_sincosf_r_10000_26'
+                                     91 ;g             Allocated with name '_sincosf_g_10000_26'
+                                     92 ;XN            Allocated with name '_sincosf_XN_10000_26'
+                                     93 ;N             Allocated to registers a x 
+                                     94 ;sign          Allocated with name '_sincosf_sign_10000_26'
+                                     95 ;------------------------------------------------------------
+                                     96 ;	../sincosf.c: 50: float sincosf(float x, bool iscos)
+                                     97 ;	genLabel
+                                     98 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     99 ;	-----------------------------------------
+                                    100 ;	 function sincosf
+                                    101 ;	-----------------------------------------
+                                    102 ;	Register assignment is optimal.
+                                    103 ;	Stack space usage: 0 bytes.
+      000000                        104 _sincosf:
+                                    105 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    106 ;	../sincosf.c: 56: if(iscos)
+                                    107 ;	genIfx
+      000000 ADr04r00         [ 4]  108 	lda	_sincosf_PARM_2
+                                    109 ;	genIfxJump : z
+      000003 F0 5A            [ 4]  110 	beq	00105$
+                                    111 ;	Raw cost for generated ic 2 : (8, 9.600000) count=1.000000
+                                    112 ;	../sincosf.c: 58: y=fabsf(x)+HALF_PI;
+                                    113 ;	genAssign
+                                    114 ;	genCopy
+      000005 ADr03r00         [ 4]  115 	lda	(_sincosf_PARM_1 + 3)
+      000008 8Dr03r00         [ 4]  116 	sta	(_fabsf_PARM_1 + 3)
+      00000B ADr02r00         [ 4]  117 	lda	(_sincosf_PARM_1 + 2)
+      00000E 8Dr02r00         [ 4]  118 	sta	(_fabsf_PARM_1 + 2)
+      000011 ADr01r00         [ 4]  119 	lda	(_sincosf_PARM_1 + 1)
+      000014 8Dr01r00         [ 4]  120 	sta	(_fabsf_PARM_1 + 1)
+      000017 ADr00r00         [ 4]  121 	lda	_sincosf_PARM_1
+      00001A 8Dr00r00         [ 4]  122 	sta	_fabsf_PARM_1
+                                    123 ;	Raw cost for generated ic 5 : (24, 32.000000) count=0.750000
+                                    124 ;	genCall
+      00001D 20r00r00         [ 6]  125 	jsr	_fabsf
+                                    126 ;	assignResultValue
+      000020 8Dr00r00         [ 4]  127 	sta	___fsadd_PARM_1
+      000023 8Er01r00         [ 4]  128 	stx	(___fsadd_PARM_1 + 1)
+      000026 A5*00            [ 3]  129 	lda	*___SDCC_m6502_ret2
+      000028 8Dr02r00         [ 4]  130 	sta	(___fsadd_PARM_1 + 2)
+      00002B A5*00            [ 3]  131 	lda	*___SDCC_m6502_ret3
+      00002D 8Dr03r00         [ 4]  132 	sta	(___fsadd_PARM_1 + 3)
+                                    133 ;	Raw cost for generated ic 6 : (19, 28.000000) count=0.750000
+                                    134 ;	genAssign
+                                    135 ;	genAssignLit
+      000030 A2 DB            [ 2]  136 	ldx	#0xdb
+      000032 8Er00r00         [ 4]  137 	stx	___fsadd_PARM_2
+      000035 A2 0F            [ 2]  138 	ldx	#0x0f
+      000037 8Er01r00         [ 4]  139 	stx	(___fsadd_PARM_2 + 1)
+      00003A A2 C9            [ 2]  140 	ldx	#0xc9
+      00003C 8Er02r00         [ 4]  141 	stx	(___fsadd_PARM_2 + 2)
+      00003F A2 3F            [ 2]  142 	ldx	#0x3f
+      000041 8Er03r00         [ 4]  143 	stx	(___fsadd_PARM_2 + 3)
+                                    144 ;	Raw cost for generated ic 95 : (20, 24.000000) count=0.750000
+                                    145 ;	genCall
+      000044 20r00r00         [ 6]  146 	jsr	___fsadd
+                                    147 ;	assignResultValue
+      000047 8Dr05r00         [ 4]  148 	sta	_sincosf_y_10000_26
+      00004A 8Er06r00         [ 4]  149 	stx	(_sincosf_y_10000_26 + 1)
+      00004D A5*00            [ 3]  150 	lda	*___SDCC_m6502_ret2
+      00004F 8Dr07r00         [ 4]  151 	sta	(_sincosf_y_10000_26 + 2)
+      000052 A5*00            [ 3]  152 	lda	*___SDCC_m6502_ret3
+      000054 8Dr08r00         [ 4]  153 	sta	(_sincosf_y_10000_26 + 3)
+                                    154 ;	Raw cost for generated ic 96 : (19, 28.000000) count=0.750000
+                                    155 ;	../sincosf.c: 59: sign=0;
+                                    156 ;	genAssign
+                                    157 ;	genAssignLit
+      000057 A0 00            [ 2]  158 	ldy	#0x00
+      000059 8Cr11r00         [ 4]  159 	sty	_sincosf_sign_10000_26
+                                    160 ;	Raw cost for generated ic 9 : (5, 6.000000) count=0.750000
+                                    161 ;	genGoto
+      00005C 4CrCBr00         [ 3]  162 	jmp	00106$
+                                    163 ;	Raw cost for generated ic 10 : (3, 3.000000) count=0.750000
+                                    164 ;	genLabel
+      00005F                        165 00105$:
+                                    166 ;	Raw cost for generated ic 11 : (0, 0.000000) count=0.250000
+                                    167 ;	../sincosf.c: 63: if(x<0.0)
+                                    168 ;	genAssign
+                                    169 ;	genCopy
+      00005F ADr03r00         [ 4]  170 	lda	(_sincosf_PARM_1 + 3)
+      000062 8Dr03r00         [ 4]  171 	sta	(___fslt_PARM_1 + 3)
+      000065 ADr02r00         [ 4]  172 	lda	(_sincosf_PARM_1 + 2)
+      000068 8Dr02r00         [ 4]  173 	sta	(___fslt_PARM_1 + 2)
+      00006B ADr01r00         [ 4]  174 	lda	(_sincosf_PARM_1 + 1)
+      00006E 8Dr01r00         [ 4]  175 	sta	(___fslt_PARM_1 + 1)
+      000071 ADr00r00         [ 4]  176 	lda	_sincosf_PARM_1
+      000074 8Dr00r00         [ 4]  177 	sta	___fslt_PARM_1
+                                    178 ;	Raw cost for generated ic 97 : (24, 32.000000) count=0.250000
+                                    179 ;	genAssign
+                                    180 ;	genAssignLit
+      000077 A0 00            [ 2]  181 	ldy	#0x00
+      000079 8Cr00r00         [ 4]  182 	sty	___fslt_PARM_2
+      00007C 8Cr01r00         [ 4]  183 	sty	(___fslt_PARM_2 + 1)
+      00007F 8Cr02r00         [ 4]  184 	sty	(___fslt_PARM_2 + 2)
+      000082 8Cr03r00         [ 4]  185 	sty	(___fslt_PARM_2 + 3)
+                                    186 ;	Raw cost for generated ic 98 : (14, 18.000000) count=0.250000
+                                    187 ;	genCall
+      000085 20r00r00         [ 6]  188 	jsr	___fslt
+                                    189 ;	assignResultValue
+                                    190 ;	Raw cost for generated ic 99 : (3, 6.000000) count=0.250000
+                                    191 ;	genIfx
+      000088 C9 00            [ 2]  192 	cmp	#0x00
+                                    193 ;	genIfxJump : z
+      00008A F0 22            [ 4]  194 	beq	00102$
+                                    195 ;	Raw cost for generated ic 13 : (7, 7.600000) count=0.250000
+                                    196 ;	../sincosf.c: 64: { y=-x; sign=1; }
+                                    197 ;	genUminus
+                                    198 ;	genUminusFloat
+      00008C ADr00r00         [ 4]  199 	lda	_sincosf_PARM_1
+      00008F 8Dr05r00         [ 4]  200 	sta	_sincosf_y_10000_26
+      000092 ADr01r00         [ 4]  201 	lda	(_sincosf_PARM_1 + 1)
+      000095 8Dr06r00         [ 4]  202 	sta	(_sincosf_y_10000_26 + 1)
+      000098 ADr02r00         [ 4]  203 	lda	(_sincosf_PARM_1 + 2)
+      00009B 8Dr07r00         [ 4]  204 	sta	(_sincosf_y_10000_26 + 2)
+      00009E ADr03r00         [ 4]  205 	lda	(_sincosf_PARM_1 + 3)
+      0000A1 49 80            [ 2]  206 	eor	#0x80
+      0000A3 8Dr08r00         [ 4]  207 	sta	(_sincosf_y_10000_26 + 3)
+                                    208 ;	Raw cost for generated ic 16 : (26, 34.000000) count=0.187500
+                                    209 ;	genAssign
+                                    210 ;	genAssignLit
+      0000A6 A2 01            [ 2]  211 	ldx	#0x01
+      0000A8 8Er11r00         [ 4]  212 	stx	_sincosf_sign_10000_26
+                                    213 ;	Raw cost for generated ic 18 : (5, 6.000000) count=0.187500
+                                    214 ;	genGoto
+      0000AB 4CrCBr00         [ 3]  215 	jmp	00106$
+                                    216 ;	Raw cost for generated ic 19 : (3, 3.000000) count=0.187500
+                                    217 ;	genLabel
+      0000AE                        218 00102$:
+                                    219 ;	Raw cost for generated ic 20 : (0, 0.000000) count=0.062500
+                                    220 ;	../sincosf.c: 66: { y=x; sign=0; }
+                                    221 ;	genAssign
+                                    222 ;	genCopy
+      0000AE ADr03r00         [ 4]  223 	lda	(_sincosf_PARM_1 + 3)
+      0000B1 8Dr08r00         [ 4]  224 	sta	(_sincosf_y_10000_26 + 3)
+      0000B4 ADr02r00         [ 4]  225 	lda	(_sincosf_PARM_1 + 2)
+      0000B7 8Dr07r00         [ 4]  226 	sta	(_sincosf_y_10000_26 + 2)
+      0000BA ADr01r00         [ 4]  227 	lda	(_sincosf_PARM_1 + 1)
+      0000BD 8Dr06r00         [ 4]  228 	sta	(_sincosf_y_10000_26 + 1)
+      0000C0 ADr00r00         [ 4]  229 	lda	_sincosf_PARM_1
+      0000C3 8Dr05r00         [ 4]  230 	sta	_sincosf_y_10000_26
+                                    231 ;	Raw cost for generated ic 21 : (24, 32.000000) count=0.062500
+                                    232 ;	genAssign
+                                    233 ;	genAssignLit
+      0000C6 A0 00            [ 2]  234 	ldy	#0x00
+      0000C8 8Cr11r00         [ 4]  235 	sty	_sincosf_sign_10000_26
+                                    236 ;	Raw cost for generated ic 22 : (5, 6.000000) count=0.062500
+                                    237 ;	genLabel
+      0000CB                        238 00106$:
+                                    239 ;	Raw cost for generated ic 24 : (0, 0.000000) count=1.000000
+                                    240 ;	../sincosf.c: 69: if(y>YMAX)
+                                    241 ;	genAssign
+                                    242 ;	genAssignLit
+      0000CB A0 00            [ 2]  243 	ldy	#0x00
+      0000CD 8Cr00r00         [ 4]  244 	sty	___fslt_PARM_1
+      0000D0 A2 0C            [ 2]  245 	ldx	#0x0c
+      0000D2 8Er01r00         [ 4]  246 	stx	(___fslt_PARM_1 + 1)
+      0000D5 A2 49            [ 2]  247 	ldx	#0x49
+      0000D7 8Er02r00         [ 4]  248 	stx	(___fslt_PARM_1 + 2)
+      0000DA A2 46            [ 2]  249 	ldx	#0x46
+      0000DC 8Er03r00         [ 4]  250 	stx	(___fslt_PARM_1 + 3)
+                                    251 ;	Raw cost for generated ic 100 : (20, 24.000000) count=1.000000
+                                    252 ;	genAssign
+                                    253 ;	genCopy
+      0000DF ADr08r00         [ 4]  254 	lda	(_sincosf_y_10000_26 + 3)
+      0000E2 8Dr03r00         [ 4]  255 	sta	(___fslt_PARM_2 + 3)
+      0000E5 ADr07r00         [ 4]  256 	lda	(_sincosf_y_10000_26 + 2)
+      0000E8 8Dr02r00         [ 4]  257 	sta	(___fslt_PARM_2 + 2)
+      0000EB ADr06r00         [ 4]  258 	lda	(_sincosf_y_10000_26 + 1)
+      0000EE 8Dr01r00         [ 4]  259 	sta	(___fslt_PARM_2 + 1)
+      0000F1 ADr05r00         [ 4]  260 	lda	_sincosf_y_10000_26
+      0000F4 8Dr00r00         [ 4]  261 	sta	___fslt_PARM_2
+                                    262 ;	Raw cost for generated ic 101 : (24, 32.000000) count=1.000000
+                                    263 ;	genCall
+      0000F7 20r00r00         [ 6]  264 	jsr	___fslt
+                                    265 ;	assignResultValue
+                                    266 ;	Raw cost for generated ic 102 : (3, 6.000000) count=1.000000
+                                    267 ;	genIfx
+      0000FA C9 00            [ 2]  268 	cmp	#0x00
+                                    269 ;	genIfxJump : z
+      0000FC F0 11            [ 4]  270 	beq	00108$
+                                    271 ;	Raw cost for generated ic 26 : (7, 7.600000) count=1.000000
+                                    272 ;	../sincosf.c: 71: errno=ERANGE;
+                                    273 ;	genAssign
+                                    274 ;	genAssignLit
+      0000FE A2 22            [ 2]  275 	ldx	#0x22
+      000100 8Er00r00         [ 4]  276 	stx	_errno
+      000103 A0 00            [ 2]  277 	ldy	#0x00
+      000105 8Cr01r00         [ 4]  278 	sty	(_errno + 1)
+                                    279 ;	Raw cost for generated ic 30 : (10, 12.000000) count=0.750000
+                                    280 ;	../sincosf.c: 72: return 0.0;
+                                    281 ;	genRet
+      000108 98               [ 2]  282 	tya
+      000109 AA               [ 2]  283 	tax
+      00010A 85*00            [ 3]  284 	sta	*___SDCC_m6502_ret2
+      00010C 85*00            [ 3]  285 	sta	*___SDCC_m6502_ret3
+      00010E 60               [ 6]  286 	rts
+                                    287 ;	Raw cost for generated ic 31 : (9, 13.000000) count=0.750000
+                                    288 ;	genLabel
+      00010F                        289 00108$:
+                                    290 ;	Raw cost for generated ic 32 : (0, 0.000000) count=1.000000
+                                    291 ;	../sincosf.c: 76: N=((y*iPI)+0.5); /*y is positive*/
+                                    292 ;	genAssign
+                                    293 ;	genAssignLit
+      00010F A2 83            [ 2]  294 	ldx	#0x83
+      000111 8Er00r00         [ 4]  295 	stx	___fsmul_PARM_1
+      000114 A2 F9            [ 2]  296 	ldx	#0xf9
+      000116 8Er01r00         [ 4]  297 	stx	(___fsmul_PARM_1 + 1)
+      000119 A2 A2            [ 2]  298 	ldx	#0xa2
+      00011B 8Er02r00         [ 4]  299 	stx	(___fsmul_PARM_1 + 2)
+      00011E A2 3E            [ 2]  300 	ldx	#0x3e
+      000120 8Er03r00         [ 4]  301 	stx	(___fsmul_PARM_1 + 3)
+                                    302 ;	Raw cost for generated ic 103 : (20, 24.000000) count=1.000000
+                                    303 ;	genAssign
+                                    304 ;	genCopy
+      000123 ADr08r00         [ 4]  305 	lda	(_sincosf_y_10000_26 + 3)
+      000126 8Dr03r00         [ 4]  306 	sta	(___fsmul_PARM_2 + 3)
+      000129 ADr07r00         [ 4]  307 	lda	(_sincosf_y_10000_26 + 2)
+      00012C 8Dr02r00         [ 4]  308 	sta	(___fsmul_PARM_2 + 2)
+      00012F ADr06r00         [ 4]  309 	lda	(_sincosf_y_10000_26 + 1)
+      000132 8Dr01r00         [ 4]  310 	sta	(___fsmul_PARM_2 + 1)
+      000135 ADr05r00         [ 4]  311 	lda	_sincosf_y_10000_26
+      000138 8Dr00r00         [ 4]  312 	sta	___fsmul_PARM_2
+                                    313 ;	Raw cost for generated ic 104 : (24, 32.000000) count=1.000000
+                                    314 ;	genCall
+      00013B 20r00r00         [ 6]  315 	jsr	___fsmul
+                                    316 ;	assignResultValue
+      00013E 8Dr00r00         [ 4]  317 	sta	___fsadd_PARM_1
+      000141 8Er01r00         [ 4]  318 	stx	(___fsadd_PARM_1 + 1)
+      000144 A5*00            [ 3]  319 	lda	*___SDCC_m6502_ret2
+      000146 8Dr02r00         [ 4]  320 	sta	(___fsadd_PARM_1 + 2)
+      000149 A5*00            [ 3]  321 	lda	*___SDCC_m6502_ret3
+      00014B 8Dr03r00         [ 4]  322 	sta	(___fsadd_PARM_1 + 3)
+                                    323 ;	Raw cost for generated ic 105 : (19, 28.000000) count=1.000000
+                                    324 ;	genAssign
+                                    325 ;	genAssignLit
+      00014E A0 00            [ 2]  326 	ldy	#0x00
+      000150 8Cr00r00         [ 4]  327 	sty	___fsadd_PARM_2
+      000153 8Cr01r00         [ 4]  328 	sty	(___fsadd_PARM_2 + 1)
+      000156 8Cr02r00         [ 4]  329 	sty	(___fsadd_PARM_2 + 2)
+      000159 A2 3F            [ 2]  330 	ldx	#0x3f
+      00015B 8Er03r00         [ 4]  331 	stx	(___fsadd_PARM_2 + 3)
+                                    332 ;	Raw cost for generated ic 107 : (16, 20.000000) count=1.000000
+                                    333 ;	genCall
+      00015E 20r00r00         [ 6]  334 	jsr	___fsadd
+                                    335 ;	assignResultValue
+      000161 8Dr00r00         [ 4]  336 	sta	___fs2sint_PARM_1
+      000164 8Er01r00         [ 4]  337 	stx	(___fs2sint_PARM_1 + 1)
+      000167 A5*00            [ 3]  338 	lda	*___SDCC_m6502_ret2
+      000169 8Dr02r00         [ 4]  339 	sta	(___fs2sint_PARM_1 + 2)
+      00016C A5*00            [ 3]  340 	lda	*___SDCC_m6502_ret3
+      00016E 8Dr03r00         [ 4]  341 	sta	(___fs2sint_PARM_1 + 3)
+                                    342 ;	Raw cost for generated ic 108 : (19, 28.000000) count=1.000000
+                                    343 ;	genCall
+      000171 20r00r00         [ 6]  344 	jsr	___fs2sint
+                                    345 ;	assignResultValue
+                                    346 ;	Raw cost for generated ic 110 : (3, 6.000000) count=1.000000
+                                    347 ;	../sincosf.c: 79: if(N&1) sign=!sign;
+                                    348 ;	genAnd
+      000174 85*00            [ 3]  349 	sta	*(REGTEMP+0)
+      000176 29 01            [ 2]  350 	and	#0x01
+      000178 08               [ 3]  351 	php
+      000179 A5*00            [ 3]  352 	lda	*(REGTEMP+0)
+      00017B 28               [ 4]  353 	plp
+                                    354 ;	genIfxJump : z
+      00017C F0 0A            [ 4]  355 	beq	00110$
+                                    356 ;	Raw cost for generated ic 37 : (15, 23.200001) count=1.000000
+                                    357 ;	skipping generated iCode
+                                    358 ;	Raw cost for generated ic 38 : (0, 0.000000) count=1.000000
+                                    359 ;	genNot
+      00017E 48               [ 3]  360 	pha
+      00017F ADr11r00         [ 4]  361 	lda	_sincosf_sign_10000_26
+      000182 49 01            [ 2]  362 	eor	#0x01
+      000184 8Dr11r00         [ 4]  363 	sta	_sincosf_sign_10000_26
+      000187 68               [ 4]  364 	pla
+                                    365 ;	Raw cost for generated ic 41 : (10, 17.000000) count=0.750000
+                                    366 ;	genLabel
+      000188                        367 00110$:
+                                    368 ;	Raw cost for generated ic 43 : (0, 0.000000) count=1.000000
+                                    369 ;	../sincosf.c: 81: XN=N;
+                                    370 ;	Raw cost for generated ic 111 : (0, 0.000000) count=1.000000
+                                    371 ;	genCall
+                                    372 ;	genSend
+      000188 20r00r00         [ 6]  373 	jsr	___sint2fs
+                                    374 ;	assignResultValue
+      00018B 85*00            [ 3]  375 	sta	*_sincosf_sloc0_1_0
+      00018D 86*01            [ 3]  376 	stx	*(_sincosf_sloc0_1_0 + 1)
+      00018F A5*00            [ 3]  377 	lda	*___SDCC_m6502_ret2
+      000191 85*02            [ 3]  378 	sta	*(_sincosf_sloc0_1_0 + 2)
+      000193 A5*00            [ 3]  379 	lda	*___SDCC_m6502_ret3
+      000195 85*03            [ 3]  380 	sta	*(_sincosf_sloc0_1_0 + 3)
+                                    381 ;	Raw cost for generated ic 112 : (15, 24.000000) count=1.000000
+                                    382 ;	genAssign
+                                    383 ;	genCopy
+      000197 8Dr10r00         [ 4]  384 	sta	(_sincosf_XN_10000_26 + 3)
+      00019A A5*02            [ 3]  385 	lda	*(_sincosf_sloc0_1_0 + 2)
+      00019C 8Dr0Fr00         [ 4]  386 	sta	(_sincosf_XN_10000_26 + 2)
+      00019F 8A               [ 2]  387 	txa
+      0001A0 8Dr0Er00         [ 4]  388 	sta	(_sincosf_XN_10000_26 + 1)
+      0001A3 A5*00            [ 3]  389 	lda	*_sincosf_sloc0_1_0
+      0001A5 8Dr0Dr00         [ 4]  390 	sta	_sincosf_XN_10000_26
+                                    391 ;	Raw cost for generated ic 45 : (17, 24.000000) count=1.000000
+                                    392 ;	../sincosf.c: 83: if(iscos) XN-=0.5;
+                                    393 ;	genIfx
+      0001A8 ADr04r00         [ 4]  394 	lda	_sincosf_PARM_2
+                                    395 ;	genIfxJump : z
+      0001AB F0 36            [ 4]  396 	beq	00112$
+                                    397 ;	Raw cost for generated ic 46 : (8, 9.600000) count=1.000000
+                                    398 ;	genAssign
+                                    399 ;	genCopy
+      0001AD A5*03            [ 3]  400 	lda	*(_sincosf_sloc0_1_0 + 3)
+      0001AF 8Dr03r00         [ 4]  401 	sta	(___fssub_PARM_1 + 3)
+      0001B2 A5*02            [ 3]  402 	lda	*(_sincosf_sloc0_1_0 + 2)
+      0001B4 8Dr02r00         [ 4]  403 	sta	(___fssub_PARM_1 + 2)
+      0001B7 8A               [ 2]  404 	txa
+      0001B8 8Dr01r00         [ 4]  405 	sta	(___fssub_PARM_1 + 1)
+      0001BB A5*00            [ 3]  406 	lda	*_sincosf_sloc0_1_0
+      0001BD 8Dr00r00         [ 4]  407 	sta	___fssub_PARM_1
+                                    408 ;	Raw cost for generated ic 113 : (19, 27.000000) count=0.750000
+                                    409 ;	genAssign
+                                    410 ;	genAssignLit
+      0001C0 A0 00            [ 2]  411 	ldy	#0x00
+      0001C2 8Cr00r00         [ 4]  412 	sty	___fssub_PARM_2
+      0001C5 8Cr01r00         [ 4]  413 	sty	(___fssub_PARM_2 + 1)
+      0001C8 8Cr02r00         [ 4]  414 	sty	(___fssub_PARM_2 + 2)
+      0001CB A2 3F            [ 2]  415 	ldx	#0x3f
+      0001CD 8Er03r00         [ 4]  416 	stx	(___fssub_PARM_2 + 3)
+                                    417 ;	Raw cost for generated ic 114 : (16, 20.000000) count=0.750000
+                                    418 ;	genCall
+      0001D0 20r00r00         [ 6]  419 	jsr	___fssub
+                                    420 ;	assignResultValue
+      0001D3 8Dr0Dr00         [ 4]  421 	sta	_sincosf_XN_10000_26
+      0001D6 8Er0Er00         [ 4]  422 	stx	(_sincosf_XN_10000_26 + 1)
+      0001D9 A5*00            [ 3]  423 	lda	*___SDCC_m6502_ret2
+      0001DB 8Dr0Fr00         [ 4]  424 	sta	(_sincosf_XN_10000_26 + 2)
+      0001DE A5*00            [ 3]  425 	lda	*___SDCC_m6502_ret3
+      0001E0 8Dr10r00         [ 4]  426 	sta	(_sincosf_XN_10000_26 + 3)
+                                    427 ;	Raw cost for generated ic 115 : (19, 28.000000) count=0.750000
+                                    428 ;	genLabel
+      0001E3                        429 00112$:
+                                    430 ;	Raw cost for generated ic 51 : (0, 0.000000) count=1.000000
+                                    431 ;	../sincosf.c: 85: y=fabsf(x);
+                                    432 ;	genAssign
+                                    433 ;	genCopy
+      0001E3 ADr03r00         [ 4]  434 	lda	(_sincosf_PARM_1 + 3)
+      0001E6 8Dr03r00         [ 4]  435 	sta	(_fabsf_PARM_1 + 3)
+      0001E9 ADr02r00         [ 4]  436 	lda	(_sincosf_PARM_1 + 2)
+      0001EC 8Dr02r00         [ 4]  437 	sta	(_fabsf_PARM_1 + 2)
+      0001EF ADr01r00         [ 4]  438 	lda	(_sincosf_PARM_1 + 1)
+      0001F2 8Dr01r00         [ 4]  439 	sta	(_fabsf_PARM_1 + 1)
+      0001F5 ADr00r00         [ 4]  440 	lda	_sincosf_PARM_1
+      0001F8 8Dr00r00         [ 4]  441 	sta	_fabsf_PARM_1
+                                    442 ;	Raw cost for generated ic 52 : (24, 32.000000) count=1.000000
+                                    443 ;	genCall
+      0001FB 20r00r00         [ 6]  444 	jsr	_fabsf
+                                    445 ;	assignResultValue
+      0001FE 85*00            [ 3]  446 	sta	*_sincosf_sloc0_1_0
+      000200 86*01            [ 3]  447 	stx	*(_sincosf_sloc0_1_0 + 1)
+      000202 A5*00            [ 3]  448 	lda	*___SDCC_m6502_ret2
+      000204 85*02            [ 3]  449 	sta	*(_sincosf_sloc0_1_0 + 2)
+      000206 A5*00            [ 3]  450 	lda	*___SDCC_m6502_ret3
+      000208 85*03            [ 3]  451 	sta	*(_sincosf_sloc0_1_0 + 3)
+                                    452 ;	Raw cost for generated ic 53 : (15, 24.000000) count=1.000000
+                                    453 ;	../sincosf.c: 86: r=(int)y;
+                                    454 ;	genAssign
+                                    455 ;	genCopy
+      00020A 8Dr03r00         [ 4]  456 	sta	(___fs2sint_PARM_1 + 3)
+      00020D A5*02            [ 3]  457 	lda	*(_sincosf_sloc0_1_0 + 2)
+      00020F 8Dr02r00         [ 4]  458 	sta	(___fs2sint_PARM_1 + 2)
+      000212 8A               [ 2]  459 	txa
+      000213 8Dr01r00         [ 4]  460 	sta	(___fs2sint_PARM_1 + 1)
+      000216 A5*00            [ 3]  461 	lda	*_sincosf_sloc0_1_0
+      000218 8Dr00r00         [ 4]  462 	sta	___fs2sint_PARM_1
+                                    463 ;	Raw cost for generated ic 116 : (17, 24.000000) count=1.000000
+                                    464 ;	genCall
+      00021B 20r00r00         [ 6]  465 	jsr	___fs2sint
+                                    466 ;	assignResultValue
+                                    467 ;	Raw cost for generated ic 117 : (3, 6.000000) count=1.000000
+                                    468 ;	Raw cost for generated ic 118 : (0, 0.000000) count=1.000000
+                                    469 ;	genCall
+                                    470 ;	genSend
+      00021E 20r00r00         [ 6]  471 	jsr	___sint2fs
+                                    472 ;	assignResultValue
+      000221 85*04            [ 3]  473 	sta	*_sincosf_sloc1_1_0
+      000223 86*05            [ 3]  474 	stx	*(_sincosf_sloc1_1_0 + 1)
+      000225 A5*00            [ 3]  475 	lda	*___SDCC_m6502_ret2
+      000227 85*06            [ 3]  476 	sta	*(_sincosf_sloc1_1_0 + 2)
+      000229 A5*00            [ 3]  477 	lda	*___SDCC_m6502_ret3
+      00022B 85*07            [ 3]  478 	sta	*(_sincosf_sloc1_1_0 + 3)
+                                    479 ;	Raw cost for generated ic 119 : (15, 24.000000) count=1.000000
+                                    480 ;	../sincosf.c: 87: g=y-r;
+                                    481 ;	genAssign
+                                    482 ;	genCopy
+      00022D A5*03            [ 3]  483 	lda	*(_sincosf_sloc0_1_0 + 3)
+      00022F 8Dr03r00         [ 4]  484 	sta	(___fssub_PARM_1 + 3)
+      000232 A5*02            [ 3]  485 	lda	*(_sincosf_sloc0_1_0 + 2)
+      000234 8Dr02r00         [ 4]  486 	sta	(___fssub_PARM_1 + 2)
+      000237 A5*01            [ 3]  487 	lda	*(_sincosf_sloc0_1_0 + 1)
+      000239 8Dr01r00         [ 4]  488 	sta	(___fssub_PARM_1 + 1)
+      00023C A5*00            [ 3]  489 	lda	*_sincosf_sloc0_1_0
+      00023E 8Dr00r00         [ 4]  490 	sta	___fssub_PARM_1
+                                    491 ;	Raw cost for generated ic 120 : (20, 28.000000) count=1.000000
+                                    492 ;	genAssign
+                                    493 ;	genCopy
+      000241 A5*07            [ 3]  494 	lda	*(_sincosf_sloc1_1_0 + 3)
+      000243 8Dr03r00         [ 4]  495 	sta	(___fssub_PARM_2 + 3)
+      000246 A5*06            [ 3]  496 	lda	*(_sincosf_sloc1_1_0 + 2)
+      000248 8Dr02r00         [ 4]  497 	sta	(___fssub_PARM_2 + 2)
+      00024B 8A               [ 2]  498 	txa
+      00024C 8Dr01r00         [ 4]  499 	sta	(___fssub_PARM_2 + 1)
+      00024F A5*04            [ 3]  500 	lda	*_sincosf_sloc1_1_0
+      000251 8Dr00r00         [ 4]  501 	sta	___fssub_PARM_2
+                                    502 ;	Raw cost for generated ic 121 : (19, 27.000000) count=1.000000
+                                    503 ;	../sincosf.c: 88: f=((r-XN*C1)+g)-XN*C2;
+                                    504 ;	genCall
+      000254 20r00r00         [ 6]  505 	jsr	___fssub
+                                    506 ;	assignResultValue
+      000257 85*00            [ 3]  507 	sta	*_sincosf_sloc0_1_0
+      000259 86*01            [ 3]  508 	stx	*(_sincosf_sloc0_1_0 + 1)
+      00025B A5*00            [ 3]  509 	lda	*___SDCC_m6502_ret2
+      00025D 85*02            [ 3]  510 	sta	*(_sincosf_sloc0_1_0 + 2)
+      00025F A5*00            [ 3]  511 	lda	*___SDCC_m6502_ret3
+      000261 85*03            [ 3]  512 	sta	*(_sincosf_sloc0_1_0 + 3)
+                                    513 ;	Raw cost for generated ic 122 : (15, 24.000000) count=1.000000
+                                    514 ;	genAssign
+                                    515 ;	genAssignLit
+      000263 A0 00            [ 2]  516 	ldy	#0x00
+      000265 8Cr00r00         [ 4]  517 	sty	___fsmul_PARM_1
+      000268 8Cr01r00         [ 4]  518 	sty	(___fsmul_PARM_1 + 1)
+      00026B A2 49            [ 2]  519 	ldx	#0x49
+      00026D 8Er02r00         [ 4]  520 	stx	(___fsmul_PARM_1 + 2)
+      000270 A2 40            [ 2]  521 	ldx	#0x40
+      000272 8Er03r00         [ 4]  522 	stx	(___fsmul_PARM_1 + 3)
+                                    523 ;	Raw cost for generated ic 123 : (18, 22.000000) count=1.000000
+                                    524 ;	genAssign
+                                    525 ;	genCopy
+      000275 ADr10r00         [ 4]  526 	lda	(_sincosf_XN_10000_26 + 3)
+      000278 8Dr03r00         [ 4]  527 	sta	(___fsmul_PARM_2 + 3)
+      00027B ADr0Fr00         [ 4]  528 	lda	(_sincosf_XN_10000_26 + 2)
+      00027E 8Dr02r00         [ 4]  529 	sta	(___fsmul_PARM_2 + 2)
+      000281 ADr0Er00         [ 4]  530 	lda	(_sincosf_XN_10000_26 + 1)
+      000284 8Dr01r00         [ 4]  531 	sta	(___fsmul_PARM_2 + 1)
+      000287 ADr0Dr00         [ 4]  532 	lda	_sincosf_XN_10000_26
+      00028A 8Dr00r00         [ 4]  533 	sta	___fsmul_PARM_2
+                                    534 ;	Raw cost for generated ic 124 : (24, 32.000000) count=1.000000
+                                    535 ;	genCall
+      00028D 20r00r00         [ 6]  536 	jsr	___fsmul
+                                    537 ;	assignResultValue
+      000290 8Dr00r00         [ 4]  538 	sta	___fssub_PARM_2
+      000293 8Er01r00         [ 4]  539 	stx	(___fssub_PARM_2 + 1)
+      000296 A5*00            [ 3]  540 	lda	*___SDCC_m6502_ret2
+      000298 8Dr02r00         [ 4]  541 	sta	(___fssub_PARM_2 + 2)
+      00029B A5*00            [ 3]  542 	lda	*___SDCC_m6502_ret3
+      00029D 8Dr03r00         [ 4]  543 	sta	(___fssub_PARM_2 + 3)
+                                    544 ;	Raw cost for generated ic 125 : (19, 28.000000) count=1.000000
+                                    545 ;	genAssign
+                                    546 ;	genCopy
+      0002A0 A5*07            [ 3]  547 	lda	*(_sincosf_sloc1_1_0 + 3)
+      0002A2 8Dr03r00         [ 4]  548 	sta	(___fssub_PARM_1 + 3)
+      0002A5 A5*06            [ 3]  549 	lda	*(_sincosf_sloc1_1_0 + 2)
+      0002A7 8Dr02r00         [ 4]  550 	sta	(___fssub_PARM_1 + 2)
+      0002AA A5*05            [ 3]  551 	lda	*(_sincosf_sloc1_1_0 + 1)
+      0002AC 8Dr01r00         [ 4]  552 	sta	(___fssub_PARM_1 + 1)
+      0002AF A5*04            [ 3]  553 	lda	*_sincosf_sloc1_1_0
+      0002B1 8Dr00r00         [ 4]  554 	sta	___fssub_PARM_1
+                                    555 ;	Raw cost for generated ic 126 : (20, 28.000000) count=1.000000
+                                    556 ;	genCall
+      0002B4 20r00r00         [ 6]  557 	jsr	___fssub
+                                    558 ;	assignResultValue
+      0002B7 8Dr00r00         [ 4]  559 	sta	___fsadd_PARM_1
+      0002BA 8Er01r00         [ 4]  560 	stx	(___fsadd_PARM_1 + 1)
+      0002BD A5*00            [ 3]  561 	lda	*___SDCC_m6502_ret2
+      0002BF 8Dr02r00         [ 4]  562 	sta	(___fsadd_PARM_1 + 2)
+      0002C2 A5*00            [ 3]  563 	lda	*___SDCC_m6502_ret3
+      0002C4 8Dr03r00         [ 4]  564 	sta	(___fsadd_PARM_1 + 3)
+                                    565 ;	Raw cost for generated ic 128 : (19, 28.000000) count=1.000000
+                                    566 ;	genAssign
+                                    567 ;	genCopy
+      0002C7 A5*03            [ 3]  568 	lda	*(_sincosf_sloc0_1_0 + 3)
+      0002C9 8Dr03r00         [ 4]  569 	sta	(___fsadd_PARM_2 + 3)
+      0002CC A5*02            [ 3]  570 	lda	*(_sincosf_sloc0_1_0 + 2)
+      0002CE 8Dr02r00         [ 4]  571 	sta	(___fsadd_PARM_2 + 2)
+      0002D1 A5*01            [ 3]  572 	lda	*(_sincosf_sloc0_1_0 + 1)
+      0002D3 8Dr01r00         [ 4]  573 	sta	(___fsadd_PARM_2 + 1)
+      0002D6 A5*00            [ 3]  574 	lda	*_sincosf_sloc0_1_0
+      0002D8 8Dr00r00         [ 4]  575 	sta	___fsadd_PARM_2
+                                    576 ;	Raw cost for generated ic 130 : (20, 28.000000) count=1.000000
+                                    577 ;	genCall
+      0002DB 20r00r00         [ 6]  578 	jsr	___fsadd
+                                    579 ;	assignResultValue
+      0002DE 85*04            [ 3]  580 	sta	*_sincosf_sloc1_1_0
+      0002E0 86*05            [ 3]  581 	stx	*(_sincosf_sloc1_1_0 + 1)
+      0002E2 A5*00            [ 3]  582 	lda	*___SDCC_m6502_ret2
+      0002E4 85*06            [ 3]  583 	sta	*(_sincosf_sloc1_1_0 + 2)
+      0002E6 A5*00            [ 3]  584 	lda	*___SDCC_m6502_ret3
+      0002E8 85*07            [ 3]  585 	sta	*(_sincosf_sloc1_1_0 + 3)
+                                    586 ;	Raw cost for generated ic 131 : (15, 24.000000) count=1.000000
+                                    587 ;	genAssign
+                                    588 ;	genAssignLit
+      0002EA A2 22            [ 2]  589 	ldx	#0x22
+      0002EC 8Er00r00         [ 4]  590 	stx	___fsmul_PARM_1
+      0002EF A2 AA            [ 2]  591 	ldx	#0xaa
+      0002F1 8Er01r00         [ 4]  592 	stx	(___fsmul_PARM_1 + 1)
+      0002F4 A2 7D            [ 2]  593 	ldx	#0x7d
+      0002F6 8Er02r00         [ 4]  594 	stx	(___fsmul_PARM_1 + 2)
+      0002F9 A2 3A            [ 2]  595 	ldx	#0x3a
+      0002FB 8Er03r00         [ 4]  596 	stx	(___fsmul_PARM_1 + 3)
+                                    597 ;	Raw cost for generated ic 132 : (20, 24.000000) count=1.000000
+                                    598 ;	genAssign
+                                    599 ;	genCopy
+      0002FE ADr10r00         [ 4]  600 	lda	(_sincosf_XN_10000_26 + 3)
+      000301 8Dr03r00         [ 4]  601 	sta	(___fsmul_PARM_2 + 3)
+      000304 ADr0Fr00         [ 4]  602 	lda	(_sincosf_XN_10000_26 + 2)
+      000307 8Dr02r00         [ 4]  603 	sta	(___fsmul_PARM_2 + 2)
+      00030A ADr0Er00         [ 4]  604 	lda	(_sincosf_XN_10000_26 + 1)
+      00030D 8Dr01r00         [ 4]  605 	sta	(___fsmul_PARM_2 + 1)
+      000310 ADr0Dr00         [ 4]  606 	lda	_sincosf_XN_10000_26
+      000313 8Dr00r00         [ 4]  607 	sta	___fsmul_PARM_2
+                                    608 ;	Raw cost for generated ic 133 : (24, 32.000000) count=1.000000
+                                    609 ;	genCall
+      000316 20r00r00         [ 6]  610 	jsr	___fsmul
+                                    611 ;	assignResultValue
+      000319 8Dr00r00         [ 4]  612 	sta	___fssub_PARM_2
+      00031C 8Er01r00         [ 4]  613 	stx	(___fssub_PARM_2 + 1)
+      00031F A5*00            [ 3]  614 	lda	*___SDCC_m6502_ret2
+      000321 8Dr02r00         [ 4]  615 	sta	(___fssub_PARM_2 + 2)
+      000324 A5*00            [ 3]  616 	lda	*___SDCC_m6502_ret3
+      000326 8Dr03r00         [ 4]  617 	sta	(___fssub_PARM_2 + 3)
+                                    618 ;	Raw cost for generated ic 134 : (19, 28.000000) count=1.000000
+                                    619 ;	genAssign
+                                    620 ;	genCopy
+      000329 A5*07            [ 3]  621 	lda	*(_sincosf_sloc1_1_0 + 3)
+      00032B 8Dr03r00         [ 4]  622 	sta	(___fssub_PARM_1 + 3)
+      00032E A5*06            [ 3]  623 	lda	*(_sincosf_sloc1_1_0 + 2)
+      000330 8Dr02r00         [ 4]  624 	sta	(___fssub_PARM_1 + 2)
+      000333 A5*05            [ 3]  625 	lda	*(_sincosf_sloc1_1_0 + 1)
+      000335 8Dr01r00         [ 4]  626 	sta	(___fssub_PARM_1 + 1)
+      000338 A5*04            [ 3]  627 	lda	*_sincosf_sloc1_1_0
+      00033A 8Dr00r00         [ 4]  628 	sta	___fssub_PARM_1
+                                    629 ;	Raw cost for generated ic 135 : (20, 28.000000) count=1.000000
+                                    630 ;	genCall
+      00033D 20r00r00         [ 6]  631 	jsr	___fssub
+                                    632 ;	assignResultValue
+      000340 85*04            [ 3]  633 	sta	*_sincosf_sloc1_1_0
+      000342 86*05            [ 3]  634 	stx	*(_sincosf_sloc1_1_0 + 1)
+      000344 A5*00            [ 3]  635 	lda	*___SDCC_m6502_ret2
+      000346 85*06            [ 3]  636 	sta	*(_sincosf_sloc1_1_0 + 2)
+      000348 A5*00            [ 3]  637 	lda	*___SDCC_m6502_ret3
+      00034A 85*07            [ 3]  638 	sta	*(_sincosf_sloc1_1_0 + 3)
+                                    639 ;	Raw cost for generated ic 137 : (15, 24.000000) count=1.000000
+                                    640 ;	genAssign
+                                    641 ;	genCopy
+      00034C 8Dr0Cr00         [ 4]  642 	sta	(_sincosf_f_10000_26 + 3)
+      00034F A5*06            [ 3]  643 	lda	*(_sincosf_sloc1_1_0 + 2)
+      000351 8Dr0Br00         [ 4]  644 	sta	(_sincosf_f_10000_26 + 2)
+      000354 8A               [ 2]  645 	txa
+      000355 8Dr0Ar00         [ 4]  646 	sta	(_sincosf_f_10000_26 + 1)
+      000358 A5*04            [ 3]  647 	lda	*_sincosf_sloc1_1_0
+      00035A 8Dr09r00         [ 4]  648 	sta	_sincosf_f_10000_26
+                                    649 ;	Raw cost for generated ic 65 : (17, 24.000000) count=1.000000
+                                    650 ;	../sincosf.c: 90: g=f*f;
+                                    651 ;	genAssign
+                                    652 ;	genCopy
+      00035D A5*07            [ 3]  653 	lda	*(_sincosf_sloc1_1_0 + 3)
+      00035F 8Dr03r00         [ 4]  654 	sta	(___fsmul_PARM_1 + 3)
+      000362 A5*06            [ 3]  655 	lda	*(_sincosf_sloc1_1_0 + 2)
+      000364 8Dr02r00         [ 4]  656 	sta	(___fsmul_PARM_1 + 2)
+      000367 8A               [ 2]  657 	txa
+      000368 8Dr01r00         [ 4]  658 	sta	(___fsmul_PARM_1 + 1)
+      00036B A5*04            [ 3]  659 	lda	*_sincosf_sloc1_1_0
+      00036D 8Dr00r00         [ 4]  660 	sta	___fsmul_PARM_1
+                                    661 ;	Raw cost for generated ic 138 : (19, 27.000000) count=1.000000
+                                    662 ;	genAssign
+                                    663 ;	genCopy
+      000370 A5*07            [ 3]  664 	lda	*(_sincosf_sloc1_1_0 + 3)
+      000372 8Dr03r00         [ 4]  665 	sta	(___fsmul_PARM_2 + 3)
+      000375 A5*06            [ 3]  666 	lda	*(_sincosf_sloc1_1_0 + 2)
+      000377 8Dr02r00         [ 4]  667 	sta	(___fsmul_PARM_2 + 2)
+      00037A 8A               [ 2]  668 	txa
+      00037B 8Dr01r00         [ 4]  669 	sta	(___fsmul_PARM_2 + 1)
+      00037E A5*04            [ 3]  670 	lda	*_sincosf_sloc1_1_0
+      000380 8Dr00r00         [ 4]  671 	sta	___fsmul_PARM_2
+                                    672 ;	Raw cost for generated ic 139 : (19, 27.000000) count=1.000000
+                                    673 ;	../sincosf.c: 91: if(g>EPS2) //Used to be if(fabsf(f)>EPS)
+                                    674 ;	genCall
+      000383 20r00r00         [ 6]  675 	jsr	___fsmul
+                                    676 ;	assignResultValue
+      000386 85*00            [ 3]  677 	sta	*_sincosf_sloc0_1_0
+      000388 86*01            [ 3]  678 	stx	*(_sincosf_sloc0_1_0 + 1)
+      00038A A5*00            [ 3]  679 	lda	*___SDCC_m6502_ret2
+      00038C 85*02            [ 3]  680 	sta	*(_sincosf_sloc0_1_0 + 2)
+      00038E A5*00            [ 3]  681 	lda	*___SDCC_m6502_ret3
+      000390 85*03            [ 3]  682 	sta	*(_sincosf_sloc0_1_0 + 3)
+                                    683 ;	Raw cost for generated ic 140 : (15, 24.000000) count=1.000000
+                                    684 ;	genAssign
+                                    685 ;	genAssignLit
+      000392 A2 F3            [ 2]  686 	ldx	#0xf3
+      000394 8Er00r00         [ 4]  687 	stx	___fslt_PARM_1
+      000397 A2 FF            [ 2]  688 	ldx	#0xff
+      000399 8Er01r00         [ 4]  689 	stx	(___fslt_PARM_1 + 1)
+      00039C A2 7F            [ 2]  690 	ldx	#0x7f
+      00039E 8Er02r00         [ 4]  691 	stx	(___fslt_PARM_1 + 2)
+      0003A1 A2 33            [ 2]  692 	ldx	#0x33
+      0003A3 8Er03r00         [ 4]  693 	stx	(___fslt_PARM_1 + 3)
+                                    694 ;	Raw cost for generated ic 141 : (20, 24.000000) count=1.000000
+                                    695 ;	genAssign
+                                    696 ;	genCopy
+      0003A6 8Dr03r00         [ 4]  697 	sta	(___fslt_PARM_2 + 3)
+      0003A9 A5*02            [ 3]  698 	lda	*(_sincosf_sloc0_1_0 + 2)
+      0003AB 8Dr02r00         [ 4]  699 	sta	(___fslt_PARM_2 + 2)
+      0003AE A5*01            [ 3]  700 	lda	*(_sincosf_sloc0_1_0 + 1)
+      0003B0 8Dr01r00         [ 4]  701 	sta	(___fslt_PARM_2 + 1)
+      0003B3 A5*00            [ 3]  702 	lda	*_sincosf_sloc0_1_0
+      0003B5 8Dr00r00         [ 4]  703 	sta	___fslt_PARM_2
+                                    704 ;	Raw cost for generated ic 142 : (18, 25.000000) count=1.000000
+                                    705 ;	genCall
+      0003B8 20r00r00         [ 6]  706 	jsr	___fslt
+                                    707 ;	assignResultValue
+                                    708 ;	Raw cost for generated ic 143 : (3, 6.000000) count=1.000000
+                                    709 ;	genIfx
+      0003BB C9 00            [ 2]  710 	cmp	#0x00
+                                    711 ;	genIfxJump : z
+      0003BD D0 03            [ 4]  712 	bne	00173$
+      0003BF 4Cr35r05         [ 3]  713 	jmp	00114$
+      0003C2                        714 00173$:
+                                    715 ;	Raw cost for generated ic 69 : (7, 7.600000) count=1.000000
+                                    716 ;	../sincosf.c: 93: r=(((r4*g+r3)*g+r2)*g+r1)*g;
+                                    717 ;	genAssign
+                                    718 ;	genAssignLit
+      0003C2 A2 5B            [ 2]  719 	ldx	#0x5b
+      0003C4 8Er00r00         [ 4]  720 	stx	___fsmul_PARM_1
+      0003C7 A2 9C            [ 2]  721 	ldx	#0x9c
+      0003C9 8Er01r00         [ 4]  722 	stx	(___fsmul_PARM_1 + 1)
+      0003CC A2 2E            [ 2]  723 	ldx	#0x2e
+      0003CE 8Er02r00         [ 4]  724 	stx	(___fsmul_PARM_1 + 2)
+      0003D1 A2 36            [ 2]  725 	ldx	#0x36
+      0003D3 8Er03r00         [ 4]  726 	stx	(___fsmul_PARM_1 + 3)
+                                    727 ;	Raw cost for generated ic 144 : (20, 24.000000) count=0.750000
+                                    728 ;	genAssign
+                                    729 ;	genCopy
+      0003D6 A5*03            [ 3]  730 	lda	*(_sincosf_sloc0_1_0 + 3)
+      0003D8 8Dr03r00         [ 4]  731 	sta	(___fsmul_PARM_2 + 3)
+      0003DB A5*02            [ 3]  732 	lda	*(_sincosf_sloc0_1_0 + 2)
+      0003DD 8Dr02r00         [ 4]  733 	sta	(___fsmul_PARM_2 + 2)
+      0003E0 A5*01            [ 3]  734 	lda	*(_sincosf_sloc0_1_0 + 1)
+      0003E2 8Dr01r00         [ 4]  735 	sta	(___fsmul_PARM_2 + 1)
+      0003E5 A5*00            [ 3]  736 	lda	*_sincosf_sloc0_1_0
+      0003E7 8Dr00r00         [ 4]  737 	sta	___fsmul_PARM_2
+                                    738 ;	Raw cost for generated ic 145 : (20, 28.000000) count=0.750000
+                                    739 ;	genCall
+      0003EA 20r00r00         [ 6]  740 	jsr	___fsmul
+                                    741 ;	assignResultValue
+      0003ED 8Dr00r00         [ 4]  742 	sta	___fsadd_PARM_1
+      0003F0 8Er01r00         [ 4]  743 	stx	(___fsadd_PARM_1 + 1)
+      0003F3 A5*00            [ 3]  744 	lda	*___SDCC_m6502_ret2
+      0003F5 8Dr02r00         [ 4]  745 	sta	(___fsadd_PARM_1 + 2)
+      0003F8 A5*00            [ 3]  746 	lda	*___SDCC_m6502_ret3
+      0003FA 8Dr03r00         [ 4]  747 	sta	(___fsadd_PARM_1 + 3)
+                                    748 ;	Raw cost for generated ic 146 : (19, 28.000000) count=0.750000
+                                    749 ;	genAssign
+                                    750 ;	genAssignLit
+      0003FD A2 22            [ 2]  751 	ldx	#0x22
+      0003FF 8Er00r00         [ 4]  752 	stx	___fsadd_PARM_2
+      000402 A2 B2            [ 2]  753 	ldx	#0xb2
+      000404 8Er01r00         [ 4]  754 	stx	(___fsadd_PARM_2 + 1)
+      000407 A2 4F            [ 2]  755 	ldx	#0x4f
+      000409 8Er02r00         [ 4]  756 	stx	(___fsadd_PARM_2 + 2)
+      00040C A2 B9            [ 2]  757 	ldx	#0xb9
+      00040E 8Er03r00         [ 4]  758 	stx	(___fsadd_PARM_2 + 3)
+                                    759 ;	Raw cost for generated ic 148 : (20, 24.000000) count=0.750000
+                                    760 ;	genCall
+      000411 20r00r00         [ 6]  761 	jsr	___fsadd
+                                    762 ;	assignResultValue
+      000414 8Dr00r00         [ 4]  763 	sta	___fsmul_PARM_1
+      000417 8Er01r00         [ 4]  764 	stx	(___fsmul_PARM_1 + 1)
+      00041A A5*00            [ 3]  765 	lda	*___SDCC_m6502_ret2
+      00041C 8Dr02r00         [ 4]  766 	sta	(___fsmul_PARM_1 + 2)
+      00041F A5*00            [ 3]  767 	lda	*___SDCC_m6502_ret3
+      000421 8Dr03r00         [ 4]  768 	sta	(___fsmul_PARM_1 + 3)
+                                    769 ;	Raw cost for generated ic 149 : (19, 28.000000) count=0.750000
+                                    770 ;	genAssign
+                                    771 ;	genCopy
+      000424 A5*03            [ 3]  772 	lda	*(_sincosf_sloc0_1_0 + 3)
+      000426 8Dr03r00         [ 4]  773 	sta	(___fsmul_PARM_2 + 3)
+      000429 A5*02            [ 3]  774 	lda	*(_sincosf_sloc0_1_0 + 2)
+      00042B 8Dr02r00         [ 4]  775 	sta	(___fsmul_PARM_2 + 2)
+      00042E A5*01            [ 3]  776 	lda	*(_sincosf_sloc0_1_0 + 1)
+      000430 8Dr01r00         [ 4]  777 	sta	(___fsmul_PARM_2 + 1)
+      000433 A5*00            [ 3]  778 	lda	*_sincosf_sloc0_1_0
+      000435 8Dr00r00         [ 4]  779 	sta	___fsmul_PARM_2
+                                    780 ;	Raw cost for generated ic 151 : (20, 28.000000) count=0.750000
+                                    781 ;	genCall
+      000438 20r00r00         [ 6]  782 	jsr	___fsmul
+                                    783 ;	assignResultValue
+      00043B 8Dr00r00         [ 4]  784 	sta	___fsadd_PARM_1
+      00043E 8Er01r00         [ 4]  785 	stx	(___fsadd_PARM_1 + 1)
+      000441 A5*00            [ 3]  786 	lda	*___SDCC_m6502_ret2
+      000443 8Dr02r00         [ 4]  787 	sta	(___fsadd_PARM_1 + 2)
+      000446 A5*00            [ 3]  788 	lda	*___SDCC_m6502_ret3
+      000448 8Dr03r00         [ 4]  789 	sta	(___fsadd_PARM_1 + 3)
+                                    790 ;	Raw cost for generated ic 152 : (19, 28.000000) count=0.750000
+                                    791 ;	genAssign
+                                    792 ;	genAssignLit
+      00044B A2 3E            [ 2]  793 	ldx	#0x3e
+      00044D 8Er00r00         [ 4]  794 	stx	___fsadd_PARM_2
+      000450 A2 87            [ 2]  795 	ldx	#0x87
+      000452 8Er01r00         [ 4]  796 	stx	(___fsadd_PARM_2 + 1)
+      000455 A2 08            [ 2]  797 	ldx	#0x08
+      000457 8Er02r00         [ 4]  798 	stx	(___fsadd_PARM_2 + 2)
+      00045A A2 3C            [ 2]  799 	ldx	#0x3c
+      00045C 8Er03r00         [ 4]  800 	stx	(___fsadd_PARM_2 + 3)
+                                    801 ;	Raw cost for generated ic 154 : (20, 24.000000) count=0.750000
+                                    802 ;	genCall
+      00045F 20r00r00         [ 6]  803 	jsr	___fsadd
+                                    804 ;	assignResultValue
+      000462 8Dr00r00         [ 4]  805 	sta	___fsmul_PARM_1
+      000465 8Er01r00         [ 4]  806 	stx	(___fsmul_PARM_1 + 1)
+      000468 A5*00            [ 3]  807 	lda	*___SDCC_m6502_ret2
+      00046A 8Dr02r00         [ 4]  808 	sta	(___fsmul_PARM_1 + 2)
+      00046D A5*00            [ 3]  809 	lda	*___SDCC_m6502_ret3
+      00046F 8Dr03r00         [ 4]  810 	sta	(___fsmul_PARM_1 + 3)
+                                    811 ;	Raw cost for generated ic 155 : (19, 28.000000) count=0.750000
+                                    812 ;	genAssign
+                                    813 ;	genCopy
+      000472 A5*03            [ 3]  814 	lda	*(_sincosf_sloc0_1_0 + 3)
+      000474 8Dr03r00         [ 4]  815 	sta	(___fsmul_PARM_2 + 3)
+      000477 A5*02            [ 3]  816 	lda	*(_sincosf_sloc0_1_0 + 2)
+      000479 8Dr02r00         [ 4]  817 	sta	(___fsmul_PARM_2 + 2)
+      00047C A5*01            [ 3]  818 	lda	*(_sincosf_sloc0_1_0 + 1)
+      00047E 8Dr01r00         [ 4]  819 	sta	(___fsmul_PARM_2 + 1)
+      000481 A5*00            [ 3]  820 	lda	*_sincosf_sloc0_1_0
+      000483 8Dr00r00         [ 4]  821 	sta	___fsmul_PARM_2
+                                    822 ;	Raw cost for generated ic 157 : (20, 28.000000) count=0.750000
+                                    823 ;	genCall
+      000486 20r00r00         [ 6]  824 	jsr	___fsmul
+                                    825 ;	assignResultValue
+      000489 8Dr00r00         [ 4]  826 	sta	___fsadd_PARM_1
+      00048C 8Er01r00         [ 4]  827 	stx	(___fsadd_PARM_1 + 1)
+      00048F A5*00            [ 3]  828 	lda	*___SDCC_m6502_ret2
+      000491 8Dr02r00         [ 4]  829 	sta	(___fsadd_PARM_1 + 2)
+      000494 A5*00            [ 3]  830 	lda	*___SDCC_m6502_ret3
+      000496 8Dr03r00         [ 4]  831 	sta	(___fsadd_PARM_1 + 3)
+                                    832 ;	Raw cost for generated ic 158 : (19, 28.000000) count=0.750000
+                                    833 ;	genAssign
+                                    834 ;	genAssignLit
+      000499 A2 A4            [ 2]  835 	ldx	#0xa4
+      00049B 8Er00r00         [ 4]  836 	stx	___fsadd_PARM_2
+      00049E A2 AA            [ 2]  837 	ldx	#0xaa
+      0004A0 8Er01r00         [ 4]  838 	stx	(___fsadd_PARM_2 + 1)
+      0004A3 A2 2A            [ 2]  839 	ldx	#0x2a
+      0004A5 8Er02r00         [ 4]  840 	stx	(___fsadd_PARM_2 + 2)
+      0004A8 A2 BE            [ 2]  841 	ldx	#0xbe
+      0004AA 8Er03r00         [ 4]  842 	stx	(___fsadd_PARM_2 + 3)
+                                    843 ;	Raw cost for generated ic 160 : (20, 24.000000) count=0.750000
+                                    844 ;	genCall
+      0004AD 20r00r00         [ 6]  845 	jsr	___fsadd
+                                    846 ;	assignResultValue
+      0004B0 8Dr00r00         [ 4]  847 	sta	___fsmul_PARM_1
+      0004B3 8Er01r00         [ 4]  848 	stx	(___fsmul_PARM_1 + 1)
+      0004B6 A5*00            [ 3]  849 	lda	*___SDCC_m6502_ret2
+      0004B8 8Dr02r00         [ 4]  850 	sta	(___fsmul_PARM_1 + 2)
+      0004BB A5*00            [ 3]  851 	lda	*___SDCC_m6502_ret3
+      0004BD 8Dr03r00         [ 4]  852 	sta	(___fsmul_PARM_1 + 3)
+                                    853 ;	Raw cost for generated ic 161 : (19, 28.000000) count=0.750000
+                                    854 ;	genAssign
+                                    855 ;	genCopy
+      0004C0 A5*03            [ 3]  856 	lda	*(_sincosf_sloc0_1_0 + 3)
+      0004C2 8Dr03r00         [ 4]  857 	sta	(___fsmul_PARM_2 + 3)
+      0004C5 A5*02            [ 3]  858 	lda	*(_sincosf_sloc0_1_0 + 2)
+      0004C7 8Dr02r00         [ 4]  859 	sta	(___fsmul_PARM_2 + 2)
+      0004CA A5*01            [ 3]  860 	lda	*(_sincosf_sloc0_1_0 + 1)
+      0004CC 8Dr01r00         [ 4]  861 	sta	(___fsmul_PARM_2 + 1)
+      0004CF A5*00            [ 3]  862 	lda	*_sincosf_sloc0_1_0
+      0004D1 8Dr00r00         [ 4]  863 	sta	___fsmul_PARM_2
+                                    864 ;	Raw cost for generated ic 163 : (20, 28.000000) count=0.750000
+                                    865 ;	../sincosf.c: 94: f+=f*r;
+                                    866 ;	genCall
+      0004D4 20r00r00         [ 6]  867 	jsr	___fsmul
+                                    868 ;	assignResultValue
+      0004D7 8Dr00r00         [ 4]  869 	sta	___fsmul_PARM_2
+      0004DA 8Er01r00         [ 4]  870 	stx	(___fsmul_PARM_2 + 1)
+      0004DD A5*00            [ 3]  871 	lda	*___SDCC_m6502_ret2
+      0004DF 8Dr02r00         [ 4]  872 	sta	(___fsmul_PARM_2 + 2)
+      0004E2 A5*00            [ 3]  873 	lda	*___SDCC_m6502_ret3
+      0004E4 8Dr03r00         [ 4]  874 	sta	(___fsmul_PARM_2 + 3)
+                                    875 ;	Raw cost for generated ic 164 : (19, 28.000000) count=0.750000
+                                    876 ;	genAssign
+                                    877 ;	genCopy
+      0004E7 A5*07            [ 3]  878 	lda	*(_sincosf_sloc1_1_0 + 3)
+      0004E9 8Dr03r00         [ 4]  879 	sta	(___fsmul_PARM_1 + 3)
+      0004EC A5*06            [ 3]  880 	lda	*(_sincosf_sloc1_1_0 + 2)
+      0004EE 8Dr02r00         [ 4]  881 	sta	(___fsmul_PARM_1 + 2)
+      0004F1 A5*05            [ 3]  882 	lda	*(_sincosf_sloc1_1_0 + 1)
+      0004F3 8Dr01r00         [ 4]  883 	sta	(___fsmul_PARM_1 + 1)
+      0004F6 A5*04            [ 3]  884 	lda	*_sincosf_sloc1_1_0
+      0004F8 8Dr00r00         [ 4]  885 	sta	___fsmul_PARM_1
+                                    886 ;	Raw cost for generated ic 165 : (20, 28.000000) count=0.750000
+                                    887 ;	genCall
+      0004FB 20r00r00         [ 6]  888 	jsr	___fsmul
+                                    889 ;	assignResultValue
+      0004FE 8Dr00r00         [ 4]  890 	sta	___fsadd_PARM_2
+      000501 8Er01r00         [ 4]  891 	stx	(___fsadd_PARM_2 + 1)
+      000504 A5*00            [ 3]  892 	lda	*___SDCC_m6502_ret2
+      000506 8Dr02r00         [ 4]  893 	sta	(___fsadd_PARM_2 + 2)
+      000509 A5*00            [ 3]  894 	lda	*___SDCC_m6502_ret3
+      00050B 8Dr03r00         [ 4]  895 	sta	(___fsadd_PARM_2 + 3)
+                                    896 ;	Raw cost for generated ic 167 : (19, 28.000000) count=0.750000
+                                    897 ;	genAssign
+                                    898 ;	genCopy
+      00050E A5*07            [ 3]  899 	lda	*(_sincosf_sloc1_1_0 + 3)
+      000510 8Dr03r00         [ 4]  900 	sta	(___fsadd_PARM_1 + 3)
+      000513 A5*06            [ 3]  901 	lda	*(_sincosf_sloc1_1_0 + 2)
+      000515 8Dr02r00         [ 4]  902 	sta	(___fsadd_PARM_1 + 2)
+      000518 A5*05            [ 3]  903 	lda	*(_sincosf_sloc1_1_0 + 1)
+      00051A 8Dr01r00         [ 4]  904 	sta	(___fsadd_PARM_1 + 1)
+      00051D A5*04            [ 3]  905 	lda	*_sincosf_sloc1_1_0
+      00051F 8Dr00r00         [ 4]  906 	sta	___fsadd_PARM_1
+                                    907 ;	Raw cost for generated ic 168 : (20, 28.000000) count=0.750000
+                                    908 ;	genCall
+      000522 20r00r00         [ 6]  909 	jsr	___fsadd
+                                    910 ;	assignResultValue
+      000525 8Dr09r00         [ 4]  911 	sta	_sincosf_f_10000_26
+      000528 8Er0Ar00         [ 4]  912 	stx	(_sincosf_f_10000_26 + 1)
+      00052B A5*00            [ 3]  913 	lda	*___SDCC_m6502_ret2
+      00052D 8Dr0Br00         [ 4]  914 	sta	(_sincosf_f_10000_26 + 2)
+      000530 A5*00            [ 3]  915 	lda	*___SDCC_m6502_ret3
+      000532 8Dr0Cr00         [ 4]  916 	sta	(_sincosf_f_10000_26 + 3)
+                                    917 ;	Raw cost for generated ic 170 : (19, 28.000000) count=0.750000
+                                    918 ;	genLabel
+      000535                        919 00114$:
+                                    920 ;	Raw cost for generated ic 83 : (0, 0.000000) count=1.000000
+                                    921 ;	../sincosf.c: 96: return (sign?-f:f);
+                                    922 ;	genIfx
+      000535 ADr11r00         [ 4]  923 	lda	_sincosf_sign_10000_26
+                                    924 ;	genIfxJump : z
+      000538 F0 19            [ 4]  925 	beq	00117$
+                                    926 ;	Raw cost for generated ic 84 : (8, 9.600000) count=1.000000
+                                    927 ;	genUminus
+                                    928 ;	genUminusFloat
+      00053A ADr09r00         [ 4]  929 	lda	_sincosf_f_10000_26
+      00053D 85*04            [ 3]  930 	sta	*_sincosf_sloc1_1_0
+      00053F ADr0Ar00         [ 4]  931 	lda	(_sincosf_f_10000_26 + 1)
+      000542 85*05            [ 3]  932 	sta	*(_sincosf_sloc1_1_0 + 1)
+      000544 ADr0Br00         [ 4]  933 	lda	(_sincosf_f_10000_26 + 2)
+      000547 85*06            [ 3]  934 	sta	*(_sincosf_sloc1_1_0 + 2)
+      000549 ADr0Cr00         [ 4]  935 	lda	(_sincosf_f_10000_26 + 3)
+      00054C 49 80            [ 2]  936 	eor	#0x80
+      00054E 85*07            [ 3]  937 	sta	*(_sincosf_sloc1_1_0 + 3)
+                                    938 ;	Raw cost for generated ic 85 : (22, 30.000000) count=0.750000
+                                    939 ;	genGoto
+      000550 4Cr67r05         [ 3]  940 	jmp	00118$
+                                    941 ;	Raw cost for generated ic 87 : (3, 3.000000) count=0.750000
+                                    942 ;	genLabel
+      000553                        943 00117$:
+                                    944 ;	Raw cost for generated ic 88 : (0, 0.000000) count=0.250000
+                                    945 ;	genAssign
+                                    946 ;	genCopy
+      000553 ADr0Cr00         [ 4]  947 	lda	(_sincosf_f_10000_26 + 3)
+      000556 85*07            [ 3]  948 	sta	*(_sincosf_sloc1_1_0 + 3)
+      000558 ADr0Br00         [ 4]  949 	lda	(_sincosf_f_10000_26 + 2)
+      00055B 85*06            [ 3]  950 	sta	*(_sincosf_sloc1_1_0 + 2)
+      00055D ADr0Ar00         [ 4]  951 	lda	(_sincosf_f_10000_26 + 1)
+      000560 85*05            [ 3]  952 	sta	*(_sincosf_sloc1_1_0 + 1)
+      000562 ADr09r00         [ 4]  953 	lda	_sincosf_f_10000_26
+      000565 85*04            [ 3]  954 	sta	*_sincosf_sloc1_1_0
+                                    955 ;	Raw cost for generated ic 89 : (20, 28.000000) count=0.250000
+                                    956 ;	genLabel
+      000567                        957 00118$:
+                                    958 ;	Raw cost for generated ic 90 : (0, 0.000000) count=1.000000
+                                    959 ;	genRet
+      000567 A5*07            [ 3]  960 	lda	*(_sincosf_sloc1_1_0 + 3)
+      000569 85*00            [ 3]  961 	sta	*___SDCC_m6502_ret3
+      00056B A5*06            [ 3]  962 	lda	*(_sincosf_sloc1_1_0 + 2)
+      00056D 85*00            [ 3]  963 	sta	*___SDCC_m6502_ret2
+      00056F A6*05            [ 3]  964 	ldx	*(_sincosf_sloc1_1_0 + 1)
+      000571 A5*04            [ 3]  965 	lda	*_sincosf_sloc1_1_0
+                                    966 ;	Raw cost for generated ic 91 : (12, 18.000000) count=1.000000
+                                    967 ;	genLabel
+                                    968 ;	Raw cost for generated ic 92 : (0, 0.000000) count=1.000000
+                                    969 ;	../sincosf.c: 97: }
+                                    970 ;	genEndFunction
+      000573 60               [ 6]  971 	rts
+                                    972 ;	Raw cost for generated ic 93 : (1, 6.000000) count=1.000000
+                                    973 	.area CODE
+                                    974 	.area RODATA
+                                    975 	.area XINIT
+                                    976 	.area CABS    (ABS)

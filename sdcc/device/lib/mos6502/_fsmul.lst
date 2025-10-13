@@ -1,0 +1,209 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _fsmul.s - routine for floating point multiplication
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module _fsmul
+                                     30 	
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl ___fsmul
+                                     35 	
+                                     36 ;--------------------------------------------------------
+                                     37 ; overlayable function parameters in zero page
+                                     38 ;--------------------------------------------------------
+                                     39 	
+                                     40 	.define mres1 "___SDCC_m6502_ret0"
+                                     41 	.define mres2 "___SDCC_m6502_ret1"
+                                     42 	.define mres3 "___SDCC_m6502_ret2"
+                                     43 	.define mres0 "___SDCC_m6502_ret3"
+                                     44 	.define s1    "___SDCC_m6502_ret4"
+                                     45 	.define exp1  "___SDCC_m6502_ret5"
+                                     46 	.define s2    "___SDCC_m6502_ret6"
+                                     47 	.define exp2  "___SDCC_m6502_ret7"
+                                     48 	
+                                     49 ;--------------------------------------------------------
+                                     50 ; code
+                                     51 ;--------------------------------------------------------
+                                     52 	.area CODE
+                                     53 
+      000000                         54 ___fsmul:
+                                     55 ; check if PARM_1 is zero
+      000000 A5*03            [ 3]   56 	lda	*(___fsmul_PARM_1 + 3)
+      000002 29 7F            [ 2]   57 	and	#0x7F
+      000004 05*02            [ 3]   58 	ora	*(___fsmul_PARM_1 + 2)
+                                     59 ;	ora	*(___fsmul_PARM_1 + 1)
+                                     60 ;	ora	*___fsmul_PARM_1
+      000006 F0 79            [ 4]   61 	beq	ret_zero
+                                     62 
+                                     63 ;p1_not0:
+      000008 A5*03            [ 3]   64 	lda	*(___fsmul_PARM_2 + 3)
+      00000A 29 7F            [ 2]   65 	and	#0x7F
+      00000C 05*02            [ 3]   66 	ora	*(___fsmul_PARM_2 + 2)
+                                     67 ;	ora	*(___fsmul_PARM_2 + 1)
+                                     68 ;	ora	*___fsmul_PARM_2
+      00000E F0 71            [ 4]   69 	beq	ret_zero
+                                     70 
+      000010 A0 00            [ 2]   71 	ldy	#0x00
+      000012 20r00r00         [ 6]   72 	jsr ___fs_unpack_2P
+                                     73 	
+                                     74 	; compute sign
+      000015 A5*00            [ 3]   75 	lda *s1
+      000017 45*00            [ 3]   76 	eor *s2
+      000019 85*00            [ 3]   77 	sta *s1
+                                     78 	
+                                     79 	; s2 is now free
+      00001B 84*00            [ 3]   80 	sty *s2
+      00001D 38               [ 2]   81 	sec
+      00001E A5*00            [ 3]   82 	lda *exp1
+      000020 E9 7E            [ 2]   83 	sbc #126    ; excess
+                                     84 ;	sta *exp1
+      000022 B0 02            [ 4]   85 	bcs no_borrow
+      000024 C6*00            [ 5]   86 	dec *s2
+      000026                         87 no_borrow:
+      000026 18               [ 2]   88 	clc
+                                     89 ;	lda *exp1
+      000027 65*00            [ 3]   90 	adc *exp2
+      000029 85*00            [ 3]   91 	sta *exp1
+      00002B 90 02            [ 4]   92 	bcc no_carry
+      00002D E6*00            [ 5]   93 	inc *s2
+      00002F                         94 no_carry:
+                                     95 	
+                                     96 	; add hidden bit
+      00002F A5*02            [ 3]   97 	lda *(___fsmul_PARM_1 + 2)
+      000031 09 80            [ 2]   98 	ora #0x80
+      000033 85*02            [ 3]   99 	sta *(___fsmul_PARM_1 + 2)
+      000035 A5*02            [ 3]  100 	lda *(___fsmul_PARM_2 + 2)
+      000037 09 80            [ 2]  101 	ora #0x80
+      000039 85*02            [ 3]  102 	sta *(___fsmul_PARM_2 + 2)
+                                    103 	
+                                    104 ; no need to blank the MSBs as the multiplication routine does not use them
+                                    105 	
+                                    106 ;__mul24:
+      00003B A2 00            [ 2]  107 	ldx #0x00
+      00003D 86*00            [ 3]  108 	stx *mres0
+      00003F 86*00            [ 3]  109 	stx *mres1
+      000041 86*00            [ 3]  110 	stx *mres2
+      000043 86*00            [ 3]  111 	stx *mres3
+                                    112 	
+      000045                        113 loop2:
+      000045 A0 08            [ 2]  114 	ldy #8
+      000047                        115 loop1:
+      000047 56*00            [ 6]  116 	lsr *___fsmul_PARM_2+0,x
+      000049 90 13            [ 4]  117 	bcc skip_add1
+      00004B 18               [ 2]  118 	clc
+      00004C A5*00            [ 3]  119 	lda *mres1
+      00004E 65*00            [ 3]  120 	adc *___fsmul_PARM_1+0
+      000050 85*00            [ 3]  121 	sta *mres1
+      000052 A5*00            [ 3]  122 	lda *mres2
+      000054 65*01            [ 3]  123 	adc *___fsmul_PARM_1+1
+      000056 85*00            [ 3]  124 	sta *mres2
+      000058 A5*00            [ 3]  125 	lda *mres3
+      00005A 65*02            [ 3]  126 	adc *___fsmul_PARM_1+2
+      00005C 85*00            [ 3]  127 	sta *mres3
+      00005E                        128 skip_add1:
+      00005E 66*00            [ 5]  129 	ror *mres3
+      000060 66*00            [ 5]  130 	ror *mres2
+      000062 66*00            [ 5]  131 	ror *mres1
+      000064 66*00            [ 5]  132 	ror *mres0
+      000066 88               [ 2]  133 	dey
+      000067 D0 DE            [ 4]  134 	bne loop1
+      000069 E8               [ 2]  135 	inx 
+      00006A E0 03            [ 2]  136 	cpx #3
+      00006C D0 D7            [ 4]  137 	bne loop2
+                                    138     
+                                    139 ; round
+      00006E 24*00            [ 3]  140 	bit *mres3
+      000070 30 4C            [ 4]  141 	bmi end
+      000072 4CrABr00         [ 3]  142 	jmp end7
+      000075 10 0D            [ 4]  143 	bpl not_24  ; MSB not set
+      000077 06*00            [ 5]  144 	asl *mres0
+      000079 90 43            [ 4]  145 	bcc end     ; MSB set and rounding will not change the result
+      00007B 20rD2r00         [ 6]  146 	jsr add3
+      00007E 4CrBEr00         [ 3]  147 	jmp end     ; MSB set
+      000081                        148 ret_zero:
+      000081 4Cr00r00         [ 3]  149 	jmp ___fs_ret_zero
+      000084                        150 not_24:
+      000084 24*00            [ 3]  151 	bit *mres0
+      000086 50 23            [ 4]  152 	bvc end7    ; adding 0x40 will not change the result - shift 7
+      000088 10 06            [ 4]  153 	bpl need_add
+      00008A A9 80            [ 2]  154 	lda #0x80  ; res0 is 01xx xxxx adding 0x40 produces 10xx xxxx
+      00008C 85*00            [ 3]  155 	sta *mres0
+      00008E D0 1B            [ 4]  156 	bne end7
+      000090                        157 need_add:
+      000090 18               [ 2]  158 	clc
+      000091 A5*00            [ 3]  159 	lda *mres0
+      000093 69 40            [ 2]  160 	adc #0x40
+      000095 85*00            [ 3]  161 	sta *mres0
+      000097 20rD2r00         [ 6]  162 	jsr add3
+      00009A 24*00            [ 3]  163 	bit *mres3
+      00009C 10 0D            [ 4]  164 	bpl end7
+      00009E A5*00            [ 3]  165 	lda *mres0
+      0000A0 69 40            [ 2]  166 	adc #0x40
+      0000A2 85*00            [ 3]  167 	sta *mres0
+      0000A4 20rD2r00         [ 6]  168 	jsr add3
+      0000A7 10 02            [ 4]  169 	bpl end7
+      0000A9 30 13            [ 4]  170 	bmi end
+                                    171 	
+      0000AB                        172 end7:
+      0000AB 06*00            [ 5]  173 	asl *mres0
+      0000AD 26*00            [ 5]  174 	rol *mres1
+      0000AF 26*00            [ 5]  175 	rol *mres2
+      0000B1 26*00            [ 5]  176 	rol *mres3
+      0000B3 38               [ 2]  177 	sec
+      0000B4 A5*00            [ 3]  178 	lda *exp1
+      0000B6 E9 01            [ 2]  179 	sbc #1
+      0000B8 85*00            [ 3]  180 	sta *exp1
+      0000BA B0 02            [ 4]  181 	bcs no_borrow2
+      0000BC C6*00            [ 5]  182 	dec *s2
+      0000BE                        183 no_borrow2:
+                                    184 
+      0000BE                        185 end:
+      0000BE A5*00            [ 3]  186 	lda *s2
+      0000C0 30 BF            [ 4]  187 	bmi ret_zero
+      0000C2 D0 09            [ 4]  188 	bne res_inf
+      0000C4 A5*00            [ 3]  189 	lda *___SDCC_m6502_ret2
+      0000C6 29 7F            [ 2]  190 	and #0x7f
+      0000C8 85*00            [ 3]  191 	sta *___SDCC_m6502_ret2
+      0000CA 4Cr00r00         [ 3]  192 	jmp ___fs_pack_ret
+                                    193 
+      0000CD                        194 res_inf:
+      0000CD A5*00            [ 3]  195 	lda *s1
+      0000CF 4Cr00r00         [ 3]  196 	jmp ___fs_ret_inf
+                                    197 
+      0000D2                        198 add3:
+      0000D2 A5*00            [ 3]  199 	lda *mres1
+      0000D4 69 00            [ 2]  200 	adc #0
+      0000D6 85*00            [ 3]  201 	sta *mres1
+      0000D8 A5*00            [ 3]  202 	lda *mres2
+      0000DA 69 00            [ 2]  203 	adc #0
+      0000DC 85*00            [ 3]  204 	sta *mres2
+      0000DE A5*00            [ 3]  205 	lda *mres3
+      0000E0 69 00            [ 2]  206 	adc #0
+      0000E2 85*00            [ 3]  207 	sta *mres3
+      0000E4 60               [ 6]  208 	rts
+                                    209 

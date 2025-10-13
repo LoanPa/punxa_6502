@@ -1,0 +1,188 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module wcslen
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _wcslen
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'wcslen'
+                                     64 ;------------------------------------------------------------
+                                     65 ;s             Allocated to registers 
+                                     66 ;n             Allocated to stack - sp +7 +2 
+                                     67 ;sloc0         Allocated to stack - sp +5 +2 
+                                     68 ;sloc1         Allocated to stack - sp +1 +4 
+                                     69 ;------------------------------------------------------------
+                                     70 ;	../wcslen.c: 31: size_t wcslen(const wchar_t *s)
+                                     71 ;	genLabel
+                                     72 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     73 ;	-----------------------------------------
+                                     74 ;	 function wcslen
+                                     75 ;	-----------------------------------------
+                                     76 ;	Register assignment is optimal.
+                                     77 ;	Stack space usage: 8 bytes.
+      000000                         78 _wcslen:
+                                     79 ;	  adjustStack : cycles stk:24  incdec:26  adc:24
+      000000 48               [ 3]   80 	pha
+      000001 48               [ 3]   81 	pha
+      000002 48               [ 3]   82 	pha
+      000003 48               [ 3]   83 	pha
+      000004 48               [ 3]   84 	pha
+      000005 48               [ 3]   85 	pha
+      000006 48               [ 3]   86 	pha
+      000007 48               [ 3]   87 	pha
+                                     88 ;	Raw cost for generated ic 1 : (8, 24.000000) count=1.000000
+                                     89 ;	genReceive
+      000008 86*00            [ 3]   90 	stx	*(REGTEMP+0)
+      00000A BA               [ 2]   91 	tsx
+      00000B 9D 05 01         [ 5]   92 	sta	0x105,x
+      00000E A5*00            [ 3]   93 	lda	*(REGTEMP+0)
+      000010 9D 06 01         [ 5]   94 	sta	0x106,x
+                                     95 ;	Raw cost for generated ic 2 : (11, 18.000000) count=1.000000
+                                     96 ;	../wcslen.c: 34: while (*s)
+                                     97 ;	genAssign
+                                     98 ;	genAssignLit
+      000013 A9 00            [ 2]   99 	lda	#0x00
+      000015 9D 07 01         [ 5]  100 	sta	0x107,x
+      000018 9D 08 01         [ 5]  101 	sta	0x108,x
+                                    102 ;	Raw cost for generated ic 22 : (8, 12.000000) count=1.000000
+                                    103 ;	genLabel
+      00001B                        104 00101$:
+                                    105 ;	Raw cost for generated ic 4 : (0, 0.000000) count=3.999997
+                                    106 ;	genPointerGet
+                                    107 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00001B BA               [ 2]  108 	tsx
+      00001C BD 05 01         [ 5]  109 	lda	0x105,x
+      00001F 85*00            [ 3]  110 	sta	*(DPTR+0)
+      000021 BD 06 01         [ 5]  111 	lda	0x106,x
+      000024 85*01            [ 3]  112 	sta	*(DPTR+1)
+      000026 A0 00            [ 2]  113 	ldy	#0x00
+      000028 B1*00            [ 6]  114 	lda	[DPTR],y
+      00002A 9D 01 01         [ 5]  115 	sta	0x101,x
+      00002D C8               [ 2]  116 	iny
+      00002E B1*00            [ 6]  117 	lda	[DPTR],y
+      000030 9D 02 01         [ 5]  118 	sta	0x102,x
+      000033 C8               [ 2]  119 	iny
+      000034 B1*00            [ 6]  120 	lda	[DPTR],y
+      000036 9D 03 01         [ 5]  121 	sta	0x103,x
+      000039 C8               [ 2]  122 	iny
+      00003A B1*00            [ 6]  123 	lda	[DPTR],y
+      00003C 9D 04 01         [ 5]  124 	sta	0x104,x
+                                    125 ;	Raw cost for generated ic 6 : (36, 64.000000) count=3.999997
+                                    126 ;	genIfx
+      00003F 1D 03 01         [ 5]  127 	ora	0x103,x
+      000042 1D 02 01         [ 5]  128 	ora	0x102,x
+      000045 1D 01 01         [ 5]  129 	ora	0x101,x
+                                    130 ;	genIfxJump : z
+      000048 F0 25            [ 4]  131 	beq	00103$
+                                    132 ;	Raw cost for generated ic 7 : (14, 17.600000) count=3.999997
+                                    133 ;	../wcslen.c: 36: n++;
+                                    134 ;	genPlus
+                                    135 ;	  genPlusInc
+      00004A BD 07 01         [ 5]  136 	lda	0x107,x
+      00004D 18               [ 2]  137 	clc
+      00004E 69 01            [ 2]  138 	adc	#0x01
+      000050 9D 07 01         [ 5]  139 	sta	0x107,x
+      000053 BD 08 01         [ 5]  140 	lda	0x108,x
+      000056 69 00            [ 2]  141 	adc	#0x00
+      000058 9D 08 01         [ 5]  142 	sta	0x108,x
+                                    143 ;	Raw cost for generated ic 11 : (17, 24.000000) count=2.999997
+                                    144 ;	../wcslen.c: 37: s++;
+                                    145 ;	genPlus
+                                    146 ;	  genPlusInc
+      00005B BD 05 01         [ 5]  147 	lda	0x105,x
+      00005E 18               [ 2]  148 	clc
+      00005F 69 04            [ 2]  149 	adc	#0x04
+      000061 9D 05 01         [ 5]  150 	sta	0x105,x
+      000064 BD 06 01         [ 5]  151 	lda	0x106,x
+      000067 69 00            [ 2]  152 	adc	#0x00
+      000069 9D 06 01         [ 5]  153 	sta	0x106,x
+                                    154 ;	Raw cost for generated ic 14 : (17, 24.000000) count=2.999997
+                                    155 ;	genGoto
+      00006C 4Cr1Br00         [ 3]  156 	jmp	00101$
+                                    157 ;	Raw cost for generated ic 16 : (3, 3.000000) count=2.999997
+                                    158 ;	genLabel
+      00006F                        159 00103$:
+                                    160 ;	Raw cost for generated ic 17 : (0, 0.000000) count=0.999999
+                                    161 ;	../wcslen.c: 40: return n;
+                                    162 ;	genRet
+      00006F BA               [ 2]  163 	tsx
+      000070 BD 08 01         [ 5]  164 	lda	0x108,x
+      000073 85*00            [ 3]  165 	sta	*(REGTEMP+0)
+      000075 BD 07 01         [ 5]  166 	lda	0x107,x
+                                    167 ;	Raw cost for generated ic 18 : (11, 16.000000) count=0.999999
+                                    168 ;	genLabel
+                                    169 ;	Raw cost for generated ic 19 : (0, 0.000000) count=0.999999
+                                    170 ;	../wcslen.c: 41: }
+                                    171 ;	genEndFunction
+                                    172 ;	  adjustStack : cycles stk:38  incdec:26  adc:24
+      000078 A6*00            [ 3]  173 	ldx	*(REGTEMP+0)
+      00007A 85*01            [ 3]  174 	sta	*(REGTEMP+1)
+      00007C BA               [ 2]  175 	tsx
+      00007D 8A               [ 2]  176 	txa
+      00007E 18               [ 2]  177 	clc
+      00007F 69 08            [ 2]  178 	adc	#0x08
+      000081 AA               [ 2]  179 	tax
+      000082 9A               [ 2]  180 	txs
+      000083 A5*01            [ 3]  181 	lda	*(REGTEMP+1)
+      000085 A6*00            [ 3]  182 	ldx	*(REGTEMP+0)
+      000087 60               [ 6]  183 	rts
+                                    184 ;	Raw cost for generated ic 20 : (16, 30.000000) count=0.999999
+                                    185 	.area CODE
+                                    186 	.area RODATA
+                                    187 	.area XINIT
+                                    188 	.area CABS    (ABS)

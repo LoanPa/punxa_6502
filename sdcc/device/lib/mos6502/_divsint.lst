@@ -1,0 +1,83 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _divsint.s - routine for division of 16 bit signed int
+                                      3 ;
+                                      4 ;   Copyright (C) 1998, Ullrich von Bassewitz
+                                      5 ;   Copyright (C) 2022, Gabriele Gorla
+                                      6 ;
+                                      7 ;   This library is free software; you can redistribute it and/or modify it
+                                      8 ;   under the terms of the GNU General Public License as published by the
+                                      9 ;   Free Software Foundation; either version 2, or (at your option) any
+                                     10 ;   later version.
+                                     11 ;
+                                     12 ;   This library is distributed in the hope that it will be useful,
+                                     13 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     14 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     15 ;   GNU General Public License for more details.
+                                     16 ;
+                                     17 ;   You should have received a copy of the GNU General Public License
+                                     18 ;   along with this library; see the file COPYING. If not, write to the
+                                     19 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     20 ;   MA 02110-1301, USA.
+                                     21 ;
+                                     22 ;   As a special exception, if you link this library with other files,
+                                     23 ;   some of which are compiled with SDCC, to produce an executable,
+                                     24 ;   this library does not by itself cause the resulting executable to
+                                     25 ;   be covered by the GNU General Public License. This exception does
+                                     26 ;   not however invalidate any other reasons why the executable file
+                                     27 ;   might be covered by the GNU General Public License.
+                                     28 ;-------------------------------------------------------------------------
+                                     29 
+                                     30 	.module _divsint
+                                     31 
+                                     32 ;--------------------------------------------------------
+                                     33 ; exported symbols
+                                     34 ;--------------------------------------------------------
+                                     35 	.globl __divsint
+                                     36 	.globl ___sdivmod16
+                                     37 
+                                     38 ;--------------------------------------------------------
+                                     39 ; local aliases
+                                     40 ;--------------------------------------------------------
+                                     41 	.define res "___SDCC_m6502_ret0"
+                                     42 	.define den "__divsint_PARM_2"
+                                     43 	.define rem "___SDCC_m6502_ret2"
+                                     44 	.define s1  "___SDCC_m6502_ret4"
+                                     45 	.define s2  "___SDCC_m6502_ret5"
+                                     46 
+                                     47 ;--------------------------------------------------------
+                                     48 ; code
+                                     49 ;--------------------------------------------------------
+                                     50 	.area CODE
+                                     51 
+      000000                         52 __divsint:
+      000000 20r14r00         [ 6]   53 	jsr	___sdivmod16
+      000003 A5*00            [ 3]   54 	lda	*res+0
+      000005 A6*01            [ 3]   55 	ldx	*res+1
+      000007 48               [ 3]   56 	pha
+      000008 A5*00            [ 3]   57 	lda	*s1
+      00000A 45*00            [ 3]   58 	eor	*s2
+      00000C 10 04            [ 4]   59 	bpl	pos
+      00000E 68               [ 4]   60 	pla
+      00000F 4Cr00r00         [ 3]   61 	jmp 	___negax
+      000012                         62 pos:
+      000012 68               [ 4]   63 	pla
+      000013 60               [ 6]   64 	rts
+                                     65 
+      000014                         66 ___sdivmod16:
+      000014 86*00            [ 3]   67 	stx	*s1
+      000016 20r00r00         [ 6]   68 	jsr	_abs
+      000019 48               [ 3]   69 	pha
+      00001A A5*01            [ 3]   70 	lda     *__divsint_PARM_2+1
+      00001C 85*00            [ 3]   71 	sta	*s2
+      00001E 10 0D            [ 4]   72 	bpl	skip
+      000020 38               [ 2]   73 	sec
+      000021 A9 00            [ 2]   74 	lda	#0x00
+      000023 E5*00            [ 3]   75 	sbc	*__divsint_PARM_2+0
+      000025 85*00            [ 3]   76         sta     *__divsint_PARM_2+0
+      000027 A9 00            [ 2]   77 	lda	#0x00
+      000029 E5*01            [ 3]   78 	sbc	*__divsint_PARM_2+1
+      00002B 85*01            [ 3]   79         sta     *__divsint_PARM_2+1
+      00002D                         80 skip:
+      00002D 68               [ 4]   81 	pla
+      00002E 4Cr00r00         [ 3]   82 	jmp 	___udivmod16
+                                     83 

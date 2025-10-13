@@ -1,0 +1,94 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   ldiv.s - implementation on std C library ldiv
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module ldiv
+                                     30 	
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl _ldiv
+                                     35 
+                                     36 ;--------------------------------------------------------
+                                     37 ; local aliases
+                                     38 ;--------------------------------------------------------
+                                     39 	.define res0 "__divslong_PARM_1+0"
+                                     40 	.define res1 "__divslong_PARM_1+1"
+                                     41 	.define res2 "___SDCC_m6502_ret2"
+                                     42 	.define res3 "___SDCC_m6502_ret3"
+                                     43 	.define den  "__divslong_PARM_2"
+                                     44 	.define rem  "___SDCC_m6502_ret4"
+                                     45 	.define s1   "___SDCC_m6502_ret0"
+                                     46 	.define s2   "___SDCC_m6502_ret1"
+                                     47 
+                                     48 ;--------------------------------------------------------
+                                     49 ; code
+                                     50 ;--------------------------------------------------------
+                                     51 	.area CODE
+      000000                         52 _ldiv:
+      000000 20r00r00         [ 6]   53 	jsr	___sdivmod32
+      000003 A5*00            [ 3]   54 	lda	*s1
+      000005 10 16            [ 4]   55 	bpl	rempos
+                                     56 ; neg res
+      000007 38               [ 2]   57 	sec
+      000008 A2 00            [ 2]   58 	ldx	#0x00
+      00000A E5*00            [ 3]   59 	sbc	*rem+0
+      00000C 85*00            [ 3]   60     sta *rem+0
+      00000E 8A               [ 2]   61 	txa
+      00000F E5*01            [ 3]   62 	sbc	*rem+1
+      000011 85*01            [ 3]   63     sta *rem+1
+      000013 8A               [ 2]   64 	txa
+      000014 E5*02            [ 3]   65 	sbc	*rem+2
+      000016 85*02            [ 3]   66 	sta	*rem+2
+      000018 8A               [ 2]   67 	txa
+      000019 E5*03            [ 3]   68 	sbc	*rem+3
+      00001B 85*03            [ 3]   69 	sta	*rem+3
+      00001D                         70 rempos:	
+      00001D A5*00            [ 3]   71 	lda	*s1
+      00001F 45*00            [ 3]   72 	eor	*s2
+      000021 10 17            [ 4]   73 	bpl	pos
+                                     74 ; neg res
+      000023 38               [ 2]   75 	sec
+      000024 8A               [ 2]   76 	txa
+      000025 E5*00            [ 3]   77 	sbc	*res0
+      000027 A8               [ 2]   78 	tay
+      000028 8A               [ 2]   79 	txa
+      000029 E5*01            [ 3]   80 	sbc	*res1
+      00002B AA               [ 2]   81 	tax
+      00002C A9 00            [ 2]   82 	lda	#0x00
+      00002E E5*00            [ 3]   83 	sbc	*res2
+      000030 85*00            [ 3]   84 	sta	*res2
+      000032 A9 00            [ 2]   85 	lda	#0x00
+      000034 E5*00            [ 3]   86 	sbc	*res3
+      000036 85*00            [ 3]   87 	sta	*res3
+      000038 98               [ 2]   88 	tya
+      000039 60               [ 6]   89 	rts
+      00003A                         90 pos:
+      00003A A5*00            [ 3]   91 	lda	*res0
+      00003C A6*01            [ 3]   92 	ldx	*res1
+      00003E 60               [ 6]   93 	rts
+                                     94 

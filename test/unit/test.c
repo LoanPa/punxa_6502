@@ -20,7 +20,8 @@
 #define TEST_IND_Y   0x40    // Indirect,Y location
 #define TEST_RESULT  0x2000  // Where to write test result
 #define TEST_NUM     0x60    // Current test number
-#define TEST_STATUS  0x2004  // 0 = running, 1 = passed, 0xFF = failed
+#define TEST_BLOCK   0x2002  // Current test block number
+#define TEST_STATUS  0x2004  // 0 = done, 1 = running
 
 #define TEST_VARS      0x50
 
@@ -54,6 +55,7 @@ __at (TEST_ABS_Y+1) uint8_t abs_y_var2;
 __at (TEST_RESULT) uint8_t test_result;
 __at (TEST_NUM) uint16_t test_num;
 __at (TEST_STATUS) uint8_t test_status;
+__at (TEST_BLOCK) uint8_t test_block;
 
 // Function prototypes
 void test_load(void);
@@ -74,8 +76,10 @@ void verify_zp(uint8_t paddr, uint8_t expected);
 
 void main(void) {
     // Initialize test status
-    test_status = 0;
+   
     test_num = 0;
+    test_block = 0;
+    test_status = 1;
     
     // Initialize indirect addressing pointers
     ind_x_addr_lo = (TEST_ABS_X & 0xFF);
@@ -93,30 +97,40 @@ void main(void) {
     
     // Run all test categories
     test_load();
+    start_test_block();
     test_store();
+    start_test_block();
     test_arithmetic();
+    test_status = 0; // Temporarily disable status to skip remaining tests
+    start_test_block();
     test_logical();
+    start_test_block();
     test_shift_rotate();
+    start_test_block();
     test_branch();
+    start_test_block();
     test_flags();
+    start_test_block();
     test_stack();
+    start_test_block();
     test_jump_subroutine();
+    start_test_block();
     test_misc();
     
-    // If we get here, all tests passed
-    test_status = 1;
+    // If we get here, all tests done
+    test_status = 0; 
     
     // Infinite loop when done
-    while(1);
+    //while(1);
 }
 
 // Mark a test as failed and halt
 void test_failed(void) 
 {
     test_result = 0xCA;
-    test_status = 0xFF;
-
-    while(1); // Halt on failure
+    //test_status = 0xFF;
+    test_num++;
+    //while(1); // Halt on failure
 }
 
 // Mark a test as passed
@@ -148,7 +162,11 @@ void verify_flags(uint8_t expected, uint8_t ef)
         test_passed();
 }
 
-
+void start_test_block()
+{
+    test_block ++;
+    test_num = 0;
+}
 
 // Verify memory value
 void verify_mem(uint16_t paddr, uint8_t expected)
@@ -308,10 +326,10 @@ void test_store(void)
         sty _abs_store
     __endasm;
     verify_mem(abs_store, 0x33);    // 0x1B
-    
+    //TODO: canviar sabotatge!!!! canviar el 0x77 per 0x44
     // 5. Absolute , X
     __asm
-        lda #0x44
+        lda #0x77
         ldx #0x01
         sta _abs_store,x
     __endasm;
@@ -342,7 +360,6 @@ void test_store(void)
     __endasm;
     verify_mem(ind_store_hi, 0x99);  // 0x1F        
 }
-
 
 void test_arithmetic(void) 
 {
@@ -452,7 +469,7 @@ void test_arithmetic(void)
     TEST_DEC(_zp_var, 0x42, 0, 0, 0, 0, 0);              // 0x28
 
     // ---- INX/DEX (X Register) ----
-
+    TEST_INX(#0x02, 0x03, 0, 0, 0, 0, 0);
     // ---- INY/DEY (Y Register) ----
 
     

@@ -1,0 +1,320 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _fsadd.s - routine for floating point addition
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module _fsadd
+                                     30 	
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl ___fsadd
+                                     35 
+                                     36 ;--------------------------------------------------------
+                                     37 ; ZP ram data
+                                     38 ;--------------------------------------------------------
+                                     39 	.area ZP      (PAG)
+                                     40 
+                                     41 ;--------------------------------------------------------
+                                     42 ; overlayable items in ram
+                                     43 ;--------------------------------------------------------
+                                     44 	.area	OSEG    (PAG, OVR)
+                                     45 
+                                     46 ;--------------------------------------------------------
+                                     47 ; local aliases
+                                     48 ;--------------------------------------------------------
+                                     49 	.define sh1   "___SDCC_m6502_ret0"
+                                     50 	.define sh2   "___SDCC_m6502_ret1"
+                                     51 	.define res0  "___SDCC_m6502_ret0"
+                                     52 	.define res1  "___SDCC_m6502_ret1"
+                                     53 	.define res2  "___SDCC_m6502_ret2"
+                                     54 	.define res3  "___SDCC_m6502_ret3"
+                                     55 	.define s1    "___SDCC_m6502_ret4"
+                                     56 	.define exp1  "___SDCC_m6502_ret5"
+                                     57 	.define s2    "___SDCC_m6502_ret6"
+                                     58 	.define exp2  "___SDCC_m6502_ret7"
+                                     59 		
+                                     60 ;--------------------------------------------------------
+                                     61 ; code
+                                     62 ;--------------------------------------------------------
+                                     63 	.area CODE
+                                     64 ;------------------------------------------------------------
+                                     65 
+      000000                         66 ___fsadd:
+                                     67 ; check if PARM_1 is zero
+      000000 A5*03            [ 3]   68 	lda	*(___fsadd_PARM_1 + 3)
+      000002 29 7F            [ 2]   69 	and	#0x7F
+      000004 05*02            [ 3]   70 	ora	*(___fsadd_PARM_1 + 2)
+                                     71 ;	ora	*(___fsadd_PARM_1 + 1)
+                                     72 ;	ora	*___fsadd_PARM_1
+      000006 D0 0D            [ 4]   73 	bne	p1_not0
+                                     74 	
+                                     75 ; return PARM_2
+      000008                         76 ret_p2:
+      000008 A5*03            [ 3]   77 	lda	*(___fsadd_PARM_2 + 3)
+      00000A 85*00            [ 3]   78 	sta	*___SDCC_m6502_ret3
+      00000C A5*02            [ 3]   79 	lda	*(___fsadd_PARM_2 + 2)
+      00000E 85*00            [ 3]   80 	sta	*___SDCC_m6502_ret2
+      000010 A6*01            [ 3]   81 	ldx	*(___fsadd_PARM_2 + 1)
+      000012 A5*00            [ 3]   82 	lda	*___fsadd_PARM_2
+      000014 60               [ 6]   83 	rts
+      000015                         84 p1_not0:
+                                     85 
+                                     86 ; check if PARM_2 is zero
+      000015 A5*03            [ 3]   87 	lda	*(___fsadd_PARM_2 + 3)
+      000017 29 7F            [ 2]   88 	and	#0x7F
+      000019 05*02            [ 3]   89 	ora	*(___fsadd_PARM_2 + 2)
+                                     90 ;	ora	*(___fsadd_PARM_2 + 1)
+                                     91 ;	ora	*___fsadd_PARM_2
+      00001B D0 0D            [ 4]   92 	bne	p2_not0
+                                     93 
+                                     94 ; return PARM_1
+      00001D                         95 ret_p1:
+      00001D A5*03            [ 3]   96 	lda	*(___fsadd_PARM_1 + 3)
+      00001F 85*00            [ 3]   97 	sta	*___SDCC_m6502_ret3
+      000021 A5*02            [ 3]   98 	lda	*(___fsadd_PARM_1 + 2)
+      000023 85*00            [ 3]   99 	sta	*___SDCC_m6502_ret2
+      000025 A6*01            [ 3]  100 	ldx	*(___fsadd_PARM_1 + 1)
+      000027 A5*00            [ 3]  101 	lda	*___fsadd_PARM_1
+      000029 60               [ 6]  102 	rts
+      00002A                        103 p2_not0:
+                                    104 
+      00002A A0 00            [ 2]  105 	ldy	#0x00
+      00002C 20r00r00         [ 6]  106 	jsr	___fs_unpack_2P
+                                    107 	
+                                    108 ; compute exponent difference
+      00002F 38               [ 2]  109 	sec
+      000030 A5*00            [ 3]  110 	lda	*exp1
+      000032 E5*00            [ 3]  111 	sbc	*exp2
+                                    112 ;	sta	expd
+                                    113 
+                                    114 ;   lda expd
+                                    115  ; a=expd, y=0
+      000034 10 11            [ 4]  116 	bpl	pos_diff
+                                    117     ; negative exponent difference
+                                    118     ; expd=-eppd
+      000036 49 FF            [ 2]  119     eor	#0xff
+      000038 18               [ 2]  120 	clc
+      000039 69 01            [ 2]  121 	adc	#0x01
+                                    122 	; check for overflow
+                                    123 ;	cmp	#26
+                                    124 ;	bmi	skip_p2
+                                    125 ;	jmp	ret_p2
+      00003B                        126 skip_p2:
+      00003B 84*00            [ 3]  127 	sty	*sh2
+      00003D 85*00            [ 3]  128 	sta	*sh1
+      00003F 18               [ 2]  129 	clc
+      000040 65*00            [ 3]  130 	adc	*exp1
+      000042 85*00            [ 3]  131 	sta	*exp1
+      000044 4Cr4Br00         [ 3]  132 	jmp	done    
+      000047                        133 pos_diff:
+                                    134 	; check for overflow
+                                    135 ;	cmp	#26
+                                    136 ;	bmi	skip_p1
+                                    137 ;	jmp	ret_p1
+      000047                        138 skip_p1:
+      000047 84*00            [ 3]  139 	sty	*sh1
+      000049 85*00            [ 3]  140 	sta	*sh2
+                                    141 
+      00004B                        142 done:
+      00004B A2 01            [ 2]  143 	ldx	#0x01
+                                    144 ; PARM_1 is now mantissa
+      00004D 06*00            [ 5]  145 	asl	*(___fsadd_PARM_1 + 0)
+      00004F 26*01            [ 5]  146 	rol	*(___fsadd_PARM_1 + 1)
+      000051 26*02            [ 5]  147  	rol	*(___fsadd_PARM_1 + 2)
+      000053 86*03            [ 3]  148 	stx	*(___fsadd_PARM_1 + 3)
+                                    149 	
+                                    150 ; PARM_2 is now mantissa
+      000055 06*00            [ 5]  151 	asl	*(___fsadd_PARM_2 + 0)
+      000057 26*01            [ 5]  152 	rol	*(___fsadd_PARM_2 + 1)
+      000059 26*02            [ 5]  153  	rol	*(___fsadd_PARM_2 + 2)
+      00005B 86*03            [ 3]  154 	stx	*(___fsadd_PARM_2 + 3)
+                                    155 
+                                    156 ; shift param 1 if necessary
+      00005D A4*00            [ 3]  157 	ldy	*sh1
+      00005F F0 0B            [ 4]  158 	beq	00110$
+      000061                        159 00266$:
+      000061 46*03            [ 5]  160 	lsr	*(___fsadd_PARM_1 + 3)
+      000063 66*02            [ 5]  161 	ror	*(___fsadd_PARM_1 + 2)
+      000065 66*01            [ 5]  162 	ror	*(___fsadd_PARM_1 + 1)
+      000067 66*00            [ 5]  163 	ror	*___fsadd_PARM_1
+      000069 88               [ 2]  164 	dey
+      00006A D0 F5            [ 4]  165 	bne	00266$
+      00006C                        166 00110$:
+                                    167 
+                                    168 ; shift param 2 if necessary
+      00006C A4*00            [ 3]  169 	ldy	*sh2
+      00006E F0 0B            [ 4]  170 	beq	00269$
+      000070                        171 00268$:
+      000070 46*03            [ 5]  172 	lsr	*(___fsadd_PARM_2 + 3)
+      000072 66*02            [ 5]  173 	ror	*(___fsadd_PARM_2 + 2)
+      000074 66*01            [ 5]  174 	ror	*(___fsadd_PARM_2 + 1)
+      000076 66*00            [ 5]  175 	ror	*___fsadd_PARM_2
+      000078 88               [ 2]  176 	dey
+      000079 D0 F5            [ 4]  177 	bne	00268$
+      00007B                        178 00269$:
+                                    179 
+                                    180 ; Y is still 0
+                                    181 ; rneg and exp2 share the same location
+                                    182 ;	sty	*rneg  ; Y is still 0
+      00007B A2 00            [ 2]  183 	ldx	#0x00   ; rneg is in X
+      00007D A5*00            [ 3]  184 	lda	*s1
+      00007F 25*00            [ 3]  185 	and	*s2
+      000081 F0 03            [ 4]  186 	beq	not_both_negative
+                                    187 ;	sta	*rneg
+      000083 AA               [ 2]  188 	tax            ; rneg is in X
+      000084 D0 32            [ 4]  189 	bne	end
+      000086                        190 not_both_negative:
+      000086 A5*00            [ 3]  191 	lda	*s1
+      000088 F0 15            [ 4]  192 	beq	skip2
+                                    193 ; Y is still 0
+      00008A 38               [ 2]  194 	sec
+      00008B 98               [ 2]  195 	tya
+      00008C E5*00            [ 3]  196 	sbc	*___fsadd_PARM_1
+      00008E 85*00            [ 3]  197 	sta	*___fsadd_PARM_1
+      000090 98               [ 2]  198 	tya
+      000091 E5*01            [ 3]  199 	sbc	*(___fsadd_PARM_1 + 1)
+      000093 85*01            [ 3]  200 	sta	*(___fsadd_PARM_1 + 1)
+      000095 98               [ 2]  201 	tya
+      000096 E5*02            [ 3]  202 	sbc	*(___fsadd_PARM_1 + 2)
+      000098 85*02            [ 3]  203 	sta	*(___fsadd_PARM_1 + 2)
+      00009A 98               [ 2]  204 	tya
+      00009B E5*03            [ 3]  205 	sbc	*(___fsadd_PARM_1 + 3)
+      00009D 85*03            [ 3]  206 	sta	*(___fsadd_PARM_1 + 3)  
+      00009F                        207 skip2:
+      00009F A5*00            [ 3]  208 	lda	*s2
+      0000A1 F0 15            [ 4]  209 	beq	end	
+      0000A3 38               [ 2]  210 	sec
+      0000A4 98               [ 2]  211     tya
+      0000A5 E5*00            [ 3]  212 	sbc	*___fsadd_PARM_2
+      0000A7 85*00            [ 3]  213 	sta	*___fsadd_PARM_2
+      0000A9 98               [ 2]  214 	tya
+      0000AA E5*01            [ 3]  215 	sbc	*(___fsadd_PARM_2 + 1)
+      0000AC 85*01            [ 3]  216 	sta	*(___fsadd_PARM_2 + 1)
+      0000AE 98               [ 2]  217 	tya
+      0000AF E5*02            [ 3]  218 	sbc	*(___fsadd_PARM_2 + 2)
+      0000B1 85*02            [ 3]  219 	sta	*(___fsadd_PARM_2 + 2)
+      0000B3 98               [ 2]  220 	tya
+      0000B4 E5*03            [ 3]  221 	sbc	*(___fsadd_PARM_2 + 3)
+      0000B6 85*03            [ 3]  222 	sta	*(___fsadd_PARM_2 + 3)
+      0000B8                        223 end:
+                                    224 
+                                    225 ; sh1 and sh2 are no longer needed
+                                    226 ; reuse res0 and res1 for the result
+                                    227 
+                                    228 ; add the mantissa
+      0000B8 18               [ 2]  229 	clc
+      0000B9 A5*00            [ 3]  230 	lda	*___fsadd_PARM_1
+      0000BB 65*00            [ 3]  231 	adc	*___fsadd_PARM_2
+      0000BD 85*00            [ 3]  232 	sta	*res0
+      0000BF A5*01            [ 3]  233 	lda	*(___fsadd_PARM_1 + 1)
+      0000C1 65*01            [ 3]  234 	adc	*(___fsadd_PARM_2 + 1)
+      0000C3 85*00            [ 3]  235 	sta	*res1
+      0000C5 A5*02            [ 3]  236 	lda	*(___fsadd_PARM_1 + 2)
+      0000C7 65*02            [ 3]  237 	adc	*(___fsadd_PARM_2 + 2)
+      0000C9 85*00            [ 3]  238 	sta	*res2
+      0000CB A5*03            [ 3]  239 	lda	*(___fsadd_PARM_1 + 3)
+      0000CD 65*03            [ 3]  240 	adc	*(___fsadd_PARM_2 + 3)
+      0000CF 85*00            [ 3]  241 	sta	*res3
+                                    242 
+                                    243 ; is result 0?
+                                    244 ;   lda	*res3
+      0000D1 05*00            [ 3]  245 	ora	*res2
+      0000D3 05*00            [ 3]  246 	ora	*res1
+      0000D5 05*00            [ 3]  247 	ora	*res0
+      0000D7 D0 03            [ 4]  248 	bne	res_not_zero
+      0000D9 4Cr00r00         [ 3]  249 	jmp	___fs_ret_zero  
+                                    250 
+      0000DC                        251 res_not_zero:
+      0000DC 24*00            [ 3]  252 	bit	*res3
+      0000DE 10 17            [ 4]  253 	bpl	res_pos
+                                    254     ; result is negative
+      0000E0 A2 80            [ 2]  255 	ldx	#0x80
+                                    256 ;    stx *rneg
+      0000E2 38               [ 2]  257 	sec
+      0000E3 98               [ 2]  258 	tya
+      0000E4 E5*00            [ 3]  259 	sbc	*res0
+      0000E6 85*00            [ 3]  260 	sta	*res0
+      0000E8 98               [ 2]  261 	tya
+      0000E9 E5*00            [ 3]  262 	sbc	*res1
+      0000EB 85*00            [ 3]  263 	sta	*res1
+      0000ED 98               [ 2]  264 	tya
+      0000EE E5*00            [ 3]  265 	sbc	*res2
+      0000F0 85*00            [ 3]  266 	sta	*res2
+      0000F2 98               [ 2]  267 	tya
+      0000F3 E5*00            [ 3]  268 	sbc	*res3
+      0000F5 85*00            [ 3]  269 	sta	*res3  
+      0000F7                        270 res_pos:
+                                    271 
+                                    272 
+      0000F7                        273 normalize:
+      0000F7 A5*00            [ 3]  274 	lda	*res3
+      0000F9 D0 0F            [ 4]  275 	bne	norm_done
+      0000FB 06*00            [ 5]  276 	asl	*res0
+      0000FD 26*00            [ 5]  277 	rol	*res1
+      0000FF 26*00            [ 5]  278 	rol	*res2
+      000101 26*00            [ 5]  279 	rol	*res3
+      000103 C6*00            [ 5]  280 	dec	*exp1
+      000105 D0 F0            [ 4]  281 	bne	normalize
+      000107 4Cr00r00         [ 3]  282 	jmp	___fs_ret_zero
+                                    283 
+      00010A                        284 norm_done:
+                                    285 
+      00010A                        286 round:
+      00010A A5*00            [ 3]  287 	lda	*res3
+      00010C 29 FE            [ 2]  288 	and	#0xfe
+      00010E F0 24            [ 4]  289 	beq	end_round
+      000110 A5*00            [ 3]  290 	lda	*res0
+      000112 29 01            [ 2]  291 	and	#0x01
+      000114 F0 0E            [ 4]  292 	beq	add_end
+      000116 E6*00            [ 5]  293 	inc	*res0
+      000118 D0 0A            [ 4]  294 	bne	add_end
+      00011A E6*00            [ 5]  295 	inc	*res1
+      00011C D0 06            [ 4]  296 	bne	add_end
+      00011E E6*00            [ 5]  297 	inc	*res2
+      000120 D0 02            [ 4]  298 	bne	add_end
+      000122 E6*00            [ 5]  299 	inc	*res3
+      000124                        300 add_end:
+                                    301 
+      000124 46*00            [ 5]  302 	lsr	*res3
+      000126 66*00            [ 5]  303 	ror	*res2
+      000128 66*00            [ 5]  304 	ror	*res1
+      00012A 66*00            [ 5]  305 	ror	*res0
+      00012C E6*00            [ 5]  306 	inc	*exp1
+      00012E D0 DA            [ 4]  307 	bne	round
+                                    308 ;    	lda	*rneg
+      000130 8A               [ 2]  309 	txa     ; rneg is in X
+      000131 4Cr00r00         [ 3]  310 	jmp 	___fs_ret_inf ; return infinite
+                                    311 
+      000134                        312 end_round:
+                                    313     
+      000134 46*00            [ 5]  314 	lsr	*res2
+      000136 66*00            [ 5]  315 	ror	*res1
+      000138 66*00            [ 5]  316 	ror	*res0
+                                    317 
+      00013A 86*00            [ 3]  318 	stx	*s1
+      00013C 4Cr00r00         [ 3]  319 	jmp	___fs_pack_ret
+                                    320 

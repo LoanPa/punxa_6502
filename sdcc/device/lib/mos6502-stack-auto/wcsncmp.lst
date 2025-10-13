@@ -1,0 +1,311 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module wcsncmp
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _wcsncmp
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'wcsncmp'
+                                     64 ;------------------------------------------------------------
+                                     65 ;last          Allocated to stack - sp +19 +2 
+                                     66 ;count         Allocated to stack - sp +21 +2 
+                                     67 ;first         Allocated to stack - sp +15 +2 
+                                     68 ;sloc0         Allocated to stack - sp +13 +2 
+                                     69 ;sloc1         Allocated to stack - sp +11 +2 
+                                     70 ;sloc2         Allocated to stack - sp +9 +2 
+                                     71 ;sloc3         Allocated to stack - sp +5 +4 
+                                     72 ;sloc4         Allocated to stack - sp +1 +4 
+                                     73 ;------------------------------------------------------------
+                                     74 ;	../wcsncmp.c: 32: int wcsncmp ( const wchar_t * first, const wchar_t * last, size_t count )
+                                     75 ;	genLabel
+                                     76 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     77 ;	-----------------------------------------
+                                     78 ;	 function wcsncmp
+                                     79 ;	-----------------------------------------
+                                     80 ;	Register assignment is optimal.
+                                     81 ;	Stack space usage: 16 bytes.
+      000000                         82 _wcsncmp:
+                                     83 ;	genReceive: size=2
+                                     84 ;	pushreg: ofs=1
+      000000 85*00            [ 3]   85 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   86 	txa
+      000003 48               [ 3]   87 	pha
+      000004 A5*00            [ 3]   88 	lda	*(REGTEMP+0)
+                                     89 ;	pushreg: ofs=0
+      000006 48               [ 3]   90 	pha
+                                     91 ;	  adjustStack : cycles stk:42  incdec:32  adc:12
+      000007 BA               [ 2]   92 	tsx
+      000008 8A               [ 2]   93 	txa
+      000009 18               [ 2]   94 	clc
+      00000A 69 F2            [ 2]   95 	adc	#0xf2
+      00000C AA               [ 2]   96 	tax
+      00000D 9A               [ 2]   97 	txs
+                                     98 ;	Raw cost for generated ic 1 : (14, 26.000000) count=1.000000
+                                     99 ;	skipping generated iCode
+                                    100 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    101 ;	../wcsncmp.c: 34: if (!count)
+                                    102 ;	genIfx
+      00000E BD 16 01         [ 5]  103 	lda	0x116,x
+      000011 1D 15 01         [ 5]  104 	ora	0x115,x
+                                    105 ;	genIfxJump : z
+      000014 D0 06            [ 4]  106 	bne	00114$
+                                    107 ;	Raw cost for generated ic 3 : (11, 13.600000) count=1.000000
+                                    108 ;	../wcsncmp.c: 35: return(0);
+                                    109 ;	genRet
+      000016 A9 00            [ 2]  110 	lda	#0x00
+      000018 AA               [ 2]  111 	tax
+      000019 4Cr2Fr01         [ 3]  112 	jmp	00108$
+                                    113 ;	Raw cost for generated ic 6 : (6, 7.000000) count=0.750000
+                                    114 ;	../wcsncmp.c: 37: while (--count && *first && *first == *last) {
+                                    115 ;	genLabel
+      00001C                        116 00114$:
+                                    117 ;	Raw cost for generated ic 44 : (0, 0.000000) count=1.000000
+                                    118 ;	genAssign
+                                    119 ;	genCopy
+      00001C BA               [ 2]  120 	tsx
+      00001D BD 10 01         [ 5]  121 	lda	0x110,x
+      000020 9D 0E 01         [ 5]  122 	sta	0x10e,x
+      000023 BD 0F 01         [ 5]  123 	lda	0x10f,x
+      000026 9D 0D 01         [ 5]  124 	sta	0x10d,x
+                                    125 ;	Raw cost for generated ic 47 : (13, 20.000000) count=1.000000
+                                    126 ;	genAssign
+                                    127 ;	genCopy
+      000029 BD 14 01         [ 5]  128 	lda	0x114,x
+      00002C 9D 0C 01         [ 5]  129 	sta	0x10c,x
+      00002F BD 13 01         [ 5]  130 	lda	0x113,x
+      000032 9D 0B 01         [ 5]  131 	sta	0x10b,x
+                                    132 ;	Raw cost for generated ic 50 : (12, 18.000000) count=1.000000
+                                    133 ;	genAssign
+                                    134 ;	genCopy
+      000035 BD 16 01         [ 5]  135 	lda	0x116,x
+      000038 9D 0A 01         [ 5]  136 	sta	0x10a,x
+      00003B BD 15 01         [ 5]  137 	lda	0x115,x
+      00003E 9D 09 01         [ 5]  138 	sta	0x109,x
+                                    139 ;	Raw cost for generated ic 52 : (12, 18.000000) count=1.000000
+                                    140 ;	genLabel
+      000041                        141 00105$:
+                                    142 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.729728
+                                    143 ;	genMinus
+                                    144 ;	  genMinusDec - size=2  icount=1
+      000041 BA               [ 2]  145 	tsx
+      000042 BD 09 01         [ 5]  146 	lda	0x109,x
+      000045 38               [ 2]  147 	sec
+      000046 E9 01            [ 2]  148 	sbc	#0x01
+      000048 9D 09 01         [ 5]  149 	sta	0x109,x
+      00004B BD 0A 01         [ 5]  150 	lda	0x10a,x
+      00004E E9 00            [ 2]  151 	sbc	#0x00
+      000050 9D 0A 01         [ 5]  152 	sta	0x10a,x
+                                    153 ;	Raw cost for generated ic 9 : (18, 26.000000) count=1.729728
+                                    154 ;	genIfx
+      000053 1D 09 01         [ 5]  155 	ora	0x109,x
+                                    156 ;	genIfxJump : z
+      000056 D0 03            [ 4]  157 	bne	00144$
+      000058 4CrF1r00         [ 3]  158 	jmp	00107$
+      00005B                        159 00144$:
+                                    160 ;	Raw cost for generated ic 11 : (8, 9.600000) count=1.729728
+                                    161 ;	genPointerGet
+                                    162 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00005B BD 0D 01         [ 5]  163 	lda	0x10d,x
+      00005E 85*00            [ 3]  164 	sta	*(DPTR+0)
+      000060 BD 0E 01         [ 5]  165 	lda	0x10e,x
+      000063 85*01            [ 3]  166 	sta	*(DPTR+1)
+      000065 A0 00            [ 2]  167 	ldy	#0x00
+      000067 B1*00            [ 6]  168 	lda	[DPTR],y
+      000069 9D 05 01         [ 5]  169 	sta	0x105,x
+      00006C C8               [ 2]  170 	iny
+      00006D B1*00            [ 6]  171 	lda	[DPTR],y
+      00006F 9D 06 01         [ 5]  172 	sta	0x106,x
+      000072 C8               [ 2]  173 	iny
+      000073 B1*00            [ 6]  174 	lda	[DPTR],y
+      000075 9D 07 01         [ 5]  175 	sta	0x107,x
+      000078 C8               [ 2]  176 	iny
+      000079 B1*00            [ 6]  177 	lda	[DPTR],y
+      00007B 9D 08 01         [ 5]  178 	sta	0x108,x
+                                    179 ;	Raw cost for generated ic 15 : (35, 62.000000) count=1.297296
+                                    180 ;	genIfx
+      00007E 1D 07 01         [ 5]  181 	ora	0x107,x
+      000081 1D 06 01         [ 5]  182 	ora	0x106,x
+      000084 1D 05 01         [ 5]  183 	ora	0x105,x
+                                    184 ;	genIfxJump : z
+      000087 F0 68            [ 4]  185 	beq	00107$
+                                    186 ;	Raw cost for generated ic 16 : (14, 17.600000) count=1.297296
+                                    187 ;	genPointerGet
+                                    188 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000089 BD 0B 01         [ 5]  189 	lda	0x10b,x
+      00008C 85*00            [ 3]  190 	sta	*(DPTR+0)
+      00008E BD 0C 01         [ 5]  191 	lda	0x10c,x
+      000091 85*01            [ 3]  192 	sta	*(DPTR+1)
+      000093 A0 00            [ 2]  193 	ldy	#0x00
+      000095 B1*00            [ 6]  194 	lda	[DPTR],y
+      000097 9D 01 01         [ 5]  195 	sta	0x101,x
+      00009A C8               [ 2]  196 	iny
+      00009B B1*00            [ 6]  197 	lda	[DPTR],y
+      00009D 9D 02 01         [ 5]  198 	sta	0x102,x
+      0000A0 C8               [ 2]  199 	iny
+      0000A1 B1*00            [ 6]  200 	lda	[DPTR],y
+      0000A3 9D 03 01         [ 5]  201 	sta	0x103,x
+      0000A6 C8               [ 2]  202 	iny
+      0000A7 B1*00            [ 6]  203 	lda	[DPTR],y
+      0000A9 9D 04 01         [ 5]  204 	sta	0x104,x
+                                    205 ;	Raw cost for generated ic 22 : (35, 62.000000) count=0.972971
+                                    206 ;	genCmpEQorNE
+      0000AC BD 05 01         [ 5]  207 	lda	0x105,x
+      0000AF DD 01 01         [ 5]  208 	cmp	0x101,x
+      0000B2 D0 3D            [ 4]  209 	bne	00107$
+      0000B4 BD 06 01         [ 5]  210 	lda	0x106,x
+      0000B7 DD 02 01         [ 5]  211 	cmp	0x102,x
+      0000BA D0 35            [ 4]  212 	bne	00107$
+      0000BC BD 07 01         [ 5]  213 	lda	0x107,x
+      0000BF DD 03 01         [ 5]  214 	cmp	0x103,x
+      0000C2 D0 2D            [ 4]  215 	bne	00107$
+      0000C4 BD 08 01         [ 5]  216 	lda	0x108,x
+      0000C7 DD 04 01         [ 5]  217 	cmp	0x104,x
+      0000CA D0 25            [ 4]  218 	bne	00107$
+                                    219 ;	Raw cost for generated ic 23 : (44, 54.399998) count=0.972971
+                                    220 ;	skipping generated iCode
+                                    221 ;	Raw cost for generated ic 24 : (0, 0.000000) count=0.972971
+                                    222 ;	../wcsncmp.c: 38: first++;
+                                    223 ;	genPlus
+                                    224 ;	  genPlusInc
+      0000CC BD 0D 01         [ 5]  225 	lda	0x10d,x
+      0000CF 18               [ 2]  226 	clc
+      0000D0 69 04            [ 2]  227 	adc	#0x04
+      0000D2 9D 0D 01         [ 5]  228 	sta	0x10d,x
+      0000D5 BD 0E 01         [ 5]  229 	lda	0x10e,x
+      0000D8 69 00            [ 2]  230 	adc	#0x00
+      0000DA 9D 0E 01         [ 5]  231 	sta	0x10e,x
+                                    232 ;	Raw cost for generated ic 28 : (17, 24.000000) count=0.729728
+                                    233 ;	../wcsncmp.c: 39: last++;
+                                    234 ;	genPlus
+                                    235 ;	  genPlusInc
+      0000DD BD 0B 01         [ 5]  236 	lda	0x10b,x
+      0000E0 18               [ 2]  237 	clc
+      0000E1 69 04            [ 2]  238 	adc	#0x04
+      0000E3 9D 0B 01         [ 5]  239 	sta	0x10b,x
+      0000E6 BD 0C 01         [ 5]  240 	lda	0x10c,x
+      0000E9 69 00            [ 2]  241 	adc	#0x00
+      0000EB 9D 0C 01         [ 5]  242 	sta	0x10c,x
+                                    243 ;	Raw cost for generated ic 31 : (17, 24.000000) count=0.729728
+                                    244 ;	genGoto
+      0000EE 4Cr41r00         [ 3]  245 	jmp	00105$
+                                    246 ;	Raw cost for generated ic 33 : (3, 3.000000) count=0.729728
+                                    247 ;	genLabel
+      0000F1                        248 00107$:
+                                    249 ;	Raw cost for generated ic 34 : (0, 0.000000) count=0.999998
+                                    250 ;	../wcsncmp.c: 42: return( *first - *last );
+                                    251 ;	genPointerGet
+                                    252 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0000F1 BA               [ 2]  253 	tsx
+      0000F2 BD 0D 01         [ 5]  254 	lda	0x10d,x
+      0000F5 85*00            [ 3]  255 	sta	*(DPTR+0)
+      0000F7 BD 0E 01         [ 5]  256 	lda	0x10e,x
+      0000FA 85*01            [ 3]  257 	sta	*(DPTR+1)
+      0000FC A0 00            [ 2]  258 	ldy	#0x00
+      0000FE B1*00            [ 6]  259 	lda	[DPTR],y
+      000100 9D 01 01         [ 5]  260 	sta	0x101,x
+      000103 C8               [ 2]  261 	iny
+      000104 B1*00            [ 6]  262 	lda	[DPTR],y
+      000106 9D 02 01         [ 5]  263 	sta	0x102,x
+                                    264 ;	Raw cost for generated ic 36 : (24, 40.000000) count=0.999998
+                                    265 ;	genPointerGet
+                                    266 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000109 BD 0B 01         [ 5]  267 	lda	0x10b,x
+      00010C 85*00            [ 3]  268 	sta	*(DPTR+0)
+      00010E BD 0C 01         [ 5]  269 	lda	0x10c,x
+      000111 85*01            [ 3]  270 	sta	*(DPTR+1)
+      000113 88               [ 2]  271 	dey
+      000114 B1*00            [ 6]  272 	lda	[DPTR],y
+      000116 9D 05 01         [ 5]  273 	sta	0x105,x
+      000119 C8               [ 2]  274 	iny
+      00011A B1*00            [ 6]  275 	lda	[DPTR],y
+      00011C 9D 06 01         [ 5]  276 	sta	0x106,x
+                                    277 ;	Raw cost for generated ic 38 : (22, 38.000000) count=0.999998
+                                    278 ;	genMinus
+      00011F BD 01 01         [ 5]  279 	lda	0x101,x
+      000122 38               [ 2]  280 	sec
+      000123 FD 05 01         [ 5]  281 	sbc	0x105,x
+      000126 48               [ 3]  282 	pha
+      000127 BD 02 01         [ 5]  283 	lda	0x102,x
+      00012A FD 06 01         [ 5]  284 	sbc	0x106,x
+      00012D AA               [ 2]  285 	tax
+      00012E 68               [ 4]  286 	pla
+                                    287 ;	Raw cost for generated ic 39 : (16, 27.000000) count=0.999998
+                                    288 ;	genRet
+                                    289 ;	Raw cost for generated ic 41 : (0, 0.000000) count=0.999998
+                                    290 ;	genLabel
+      00012F                        291 00108$:
+                                    292 ;	Raw cost for generated ic 42 : (0, 0.000000) count=0.999998
+                                    293 ;	../wcsncmp.c: 43: }
+                                    294 ;	genEndFunction
+                                    295 ;	  adjustStack : cycles stk:70  incdec:42  adc:24
+      00012F 86*00            [ 3]  296 	stx	*(REGTEMP+0)
+      000131 85*01            [ 3]  297 	sta	*(REGTEMP+1)
+      000133 BA               [ 2]  298 	tsx
+      000134 8A               [ 2]  299 	txa
+      000135 18               [ 2]  300 	clc
+      000136 69 10            [ 2]  301 	adc	#0x10
+      000138 AA               [ 2]  302 	tax
+      000139 9A               [ 2]  303 	txs
+      00013A A5*01            [ 3]  304 	lda	*(REGTEMP+1)
+      00013C A6*00            [ 3]  305 	ldx	*(REGTEMP+0)
+      00013E 60               [ 6]  306 	rts
+                                    307 ;	Raw cost for generated ic 43 : (16, 30.000000) count=0.999998
+                                    308 	.area CODE
+                                    309 	.area RODATA
+                                    310 	.area XINIT
+                                    311 	.area CABS    (ABS)

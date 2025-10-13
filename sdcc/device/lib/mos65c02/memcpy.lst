@@ -1,0 +1,102 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   memcpy.s - standarc C library
+                                      3 ;
+                                      4 ;   Copyright (C) 2003, Ullrich von Bassewitz
+                                      5 ;   Copyright (C) 2009, Christian Krueger
+                                      6 ;   Copyright (C) 2022-2023, Gabriele Gorla
+                                      7 ;
+                                      8 ;   This library is free software; you can redistribute it and/or modify it
+                                      9 ;   under the terms of the GNU General Public License as published by the
+                                     10 ;   Free Software Foundation; either version 2, or (at your option) any
+                                     11 ;   later version.
+                                     12 ;
+                                     13 ;   This library is distributed in the hope that it will be useful,
+                                     14 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     15 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     16 ;   GNU General Public License for more details.
+                                     17 ;
+                                     18 ;   You should have received a copy of the GNU General Public License
+                                     19 ;   along with this library; see the file COPYING. If not, write to the
+                                     20 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     21 ;   MA 02110-1301, USA.
+                                     22 ;
+                                     23 ;   As a special exception, if you link this library with other files,
+                                     24 ;   some of which are compiled with SDCC, to produce an executable,
+                                     25 ;   this library does not by itself cause the resulting executable to
+                                     26 ;   be covered by the GNU General Public License. This exception does
+                                     27 ;   not however invalidate any other reasons why the executable file
+                                     28 ;   might be covered by the GNU General Public License.
+                                     29 ;-------------------------------------------------------------------------
+                                     30 
+                                     31 	.module _memcpy
+                                     32 
+                                     33 ;--------------------------------------------------------
+                                     34 ; exported symbols
+                                     35 ;--------------------------------------------------------
+                                     36 	.globl ___memcpy_PARM_2
+                                     37 	.globl ___memcpy_PARM_3
+                                     38 	.globl ___memcpy
+                                     39 	.globl _memcpy_PARM_2
+                                     40 	.globl _memcpy_PARM_3
+                                     41 	.globl _memcpy
+                                     42 
+                                     43 ;--------------------------------------------------------
+                                     44 ; overlayable function parameters in zero page
+                                     45 ;--------------------------------------------------------
+                                     46 	.area	OSEG    (PAG, OVR)
+      000000                         47 _memcpy_PARM_2:
+      000000                         48 ___memcpy_PARM_2:
+      000000                         49 	.ds 2
+      000002                         50 _memcpy_PARM_3:
+      000002                         51 ___memcpy_PARM_3:
+      000002                         52 	.ds 2
+                                     53 
+                                     54 ;--------------------------------------------------------
+                                     55 ; local aliases
+                                     56 ;--------------------------------------------------------
+                                     57 	.define save  "___SDCC_m6502_ret0"
+                                     58 	.define dst   "DPTR"
+                                     59 	.define src   "___memcpy_PARM_2"
+                                     60 	.define count "___memcpy_PARM_3"
+                                     61 
+                                     62 ;--------------------------------------------------------
+                                     63 ; code
+                                     64 ;--------------------------------------------------------
+                                     65 	.area CODE
+                                     66 
+      000000                         67 _memcpy:
+      000000                         68 ___memcpy:
+      000000 85*00            [ 3]   69 	sta	*save+0
+      000002 86*01            [ 3]   70 	stx	*save+1
+      000004 85*00            [ 3]   71 	sta	*dst+0
+      000006 86*01            [ 3]   72 	stx	*dst+1
+                                     73 
+      000008 A0 00            [ 2]   74 	ldy	#0
+      00000A A6*03            [ 3]   75 	ldx	*count+1
+      00000C F0 13            [ 4]   76 	beq	last_bytes
+      00000E                         77 page_loop:
+      00000E B1*00            [ 6]   78 	lda	[src],y
+      000010 91*00            [ 6]   79 	sta	[dst],y
+      000012 C8               [ 2]   80 	iny
+      000013 B1*00            [ 6]   81 	lda	[src],y
+      000015 91*00            [ 6]   82 	sta	[dst],y
+      000017 C8               [ 2]   83 	iny
+      000018 D0 F4            [ 4]   84 	bne	page_loop
+      00001A E6*01            [ 5]   85 	inc	*src+1
+      00001C E6*01            [ 5]   86 	inc	*dst+1
+      00001E CA               [ 2]   87 	dex
+      00001F D0 ED            [ 4]   88 	bne	page_loop
+                                     89 
+      000021                         90 last_bytes:
+      000021 A6*02            [ 3]   91 	ldx	*count+0
+      000023 F0 08            [ 4]   92 	beq	end
+      000025                         93 byte_loop:
+      000025 B1*00            [ 6]   94 	lda	[src],y
+      000027 91*00            [ 6]   95 	sta	[dst],y
+      000029 C8               [ 2]   96 	iny
+      00002A CA               [ 2]   97 	dex
+      00002B D0 F8            [ 4]   98 	bne	byte_loop
+      00002D                         99 end:
+      00002D A5*00            [ 3]  100 	lda	*save+0
+      00002F A6*01            [ 3]  101 	ldx	*save+1
+      000031 60               [ 6]  102 	rts

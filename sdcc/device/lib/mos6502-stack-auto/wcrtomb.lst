@@ -1,0 +1,160 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module wcrtomb
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _wctomb
+                                     27 	.globl _wcrtomb
+                                     28 ;--------------------------------------------------------
+                                     29 ; ZP ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area ZP      (PAG)
+                                     32 ;--------------------------------------------------------
+                                     33 ; overlayable items in ram
+                                     34 ;--------------------------------------------------------
+                                     35 ;--------------------------------------------------------
+                                     36 ; uninitialized external ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area BSS
+                                     39 ;--------------------------------------------------------
+                                     40 ; absolute external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area DABS    (ABS)
+                                     43 ;--------------------------------------------------------
+                                     44 ; initialized external ram data
+                                     45 ;--------------------------------------------------------
+                                     46 	.area DATA
+                                     47 ;--------------------------------------------------------
+                                     48 ; global & static initialisations
+                                     49 ;--------------------------------------------------------
+                                     50 	.area _CODE
+                                     51 	.area GSINIT
+                                     52 	.area GSFINAL
+                                     53 	.area GSINIT
+                                     54 ;--------------------------------------------------------
+                                     55 ; Home
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _CODE
+                                     58 	.area _CODE
+                                     59 ;--------------------------------------------------------
+                                     60 ; code
+                                     61 ;--------------------------------------------------------
+                                     62 	.area CODE
+                                     63 ;------------------------------------------------------------
+                                     64 ;Allocation info for local variables in function 'wcrtomb'
+                                     65 ;------------------------------------------------------------
+                                     66 ;wc            Allocated to stack - sp +5 +4 
+                                     67 ;ps            Allocated to stack - sp +9 +2 
+                                     68 ;s             Allocated to stack - sp +1 +2 
+                                     69 ;ret           Allocated to registers a x 
+                                     70 ;------------------------------------------------------------
+                                     71 ;	../wcrtomb.c: 34: size_t wcrtomb(char *restrict s, wchar_t wc, mbstate_t *restrict ps)
+                                     72 ;	genLabel
+                                     73 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     74 ;	-----------------------------------------
+                                     75 ;	 function wcrtomb
+                                     76 ;	-----------------------------------------
+                                     77 ;	Register assignment is optimal.
+                                     78 ;	Stack space usage: 2 bytes.
+      000000                         79 _wcrtomb:
+                                     80 ;	genReceive: size=2
+                                     81 ;	pushreg: ofs=1
+      000000 85*00            [ 3]   82 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   83 	txa
+      000003 48               [ 3]   84 	pha
+      000004 A5*00            [ 3]   85 	lda	*(REGTEMP+0)
+                                     86 ;	pushreg: ofs=0
+      000006 48               [ 3]   87 	pha
+                                     88 ;	Raw cost for generated ic 1 : (7, 14.000000) count=1.000000
+                                     89 ;	skipping generated iCode
+                                     90 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     91 ;	../wcrtomb.c: 40: ret = wctomb(s, wc);
+                                     92 ;	genIpush
+      000007 BA               [ 2]   93 	tsx
+      000008 BD 08 01         [ 5]   94 	lda	0x108,x
+      00000B 48               [ 3]   95 	pha
+      00000C BD 07 01         [ 5]   96 	lda	0x107,x
+      00000F 48               [ 3]   97 	pha
+      000010 BD 06 01         [ 5]   98 	lda	0x106,x
+      000013 48               [ 3]   99 	pha
+      000014 BD 05 01         [ 5]  100 	lda	0x105,x
+      000017 48               [ 3]  101 	pha
+                                    102 ;	Raw cost for generated ic 3 : (17, 30.000000) count=1.000000
+                                    103 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    104 ;	genCall
+                                    105 ;	genSend
+      000018 BD 01 01         [ 5]  106 	lda	0x101,x
+      00001B A8               [ 2]  107 	tay
+      00001C BD 02 01         [ 5]  108 	lda	0x102,x
+      00001F AA               [ 2]  109 	tax
+      000020 98               [ 2]  110 	tya
+      000021 20r00r00         [ 6]  111 	jsr	_wctomb
+                                    112 ;	assignResultValue
+                                    113 ;	  adjustStack : cycles stk:22  incdec:18  adc:24
+      000024 86*00            [ 3]  114 	stx	*(REGTEMP+0)
+      000026 BA               [ 2]  115 	tsx
+      000027 E8               [ 2]  116 	inx
+      000028 E8               [ 2]  117 	inx
+      000029 E8               [ 2]  118 	inx
+      00002A E8               [ 2]  119 	inx
+      00002B 9A               [ 2]  120 	txs
+      00002C A6*00            [ 3]  121 	ldx	*(REGTEMP+0)
+                                    122 ;	Raw cost for generated ic 5 : (22, 38.000000) count=1.000000
+                                    123 ;	../wcrtomb.c: 42: if(ret == (size_t)(-1))
+                                    124 ;	genCmpEQorNE
+      00002E C9 FF            [ 2]  125 	cmp	#0xff
+      000030 D0 0E            [ 4]  126 	bne	00102$
+      000032 E0 FF            [ 2]  127 	cpx	#0xff
+      000034 D0 0A            [ 4]  128 	bne	00102$
+                                    129 ;	Raw cost for generated ic 7 : (14, 15.200001) count=1.000000
+                                    130 ;	skipping generated iCode
+                                    131 ;	Raw cost for generated ic 8 : (0, 0.000000) count=1.000000
+                                    132 ;	../wcrtomb.c: 43: errno = EILSEQ;
+                                    133 ;	genAssign
+                                    134 ;	genAssignLit
+      000036 A0 54            [ 2]  135 	ldy	#0x54
+      000038 8Cr00r00         [ 4]  136 	sty	_errno
+      00003B A0 00            [ 2]  137 	ldy	#0x00
+      00003D 8Cr01r00         [ 4]  138 	sty	(_errno + 1)
+                                    139 ;	Raw cost for generated ic 12 : (10, 12.000000) count=0.750000
+                                    140 ;	genLabel
+      000040                        141 00102$:
+                                    142 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    143 ;	../wcrtomb.c: 45: return(ret);
+                                    144 ;	genRet
+                                    145 ;	Raw cost for generated ic 14 : (0, 0.000000) count=1.000000
+                                    146 ;	genLabel
+                                    147 ;	Raw cost for generated ic 15 : (0, 0.000000) count=1.000000
+                                    148 ;	../wcrtomb.c: 46: }
+                                    149 ;	genEndFunction
+                                    150 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000040 85*00            [ 3]  151 	sta	*(REGTEMP+0)
+      000042 68               [ 4]  152 	pla
+      000043 68               [ 4]  153 	pla
+      000044 A5*00            [ 3]  154 	lda	*(REGTEMP+0)
+      000046 60               [ 6]  155 	rts
+                                    156 ;	Raw cost for generated ic 16 : (7, 20.000000) count=1.000000
+                                    157 	.area CODE
+                                    158 	.area RODATA
+                                    159 	.area XINIT
+                                    160 	.area CABS    (ABS)

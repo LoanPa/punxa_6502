@@ -1,0 +1,545 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module strtol
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _strtoul
+                                     27 	.globl _strtol_PARM_3
+                                     28 	.globl _strtol_PARM_2
+                                     29 	.globl _strtol
+                                     30 ;--------------------------------------------------------
+                                     31 ; ZP ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area ZP      (PAG)
+      000000                         34 _strtol_sloc0_1_0:
+      000000                         35 	.ds 2
+      000002                         36 _strtol_sloc1_1_0:
+      000002                         37 	.ds 4
+      000006                         38 _strtol_sloc2_1_0:
+      000006                         39 	.ds 4
+                                     40 ;--------------------------------------------------------
+                                     41 ; overlayable items in ram
+                                     42 ;--------------------------------------------------------
+                                     43 ;--------------------------------------------------------
+                                     44 ; uninitialized external ram data
+                                     45 ;--------------------------------------------------------
+                                     46 	.area BSS
+      000000                         47 _strtol_PARM_2:
+      000000                         48 	.ds 2
+      000002                         49 _strtol_PARM_3:
+      000002                         50 	.ds 2
+      000004                         51 _strtol_nptr_10000_62:
+      000004                         52 	.ds 2
+      000006                         53 _strtol_ptr_10000_63:
+      000006                         54 	.ds 2
+      000008                         55 _strtol_rptr_10000_63:
+      000008                         56 	.ds 2
+                                     57 ;--------------------------------------------------------
+                                     58 ; absolute external ram data
+                                     59 ;--------------------------------------------------------
+                                     60 	.area DABS    (ABS)
+                                     61 ;--------------------------------------------------------
+                                     62 ; initialized external ram data
+                                     63 ;--------------------------------------------------------
+                                     64 	.area DATA
+                                     65 ;--------------------------------------------------------
+                                     66 ; global & static initialisations
+                                     67 ;--------------------------------------------------------
+                                     68 	.area _CODE
+                                     69 	.area GSINIT
+                                     70 	.area GSFINAL
+                                     71 	.area GSINIT
+                                     72 ;--------------------------------------------------------
+                                     73 ; Home
+                                     74 ;--------------------------------------------------------
+                                     75 	.area _CODE
+                                     76 	.area _CODE
+                                     77 ;--------------------------------------------------------
+                                     78 ; code
+                                     79 ;--------------------------------------------------------
+                                     80 	.area CODE
+                                     81 ;------------------------------------------------------------
+                                     82 ;Allocation info for local variables in function 'strtol'
+                                     83 ;------------------------------------------------------------
+                                     84 ;sloc0         Allocated with name '_strtol_sloc0_1_0'
+                                     85 ;sloc1         Allocated with name '_strtol_sloc1_1_0'
+                                     86 ;sloc2         Allocated with name '_strtol_sloc2_1_0'
+                                     87 ;endptr        Allocated with name '_strtol_PARM_2'
+                                     88 ;base          Allocated with name '_strtol_PARM_3'
+                                     89 ;nptr          Allocated with name '_strtol_nptr_10000_62'
+                                     90 ;__200000007   Allocated to registers 
+                                     91 ;__200000004   Allocated to registers 
+                                     92 ;ptr           Allocated with name '_strtol_ptr_10000_63'
+                                     93 ;rptr          Allocated with name '_strtol_rptr_10000_63'
+                                     94 ;u             Allocated with name '_strtol_u_10000_63'
+                                     95 ;neg           Allocated to registers x 
+                                     96 ;__200000005   Allocated to registers 
+                                     97 ;c             Allocated to registers 
+                                     98 ;__300000008   Allocated to registers 
+                                     99 ;c             Allocated to registers 
+                                    100 ;------------------------------------------------------------
+                                    101 ;	../strtol.c: 38: long int strtol(const char *nptr, char **endptr, int base)
+                                    102 ;	genLabel
+                                    103 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    104 ;	-----------------------------------------
+                                    105 ;	 function strtol
+                                    106 ;	-----------------------------------------
+                                    107 ;	Register assignment is optimal.
+                                    108 ;	Stack space usage: 0 bytes.
+      000000                        109 _strtol:
+                                    110 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    111 ;	genReceive
+      000000 8Dr04r00         [ 4]  112 	sta	_strtol_nptr_10000_62
+      000003 8Er05r00         [ 4]  113 	stx	(_strtol_nptr_10000_62 + 1)
+                                    114 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    115 ;	../strtol.c: 45: while (isblank (*ptr))
+                                    116 ;	genAssign
+                                    117 ;	genCopy
+      000006 85*00            [ 3]  118 	sta	*_strtol_sloc0_1_0
+      000008 86*01            [ 3]  119 	stx	*(_strtol_sloc0_1_0 + 1)
+                                    120 ;	Raw cost for generated ic 159 : (4, 6.000000) count=1.000000
+                                    121 ;	genLabel
+      00000A                        122 00101$:
+                                    123 ;	Raw cost for generated ic 4 : (0, 0.000000) count=5.333324
+                                    124 ;	genPointerGet
+      00000A A0 00            [ 2]  125 	ldy	#0x00
+      00000C B1*00            [ 6]  126 	lda	[*_strtol_sloc0_1_0],y
+                                    127 ;	Raw cost for generated ic 6 : (4, 7.000000) count=5.333324
+                                    128 ;	./../../include/ctype.h: 53: return ((unsigned char)c == ' ' || (unsigned char)c == '\t');
+                                    129 ;	genCast
+                                    130 ;	genCopy
+                                    131 ;	Raw cost for generated ic 10 : (0, 0.000000) count=5.333324
+                                    132 ;	genCmpEQorNE
+      00000E C9 20            [ 2]  133 	cmp	#0x20
+      000010 F0 04            [ 4]  134 	beq	00132$
+                                    135 ;	Raw cost for generated ic 11 : (7, 7.600000) count=5.333324
+                                    136 ;	skipping generated iCode
+                                    137 ;	Raw cost for generated ic 12 : (0, 0.000000) count=5.333324
+                                    138 ;	genCmpEQorNE
+      000012 C9 09            [ 2]  139 	cmp	#0x09
+      000014 D0 09            [ 4]  140 	bne	00158$
+                                    141 ;	Raw cost for generated ic 14 : (7, 7.600000) count=3.999992
+                                    142 ;	skipping generated iCode
+                                    143 ;	Raw cost for generated ic 15 : (0, 0.000000) count=3.999992
+                                    144 ;	genLabel
+      000016                        145 00132$:
+                                    146 ;	Raw cost for generated ic 19 : (0, 0.000000) count=4.333324
+                                    147 ;	../strtol.c: 46: ptr++;
+                                    148 ;	genPlus
+                                    149 ;	  genPlusInc
+      000016 E6*00            [ 5]  150 	inc	*_strtol_sloc0_1_0
+      000018 D0 F0            [ 4]  151 	bne	00101$
+      00001A E6*01            [ 5]  152 	inc	*(_strtol_sloc0_1_0 + 1)
+                                    153 ;	Raw cost for generated ic 30 : (6, 12.600000) count=4.333324
+                                    154 ;	genGoto
+      00001C 4Cr0Ar00         [ 3]  155 	jmp	00101$
+                                    156 ;	Raw cost for generated ic 32 : (3, 3.000000) count=4.333324
+                                    157 ;	genLabel
+      00001F                        158 00158$:
+                                    159 ;	Raw cost for generated ic 160 : (0, 0.000000) count=0.999997
+                                    160 ;	genAssign
+                                    161 ;	genCopy
+      00001F A5*01            [ 3]  162 	lda	*(_strtol_sloc0_1_0 + 1)
+      000021 8Dr07r00         [ 4]  163 	sta	(_strtol_ptr_10000_63 + 1)
+      000024 A5*00            [ 3]  164 	lda	*_strtol_sloc0_1_0
+      000026 8Dr06r00         [ 4]  165 	sta	_strtol_ptr_10000_63
+                                    166 ;	Raw cost for generated ic 161 : (10, 14.000000) count=0.999997
+                                    167 ;	../strtol.c: 50: if (*ptr == '-')
+                                    168 ;	genPointerGet
+      000029 A0 00            [ 2]  169 	ldy	#0x00
+      00002B B1*00            [ 6]  170 	lda	[*_strtol_sloc0_1_0],y
+                                    171 ;	Raw cost for generated ic 39 : (4, 7.000000) count=0.999997
+                                    172 ;	genCmpEQorNE
+      00002D C9 2D            [ 2]  173 	cmp	#0x2d
+      00002F D0 14            [ 4]  174 	bne	00105$
+                                    175 ;	Raw cost for generated ic 40 : (7, 7.600000) count=0.999997
+                                    176 ;	skipping generated iCode
+                                    177 ;	Raw cost for generated ic 41 : (0, 0.000000) count=0.999997
+                                    178 ;	../strtol.c: 52: neg = true;
+                                    179 ;	genAssign
+                                    180 ;	genCopy
+      000031 A2 01            [ 2]  181 	ldx	#0x01
+                                    182 ;	Raw cost for generated ic 44 : (2, 2.000000) count=0.749996
+                                    183 ;	../strtol.c: 53: ptr++;
+                                    184 ;	genPlus
+                                    185 ;	  genPlusInc
+      000033 A5*00            [ 3]  186 	lda	*_strtol_sloc0_1_0
+      000035 18               [ 2]  187 	clc
+      000036 69 01            [ 2]  188 	adc	#0x01
+      000038 8Dr06r00         [ 4]  189 	sta	_strtol_ptr_10000_63
+      00003B A5*01            [ 3]  190 	lda	*(_strtol_sloc0_1_0 + 1)
+      00003D 69 00            [ 2]  191 	adc	#0x00
+      00003F 8Dr07r00         [ 4]  192 	sta	(_strtol_ptr_10000_63 + 1)
+                                    193 ;	Raw cost for generated ic 46 : (15, 20.000000) count=0.749996
+                                    194 ;	genGoto
+      000042 4Cr47r00         [ 3]  195 	jmp	00106$
+                                    196 ;	Raw cost for generated ic 48 : (3, 3.000000) count=0.749996
+                                    197 ;	genLabel
+      000045                        198 00105$:
+                                    199 ;	Raw cost for generated ic 49 : (0, 0.000000) count=0.249999
+                                    200 ;	../strtol.c: 56: neg = false;
+                                    201 ;	genAssign
+                                    202 ;	genCopy
+      000045 A2 00            [ 2]  203 	ldx	#0x00
+                                    204 ;	Raw cost for generated ic 50 : (2, 2.000000) count=0.249999
+                                    205 ;	genLabel
+      000047                        206 00106$:
+                                    207 ;	Raw cost for generated ic 51 : (0, 0.000000) count=0.999995
+                                    208 ;	../strtol.c: 59: if (neg && (isblank (*ptr) || *ptr == '-' || *ptr == '+'))
+                                    209 ;	genIfx
+      000047 E0 00            [ 2]  210 	cpx	#0x00
+                                    211 ;	genIfxJump : z
+      000049 F0 46            [ 4]  212 	beq	00110$
+                                    213 ;	Raw cost for generated ic 52 : (7, 7.600000) count=0.999995
+                                    214 ;	genPointerGet
+                                    215 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00004B ADr06r00         [ 4]  216 	lda	_strtol_ptr_10000_63
+      00004E 85*00            [ 3]  217 	sta	*(DPTR+0)
+      000050 ADr07r00         [ 4]  218 	lda	(_strtol_ptr_10000_63 + 1)
+      000053 85*01            [ 3]  219 	sta	*(DPTR+1)
+      000055 A0 00            [ 2]  220 	ldy	#0x00
+      000057 B1*00            [ 6]  221 	lda	[DPTR],y
+                                    222 ;	Raw cost for generated ic 56 : (14, 21.000000) count=0.749996
+                                    223 ;	genAssign
+                                    224 ;	genCopy
+      000059 A8               [ 2]  225 	tay
+                                    226 ;	Raw cost for generated ic 57 : (1, 2.000000) count=0.749996
+                                    227 ;	./../../include/ctype.h: 53: return ((unsigned char)c == ' ' || (unsigned char)c == '\t');
+                                    228 ;	genCast
+                                    229 ;	genCopy
+                                    230 ;	Raw cost for generated ic 60 : (0, 0.000000) count=0.749996
+                                    231 ;	genCmpEQorNE
+      00005A C0 20            [ 2]  232 	cpy	#0x20
+      00005C F0 0C            [ 4]  233 	beq	00109$
+                                    234 ;	Raw cost for generated ic 61 : (7, 7.600000) count=0.749996
+                                    235 ;	skipping generated iCode
+                                    236 ;	Raw cost for generated ic 62 : (0, 0.000000) count=0.749996
+                                    237 ;	genCmpEQorNE
+      00005E C0 09            [ 2]  238 	cpy	#0x09
+      000060 F0 08            [ 4]  239 	beq	00109$
+                                    240 ;	Raw cost for generated ic 64 : (7, 7.600000) count=0.562497
+                                    241 ;	skipping generated iCode
+                                    242 ;	Raw cost for generated ic 65 : (0, 0.000000) count=0.562497
+                                    243 ;	../strtol.c: 59: if (neg && (isblank (*ptr) || *ptr == '-' || *ptr == '+'))
+                                    244 ;	genCmpEQorNE
+      000062 C9 2D            [ 2]  245 	cmp	#0x2d
+      000064 F0 04            [ 4]  246 	beq	00109$
+                                    247 ;	Raw cost for generated ic 81 : (7, 7.600000) count=0.421873
+                                    248 ;	skipping generated iCode
+                                    249 ;	Raw cost for generated ic 82 : (0, 0.000000) count=0.421873
+                                    250 ;	genCmpEQorNE
+      000066 C9 2B            [ 2]  251 	cmp	#0x2b
+      000068 D0 27            [ 4]  252 	bne	00110$
+                                    253 ;	Raw cost for generated ic 87 : (7, 7.600000) count=0.316405
+                                    254 ;	skipping generated iCode
+                                    255 ;	Raw cost for generated ic 88 : (0, 0.000000) count=0.316405
+                                    256 ;	genLabel
+      00006A                        257 00109$:
+                                    258 ;	Raw cost for generated ic 90 : (0, 0.000000) count=0.670895
+                                    259 ;	../strtol.c: 61: if (endptr)
+                                    260 ;	genIfx
+      00006A ADr01r00         [ 4]  261 	lda	(_strtol_PARM_2 + 1)
+      00006D 0Dr00r00         [ 4]  262 	ora	_strtol_PARM_2
+                                    263 ;	genIfxJump : z
+      000070 F0 17            [ 4]  264 	beq	00108$
+                                    265 ;	Raw cost for generated ic 91 : (11, 13.600000) count=0.670895
+                                    266 ;	../strtol.c: 62: *endptr = nptr;
+                                    267 ;	genAssign
+                                    268 ;	genCopy
+      000072 AEr01r00         [ 4]  269 	ldx	(_strtol_PARM_2 + 1)
+      000075 ADr00r00         [ 4]  270 	lda	_strtol_PARM_2
+                                    271 ;	Raw cost for generated ic 94 : (6, 8.000000) count=0.503171
+                                    272 ;	genPointerSet
+                                    273 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000078 85*00            [ 3]  274 	sta	*(DPTR+0)
+      00007A 86*01            [ 3]  275 	stx	*(DPTR+1)
+      00007C ADr04r00         [ 4]  276 	lda	_strtol_nptr_10000_62
+      00007F A0 00            [ 2]  277 	ldy	#0x00
+      000081 91*00            [ 6]  278 	sta	[DPTR],y
+      000083 ADr05r00         [ 4]  279 	lda	(_strtol_nptr_10000_62 + 1)
+      000086 C8               [ 2]  280 	iny
+      000087 91*00            [ 6]  281 	sta	[DPTR],y
+                                    282 ;	Raw cost for generated ic 95 : (17, 30.000000) count=0.503171
+                                    283 ;	genLabel
+      000089                        284 00108$:
+                                    285 ;	Raw cost for generated ic 96 : (0, 0.000000) count=0.670895
+                                    286 ;	../strtol.c: 63: return (0);
+                                    287 ;	genRet
+      000089 A9 00            [ 2]  288 	lda	#0x00
+      00008B AA               [ 2]  289 	tax
+      00008C 85*00            [ 3]  290 	sta	*___SDCC_m6502_ret2
+      00008E 85*00            [ 3]  291 	sta	*___SDCC_m6502_ret3
+      000090 60               [ 6]  292 	rts
+                                    293 ;	Raw cost for generated ic 97 : (10, 13.000000) count=0.670895
+                                    294 ;	genLabel
+      000091                        295 00110$:
+                                    296 ;	Raw cost for generated ic 98 : (0, 0.000000) count=0.999995
+                                    297 ;	../strtol.c: 66: u = strtoul(ptr, &rptr, base);
+                                    298 ;	skipping iCode since result will be rematerialized
+                                    299 ;	Raw cost for generated ic 99 : (0, 0.000000) count=0.999995
+                                    300 ;	genCast
+                                    301 ;	genCopy
+      000091 A9s00            [ 2]  302 	lda	#>_strtol_rptr_10000_63
+      000093 8Dr01r00         [ 4]  303 	sta	(_strtoul_PARM_2 + 1)
+      000096 A9r08            [ 2]  304 	lda	#_strtol_rptr_10000_63
+      000098 8Dr00r00         [ 4]  305 	sta	_strtoul_PARM_2
+                                    306 ;	Raw cost for generated ic 100 : (10, 12.000000) count=0.999995
+                                    307 ;	genAssign
+                                    308 ;	genCopy
+      00009B ADr03r00         [ 4]  309 	lda	(_strtol_PARM_3 + 1)
+      00009E 8Dr01r00         [ 4]  310 	sta	(_strtoul_PARM_3 + 1)
+      0000A1 ADr02r00         [ 4]  311 	lda	_strtol_PARM_3
+      0000A4 8Dr00r00         [ 4]  312 	sta	_strtoul_PARM_3
+                                    313 ;	Raw cost for generated ic 103 : (12, 16.000000) count=0.999995
+                                    314 ;	Raw cost for generated ic 101 : (0, 0.000000) count=0.999995
+                                    315 ;	genCall
+      0000A7 8A               [ 2]  316 	txa
+      0000A8 48               [ 3]  317 	pha
+                                    318 ;	genSend
+      0000A9 AEr07r00         [ 4]  319 	ldx	(_strtol_ptr_10000_63 + 1)
+      0000AC ADr06r00         [ 4]  320 	lda	_strtol_ptr_10000_63
+      0000AF 20r00r00         [ 6]  321 	jsr	_strtoul
+                                    322 ;	assignResultValue
+      0000B2 85*02            [ 3]  323 	sta	*_strtol_sloc1_1_0
+      0000B4 86*03            [ 3]  324 	stx	*(_strtol_sloc1_1_0 + 1)
+      0000B6 A5*00            [ 3]  325 	lda	*___SDCC_m6502_ret2
+      0000B8 85*04            [ 3]  326 	sta	*(_strtol_sloc1_1_0 + 2)
+      0000BA A5*00            [ 3]  327 	lda	*___SDCC_m6502_ret3
+      0000BC 85*05            [ 3]  328 	sta	*(_strtol_sloc1_1_0 + 3)
+      0000BE 68               [ 4]  329 	pla
+      0000BF AA               [ 2]  330 	tax
+                                    331 ;	Raw cost for generated ic 104 : (31, 51.000000) count=0.999995
+                                    332 ;	../strtol.c: 69: if (rptr == ptr)
+                                    333 ;	genCmpEQorNE
+      0000C0 ADr08r00         [ 4]  334 	lda	_strtol_rptr_10000_63
+      0000C3 CDr06r00         [ 4]  335 	cmp	_strtol_ptr_10000_63
+      0000C6 D0 2F            [ 4]  336 	bne	00117$
+      0000C8 ADr09r00         [ 4]  337 	lda	(_strtol_rptr_10000_63 + 1)
+      0000CB CDr07r00         [ 4]  338 	cmp	(_strtol_ptr_10000_63 + 1)
+      0000CE D0 27            [ 4]  339 	bne	00117$
+                                    340 ;	Raw cost for generated ic 106 : (22, 27.200001) count=0.999995
+                                    341 ;	skipping generated iCode
+                                    342 ;	Raw cost for generated ic 107 : (0, 0.000000) count=0.999995
+                                    343 ;	../strtol.c: 71: if (endptr)
+                                    344 ;	genIfx
+      0000D0 ADr01r00         [ 4]  345 	lda	(_strtol_PARM_2 + 1)
+      0000D3 0Dr00r00         [ 4]  346 	ora	_strtol_PARM_2
+                                    347 ;	genIfxJump : z
+      0000D6 F0 17            [ 4]  348 	beq	00115$
+                                    349 ;	Raw cost for generated ic 110 : (11, 13.600000) count=0.749996
+                                    350 ;	../strtol.c: 72: *endptr = nptr;
+                                    351 ;	genAssign
+                                    352 ;	genCopy
+      0000D8 AEr01r00         [ 4]  353 	ldx	(_strtol_PARM_2 + 1)
+      0000DB ADr00r00         [ 4]  354 	lda	_strtol_PARM_2
+                                    355 ;	Raw cost for generated ic 113 : (6, 8.000000) count=0.562497
+                                    356 ;	genPointerSet
+                                    357 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0000DE 85*00            [ 3]  358 	sta	*(DPTR+0)
+      0000E0 86*01            [ 3]  359 	stx	*(DPTR+1)
+      0000E2 ADr04r00         [ 4]  360 	lda	_strtol_nptr_10000_62
+      0000E5 A0 00            [ 2]  361 	ldy	#0x00
+      0000E7 91*00            [ 6]  362 	sta	[DPTR],y
+      0000E9 ADr05r00         [ 4]  363 	lda	(_strtol_nptr_10000_62 + 1)
+      0000EC C8               [ 2]  364 	iny
+      0000ED 91*00            [ 6]  365 	sta	[DPTR],y
+                                    366 ;	Raw cost for generated ic 114 : (17, 30.000000) count=0.562497
+                                    367 ;	genLabel
+      0000EF                        368 00115$:
+                                    369 ;	Raw cost for generated ic 115 : (0, 0.000000) count=0.749996
+                                    370 ;	../strtol.c: 73: return (0);
+                                    371 ;	genRet
+      0000EF A9 00            [ 2]  372 	lda	#0x00
+      0000F1 AA               [ 2]  373 	tax
+      0000F2 85*00            [ 3]  374 	sta	*___SDCC_m6502_ret2
+      0000F4 85*00            [ 3]  375 	sta	*___SDCC_m6502_ret3
+      0000F6 60               [ 6]  376 	rts
+                                    377 ;	Raw cost for generated ic 116 : (10, 13.000000) count=0.749996
+                                    378 ;	genLabel
+      0000F7                        379 00117$:
+                                    380 ;	Raw cost for generated ic 117 : (0, 0.000000) count=0.999995
+                                    381 ;	../strtol.c: 76: if (endptr)
+                                    382 ;	genIfx
+      0000F7 ADr01r00         [ 4]  383 	lda	(_strtol_PARM_2 + 1)
+      0000FA 0Dr00r00         [ 4]  384 	ora	_strtol_PARM_2
+                                    385 ;	genIfxJump : z
+      0000FD F0 17            [ 4]  386 	beq	00119$
+                                    387 ;	Raw cost for generated ic 118 : (11, 13.600000) count=0.999995
+                                    388 ;	../strtol.c: 77: *endptr = rptr;
+                                    389 ;	genAssign
+                                    390 ;	genCopy
+      0000FF ADr01r00         [ 4]  391 	lda	(_strtol_PARM_2 + 1)
+      000102 85*01            [ 3]  392 	sta	*(_strtol_sloc0_1_0 + 1)
+      000104 ADr00r00         [ 4]  393 	lda	_strtol_PARM_2
+      000107 85*00            [ 3]  394 	sta	*_strtol_sloc0_1_0
+                                    395 ;	Raw cost for generated ic 121 : (10, 14.000000) count=0.749996
+                                    396 ;	genPointerSet
+      000109 ADr08r00         [ 4]  397 	lda	_strtol_rptr_10000_63
+      00010C A0 00            [ 2]  398 	ldy	#0x00
+      00010E 91*00            [ 6]  399 	sta	[*_strtol_sloc0_1_0],y
+      000110 ADr09r00         [ 4]  400 	lda	(_strtol_rptr_10000_63 + 1)
+      000113 C8               [ 2]  401 	iny
+      000114 91*00            [ 6]  402 	sta	[*_strtol_sloc0_1_0],y
+                                    403 ;	Raw cost for generated ic 122 : (13, 24.000000) count=0.749996
+                                    404 ;	genLabel
+      000116                        405 00119$:
+                                    406 ;	Raw cost for generated ic 123 : (0, 0.000000) count=0.999995
+                                    407 ;	../strtol.c: 80: if (!neg && u > LONG_MAX)
+                                    408 ;	genIfx
+      000116 E0 00            [ 2]  409 	cpx	#0x00
+                                    410 ;	genIfxJump : z
+      000118 D0 27            [ 4]  411 	bne	00124$
+                                    412 ;	Raw cost for generated ic 124 : (7, 7.600000) count=0.999995
+                                    413 ;	genCmp
+      00011A A9 FF            [ 2]  414 	lda	#0xff
+      00011C 38               [ 2]  415 	sec
+      00011D E5*02            [ 3]  416 	sbc	*_strtol_sloc1_1_0
+      00011F A9 FF            [ 2]  417 	lda	#0xff
+      000121 E5*03            [ 3]  418 	sbc	*(_strtol_sloc1_1_0 + 1)
+      000123 A9 FF            [ 2]  419 	lda	#0xff
+      000125 E5*04            [ 3]  420 	sbc	*(_strtol_sloc1_1_0 + 2)
+      000127 A9 7F            [ 2]  421 	lda	#0x7f
+      000129 E5*05            [ 3]  422 	sbc	*(_strtol_sloc1_1_0 + 3)
+      00012B B0 14            [ 4]  423 	bcs	00124$
+                                    424 ;	Raw cost for generated ic 127 : (22, 27.600000) count=0.749996
+                                    425 ;	skipping generated iCode
+                                    426 ;	Raw cost for generated ic 128 : (0, 0.000000) count=0.749996
+                                    427 ;	../strtol.c: 82: errno = ERANGE;
+                                    428 ;	genAssign
+                                    429 ;	genAssignLit
+      00012D A2 22            [ 2]  430 	ldx	#0x22
+      00012F 8Er00r00         [ 4]  431 	stx	_errno
+      000132 A0 00            [ 2]  432 	ldy	#0x00
+      000134 8Cr01r00         [ 4]  433 	sty	(_errno + 1)
+                                    434 ;	Raw cost for generated ic 132 : (10, 12.000000) count=0.562497
+                                    435 ;	../strtol.c: 83: return (LONG_MAX);
+                                    436 ;	genRet
+      000137 A9 FF            [ 2]  437 	lda	#0xff
+      000139 AA               [ 2]  438 	tax
+      00013A 85*00            [ 3]  439 	sta	*___SDCC_m6502_ret2
+      00013C A0 7F            [ 2]  440 	ldy	#0x7f
+      00013E 84*00            [ 3]  441 	sty	*___SDCC_m6502_ret3
+      000140 60               [ 6]  442 	rts
+                                    443 ;	Raw cost for generated ic 133 : (12, 15.000000) count=0.562497
+                                    444 ;	genLabel
+      000141                        445 00124$:
+                                    446 ;	Raw cost for generated ic 135 : (0, 0.000000) count=0.999995
+                                    447 ;	../strtol.c: 85: else if (neg && u > -LONG_MIN)
+                                    448 ;	genIfx
+      000141 E0 00            [ 2]  449 	cpx	#0x00
+                                    450 ;	genIfxJump : z
+      000143 F0 26            [ 4]  451 	beq	00125$
+                                    452 ;	Raw cost for generated ic 136 : (7, 7.600000) count=0.999995
+                                    453 ;	genCmp
+      000145 A9 00            [ 2]  454 	lda	#0x00
+      000147 38               [ 2]  455 	sec
+      000148 E5*02            [ 3]  456 	sbc	*_strtol_sloc1_1_0
+      00014A A9 00            [ 2]  457 	lda	#0x00
+      00014C E5*03            [ 3]  458 	sbc	*(_strtol_sloc1_1_0 + 1)
+      00014E A9 00            [ 2]  459 	lda	#0x00
+      000150 E5*04            [ 3]  460 	sbc	*(_strtol_sloc1_1_0 + 2)
+      000152 A9 80            [ 2]  461 	lda	#0x80
+      000154 E5*05            [ 3]  462 	sbc	*(_strtol_sloc1_1_0 + 3)
+      000156 B0 13            [ 4]  463 	bcs	00125$
+                                    464 ;	Raw cost for generated ic 139 : (22, 27.600000) count=0.749996
+                                    465 ;	skipping generated iCode
+                                    466 ;	Raw cost for generated ic 140 : (0, 0.000000) count=0.749996
+                                    467 ;	../strtol.c: 87: errno = ERANGE;
+                                    468 ;	genAssign
+                                    469 ;	genAssignLit
+      000158 A2 22            [ 2]  470 	ldx	#0x22
+      00015A 8Er00r00         [ 4]  471 	stx	_errno
+      00015D A0 00            [ 2]  472 	ldy	#0x00
+      00015F 8Cr01r00         [ 4]  473 	sty	(_errno + 1)
+                                    474 ;	Raw cost for generated ic 144 : (10, 12.000000) count=0.562497
+                                    475 ;	../strtol.c: 88: return (LONG_MIN);
+                                    476 ;	genRet
+      000162 98               [ 2]  477 	tya
+      000163 AA               [ 2]  478 	tax
+      000164 85*00            [ 3]  479 	sta	*___SDCC_m6502_ret2
+      000166 A0 80            [ 2]  480 	ldy	#0x80
+      000168 84*00            [ 3]  481 	sty	*___SDCC_m6502_ret3
+      00016A 60               [ 6]  482 	rts
+                                    483 ;	Raw cost for generated ic 145 : (11, 15.000000) count=0.562497
+                                    484 ;	genLabel
+      00016B                        485 00125$:
+                                    486 ;	Raw cost for generated ic 147 : (0, 0.000000) count=0.999995
+                                    487 ;	../strtol.c: 91: return (neg ? -u : u);
+                                    488 ;	genIfx
+      00016B E0 00            [ 2]  489 	cpx	#0x00
+                                    490 ;	genIfxJump : z
+      00016D F0 1C            [ 4]  491 	beq	00137$
+                                    492 ;	Raw cost for generated ic 148 : (7, 7.600000) count=0.999995
+                                    493 ;	genUminus
+      00016F A9 00            [ 2]  494 	lda	#0x00
+      000171 38               [ 2]  495 	sec
+      000172 E5*02            [ 3]  496 	sbc	*_strtol_sloc1_1_0
+      000174 85*06            [ 3]  497 	sta	*_strtol_sloc2_1_0
+      000176 A9 00            [ 2]  498 	lda	#0x00
+      000178 E5*03            [ 3]  499 	sbc	*(_strtol_sloc1_1_0 + 1)
+      00017A 85*07            [ 3]  500 	sta	*(_strtol_sloc2_1_0 + 1)
+      00017C A9 00            [ 2]  501 	lda	#0x00
+      00017E E5*04            [ 3]  502 	sbc	*(_strtol_sloc1_1_0 + 2)
+      000180 85*08            [ 3]  503 	sta	*(_strtol_sloc2_1_0 + 2)
+      000182 A9 00            [ 2]  504 	lda	#0x00
+      000184 E5*05            [ 3]  505 	sbc	*(_strtol_sloc1_1_0 + 3)
+      000186 85*09            [ 3]  506 	sta	*(_strtol_sloc2_1_0 + 3)
+                                    507 ;	Raw cost for generated ic 149 : (25, 34.000000) count=0.749996
+                                    508 ;	genGoto
+      000188 4Cr9Br01         [ 3]  509 	jmp	00138$
+                                    510 ;	Raw cost for generated ic 151 : (3, 3.000000) count=0.749996
+                                    511 ;	genLabel
+      00018B                        512 00137$:
+                                    513 ;	Raw cost for generated ic 152 : (0, 0.000000) count=0.249999
+                                    514 ;	genAssign
+                                    515 ;	genCopy
+      00018B A5*05            [ 3]  516 	lda	*(_strtol_sloc1_1_0 + 3)
+      00018D 85*09            [ 3]  517 	sta	*(_strtol_sloc2_1_0 + 3)
+      00018F A5*04            [ 3]  518 	lda	*(_strtol_sloc1_1_0 + 2)
+      000191 85*08            [ 3]  519 	sta	*(_strtol_sloc2_1_0 + 2)
+      000193 A5*03            [ 3]  520 	lda	*(_strtol_sloc1_1_0 + 1)
+      000195 85*07            [ 3]  521 	sta	*(_strtol_sloc2_1_0 + 1)
+      000197 A5*02            [ 3]  522 	lda	*_strtol_sloc1_1_0
+      000199 85*06            [ 3]  523 	sta	*_strtol_sloc2_1_0
+                                    524 ;	Raw cost for generated ic 153 : (16, 24.000000) count=0.249999
+                                    525 ;	genLabel
+      00019B                        526 00138$:
+                                    527 ;	Raw cost for generated ic 154 : (0, 0.000000) count=0.999995
+                                    528 ;	genRet
+      00019B A5*09            [ 3]  529 	lda	*(_strtol_sloc2_1_0 + 3)
+      00019D 85*00            [ 3]  530 	sta	*___SDCC_m6502_ret3
+      00019F A5*08            [ 3]  531 	lda	*(_strtol_sloc2_1_0 + 2)
+      0001A1 85*00            [ 3]  532 	sta	*___SDCC_m6502_ret2
+      0001A3 A6*07            [ 3]  533 	ldx	*(_strtol_sloc2_1_0 + 1)
+      0001A5 A5*06            [ 3]  534 	lda	*_strtol_sloc2_1_0
+                                    535 ;	Raw cost for generated ic 155 : (12, 18.000000) count=0.999995
+                                    536 ;	genLabel
+                                    537 ;	Raw cost for generated ic 156 : (0, 0.000000) count=0.999995
+                                    538 ;	../strtol.c: 92: }
+                                    539 ;	genEndFunction
+      0001A7 60               [ 6]  540 	rts
+                                    541 ;	Raw cost for generated ic 157 : (1, 6.000000) count=0.999995
+                                    542 	.area CODE
+                                    543 	.area RODATA
+                                    544 	.area XINIT
+                                    545 	.area CABS    (ABS)

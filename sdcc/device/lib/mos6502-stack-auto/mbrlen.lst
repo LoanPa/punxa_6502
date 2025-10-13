@@ -1,0 +1,180 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module mbrlen
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _mbrtowc
+                                     27 	.globl _mbrlen
+                                     28 ;--------------------------------------------------------
+                                     29 ; ZP ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area ZP      (PAG)
+                                     32 ;--------------------------------------------------------
+                                     33 ; overlayable items in ram
+                                     34 ;--------------------------------------------------------
+                                     35 ;--------------------------------------------------------
+                                     36 ; uninitialized external ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area BSS
+      000000                         39 _mbrlen_sps_10000_16:
+      000000                         40 	.ds 3
+                                     41 ;--------------------------------------------------------
+                                     42 ; absolute external ram data
+                                     43 ;--------------------------------------------------------
+                                     44 	.area DABS    (ABS)
+                                     45 ;--------------------------------------------------------
+                                     46 ; initialized external ram data
+                                     47 ;--------------------------------------------------------
+                                     48 	.area DATA
+                                     49 ;--------------------------------------------------------
+                                     50 ; global & static initialisations
+                                     51 ;--------------------------------------------------------
+                                     52 	.area _CODE
+                                     53 	.area GSINIT
+                                     54 	.area GSFINAL
+                                     55 	.area GSINIT
+                                     56 ;--------------------------------------------------------
+                                     57 ; Home
+                                     58 ;--------------------------------------------------------
+                                     59 	.area _CODE
+                                     60 	.area _CODE
+                                     61 ;--------------------------------------------------------
+                                     62 ; code
+                                     63 ;--------------------------------------------------------
+                                     64 	.area CODE
+                                     65 ;------------------------------------------------------------
+                                     66 ;Allocation info for local variables in function 'mbrlen'
+                                     67 ;------------------------------------------------------------
+                                     68 ;n             Allocated to stack - sp +5 +2 
+                                     69 ;ps            Allocated to stack - sp +7 +2 
+                                     70 ;s             Allocated to stack - sp +1 +2 
+                                     71 ;sps           Allocated with name '_mbrlen_sps_10000_16'
+                                     72 ;------------------------------------------------------------
+                                     73 ;	../mbrlen.c: 31: size_t mbrlen(const char *restrict s, size_t n, mbstate_t *restrict ps)
+                                     74 ;	genLabel
+                                     75 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     76 ;	-----------------------------------------
+                                     77 ;	 function mbrlen
+                                     78 ;	-----------------------------------------
+                                     79 ;	Register assignment is optimal.
+                                     80 ;	Stack space usage: 2 bytes.
+      000000                         81 _mbrlen:
+                                     82 ;	genReceive: size=2
+                                     83 ;	pushreg: ofs=1
+      000000 85*00            [ 3]   84 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   85 	txa
+      000003 48               [ 3]   86 	pha
+      000004 A5*00            [ 3]   87 	lda	*(REGTEMP+0)
+                                     88 ;	pushreg: ofs=0
+      000006 48               [ 3]   89 	pha
+                                     90 ;	Raw cost for generated ic 1 : (7, 14.000000) count=1.000000
+                                     91 ;	skipping generated iCode
+                                     92 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     93 ;	../mbrlen.c: 35: return(mbrtowc(0, s, n, ps ? ps : &sps));
+                                     94 ;	genIfx
+      000007 BA               [ 2]   95 	tsx
+      000008 BD 08 01         [ 5]   96 	lda	0x108,x
+      00000B 1D 07 01         [ 5]   97 	ora	0x107,x
+                                     98 ;	genIfxJump : z
+      00000E F0 0C            [ 4]   99 	beq	00103$
+                                    100 ;	Raw cost for generated ic 3 : (12, 15.600000) count=1.000000
+                                    101 ;	genAssign
+                                    102 ;	genCopy
+      000010 BD 07 01         [ 5]  103 	lda	0x107,x
+      000013 A8               [ 2]  104 	tay
+      000014 BD 08 01         [ 5]  105 	lda	0x108,x
+      000017 AA               [ 2]  106 	tax
+      000018 98               [ 2]  107 	tya
+                                    108 ;	Raw cost for generated ic 4 : (9, 14.000000) count=0.750000
+                                    109 ;	genGoto
+      000019 4Cr20r00         [ 3]  110 	jmp	00104$
+                                    111 ;	Raw cost for generated ic 5 : (3, 3.000000) count=0.750000
+                                    112 ;	genLabel
+      00001C                        113 00103$:
+                                    114 ;	Raw cost for generated ic 6 : (0, 0.000000) count=0.250000
+                                    115 ;	skipping iCode since result will be rematerialized
+                                    116 ;	Raw cost for generated ic 7 : (0, 0.000000) count=0.250000
+                                    117 ;	genCast
+                                    118 ;	genCopy
+      00001C A2s00            [ 2]  119 	ldx	#>_mbrlen_sps_10000_16
+      00001E A9r00            [ 2]  120 	lda	#_mbrlen_sps_10000_16
+                                    121 ;	Raw cost for generated ic 8 : (4, 4.000000) count=0.250000
+                                    122 ;	genLabel
+      000020                        123 00104$:
+                                    124 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    125 ;	genIpush
+      000020 A8               [ 2]  126 	tay
+      000021 8A               [ 2]  127 	txa
+      000022 48               [ 3]  128 	pha
+      000023 98               [ 2]  129 	tya
+      000024 48               [ 3]  130 	pha
+                                    131 ;	Raw cost for generated ic 11 : (5, 12.000000) count=1.000000
+                                    132 ;	genIpush
+      000025 BA               [ 2]  133 	tsx
+      000026 BD 08 01         [ 5]  134 	lda	0x108,x
+      000029 48               [ 3]  135 	pha
+      00002A BD 07 01         [ 5]  136 	lda	0x107,x
+      00002D 48               [ 3]  137 	pha
+                                    138 ;	Raw cost for generated ic 12 : (9, 16.000000) count=1.000000
+                                    139 ;	genIpush
+      00002E BD 04 01         [ 5]  140 	lda	0x104,x
+      000031 48               [ 3]  141 	pha
+      000032 BD 03 01         [ 5]  142 	lda	0x103,x
+      000035 48               [ 3]  143 	pha
+                                    144 ;	Raw cost for generated ic 13 : (8, 14.000000) count=1.000000
+                                    145 ;	Raw cost for generated ic 14 : (0, 0.000000) count=1.000000
+                                    146 ;	genCall
+                                    147 ;	genSend
+      000036 A2 00            [ 2]  148 	ldx	#0x00
+      000038 8A               [ 2]  149 	txa
+      000039 20r00r00         [ 6]  150 	jsr	_mbrtowc
+                                    151 ;	assignResultValue
+                                    152 ;	  adjustStack : cycles stk:30  incdec:22  adc:24
+      00003C 86*00            [ 3]  153 	stx	*(REGTEMP+0)
+      00003E BA               [ 2]  154 	tsx
+      00003F E8               [ 2]  155 	inx
+      000040 E8               [ 2]  156 	inx
+      000041 E8               [ 2]  157 	inx
+      000042 E8               [ 2]  158 	inx
+      000043 E8               [ 2]  159 	inx
+      000044 E8               [ 2]  160 	inx
+      000045 9A               [ 2]  161 	txs
+      000046 A6*00            [ 3]  162 	ldx	*(REGTEMP+0)
+                                    163 ;	Raw cost for generated ic 15 : (18, 32.000000) count=1.000000
+                                    164 ;	genRet
+                                    165 ;	Raw cost for generated ic 16 : (0, 0.000000) count=1.000000
+                                    166 ;	genLabel
+                                    167 ;	Raw cost for generated ic 17 : (0, 0.000000) count=1.000000
+                                    168 ;	../mbrlen.c: 36: }
+                                    169 ;	genEndFunction
+                                    170 ;	  adjustStack : cycles stk:14  incdec:14  adc:24
+      000048 85*00            [ 3]  171 	sta	*(REGTEMP+0)
+      00004A 68               [ 4]  172 	pla
+      00004B 68               [ 4]  173 	pla
+      00004C A5*00            [ 3]  174 	lda	*(REGTEMP+0)
+      00004E 60               [ 6]  175 	rts
+                                    176 ;	Raw cost for generated ic 18 : (7, 20.000000) count=1.000000
+                                    177 	.area CODE
+                                    178 	.area RODATA
+                                    179 	.area XINIT
+                                    180 	.area CABS    (ABS)

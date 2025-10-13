@@ -1,0 +1,7 @@
+/* Generated automatically. */
+static const char configuration_arguments[] = "./configure --disable-option-checking --prefix=/usr/local --disable-z80-port --disable-pic14-port --disable-pic16-port --disable-ds390-port --disable-ds400-port --disable-hc08-port --disable-s08-port --disable-r2k-port --disable-pdk13-port --disable-pdk14-port --disable-pdk15-port --disable-stm8-port --disable-sm83-port --disable-z180-port --disable-f8-port --disable-r2ka-port --disable-r3ka-port --disable-ez80_z80-port --disable-tlcs90-port --disable-r800-port --disable-mcs51-port --disable-z80n-port CFLAGS='-I /usr/include/' docdir='/usr/local/share/doc/' --cache-file=/dev/null --srcdir=. : (reconfigured) ./configure --disable-option-checking --prefix=/usr/local --disable-z80-port --disable-pic14-port --disable-pic16-port --disable-ds390-port --disable-ds400-port --disable-hc08-port --disable-s08-port --disable-r2k-port --disable-pdk13-port --disable-pdk14-port --disable-pdk15-port --disable-stm8-port --disable-sm83-port --disable-z180-port --disable-f8-port --disable-r2ka-port --disable-r3ka-port --disable-ez80_z80-port --disable-tlcs90-port --disable-r800-port --disable-mcs51-port --disable-z80n-port CFLAGS='-I /usr/include/' docdir='/usr/local/share/doc/' --cache-file=/dev/null --srcdir=.";
+static const char thread_model[] = "posix";
+
+static const struct {
+  const char *name, *value;
+} configure_default_options[] = { { "cpu", "generic" }, { "arch", "x86-64" } };

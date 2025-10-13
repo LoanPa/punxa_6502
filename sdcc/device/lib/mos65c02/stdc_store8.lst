@@ -1,0 +1,1995 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module stdc_store8
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl ___memcpy
+                                     28 	.globl _stdc_memreverse8
+                                     29 	.globl _stdc_store8_bes_aligned64_PARM_2
+                                     30 	.globl _stdc_store8_bes_aligned64_PARM_1
+                                     31 	.globl _stdc_store8_les_aligned64_PARM_2
+                                     32 	.globl _stdc_store8_les_aligned64_PARM_1
+                                     33 	.globl _stdc_store8_bes64_PARM_2
+                                     34 	.globl _stdc_store8_bes64_PARM_1
+                                     35 	.globl _stdc_store8_les64_PARM_2
+                                     36 	.globl _stdc_store8_les64_PARM_1
+                                     37 	.globl _stdc_store8_beu_aligned64_PARM_2
+                                     38 	.globl _stdc_store8_beu_aligned64_PARM_1
+                                     39 	.globl _stdc_store8_leu_aligned64_PARM_2
+                                     40 	.globl _stdc_store8_leu_aligned64_PARM_1
+                                     41 	.globl _stdc_store8_beu64_PARM_2
+                                     42 	.globl _stdc_store8_beu64_PARM_1
+                                     43 	.globl _stdc_store8_leu64_PARM_2
+                                     44 	.globl _stdc_store8_leu64_PARM_1
+                                     45 	.globl _stdc_store8_bes_aligned32_PARM_2
+                                     46 	.globl _stdc_store8_bes_aligned32_PARM_1
+                                     47 	.globl _stdc_store8_les_aligned32_PARM_2
+                                     48 	.globl _stdc_store8_les_aligned32_PARM_1
+                                     49 	.globl _stdc_store8_bes32_PARM_2
+                                     50 	.globl _stdc_store8_bes32_PARM_1
+                                     51 	.globl _stdc_store8_les32_PARM_2
+                                     52 	.globl _stdc_store8_les32_PARM_1
+                                     53 	.globl _stdc_store8_beu_aligned32_PARM_2
+                                     54 	.globl _stdc_store8_beu_aligned32_PARM_1
+                                     55 	.globl _stdc_store8_leu_aligned32_PARM_2
+                                     56 	.globl _stdc_store8_leu_aligned32_PARM_1
+                                     57 	.globl _stdc_store8_beu32_PARM_2
+                                     58 	.globl _stdc_store8_beu32_PARM_1
+                                     59 	.globl _stdc_store8_leu32_PARM_2
+                                     60 	.globl _stdc_store8_leu32_PARM_1
+                                     61 	.globl _stdc_store8_bes_aligned16_PARM_2
+                                     62 	.globl _stdc_store8_les_aligned16_PARM_2
+                                     63 	.globl _stdc_store8_bes16_PARM_2
+                                     64 	.globl _stdc_store8_les16_PARM_2
+                                     65 	.globl _stdc_store8_beu_aligned16_PARM_2
+                                     66 	.globl _stdc_store8_leu_aligned16_PARM_2
+                                     67 	.globl _stdc_store8_beu16_PARM_2
+                                     68 	.globl _stdc_store8_leu16_PARM_2
+                                     69 	.globl _stdc_store8_bes_aligned8_PARM_2
+                                     70 	.globl _stdc_store8_les_aligned8_PARM_2
+                                     71 	.globl _stdc_store8_bes8_PARM_2
+                                     72 	.globl _stdc_store8_les8_PARM_2
+                                     73 	.globl _stdc_store8_beu_aligned8_PARM_2
+                                     74 	.globl _stdc_store8_leu_aligned8_PARM_2
+                                     75 	.globl _stdc_store8_beu8_PARM_2
+                                     76 	.globl _stdc_store8_leu8_PARM_2
+                                     77 	.globl _stdc_store8_leu8
+                                     78 	.globl _stdc_store8_beu8
+                                     79 	.globl _stdc_store8_leu_aligned8
+                                     80 	.globl _stdc_store8_beu_aligned8
+                                     81 	.globl _stdc_store8_les8
+                                     82 	.globl _stdc_store8_bes8
+                                     83 	.globl _stdc_store8_les_aligned8
+                                     84 	.globl _stdc_store8_bes_aligned8
+                                     85 	.globl _stdc_store8_leu16
+                                     86 	.globl _stdc_store8_beu16
+                                     87 	.globl _stdc_store8_leu_aligned16
+                                     88 	.globl _stdc_store8_beu_aligned16
+                                     89 	.globl _stdc_store8_les16
+                                     90 	.globl _stdc_store8_bes16
+                                     91 	.globl _stdc_store8_les_aligned16
+                                     92 	.globl _stdc_store8_bes_aligned16
+                                     93 	.globl _stdc_store8_leu32
+                                     94 	.globl _stdc_store8_beu32
+                                     95 	.globl _stdc_store8_leu_aligned32
+                                     96 	.globl _stdc_store8_beu_aligned32
+                                     97 	.globl _stdc_store8_les32
+                                     98 	.globl _stdc_store8_bes32
+                                     99 	.globl _stdc_store8_les_aligned32
+                                    100 	.globl _stdc_store8_bes_aligned32
+                                    101 	.globl _stdc_store8_leu64
+                                    102 	.globl _stdc_store8_beu64
+                                    103 	.globl _stdc_store8_leu_aligned64
+                                    104 	.globl _stdc_store8_beu_aligned64
+                                    105 	.globl _stdc_store8_les64
+                                    106 	.globl _stdc_store8_bes64
+                                    107 	.globl _stdc_store8_les_aligned64
+                                    108 	.globl _stdc_store8_bes_aligned64
+                                    109 ;--------------------------------------------------------
+                                    110 ; ZP ram data
+                                    111 ;--------------------------------------------------------
+                                    112 	.area ZP      (PAG)
+                                    113 ;--------------------------------------------------------
+                                    114 ; overlayable items in ram
+                                    115 ;--------------------------------------------------------
+                                    116 ;--------------------------------------------------------
+                                    117 ; uninitialized external ram data
+                                    118 ;--------------------------------------------------------
+                                    119 	.area BSS
+      000000                        120 _stdc_store8_leu8_PARM_2:
+      000000                        121 	.ds 2
+      000002                        122 _stdc_store8_leu8_value_10000_130:
+      000002                        123 	.ds 1
+      000003                        124 _stdc_store8_beu8_PARM_2:
+      000003                        125 	.ds 2
+      000005                        126 _stdc_store8_beu8_value_10000_132:
+      000005                        127 	.ds 1
+      000006                        128 _stdc_store8_leu_aligned8_PARM_2:
+      000006                        129 	.ds 2
+      000008                        130 _stdc_store8_leu_aligned8_value_10000_134:
+      000008                        131 	.ds 1
+      000009                        132 _stdc_store8_beu_aligned8_PARM_2:
+      000009                        133 	.ds 2
+      00000B                        134 _stdc_store8_beu_aligned8_value_10000_136:
+      00000B                        135 	.ds 1
+      00000C                        136 _stdc_store8_les8_PARM_2:
+      00000C                        137 	.ds 2
+      00000E                        138 _stdc_store8_les8_value_10000_138:
+      00000E                        139 	.ds 1
+      00000F                        140 _stdc_store8_bes8_PARM_2:
+      00000F                        141 	.ds 2
+      000011                        142 _stdc_store8_bes8_value_10000_140:
+      000011                        143 	.ds 1
+      000012                        144 _stdc_store8_les_aligned8_PARM_2:
+      000012                        145 	.ds 2
+      000014                        146 _stdc_store8_les_aligned8_value_10000_142:
+      000014                        147 	.ds 1
+      000015                        148 _stdc_store8_bes_aligned8_PARM_2:
+      000015                        149 	.ds 2
+      000017                        150 _stdc_store8_bes_aligned8_value_10000_144:
+      000017                        151 	.ds 1
+      000018                        152 _stdc_store8_leu16_PARM_2:
+      000018                        153 	.ds 2
+      00001A                        154 _stdc_store8_leu16_value_10000_146:
+      00001A                        155 	.ds 2
+      00001C                        156 _stdc_store8_beu16_PARM_2:
+      00001C                        157 	.ds 2
+      00001E                        158 _stdc_store8_beu16_value_10000_148:
+      00001E                        159 	.ds 2
+      000020                        160 _stdc_store8_leu_aligned16_PARM_2:
+      000020                        161 	.ds 2
+      000022                        162 _stdc_store8_leu_aligned16_value_10000_150:
+      000022                        163 	.ds 2
+      000024                        164 _stdc_store8_beu_aligned16_PARM_2:
+      000024                        165 	.ds 2
+      000026                        166 _stdc_store8_beu_aligned16_value_10000_152:
+      000026                        167 	.ds 2
+      000028                        168 _stdc_store8_les16_PARM_2:
+      000028                        169 	.ds 2
+      00002A                        170 _stdc_store8_les16_value_10000_154:
+      00002A                        171 	.ds 2
+      00002C                        172 _stdc_store8_bes16_PARM_2:
+      00002C                        173 	.ds 2
+      00002E                        174 _stdc_store8_bes16_value_10000_156:
+      00002E                        175 	.ds 2
+      000030                        176 _stdc_store8_les_aligned16_PARM_2:
+      000030                        177 	.ds 2
+      000032                        178 _stdc_store8_les_aligned16_value_10000_158:
+      000032                        179 	.ds 2
+      000034                        180 _stdc_store8_bes_aligned16_PARM_2:
+      000034                        181 	.ds 2
+      000036                        182 _stdc_store8_bes_aligned16_value_10000_160:
+      000036                        183 	.ds 2
+      000038                        184 _stdc_store8_leu32_PARM_1:
+      000038                        185 	.ds 4
+      00003C                        186 _stdc_store8_leu32_PARM_2:
+      00003C                        187 	.ds 2
+      00003E                        188 _stdc_store8_beu32_PARM_1:
+      00003E                        189 	.ds 4
+      000042                        190 _stdc_store8_beu32_PARM_2:
+      000042                        191 	.ds 2
+      000044                        192 _stdc_store8_leu_aligned32_PARM_1:
+      000044                        193 	.ds 4
+      000048                        194 _stdc_store8_leu_aligned32_PARM_2:
+      000048                        195 	.ds 2
+      00004A                        196 _stdc_store8_beu_aligned32_PARM_1:
+      00004A                        197 	.ds 4
+      00004E                        198 _stdc_store8_beu_aligned32_PARM_2:
+      00004E                        199 	.ds 2
+      000050                        200 _stdc_store8_les32_PARM_1:
+      000050                        201 	.ds 4
+      000054                        202 _stdc_store8_les32_PARM_2:
+      000054                        203 	.ds 2
+      000056                        204 _stdc_store8_bes32_PARM_1:
+      000056                        205 	.ds 4
+      00005A                        206 _stdc_store8_bes32_PARM_2:
+      00005A                        207 	.ds 2
+      00005C                        208 _stdc_store8_les_aligned32_PARM_1:
+      00005C                        209 	.ds 4
+      000060                        210 _stdc_store8_les_aligned32_PARM_2:
+      000060                        211 	.ds 2
+      000062                        212 _stdc_store8_bes_aligned32_PARM_1:
+      000062                        213 	.ds 4
+      000066                        214 _stdc_store8_bes_aligned32_PARM_2:
+      000066                        215 	.ds 2
+      000068                        216 _stdc_store8_leu64_PARM_1:
+      000068                        217 	.ds 8
+      000070                        218 _stdc_store8_leu64_PARM_2:
+      000070                        219 	.ds 2
+      000072                        220 _stdc_store8_beu64_PARM_1:
+      000072                        221 	.ds 8
+      00007A                        222 _stdc_store8_beu64_PARM_2:
+      00007A                        223 	.ds 2
+      00007C                        224 _stdc_store8_leu_aligned64_PARM_1:
+      00007C                        225 	.ds 8
+      000084                        226 _stdc_store8_leu_aligned64_PARM_2:
+      000084                        227 	.ds 2
+      000086                        228 _stdc_store8_beu_aligned64_PARM_1:
+      000086                        229 	.ds 8
+      00008E                        230 _stdc_store8_beu_aligned64_PARM_2:
+      00008E                        231 	.ds 2
+      000090                        232 _stdc_store8_les64_PARM_1:
+      000090                        233 	.ds 8
+      000098                        234 _stdc_store8_les64_PARM_2:
+      000098                        235 	.ds 2
+      00009A                        236 _stdc_store8_bes64_PARM_1:
+      00009A                        237 	.ds 8
+      0000A2                        238 _stdc_store8_bes64_PARM_2:
+      0000A2                        239 	.ds 2
+      0000A4                        240 _stdc_store8_les_aligned64_PARM_1:
+      0000A4                        241 	.ds 8
+      0000AC                        242 _stdc_store8_les_aligned64_PARM_2:
+      0000AC                        243 	.ds 2
+      0000AE                        244 _stdc_store8_bes_aligned64_PARM_1:
+      0000AE                        245 	.ds 8
+      0000B6                        246 _stdc_store8_bes_aligned64_PARM_2:
+      0000B6                        247 	.ds 2
+                                    248 ;--------------------------------------------------------
+                                    249 ; absolute external ram data
+                                    250 ;--------------------------------------------------------
+                                    251 	.area DABS    (ABS)
+                                    252 ;--------------------------------------------------------
+                                    253 ; initialized external ram data
+                                    254 ;--------------------------------------------------------
+                                    255 	.area DATA
+                                    256 ;--------------------------------------------------------
+                                    257 ; global & static initialisations
+                                    258 ;--------------------------------------------------------
+                                    259 	.area _CODE
+                                    260 	.area GSINIT
+                                    261 	.area GSFINAL
+                                    262 	.area GSINIT
+                                    263 ;--------------------------------------------------------
+                                    264 ; Home
+                                    265 ;--------------------------------------------------------
+                                    266 	.area _CODE
+                                    267 	.area _CODE
+                                    268 ;--------------------------------------------------------
+                                    269 ; code
+                                    270 ;--------------------------------------------------------
+                                    271 	.area CODE
+                                    272 ;------------------------------------------------------------
+                                    273 ;Allocation info for local variables in function 'stdc_store8_leu8'
+                                    274 ;------------------------------------------------------------
+                                    275 ;ptr           Allocated with name '_stdc_store8_leu8_PARM_2'
+                                    276 ;value         Allocated with name '_stdc_store8_leu8_value_10000_130'
+                                    277 ;------------------------------------------------------------
+                                    278 ;	./../../include/stdbit.h: 448: __STDC_STORE8(8)
+                                    279 ;	genLabel
+                                    280 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    281 ;	-----------------------------------------
+                                    282 ;	 function stdc_store8_leu8
+                                    283 ;	-----------------------------------------
+                                    284 ;	Register assignment is optimal.
+                                    285 ;	Stack space usage: 0 bytes.
+      000000                        286 _stdc_store8_leu8:
+                                    287 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    288 ;	genReceive
+      000000 8Dr02r00         [ 4]  289 	sta	_stdc_store8_leu8_value_10000_130
+                                    290 ;	Raw cost for generated ic 2 : (3, 4.000000) count=1.000000
+                                    291 ;	genCast
+                                    292 ;	genCopy
+      000003 AEr01r00         [ 4]  293 	ldx	(_stdc_store8_leu8_PARM_2 + 1)
+      000006 ADr00r00         [ 4]  294 	lda	_stdc_store8_leu8_PARM_2
+                                    295 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    296 ;	skipping iCode since result will be rematerialized
+                                    297 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    298 ;	genCast
+                                    299 ;	genCopy
+      000009 A0s00            [ 2]  300 	ldy	#>_stdc_store8_leu8_value_10000_130
+      00000B 8Cr01r00         [ 4]  301 	sty	(___memcpy_PARM_2 + 1)
+      00000E A0r02            [ 2]  302 	ldy	#_stdc_store8_leu8_value_10000_130
+      000010 8Cr00r00         [ 4]  303 	sty	___memcpy_PARM_2
+                                    304 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    305 ;	genAssign
+                                    306 ;	genAssignLit
+      000013 A0 01            [ 2]  307 	ldy	#0x01
+      000015 8Cr00r00         [ 4]  308 	sty	___memcpy_PARM_3
+      000018 9Cr01r00         [ 4]  309 	stz	(___memcpy_PARM_3 + 1)
+                                    310 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    311 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    312 ;	genCall
+                                    313 ;	genSend
+                                    314 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    315 ;	genLabel
+                                    316 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    317 ;	genEndFunction
+      00001B 4Cr00r00         [ 3]  318 	jmp	___memcpy
+                                    319 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                    320 ;------------------------------------------------------------
+                                    321 ;Allocation info for local variables in function 'stdc_store8_beu8'
+                                    322 ;------------------------------------------------------------
+                                    323 ;ptr           Allocated with name '_stdc_store8_beu8_PARM_2'
+                                    324 ;value         Allocated with name '_stdc_store8_beu8_value_10000_132'
+                                    325 ;------------------------------------------------------------
+                                    326 ;	./../../include/stdbit.h: 448: __STDC_STORE8(16)
+                                    327 ;	genLabel
+                                    328 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    329 ;	-----------------------------------------
+                                    330 ;	 function stdc_store8_beu8
+                                    331 ;	-----------------------------------------
+                                    332 ;	Register assignment is optimal.
+                                    333 ;	Stack space usage: 0 bytes.
+      00001E                        334 _stdc_store8_beu8:
+                                    335 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    336 ;	genReceive
+      00001E 8Dr05r00         [ 4]  337 	sta	_stdc_store8_beu8_value_10000_132
+                                    338 ;	Raw cost for generated ic 2 : (3, 4.000000) count=1.000000
+                                    339 ;	genCast
+                                    340 ;	genCopy
+      000021 AEr04r00         [ 4]  341 	ldx	(_stdc_store8_beu8_PARM_2 + 1)
+      000024 ADr03r00         [ 4]  342 	lda	_stdc_store8_beu8_PARM_2
+                                    343 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    344 ;	skipping iCode since result will be rematerialized
+                                    345 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    346 ;	genCast
+                                    347 ;	genCopy
+      000027 A0s00            [ 2]  348 	ldy	#>_stdc_store8_beu8_value_10000_132
+      000029 8Cr01r00         [ 4]  349 	sty	(___memcpy_PARM_2 + 1)
+      00002C A0r05            [ 2]  350 	ldy	#_stdc_store8_beu8_value_10000_132
+      00002E 8Cr00r00         [ 4]  351 	sty	___memcpy_PARM_2
+                                    352 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    353 ;	genAssign
+                                    354 ;	genAssignLit
+      000031 A0 01            [ 2]  355 	ldy	#0x01
+      000033 8Cr00r00         [ 4]  356 	sty	___memcpy_PARM_3
+      000036 9Cr01r00         [ 4]  357 	stz	(___memcpy_PARM_3 + 1)
+                                    358 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    359 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    360 ;	genCall
+                                    361 ;	genSend
+      000039 20r00r00         [ 6]  362 	jsr	___memcpy
+                                    363 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    364 ;	genAssign
+                                    365 ;	genCopy
+      00003C ADr04r00         [ 4]  366 	lda	(_stdc_store8_beu8_PARM_2 + 1)
+      00003F 8Dr01r00         [ 4]  367 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      000042 ADr03r00         [ 4]  368 	lda	_stdc_store8_beu8_PARM_2
+      000045 8Dr00r00         [ 4]  369 	sta	_stdc_memreverse8_PARM_2
+                                    370 ;	Raw cost for generated ic 11 : (12, 16.000000) count=1.000000
+                                    371 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    372 ;	genCall
+                                    373 ;	genSend
+      000048 A2 00            [ 2]  374 	ldx	#0x00
+      00004A A9 01            [ 2]  375 	lda	#0x01
+                                    376 ;	Raw cost for generated ic 12 : (7, 10.000000) count=1.000000
+                                    377 ;	genLabel
+                                    378 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    379 ;	genEndFunction
+      00004C 4Cr00r00         [ 3]  380 	jmp	_stdc_memreverse8
+                                    381 ;	Raw cost for generated ic 14 : (1, 6.000000) count=1.000000
+                                    382 ;------------------------------------------------------------
+                                    383 ;Allocation info for local variables in function 'stdc_store8_leu_aligned8'
+                                    384 ;------------------------------------------------------------
+                                    385 ;ptr           Allocated with name '_stdc_store8_leu_aligned8_PARM_2'
+                                    386 ;value         Allocated with name '_stdc_store8_leu_aligned8_value_10000_134'
+                                    387 ;------------------------------------------------------------
+                                    388 ;	./../../include/stdbit.h: 448: __STDC_STORE8(8)
+                                    389 ;	genLabel
+                                    390 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    391 ;	-----------------------------------------
+                                    392 ;	 function stdc_store8_leu_aligned8
+                                    393 ;	-----------------------------------------
+                                    394 ;	Register assignment is optimal.
+                                    395 ;	Stack space usage: 0 bytes.
+      00004F                        396 _stdc_store8_leu_aligned8:
+                                    397 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    398 ;	genReceive
+      00004F 8Dr08r00         [ 4]  399 	sta	_stdc_store8_leu_aligned8_value_10000_134
+                                    400 ;	Raw cost for generated ic 2 : (3, 4.000000) count=1.000000
+                                    401 ;	genCast
+                                    402 ;	genCopy
+      000052 AEr07r00         [ 4]  403 	ldx	(_stdc_store8_leu_aligned8_PARM_2 + 1)
+      000055 ADr06r00         [ 4]  404 	lda	_stdc_store8_leu_aligned8_PARM_2
+                                    405 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    406 ;	skipping iCode since result will be rematerialized
+                                    407 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    408 ;	genCast
+                                    409 ;	genCopy
+      000058 A0s00            [ 2]  410 	ldy	#>_stdc_store8_leu_aligned8_value_10000_134
+      00005A 8Cr01r00         [ 4]  411 	sty	(___memcpy_PARM_2 + 1)
+      00005D A0r08            [ 2]  412 	ldy	#_stdc_store8_leu_aligned8_value_10000_134
+      00005F 8Cr00r00         [ 4]  413 	sty	___memcpy_PARM_2
+                                    414 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    415 ;	genAssign
+                                    416 ;	genAssignLit
+      000062 A0 01            [ 2]  417 	ldy	#0x01
+      000064 8Cr00r00         [ 4]  418 	sty	___memcpy_PARM_3
+      000067 9Cr01r00         [ 4]  419 	stz	(___memcpy_PARM_3 + 1)
+                                    420 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    421 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    422 ;	genCall
+                                    423 ;	genSend
+                                    424 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    425 ;	genLabel
+                                    426 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    427 ;	genEndFunction
+      00006A 4Cr00r00         [ 3]  428 	jmp	___memcpy
+                                    429 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                    430 ;------------------------------------------------------------
+                                    431 ;Allocation info for local variables in function 'stdc_store8_beu_aligned8'
+                                    432 ;------------------------------------------------------------
+                                    433 ;ptr           Allocated with name '_stdc_store8_beu_aligned8_PARM_2'
+                                    434 ;value         Allocated with name '_stdc_store8_beu_aligned8_value_10000_136'
+                                    435 ;------------------------------------------------------------
+                                    436 ;	./../../include/stdbit.h: 448: __STDC_STORE8(16)
+                                    437 ;	genLabel
+                                    438 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    439 ;	-----------------------------------------
+                                    440 ;	 function stdc_store8_beu_aligned8
+                                    441 ;	-----------------------------------------
+                                    442 ;	Register assignment is optimal.
+                                    443 ;	Stack space usage: 0 bytes.
+      00006D                        444 _stdc_store8_beu_aligned8:
+                                    445 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    446 ;	genReceive
+      00006D 8Dr0Br00         [ 4]  447 	sta	_stdc_store8_beu_aligned8_value_10000_136
+                                    448 ;	Raw cost for generated ic 2 : (3, 4.000000) count=1.000000
+                                    449 ;	genCast
+                                    450 ;	genCopy
+      000070 AEr0Ar00         [ 4]  451 	ldx	(_stdc_store8_beu_aligned8_PARM_2 + 1)
+      000073 ADr09r00         [ 4]  452 	lda	_stdc_store8_beu_aligned8_PARM_2
+                                    453 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    454 ;	skipping iCode since result will be rematerialized
+                                    455 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    456 ;	genCast
+                                    457 ;	genCopy
+      000076 A0s00            [ 2]  458 	ldy	#>_stdc_store8_beu_aligned8_value_10000_136
+      000078 8Cr01r00         [ 4]  459 	sty	(___memcpy_PARM_2 + 1)
+      00007B A0r0B            [ 2]  460 	ldy	#_stdc_store8_beu_aligned8_value_10000_136
+      00007D 8Cr00r00         [ 4]  461 	sty	___memcpy_PARM_2
+                                    462 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    463 ;	genAssign
+                                    464 ;	genAssignLit
+      000080 A0 01            [ 2]  465 	ldy	#0x01
+      000082 8Cr00r00         [ 4]  466 	sty	___memcpy_PARM_3
+      000085 9Cr01r00         [ 4]  467 	stz	(___memcpy_PARM_3 + 1)
+                                    468 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    469 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    470 ;	genCall
+                                    471 ;	genSend
+      000088 20r00r00         [ 6]  472 	jsr	___memcpy
+                                    473 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    474 ;	genAssign
+                                    475 ;	genCopy
+      00008B ADr0Ar00         [ 4]  476 	lda	(_stdc_store8_beu_aligned8_PARM_2 + 1)
+      00008E 8Dr01r00         [ 4]  477 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      000091 ADr09r00         [ 4]  478 	lda	_stdc_store8_beu_aligned8_PARM_2
+      000094 8Dr00r00         [ 4]  479 	sta	_stdc_memreverse8_PARM_2
+                                    480 ;	Raw cost for generated ic 11 : (12, 16.000000) count=1.000000
+                                    481 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    482 ;	genCall
+                                    483 ;	genSend
+      000097 A2 00            [ 2]  484 	ldx	#0x00
+      000099 A9 01            [ 2]  485 	lda	#0x01
+                                    486 ;	Raw cost for generated ic 12 : (7, 10.000000) count=1.000000
+                                    487 ;	genLabel
+                                    488 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    489 ;	genEndFunction
+      00009B 4Cr00r00         [ 3]  490 	jmp	_stdc_memreverse8
+                                    491 ;	Raw cost for generated ic 14 : (1, 6.000000) count=1.000000
+                                    492 ;------------------------------------------------------------
+                                    493 ;Allocation info for local variables in function 'stdc_store8_les8'
+                                    494 ;------------------------------------------------------------
+                                    495 ;ptr           Allocated with name '_stdc_store8_les8_PARM_2'
+                                    496 ;value         Allocated with name '_stdc_store8_les8_value_10000_138'
+                                    497 ;------------------------------------------------------------
+                                    498 ;	./../../include/stdbit.h: 448: __STDC_STORE8(8)
+                                    499 ;	genLabel
+                                    500 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    501 ;	-----------------------------------------
+                                    502 ;	 function stdc_store8_les8
+                                    503 ;	-----------------------------------------
+                                    504 ;	Register assignment is optimal.
+                                    505 ;	Stack space usage: 0 bytes.
+      00009E                        506 _stdc_store8_les8:
+                                    507 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    508 ;	genReceive
+      00009E 8Dr0Er00         [ 4]  509 	sta	_stdc_store8_les8_value_10000_138
+                                    510 ;	Raw cost for generated ic 2 : (3, 4.000000) count=1.000000
+                                    511 ;	genCast
+                                    512 ;	genCopy
+      0000A1 AEr0Dr00         [ 4]  513 	ldx	(_stdc_store8_les8_PARM_2 + 1)
+      0000A4 ADr0Cr00         [ 4]  514 	lda	_stdc_store8_les8_PARM_2
+                                    515 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    516 ;	skipping iCode since result will be rematerialized
+                                    517 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    518 ;	genCast
+                                    519 ;	genCopy
+      0000A7 A0s00            [ 2]  520 	ldy	#>_stdc_store8_les8_value_10000_138
+      0000A9 8Cr01r00         [ 4]  521 	sty	(___memcpy_PARM_2 + 1)
+      0000AC A0r0E            [ 2]  522 	ldy	#_stdc_store8_les8_value_10000_138
+      0000AE 8Cr00r00         [ 4]  523 	sty	___memcpy_PARM_2
+                                    524 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    525 ;	genAssign
+                                    526 ;	genAssignLit
+      0000B1 A0 01            [ 2]  527 	ldy	#0x01
+      0000B3 8Cr00r00         [ 4]  528 	sty	___memcpy_PARM_3
+      0000B6 9Cr01r00         [ 4]  529 	stz	(___memcpy_PARM_3 + 1)
+                                    530 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    531 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    532 ;	genCall
+                                    533 ;	genSend
+                                    534 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    535 ;	genLabel
+                                    536 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    537 ;	genEndFunction
+      0000B9 4Cr00r00         [ 3]  538 	jmp	___memcpy
+                                    539 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                    540 ;------------------------------------------------------------
+                                    541 ;Allocation info for local variables in function 'stdc_store8_bes8'
+                                    542 ;------------------------------------------------------------
+                                    543 ;ptr           Allocated with name '_stdc_store8_bes8_PARM_2'
+                                    544 ;value         Allocated with name '_stdc_store8_bes8_value_10000_140'
+                                    545 ;------------------------------------------------------------
+                                    546 ;	./../../include/stdbit.h: 448: __STDC_STORE8(16)
+                                    547 ;	genLabel
+                                    548 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    549 ;	-----------------------------------------
+                                    550 ;	 function stdc_store8_bes8
+                                    551 ;	-----------------------------------------
+                                    552 ;	Register assignment is optimal.
+                                    553 ;	Stack space usage: 0 bytes.
+      0000BC                        554 _stdc_store8_bes8:
+                                    555 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    556 ;	genReceive
+      0000BC 8Dr11r00         [ 4]  557 	sta	_stdc_store8_bes8_value_10000_140
+                                    558 ;	Raw cost for generated ic 2 : (3, 4.000000) count=1.000000
+                                    559 ;	genCast
+                                    560 ;	genCopy
+      0000BF AEr10r00         [ 4]  561 	ldx	(_stdc_store8_bes8_PARM_2 + 1)
+      0000C2 ADr0Fr00         [ 4]  562 	lda	_stdc_store8_bes8_PARM_2
+                                    563 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    564 ;	skipping iCode since result will be rematerialized
+                                    565 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    566 ;	genCast
+                                    567 ;	genCopy
+      0000C5 A0s00            [ 2]  568 	ldy	#>_stdc_store8_bes8_value_10000_140
+      0000C7 8Cr01r00         [ 4]  569 	sty	(___memcpy_PARM_2 + 1)
+      0000CA A0r11            [ 2]  570 	ldy	#_stdc_store8_bes8_value_10000_140
+      0000CC 8Cr00r00         [ 4]  571 	sty	___memcpy_PARM_2
+                                    572 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    573 ;	genAssign
+                                    574 ;	genAssignLit
+      0000CF A0 01            [ 2]  575 	ldy	#0x01
+      0000D1 8Cr00r00         [ 4]  576 	sty	___memcpy_PARM_3
+      0000D4 9Cr01r00         [ 4]  577 	stz	(___memcpy_PARM_3 + 1)
+                                    578 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    579 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    580 ;	genCall
+                                    581 ;	genSend
+      0000D7 20r00r00         [ 6]  582 	jsr	___memcpy
+                                    583 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    584 ;	genAssign
+                                    585 ;	genCopy
+      0000DA ADr10r00         [ 4]  586 	lda	(_stdc_store8_bes8_PARM_2 + 1)
+      0000DD 8Dr01r00         [ 4]  587 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      0000E0 ADr0Fr00         [ 4]  588 	lda	_stdc_store8_bes8_PARM_2
+      0000E3 8Dr00r00         [ 4]  589 	sta	_stdc_memreverse8_PARM_2
+                                    590 ;	Raw cost for generated ic 11 : (12, 16.000000) count=1.000000
+                                    591 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    592 ;	genCall
+                                    593 ;	genSend
+      0000E6 A2 00            [ 2]  594 	ldx	#0x00
+      0000E8 A9 01            [ 2]  595 	lda	#0x01
+                                    596 ;	Raw cost for generated ic 12 : (7, 10.000000) count=1.000000
+                                    597 ;	genLabel
+                                    598 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    599 ;	genEndFunction
+      0000EA 4Cr00r00         [ 3]  600 	jmp	_stdc_memreverse8
+                                    601 ;	Raw cost for generated ic 14 : (1, 6.000000) count=1.000000
+                                    602 ;------------------------------------------------------------
+                                    603 ;Allocation info for local variables in function 'stdc_store8_les_aligned8'
+                                    604 ;------------------------------------------------------------
+                                    605 ;ptr           Allocated with name '_stdc_store8_les_aligned8_PARM_2'
+                                    606 ;value         Allocated with name '_stdc_store8_les_aligned8_value_10000_142'
+                                    607 ;------------------------------------------------------------
+                                    608 ;	./../../include/stdbit.h: 448: __STDC_STORE8(8)
+                                    609 ;	genLabel
+                                    610 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    611 ;	-----------------------------------------
+                                    612 ;	 function stdc_store8_les_aligned8
+                                    613 ;	-----------------------------------------
+                                    614 ;	Register assignment is optimal.
+                                    615 ;	Stack space usage: 0 bytes.
+      0000ED                        616 _stdc_store8_les_aligned8:
+                                    617 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    618 ;	genReceive
+      0000ED 8Dr14r00         [ 4]  619 	sta	_stdc_store8_les_aligned8_value_10000_142
+                                    620 ;	Raw cost for generated ic 2 : (3, 4.000000) count=1.000000
+                                    621 ;	genCast
+                                    622 ;	genCopy
+      0000F0 AEr13r00         [ 4]  623 	ldx	(_stdc_store8_les_aligned8_PARM_2 + 1)
+      0000F3 ADr12r00         [ 4]  624 	lda	_stdc_store8_les_aligned8_PARM_2
+                                    625 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    626 ;	skipping iCode since result will be rematerialized
+                                    627 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    628 ;	genCast
+                                    629 ;	genCopy
+      0000F6 A0s00            [ 2]  630 	ldy	#>_stdc_store8_les_aligned8_value_10000_142
+      0000F8 8Cr01r00         [ 4]  631 	sty	(___memcpy_PARM_2 + 1)
+      0000FB A0r14            [ 2]  632 	ldy	#_stdc_store8_les_aligned8_value_10000_142
+      0000FD 8Cr00r00         [ 4]  633 	sty	___memcpy_PARM_2
+                                    634 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    635 ;	genAssign
+                                    636 ;	genAssignLit
+      000100 A0 01            [ 2]  637 	ldy	#0x01
+      000102 8Cr00r00         [ 4]  638 	sty	___memcpy_PARM_3
+      000105 9Cr01r00         [ 4]  639 	stz	(___memcpy_PARM_3 + 1)
+                                    640 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    641 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    642 ;	genCall
+                                    643 ;	genSend
+                                    644 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    645 ;	genLabel
+                                    646 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    647 ;	genEndFunction
+      000108 4Cr00r00         [ 3]  648 	jmp	___memcpy
+                                    649 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                    650 ;------------------------------------------------------------
+                                    651 ;Allocation info for local variables in function 'stdc_store8_bes_aligned8'
+                                    652 ;------------------------------------------------------------
+                                    653 ;ptr           Allocated with name '_stdc_store8_bes_aligned8_PARM_2'
+                                    654 ;value         Allocated with name '_stdc_store8_bes_aligned8_value_10000_144'
+                                    655 ;------------------------------------------------------------
+                                    656 ;	./../../include/stdbit.h: 448: __STDC_STORE8(16)
+                                    657 ;	genLabel
+                                    658 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    659 ;	-----------------------------------------
+                                    660 ;	 function stdc_store8_bes_aligned8
+                                    661 ;	-----------------------------------------
+                                    662 ;	Register assignment is optimal.
+                                    663 ;	Stack space usage: 0 bytes.
+      00010B                        664 _stdc_store8_bes_aligned8:
+                                    665 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    666 ;	genReceive
+      00010B 8Dr17r00         [ 4]  667 	sta	_stdc_store8_bes_aligned8_value_10000_144
+                                    668 ;	Raw cost for generated ic 2 : (3, 4.000000) count=1.000000
+                                    669 ;	genCast
+                                    670 ;	genCopy
+      00010E AEr16r00         [ 4]  671 	ldx	(_stdc_store8_bes_aligned8_PARM_2 + 1)
+      000111 ADr15r00         [ 4]  672 	lda	_stdc_store8_bes_aligned8_PARM_2
+                                    673 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    674 ;	skipping iCode since result will be rematerialized
+                                    675 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    676 ;	genCast
+                                    677 ;	genCopy
+      000114 A0s00            [ 2]  678 	ldy	#>_stdc_store8_bes_aligned8_value_10000_144
+      000116 8Cr01r00         [ 4]  679 	sty	(___memcpy_PARM_2 + 1)
+      000119 A0r17            [ 2]  680 	ldy	#_stdc_store8_bes_aligned8_value_10000_144
+      00011B 8Cr00r00         [ 4]  681 	sty	___memcpy_PARM_2
+                                    682 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    683 ;	genAssign
+                                    684 ;	genAssignLit
+      00011E A0 01            [ 2]  685 	ldy	#0x01
+      000120 8Cr00r00         [ 4]  686 	sty	___memcpy_PARM_3
+      000123 9Cr01r00         [ 4]  687 	stz	(___memcpy_PARM_3 + 1)
+                                    688 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    689 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    690 ;	genCall
+                                    691 ;	genSend
+      000126 20r00r00         [ 6]  692 	jsr	___memcpy
+                                    693 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    694 ;	genAssign
+                                    695 ;	genCopy
+      000129 ADr16r00         [ 4]  696 	lda	(_stdc_store8_bes_aligned8_PARM_2 + 1)
+      00012C 8Dr01r00         [ 4]  697 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      00012F ADr15r00         [ 4]  698 	lda	_stdc_store8_bes_aligned8_PARM_2
+      000132 8Dr00r00         [ 4]  699 	sta	_stdc_memreverse8_PARM_2
+                                    700 ;	Raw cost for generated ic 11 : (12, 16.000000) count=1.000000
+                                    701 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    702 ;	genCall
+                                    703 ;	genSend
+      000135 A2 00            [ 2]  704 	ldx	#0x00
+      000137 A9 01            [ 2]  705 	lda	#0x01
+                                    706 ;	Raw cost for generated ic 12 : (7, 10.000000) count=1.000000
+                                    707 ;	genLabel
+                                    708 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    709 ;	genEndFunction
+      000139 4Cr00r00         [ 3]  710 	jmp	_stdc_memreverse8
+                                    711 ;	Raw cost for generated ic 14 : (1, 6.000000) count=1.000000
+                                    712 ;------------------------------------------------------------
+                                    713 ;Allocation info for local variables in function 'stdc_store8_leu16'
+                                    714 ;------------------------------------------------------------
+                                    715 ;ptr           Allocated with name '_stdc_store8_leu16_PARM_2'
+                                    716 ;value         Allocated with name '_stdc_store8_leu16_value_10000_146'
+                                    717 ;------------------------------------------------------------
+                                    718 ;	./../../include/stdbit.h: 449: __STDC_STORE8(32)
+                                    719 ;	genLabel
+                                    720 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    721 ;	-----------------------------------------
+                                    722 ;	 function stdc_store8_leu16
+                                    723 ;	-----------------------------------------
+                                    724 ;	Register assignment is optimal.
+                                    725 ;	Stack space usage: 0 bytes.
+      00013C                        726 _stdc_store8_leu16:
+                                    727 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    728 ;	genReceive
+      00013C 8Dr1Ar00         [ 4]  729 	sta	_stdc_store8_leu16_value_10000_146
+      00013F 8Er1Br00         [ 4]  730 	stx	(_stdc_store8_leu16_value_10000_146 + 1)
+                                    731 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    732 ;	genCast
+                                    733 ;	genCopy
+      000142 AEr19r00         [ 4]  734 	ldx	(_stdc_store8_leu16_PARM_2 + 1)
+      000145 ADr18r00         [ 4]  735 	lda	_stdc_store8_leu16_PARM_2
+                                    736 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    737 ;	skipping iCode since result will be rematerialized
+                                    738 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    739 ;	genCast
+                                    740 ;	genCopy
+      000148 A0s00            [ 2]  741 	ldy	#>_stdc_store8_leu16_value_10000_146
+      00014A 8Cr01r00         [ 4]  742 	sty	(___memcpy_PARM_2 + 1)
+      00014D A0r1A            [ 2]  743 	ldy	#_stdc_store8_leu16_value_10000_146
+      00014F 8Cr00r00         [ 4]  744 	sty	___memcpy_PARM_2
+                                    745 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    746 ;	genAssign
+                                    747 ;	genAssignLit
+      000152 A0 02            [ 2]  748 	ldy	#0x02
+      000154 8Cr00r00         [ 4]  749 	sty	___memcpy_PARM_3
+      000157 9Cr01r00         [ 4]  750 	stz	(___memcpy_PARM_3 + 1)
+                                    751 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    752 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    753 ;	genCall
+                                    754 ;	genSend
+                                    755 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    756 ;	genLabel
+                                    757 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    758 ;	genEndFunction
+      00015A 4Cr00r00         [ 3]  759 	jmp	___memcpy
+                                    760 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                    761 ;------------------------------------------------------------
+                                    762 ;Allocation info for local variables in function 'stdc_store8_beu16'
+                                    763 ;------------------------------------------------------------
+                                    764 ;ptr           Allocated with name '_stdc_store8_beu16_PARM_2'
+                                    765 ;value         Allocated with name '_stdc_store8_beu16_value_10000_148'
+                                    766 ;------------------------------------------------------------
+                                    767 ;	./../../include/stdbit.h: 449: __STDC_STORE8(16)
+                                    768 ;	genLabel
+                                    769 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    770 ;	-----------------------------------------
+                                    771 ;	 function stdc_store8_beu16
+                                    772 ;	-----------------------------------------
+                                    773 ;	Register assignment is optimal.
+                                    774 ;	Stack space usage: 0 bytes.
+      00015D                        775 _stdc_store8_beu16:
+                                    776 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    777 ;	genReceive
+      00015D 8Dr1Er00         [ 4]  778 	sta	_stdc_store8_beu16_value_10000_148
+      000160 8Er1Fr00         [ 4]  779 	stx	(_stdc_store8_beu16_value_10000_148 + 1)
+                                    780 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    781 ;	genCast
+                                    782 ;	genCopy
+      000163 AEr1Dr00         [ 4]  783 	ldx	(_stdc_store8_beu16_PARM_2 + 1)
+      000166 ADr1Cr00         [ 4]  784 	lda	_stdc_store8_beu16_PARM_2
+                                    785 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    786 ;	skipping iCode since result will be rematerialized
+                                    787 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    788 ;	genCast
+                                    789 ;	genCopy
+      000169 A0s00            [ 2]  790 	ldy	#>_stdc_store8_beu16_value_10000_148
+      00016B 8Cr01r00         [ 4]  791 	sty	(___memcpy_PARM_2 + 1)
+      00016E A0r1E            [ 2]  792 	ldy	#_stdc_store8_beu16_value_10000_148
+      000170 8Cr00r00         [ 4]  793 	sty	___memcpy_PARM_2
+                                    794 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    795 ;	genAssign
+                                    796 ;	genAssignLit
+      000173 A0 02            [ 2]  797 	ldy	#0x02
+      000175 8Cr00r00         [ 4]  798 	sty	___memcpy_PARM_3
+      000178 9Cr01r00         [ 4]  799 	stz	(___memcpy_PARM_3 + 1)
+                                    800 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    801 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    802 ;	genCall
+                                    803 ;	genSend
+      00017B 20r00r00         [ 6]  804 	jsr	___memcpy
+                                    805 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    806 ;	genAssign
+                                    807 ;	genCopy
+      00017E ADr1Dr00         [ 4]  808 	lda	(_stdc_store8_beu16_PARM_2 + 1)
+      000181 8Dr01r00         [ 4]  809 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      000184 ADr1Cr00         [ 4]  810 	lda	_stdc_store8_beu16_PARM_2
+      000187 8Dr00r00         [ 4]  811 	sta	_stdc_memreverse8_PARM_2
+                                    812 ;	Raw cost for generated ic 11 : (12, 16.000000) count=1.000000
+                                    813 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    814 ;	genCall
+                                    815 ;	genSend
+      00018A A2 00            [ 2]  816 	ldx	#0x00
+      00018C A9 02            [ 2]  817 	lda	#0x02
+                                    818 ;	Raw cost for generated ic 12 : (7, 10.000000) count=1.000000
+                                    819 ;	genLabel
+                                    820 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    821 ;	genEndFunction
+      00018E 4Cr00r00         [ 3]  822 	jmp	_stdc_memreverse8
+                                    823 ;	Raw cost for generated ic 14 : (1, 6.000000) count=1.000000
+                                    824 ;------------------------------------------------------------
+                                    825 ;Allocation info for local variables in function 'stdc_store8_leu_aligned16'
+                                    826 ;------------------------------------------------------------
+                                    827 ;ptr           Allocated with name '_stdc_store8_leu_aligned16_PARM_2'
+                                    828 ;value         Allocated with name '_stdc_store8_leu_aligned16_value_10000_150'
+                                    829 ;------------------------------------------------------------
+                                    830 ;	./../../include/stdbit.h: 449: __STDC_STORE8(32)
+                                    831 ;	genLabel
+                                    832 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    833 ;	-----------------------------------------
+                                    834 ;	 function stdc_store8_leu_aligned16
+                                    835 ;	-----------------------------------------
+                                    836 ;	Register assignment is optimal.
+                                    837 ;	Stack space usage: 0 bytes.
+      000191                        838 _stdc_store8_leu_aligned16:
+                                    839 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    840 ;	genReceive
+      000191 8Dr22r00         [ 4]  841 	sta	_stdc_store8_leu_aligned16_value_10000_150
+      000194 8Er23r00         [ 4]  842 	stx	(_stdc_store8_leu_aligned16_value_10000_150 + 1)
+                                    843 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    844 ;	genCast
+                                    845 ;	genCopy
+      000197 AEr21r00         [ 4]  846 	ldx	(_stdc_store8_leu_aligned16_PARM_2 + 1)
+      00019A ADr20r00         [ 4]  847 	lda	_stdc_store8_leu_aligned16_PARM_2
+                                    848 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    849 ;	skipping iCode since result will be rematerialized
+                                    850 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    851 ;	genCast
+                                    852 ;	genCopy
+      00019D A0s00            [ 2]  853 	ldy	#>_stdc_store8_leu_aligned16_value_10000_150
+      00019F 8Cr01r00         [ 4]  854 	sty	(___memcpy_PARM_2 + 1)
+      0001A2 A0r22            [ 2]  855 	ldy	#_stdc_store8_leu_aligned16_value_10000_150
+      0001A4 8Cr00r00         [ 4]  856 	sty	___memcpy_PARM_2
+                                    857 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    858 ;	genAssign
+                                    859 ;	genAssignLit
+      0001A7 A0 02            [ 2]  860 	ldy	#0x02
+      0001A9 8Cr00r00         [ 4]  861 	sty	___memcpy_PARM_3
+      0001AC 9Cr01r00         [ 4]  862 	stz	(___memcpy_PARM_3 + 1)
+                                    863 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    864 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    865 ;	genCall
+                                    866 ;	genSend
+                                    867 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    868 ;	genLabel
+                                    869 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    870 ;	genEndFunction
+      0001AF 4Cr00r00         [ 3]  871 	jmp	___memcpy
+                                    872 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                    873 ;------------------------------------------------------------
+                                    874 ;Allocation info for local variables in function 'stdc_store8_beu_aligned16'
+                                    875 ;------------------------------------------------------------
+                                    876 ;ptr           Allocated with name '_stdc_store8_beu_aligned16_PARM_2'
+                                    877 ;value         Allocated with name '_stdc_store8_beu_aligned16_value_10000_152'
+                                    878 ;------------------------------------------------------------
+                                    879 ;	./../../include/stdbit.h: 449: __STDC_STORE8(16)
+                                    880 ;	genLabel
+                                    881 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    882 ;	-----------------------------------------
+                                    883 ;	 function stdc_store8_beu_aligned16
+                                    884 ;	-----------------------------------------
+                                    885 ;	Register assignment is optimal.
+                                    886 ;	Stack space usage: 0 bytes.
+      0001B2                        887 _stdc_store8_beu_aligned16:
+                                    888 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    889 ;	genReceive
+      0001B2 8Dr26r00         [ 4]  890 	sta	_stdc_store8_beu_aligned16_value_10000_152
+      0001B5 8Er27r00         [ 4]  891 	stx	(_stdc_store8_beu_aligned16_value_10000_152 + 1)
+                                    892 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    893 ;	genCast
+                                    894 ;	genCopy
+      0001B8 AEr25r00         [ 4]  895 	ldx	(_stdc_store8_beu_aligned16_PARM_2 + 1)
+      0001BB ADr24r00         [ 4]  896 	lda	_stdc_store8_beu_aligned16_PARM_2
+                                    897 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    898 ;	skipping iCode since result will be rematerialized
+                                    899 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    900 ;	genCast
+                                    901 ;	genCopy
+      0001BE A0s00            [ 2]  902 	ldy	#>_stdc_store8_beu_aligned16_value_10000_152
+      0001C0 8Cr01r00         [ 4]  903 	sty	(___memcpy_PARM_2 + 1)
+      0001C3 A0r26            [ 2]  904 	ldy	#_stdc_store8_beu_aligned16_value_10000_152
+      0001C5 8Cr00r00         [ 4]  905 	sty	___memcpy_PARM_2
+                                    906 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    907 ;	genAssign
+                                    908 ;	genAssignLit
+      0001C8 A0 02            [ 2]  909 	ldy	#0x02
+      0001CA 8Cr00r00         [ 4]  910 	sty	___memcpy_PARM_3
+      0001CD 9Cr01r00         [ 4]  911 	stz	(___memcpy_PARM_3 + 1)
+                                    912 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    913 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    914 ;	genCall
+                                    915 ;	genSend
+      0001D0 20r00r00         [ 6]  916 	jsr	___memcpy
+                                    917 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    918 ;	genAssign
+                                    919 ;	genCopy
+      0001D3 ADr25r00         [ 4]  920 	lda	(_stdc_store8_beu_aligned16_PARM_2 + 1)
+      0001D6 8Dr01r00         [ 4]  921 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      0001D9 ADr24r00         [ 4]  922 	lda	_stdc_store8_beu_aligned16_PARM_2
+      0001DC 8Dr00r00         [ 4]  923 	sta	_stdc_memreverse8_PARM_2
+                                    924 ;	Raw cost for generated ic 11 : (12, 16.000000) count=1.000000
+                                    925 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    926 ;	genCall
+                                    927 ;	genSend
+      0001DF A2 00            [ 2]  928 	ldx	#0x00
+      0001E1 A9 02            [ 2]  929 	lda	#0x02
+                                    930 ;	Raw cost for generated ic 12 : (7, 10.000000) count=1.000000
+                                    931 ;	genLabel
+                                    932 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    933 ;	genEndFunction
+      0001E3 4Cr00r00         [ 3]  934 	jmp	_stdc_memreverse8
+                                    935 ;	Raw cost for generated ic 14 : (1, 6.000000) count=1.000000
+                                    936 ;------------------------------------------------------------
+                                    937 ;Allocation info for local variables in function 'stdc_store8_les16'
+                                    938 ;------------------------------------------------------------
+                                    939 ;ptr           Allocated with name '_stdc_store8_les16_PARM_2'
+                                    940 ;value         Allocated with name '_stdc_store8_les16_value_10000_154'
+                                    941 ;------------------------------------------------------------
+                                    942 ;	./../../include/stdbit.h: 449: __STDC_STORE8(32)
+                                    943 ;	genLabel
+                                    944 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    945 ;	-----------------------------------------
+                                    946 ;	 function stdc_store8_les16
+                                    947 ;	-----------------------------------------
+                                    948 ;	Register assignment is optimal.
+                                    949 ;	Stack space usage: 0 bytes.
+      0001E6                        950 _stdc_store8_les16:
+                                    951 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    952 ;	genReceive
+      0001E6 8Dr2Ar00         [ 4]  953 	sta	_stdc_store8_les16_value_10000_154
+      0001E9 8Er2Br00         [ 4]  954 	stx	(_stdc_store8_les16_value_10000_154 + 1)
+                                    955 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    956 ;	genCast
+                                    957 ;	genCopy
+      0001EC AEr29r00         [ 4]  958 	ldx	(_stdc_store8_les16_PARM_2 + 1)
+      0001EF ADr28r00         [ 4]  959 	lda	_stdc_store8_les16_PARM_2
+                                    960 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                    961 ;	skipping iCode since result will be rematerialized
+                                    962 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                    963 ;	genCast
+                                    964 ;	genCopy
+      0001F2 A0s00            [ 2]  965 	ldy	#>_stdc_store8_les16_value_10000_154
+      0001F4 8Cr01r00         [ 4]  966 	sty	(___memcpy_PARM_2 + 1)
+      0001F7 A0r2A            [ 2]  967 	ldy	#_stdc_store8_les16_value_10000_154
+      0001F9 8Cr00r00         [ 4]  968 	sty	___memcpy_PARM_2
+                                    969 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                    970 ;	genAssign
+                                    971 ;	genAssignLit
+      0001FC A0 02            [ 2]  972 	ldy	#0x02
+      0001FE 8Cr00r00         [ 4]  973 	sty	___memcpy_PARM_3
+      000201 9Cr01r00         [ 4]  974 	stz	(___memcpy_PARM_3 + 1)
+                                    975 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                    976 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    977 ;	genCall
+                                    978 ;	genSend
+                                    979 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                    980 ;	genLabel
+                                    981 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    982 ;	genEndFunction
+      000204 4Cr00r00         [ 3]  983 	jmp	___memcpy
+                                    984 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                    985 ;------------------------------------------------------------
+                                    986 ;Allocation info for local variables in function 'stdc_store8_bes16'
+                                    987 ;------------------------------------------------------------
+                                    988 ;ptr           Allocated with name '_stdc_store8_bes16_PARM_2'
+                                    989 ;value         Allocated with name '_stdc_store8_bes16_value_10000_156'
+                                    990 ;------------------------------------------------------------
+                                    991 ;	./../../include/stdbit.h: 449: __STDC_STORE8(16)
+                                    992 ;	genLabel
+                                    993 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    994 ;	-----------------------------------------
+                                    995 ;	 function stdc_store8_bes16
+                                    996 ;	-----------------------------------------
+                                    997 ;	Register assignment is optimal.
+                                    998 ;	Stack space usage: 0 bytes.
+      000207                        999 _stdc_store8_bes16:
+                                   1000 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1001 ;	genReceive
+      000207 8Dr2Er00         [ 4] 1002 	sta	_stdc_store8_bes16_value_10000_156
+      00020A 8Er2Fr00         [ 4] 1003 	stx	(_stdc_store8_bes16_value_10000_156 + 1)
+                                   1004 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1005 ;	genCast
+                                   1006 ;	genCopy
+      00020D AEr2Dr00         [ 4] 1007 	ldx	(_stdc_store8_bes16_PARM_2 + 1)
+      000210 ADr2Cr00         [ 4] 1008 	lda	_stdc_store8_bes16_PARM_2
+                                   1009 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                   1010 ;	skipping iCode since result will be rematerialized
+                                   1011 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                   1012 ;	genCast
+                                   1013 ;	genCopy
+      000213 A0s00            [ 2] 1014 	ldy	#>_stdc_store8_bes16_value_10000_156
+      000215 8Cr01r00         [ 4] 1015 	sty	(___memcpy_PARM_2 + 1)
+      000218 A0r2E            [ 2] 1016 	ldy	#_stdc_store8_bes16_value_10000_156
+      00021A 8Cr00r00         [ 4] 1017 	sty	___memcpy_PARM_2
+                                   1018 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                   1019 ;	genAssign
+                                   1020 ;	genAssignLit
+      00021D A0 02            [ 2] 1021 	ldy	#0x02
+      00021F 8Cr00r00         [ 4] 1022 	sty	___memcpy_PARM_3
+      000222 9Cr01r00         [ 4] 1023 	stz	(___memcpy_PARM_3 + 1)
+                                   1024 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                   1025 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                   1026 ;	genCall
+                                   1027 ;	genSend
+      000225 20r00r00         [ 6] 1028 	jsr	___memcpy
+                                   1029 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                   1030 ;	genAssign
+                                   1031 ;	genCopy
+      000228 ADr2Dr00         [ 4] 1032 	lda	(_stdc_store8_bes16_PARM_2 + 1)
+      00022B 8Dr01r00         [ 4] 1033 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      00022E ADr2Cr00         [ 4] 1034 	lda	_stdc_store8_bes16_PARM_2
+      000231 8Dr00r00         [ 4] 1035 	sta	_stdc_memreverse8_PARM_2
+                                   1036 ;	Raw cost for generated ic 11 : (12, 16.000000) count=1.000000
+                                   1037 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                   1038 ;	genCall
+                                   1039 ;	genSend
+      000234 A2 00            [ 2] 1040 	ldx	#0x00
+      000236 A9 02            [ 2] 1041 	lda	#0x02
+                                   1042 ;	Raw cost for generated ic 12 : (7, 10.000000) count=1.000000
+                                   1043 ;	genLabel
+                                   1044 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                   1045 ;	genEndFunction
+      000238 4Cr00r00         [ 3] 1046 	jmp	_stdc_memreverse8
+                                   1047 ;	Raw cost for generated ic 14 : (1, 6.000000) count=1.000000
+                                   1048 ;------------------------------------------------------------
+                                   1049 ;Allocation info for local variables in function 'stdc_store8_les_aligned16'
+                                   1050 ;------------------------------------------------------------
+                                   1051 ;ptr           Allocated with name '_stdc_store8_les_aligned16_PARM_2'
+                                   1052 ;value         Allocated with name '_stdc_store8_les_aligned16_value_10000_158'
+                                   1053 ;------------------------------------------------------------
+                                   1054 ;	./../../include/stdbit.h: 449: __STDC_STORE8(32)
+                                   1055 ;	genLabel
+                                   1056 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1057 ;	-----------------------------------------
+                                   1058 ;	 function stdc_store8_les_aligned16
+                                   1059 ;	-----------------------------------------
+                                   1060 ;	Register assignment is optimal.
+                                   1061 ;	Stack space usage: 0 bytes.
+      00023B                       1062 _stdc_store8_les_aligned16:
+                                   1063 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1064 ;	genReceive
+      00023B 8Dr32r00         [ 4] 1065 	sta	_stdc_store8_les_aligned16_value_10000_158
+      00023E 8Er33r00         [ 4] 1066 	stx	(_stdc_store8_les_aligned16_value_10000_158 + 1)
+                                   1067 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1068 ;	genCast
+                                   1069 ;	genCopy
+      000241 AEr31r00         [ 4] 1070 	ldx	(_stdc_store8_les_aligned16_PARM_2 + 1)
+      000244 ADr30r00         [ 4] 1071 	lda	_stdc_store8_les_aligned16_PARM_2
+                                   1072 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                   1073 ;	skipping iCode since result will be rematerialized
+                                   1074 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                   1075 ;	genCast
+                                   1076 ;	genCopy
+      000247 A0s00            [ 2] 1077 	ldy	#>_stdc_store8_les_aligned16_value_10000_158
+      000249 8Cr01r00         [ 4] 1078 	sty	(___memcpy_PARM_2 + 1)
+      00024C A0r32            [ 2] 1079 	ldy	#_stdc_store8_les_aligned16_value_10000_158
+      00024E 8Cr00r00         [ 4] 1080 	sty	___memcpy_PARM_2
+                                   1081 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                   1082 ;	genAssign
+                                   1083 ;	genAssignLit
+      000251 A0 02            [ 2] 1084 	ldy	#0x02
+      000253 8Cr00r00         [ 4] 1085 	sty	___memcpy_PARM_3
+      000256 9Cr01r00         [ 4] 1086 	stz	(___memcpy_PARM_3 + 1)
+                                   1087 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                   1088 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                   1089 ;	genCall
+                                   1090 ;	genSend
+                                   1091 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                   1092 ;	genLabel
+                                   1093 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                   1094 ;	genEndFunction
+      000259 4Cr00r00         [ 3] 1095 	jmp	___memcpy
+                                   1096 ;	Raw cost for generated ic 11 : (1, 6.000000) count=1.000000
+                                   1097 ;------------------------------------------------------------
+                                   1098 ;Allocation info for local variables in function 'stdc_store8_bes_aligned16'
+                                   1099 ;------------------------------------------------------------
+                                   1100 ;ptr           Allocated with name '_stdc_store8_bes_aligned16_PARM_2'
+                                   1101 ;value         Allocated with name '_stdc_store8_bes_aligned16_value_10000_160'
+                                   1102 ;------------------------------------------------------------
+                                   1103 ;	./../../include/stdbit.h: 449: __STDC_STORE8(16)
+                                   1104 ;	genLabel
+                                   1105 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1106 ;	-----------------------------------------
+                                   1107 ;	 function stdc_store8_bes_aligned16
+                                   1108 ;	-----------------------------------------
+                                   1109 ;	Register assignment is optimal.
+                                   1110 ;	Stack space usage: 0 bytes.
+      00025C                       1111 _stdc_store8_bes_aligned16:
+                                   1112 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1113 ;	genReceive
+      00025C 8Dr36r00         [ 4] 1114 	sta	_stdc_store8_bes_aligned16_value_10000_160
+      00025F 8Er37r00         [ 4] 1115 	stx	(_stdc_store8_bes_aligned16_value_10000_160 + 1)
+                                   1116 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1117 ;	genCast
+                                   1118 ;	genCopy
+      000262 AEr35r00         [ 4] 1119 	ldx	(_stdc_store8_bes_aligned16_PARM_2 + 1)
+      000265 ADr34r00         [ 4] 1120 	lda	_stdc_store8_bes_aligned16_PARM_2
+                                   1121 ;	Raw cost for generated ic 3 : (6, 8.000000) count=1.000000
+                                   1122 ;	skipping iCode since result will be rematerialized
+                                   1123 ;	Raw cost for generated ic 4 : (0, 0.000000) count=1.000000
+                                   1124 ;	genCast
+                                   1125 ;	genCopy
+      000268 A0s00            [ 2] 1126 	ldy	#>_stdc_store8_bes_aligned16_value_10000_160
+      00026A 8Cr01r00         [ 4] 1127 	sty	(___memcpy_PARM_2 + 1)
+      00026D A0r36            [ 2] 1128 	ldy	#_stdc_store8_bes_aligned16_value_10000_160
+      00026F 8Cr00r00         [ 4] 1129 	sty	___memcpy_PARM_2
+                                   1130 ;	Raw cost for generated ic 5 : (10, 12.000000) count=1.000000
+                                   1131 ;	genAssign
+                                   1132 ;	genAssignLit
+      000272 A0 02            [ 2] 1133 	ldy	#0x02
+      000274 8Cr00r00         [ 4] 1134 	sty	___memcpy_PARM_3
+      000277 9Cr01r00         [ 4] 1135 	stz	(___memcpy_PARM_3 + 1)
+                                   1136 ;	Raw cost for generated ic 8 : (8, 10.000000) count=1.000000
+                                   1137 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                   1138 ;	genCall
+                                   1139 ;	genSend
+      00027A 20r00r00         [ 6] 1140 	jsr	___memcpy
+                                   1141 ;	Raw cost for generated ic 9 : (3, 6.000000) count=1.000000
+                                   1142 ;	genAssign
+                                   1143 ;	genCopy
+      00027D ADr35r00         [ 4] 1144 	lda	(_stdc_store8_bes_aligned16_PARM_2 + 1)
+      000280 8Dr01r00         [ 4] 1145 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      000283 ADr34r00         [ 4] 1146 	lda	_stdc_store8_bes_aligned16_PARM_2
+      000286 8Dr00r00         [ 4] 1147 	sta	_stdc_memreverse8_PARM_2
+                                   1148 ;	Raw cost for generated ic 11 : (12, 16.000000) count=1.000000
+                                   1149 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                   1150 ;	genCall
+                                   1151 ;	genSend
+      000289 A2 00            [ 2] 1152 	ldx	#0x00
+      00028B A9 02            [ 2] 1153 	lda	#0x02
+                                   1154 ;	Raw cost for generated ic 12 : (7, 10.000000) count=1.000000
+                                   1155 ;	genLabel
+                                   1156 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                   1157 ;	genEndFunction
+      00028D 4Cr00r00         [ 3] 1158 	jmp	_stdc_memreverse8
+                                   1159 ;	Raw cost for generated ic 14 : (1, 6.000000) count=1.000000
+                                   1160 ;------------------------------------------------------------
+                                   1161 ;Allocation info for local variables in function 'stdc_store8_leu32'
+                                   1162 ;------------------------------------------------------------
+                                   1163 ;value         Allocated with name '_stdc_store8_leu32_PARM_1'
+                                   1164 ;ptr           Allocated with name '_stdc_store8_leu32_PARM_2'
+                                   1165 ;------------------------------------------------------------
+                                   1166 ;	./../../include/stdbit.h: 450: __STDC_STORE8(32)
+                                   1167 ;	genLabel
+                                   1168 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1169 ;	-----------------------------------------
+                                   1170 ;	 function stdc_store8_leu32
+                                   1171 ;	-----------------------------------------
+                                   1172 ;	Register assignment is optimal.
+                                   1173 ;	Stack space usage: 0 bytes.
+      000290                       1174 _stdc_store8_leu32:
+                                   1175 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1176 ;	genCast
+                                   1177 ;	genCopy
+      000290 AEr3Dr00         [ 4] 1178 	ldx	(_stdc_store8_leu32_PARM_2 + 1)
+      000293 ADr3Cr00         [ 4] 1179 	lda	_stdc_store8_leu32_PARM_2
+                                   1180 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1181 ;	skipping iCode since result will be rematerialized
+                                   1182 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1183 ;	genCast
+                                   1184 ;	genCopy
+      000296 A0s00            [ 2] 1185 	ldy	#>_stdc_store8_leu32_PARM_1
+      000298 8Cr01r00         [ 4] 1186 	sty	(___memcpy_PARM_2 + 1)
+      00029B A0r38            [ 2] 1187 	ldy	#_stdc_store8_leu32_PARM_1
+      00029D 8Cr00r00         [ 4] 1188 	sty	___memcpy_PARM_2
+                                   1189 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1190 ;	genAssign
+                                   1191 ;	genAssignLit
+      0002A0 A0 04            [ 2] 1192 	ldy	#0x04
+      0002A2 8Cr00r00         [ 4] 1193 	sty	___memcpy_PARM_3
+      0002A5 9Cr01r00         [ 4] 1194 	stz	(___memcpy_PARM_3 + 1)
+                                   1195 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1196 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1197 ;	genCall
+                                   1198 ;	genSend
+                                   1199 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1200 ;	genLabel
+                                   1201 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1202 ;	genEndFunction
+      0002A8 4Cr00r00         [ 3] 1203 	jmp	___memcpy
+                                   1204 ;	Raw cost for generated ic 10 : (1, 6.000000) count=1.000000
+                                   1205 ;------------------------------------------------------------
+                                   1206 ;Allocation info for local variables in function 'stdc_store8_beu32'
+                                   1207 ;------------------------------------------------------------
+                                   1208 ;value         Allocated with name '_stdc_store8_beu32_PARM_1'
+                                   1209 ;ptr           Allocated with name '_stdc_store8_beu32_PARM_2'
+                                   1210 ;------------------------------------------------------------
+                                   1211 ;	./../../include/stdbit.h: 450: __STDC_STORE8(64)
+                                   1212 ;	genLabel
+                                   1213 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1214 ;	-----------------------------------------
+                                   1215 ;	 function stdc_store8_beu32
+                                   1216 ;	-----------------------------------------
+                                   1217 ;	Register assignment is optimal.
+                                   1218 ;	Stack space usage: 0 bytes.
+      0002AB                       1219 _stdc_store8_beu32:
+                                   1220 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1221 ;	genCast
+                                   1222 ;	genCopy
+      0002AB AEr43r00         [ 4] 1223 	ldx	(_stdc_store8_beu32_PARM_2 + 1)
+      0002AE ADr42r00         [ 4] 1224 	lda	_stdc_store8_beu32_PARM_2
+                                   1225 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1226 ;	skipping iCode since result will be rematerialized
+                                   1227 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1228 ;	genCast
+                                   1229 ;	genCopy
+      0002B1 A0s00            [ 2] 1230 	ldy	#>_stdc_store8_beu32_PARM_1
+      0002B3 8Cr01r00         [ 4] 1231 	sty	(___memcpy_PARM_2 + 1)
+      0002B6 A0r3E            [ 2] 1232 	ldy	#_stdc_store8_beu32_PARM_1
+      0002B8 8Cr00r00         [ 4] 1233 	sty	___memcpy_PARM_2
+                                   1234 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1235 ;	genAssign
+                                   1236 ;	genAssignLit
+      0002BB A0 04            [ 2] 1237 	ldy	#0x04
+      0002BD 8Cr00r00         [ 4] 1238 	sty	___memcpy_PARM_3
+      0002C0 9Cr01r00         [ 4] 1239 	stz	(___memcpy_PARM_3 + 1)
+                                   1240 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1241 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1242 ;	genCall
+                                   1243 ;	genSend
+      0002C3 20r00r00         [ 6] 1244 	jsr	___memcpy
+                                   1245 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1246 ;	genAssign
+                                   1247 ;	genCopy
+      0002C6 ADr43r00         [ 4] 1248 	lda	(_stdc_store8_beu32_PARM_2 + 1)
+      0002C9 8Dr01r00         [ 4] 1249 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      0002CC ADr42r00         [ 4] 1250 	lda	_stdc_store8_beu32_PARM_2
+      0002CF 8Dr00r00         [ 4] 1251 	sta	_stdc_memreverse8_PARM_2
+                                   1252 ;	Raw cost for generated ic 10 : (12, 16.000000) count=1.000000
+                                   1253 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1254 ;	genCall
+                                   1255 ;	genSend
+      0002D2 A2 00            [ 2] 1256 	ldx	#0x00
+      0002D4 A9 04            [ 2] 1257 	lda	#0x04
+                                   1258 ;	Raw cost for generated ic 11 : (7, 10.000000) count=1.000000
+                                   1259 ;	genLabel
+                                   1260 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                   1261 ;	genEndFunction
+      0002D6 4Cr00r00         [ 3] 1262 	jmp	_stdc_memreverse8
+                                   1263 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                   1264 ;------------------------------------------------------------
+                                   1265 ;Allocation info for local variables in function 'stdc_store8_leu_aligned32'
+                                   1266 ;------------------------------------------------------------
+                                   1267 ;value         Allocated with name '_stdc_store8_leu_aligned32_PARM_1'
+                                   1268 ;ptr           Allocated with name '_stdc_store8_leu_aligned32_PARM_2'
+                                   1269 ;------------------------------------------------------------
+                                   1270 ;	./../../include/stdbit.h: 450: __STDC_STORE8(32)
+                                   1271 ;	genLabel
+                                   1272 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1273 ;	-----------------------------------------
+                                   1274 ;	 function stdc_store8_leu_aligned32
+                                   1275 ;	-----------------------------------------
+                                   1276 ;	Register assignment is optimal.
+                                   1277 ;	Stack space usage: 0 bytes.
+      0002D9                       1278 _stdc_store8_leu_aligned32:
+                                   1279 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1280 ;	genCast
+                                   1281 ;	genCopy
+      0002D9 AEr49r00         [ 4] 1282 	ldx	(_stdc_store8_leu_aligned32_PARM_2 + 1)
+      0002DC ADr48r00         [ 4] 1283 	lda	_stdc_store8_leu_aligned32_PARM_2
+                                   1284 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1285 ;	skipping iCode since result will be rematerialized
+                                   1286 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1287 ;	genCast
+                                   1288 ;	genCopy
+      0002DF A0s00            [ 2] 1289 	ldy	#>_stdc_store8_leu_aligned32_PARM_1
+      0002E1 8Cr01r00         [ 4] 1290 	sty	(___memcpy_PARM_2 + 1)
+      0002E4 A0r44            [ 2] 1291 	ldy	#_stdc_store8_leu_aligned32_PARM_1
+      0002E6 8Cr00r00         [ 4] 1292 	sty	___memcpy_PARM_2
+                                   1293 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1294 ;	genAssign
+                                   1295 ;	genAssignLit
+      0002E9 A0 04            [ 2] 1296 	ldy	#0x04
+      0002EB 8Cr00r00         [ 4] 1297 	sty	___memcpy_PARM_3
+      0002EE 9Cr01r00         [ 4] 1298 	stz	(___memcpy_PARM_3 + 1)
+                                   1299 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1300 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1301 ;	genCall
+                                   1302 ;	genSend
+                                   1303 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1304 ;	genLabel
+                                   1305 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1306 ;	genEndFunction
+      0002F1 4Cr00r00         [ 3] 1307 	jmp	___memcpy
+                                   1308 ;	Raw cost for generated ic 10 : (1, 6.000000) count=1.000000
+                                   1309 ;------------------------------------------------------------
+                                   1310 ;Allocation info for local variables in function 'stdc_store8_beu_aligned32'
+                                   1311 ;------------------------------------------------------------
+                                   1312 ;value         Allocated with name '_stdc_store8_beu_aligned32_PARM_1'
+                                   1313 ;ptr           Allocated with name '_stdc_store8_beu_aligned32_PARM_2'
+                                   1314 ;------------------------------------------------------------
+                                   1315 ;	./../../include/stdbit.h: 450: __STDC_STORE8(64)
+                                   1316 ;	genLabel
+                                   1317 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1318 ;	-----------------------------------------
+                                   1319 ;	 function stdc_store8_beu_aligned32
+                                   1320 ;	-----------------------------------------
+                                   1321 ;	Register assignment is optimal.
+                                   1322 ;	Stack space usage: 0 bytes.
+      0002F4                       1323 _stdc_store8_beu_aligned32:
+                                   1324 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1325 ;	genCast
+                                   1326 ;	genCopy
+      0002F4 AEr4Fr00         [ 4] 1327 	ldx	(_stdc_store8_beu_aligned32_PARM_2 + 1)
+      0002F7 ADr4Er00         [ 4] 1328 	lda	_stdc_store8_beu_aligned32_PARM_2
+                                   1329 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1330 ;	skipping iCode since result will be rematerialized
+                                   1331 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1332 ;	genCast
+                                   1333 ;	genCopy
+      0002FA A0s00            [ 2] 1334 	ldy	#>_stdc_store8_beu_aligned32_PARM_1
+      0002FC 8Cr01r00         [ 4] 1335 	sty	(___memcpy_PARM_2 + 1)
+      0002FF A0r4A            [ 2] 1336 	ldy	#_stdc_store8_beu_aligned32_PARM_1
+      000301 8Cr00r00         [ 4] 1337 	sty	___memcpy_PARM_2
+                                   1338 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1339 ;	genAssign
+                                   1340 ;	genAssignLit
+      000304 A0 04            [ 2] 1341 	ldy	#0x04
+      000306 8Cr00r00         [ 4] 1342 	sty	___memcpy_PARM_3
+      000309 9Cr01r00         [ 4] 1343 	stz	(___memcpy_PARM_3 + 1)
+                                   1344 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1345 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1346 ;	genCall
+                                   1347 ;	genSend
+      00030C 20r00r00         [ 6] 1348 	jsr	___memcpy
+                                   1349 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1350 ;	genAssign
+                                   1351 ;	genCopy
+      00030F ADr4Fr00         [ 4] 1352 	lda	(_stdc_store8_beu_aligned32_PARM_2 + 1)
+      000312 8Dr01r00         [ 4] 1353 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      000315 ADr4Er00         [ 4] 1354 	lda	_stdc_store8_beu_aligned32_PARM_2
+      000318 8Dr00r00         [ 4] 1355 	sta	_stdc_memreverse8_PARM_2
+                                   1356 ;	Raw cost for generated ic 10 : (12, 16.000000) count=1.000000
+                                   1357 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1358 ;	genCall
+                                   1359 ;	genSend
+      00031B A2 00            [ 2] 1360 	ldx	#0x00
+      00031D A9 04            [ 2] 1361 	lda	#0x04
+                                   1362 ;	Raw cost for generated ic 11 : (7, 10.000000) count=1.000000
+                                   1363 ;	genLabel
+                                   1364 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                   1365 ;	genEndFunction
+      00031F 4Cr00r00         [ 3] 1366 	jmp	_stdc_memreverse8
+                                   1367 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                   1368 ;------------------------------------------------------------
+                                   1369 ;Allocation info for local variables in function 'stdc_store8_les32'
+                                   1370 ;------------------------------------------------------------
+                                   1371 ;value         Allocated with name '_stdc_store8_les32_PARM_1'
+                                   1372 ;ptr           Allocated with name '_stdc_store8_les32_PARM_2'
+                                   1373 ;------------------------------------------------------------
+                                   1374 ;	./../../include/stdbit.h: 450: __STDC_STORE8(32)
+                                   1375 ;	genLabel
+                                   1376 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1377 ;	-----------------------------------------
+                                   1378 ;	 function stdc_store8_les32
+                                   1379 ;	-----------------------------------------
+                                   1380 ;	Register assignment is optimal.
+                                   1381 ;	Stack space usage: 0 bytes.
+      000322                       1382 _stdc_store8_les32:
+                                   1383 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1384 ;	genCast
+                                   1385 ;	genCopy
+      000322 AEr55r00         [ 4] 1386 	ldx	(_stdc_store8_les32_PARM_2 + 1)
+      000325 ADr54r00         [ 4] 1387 	lda	_stdc_store8_les32_PARM_2
+                                   1388 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1389 ;	skipping iCode since result will be rematerialized
+                                   1390 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1391 ;	genCast
+                                   1392 ;	genCopy
+      000328 A0s00            [ 2] 1393 	ldy	#>_stdc_store8_les32_PARM_1
+      00032A 8Cr01r00         [ 4] 1394 	sty	(___memcpy_PARM_2 + 1)
+      00032D A0r50            [ 2] 1395 	ldy	#_stdc_store8_les32_PARM_1
+      00032F 8Cr00r00         [ 4] 1396 	sty	___memcpy_PARM_2
+                                   1397 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1398 ;	genAssign
+                                   1399 ;	genAssignLit
+      000332 A0 04            [ 2] 1400 	ldy	#0x04
+      000334 8Cr00r00         [ 4] 1401 	sty	___memcpy_PARM_3
+      000337 9Cr01r00         [ 4] 1402 	stz	(___memcpy_PARM_3 + 1)
+                                   1403 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1404 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1405 ;	genCall
+                                   1406 ;	genSend
+                                   1407 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1408 ;	genLabel
+                                   1409 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1410 ;	genEndFunction
+      00033A 4Cr00r00         [ 3] 1411 	jmp	___memcpy
+                                   1412 ;	Raw cost for generated ic 10 : (1, 6.000000) count=1.000000
+                                   1413 ;------------------------------------------------------------
+                                   1414 ;Allocation info for local variables in function 'stdc_store8_bes32'
+                                   1415 ;------------------------------------------------------------
+                                   1416 ;value         Allocated with name '_stdc_store8_bes32_PARM_1'
+                                   1417 ;ptr           Allocated with name '_stdc_store8_bes32_PARM_2'
+                                   1418 ;------------------------------------------------------------
+                                   1419 ;	./../../include/stdbit.h: 450: __STDC_STORE8(64)
+                                   1420 ;	genLabel
+                                   1421 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1422 ;	-----------------------------------------
+                                   1423 ;	 function stdc_store8_bes32
+                                   1424 ;	-----------------------------------------
+                                   1425 ;	Register assignment is optimal.
+                                   1426 ;	Stack space usage: 0 bytes.
+      00033D                       1427 _stdc_store8_bes32:
+                                   1428 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1429 ;	genCast
+                                   1430 ;	genCopy
+      00033D AEr5Br00         [ 4] 1431 	ldx	(_stdc_store8_bes32_PARM_2 + 1)
+      000340 ADr5Ar00         [ 4] 1432 	lda	_stdc_store8_bes32_PARM_2
+                                   1433 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1434 ;	skipping iCode since result will be rematerialized
+                                   1435 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1436 ;	genCast
+                                   1437 ;	genCopy
+      000343 A0s00            [ 2] 1438 	ldy	#>_stdc_store8_bes32_PARM_1
+      000345 8Cr01r00         [ 4] 1439 	sty	(___memcpy_PARM_2 + 1)
+      000348 A0r56            [ 2] 1440 	ldy	#_stdc_store8_bes32_PARM_1
+      00034A 8Cr00r00         [ 4] 1441 	sty	___memcpy_PARM_2
+                                   1442 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1443 ;	genAssign
+                                   1444 ;	genAssignLit
+      00034D A0 04            [ 2] 1445 	ldy	#0x04
+      00034F 8Cr00r00         [ 4] 1446 	sty	___memcpy_PARM_3
+      000352 9Cr01r00         [ 4] 1447 	stz	(___memcpy_PARM_3 + 1)
+                                   1448 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1449 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1450 ;	genCall
+                                   1451 ;	genSend
+      000355 20r00r00         [ 6] 1452 	jsr	___memcpy
+                                   1453 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1454 ;	genAssign
+                                   1455 ;	genCopy
+      000358 ADr5Br00         [ 4] 1456 	lda	(_stdc_store8_bes32_PARM_2 + 1)
+      00035B 8Dr01r00         [ 4] 1457 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      00035E ADr5Ar00         [ 4] 1458 	lda	_stdc_store8_bes32_PARM_2
+      000361 8Dr00r00         [ 4] 1459 	sta	_stdc_memreverse8_PARM_2
+                                   1460 ;	Raw cost for generated ic 10 : (12, 16.000000) count=1.000000
+                                   1461 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1462 ;	genCall
+                                   1463 ;	genSend
+      000364 A2 00            [ 2] 1464 	ldx	#0x00
+      000366 A9 04            [ 2] 1465 	lda	#0x04
+                                   1466 ;	Raw cost for generated ic 11 : (7, 10.000000) count=1.000000
+                                   1467 ;	genLabel
+                                   1468 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                   1469 ;	genEndFunction
+      000368 4Cr00r00         [ 3] 1470 	jmp	_stdc_memreverse8
+                                   1471 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                   1472 ;------------------------------------------------------------
+                                   1473 ;Allocation info for local variables in function 'stdc_store8_les_aligned32'
+                                   1474 ;------------------------------------------------------------
+                                   1475 ;value         Allocated with name '_stdc_store8_les_aligned32_PARM_1'
+                                   1476 ;ptr           Allocated with name '_stdc_store8_les_aligned32_PARM_2'
+                                   1477 ;------------------------------------------------------------
+                                   1478 ;	./../../include/stdbit.h: 450: __STDC_STORE8(32)
+                                   1479 ;	genLabel
+                                   1480 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1481 ;	-----------------------------------------
+                                   1482 ;	 function stdc_store8_les_aligned32
+                                   1483 ;	-----------------------------------------
+                                   1484 ;	Register assignment is optimal.
+                                   1485 ;	Stack space usage: 0 bytes.
+      00036B                       1486 _stdc_store8_les_aligned32:
+                                   1487 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1488 ;	genCast
+                                   1489 ;	genCopy
+      00036B AEr61r00         [ 4] 1490 	ldx	(_stdc_store8_les_aligned32_PARM_2 + 1)
+      00036E ADr60r00         [ 4] 1491 	lda	_stdc_store8_les_aligned32_PARM_2
+                                   1492 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1493 ;	skipping iCode since result will be rematerialized
+                                   1494 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1495 ;	genCast
+                                   1496 ;	genCopy
+      000371 A0s00            [ 2] 1497 	ldy	#>_stdc_store8_les_aligned32_PARM_1
+      000373 8Cr01r00         [ 4] 1498 	sty	(___memcpy_PARM_2 + 1)
+      000376 A0r5C            [ 2] 1499 	ldy	#_stdc_store8_les_aligned32_PARM_1
+      000378 8Cr00r00         [ 4] 1500 	sty	___memcpy_PARM_2
+                                   1501 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1502 ;	genAssign
+                                   1503 ;	genAssignLit
+      00037B A0 04            [ 2] 1504 	ldy	#0x04
+      00037D 8Cr00r00         [ 4] 1505 	sty	___memcpy_PARM_3
+      000380 9Cr01r00         [ 4] 1506 	stz	(___memcpy_PARM_3 + 1)
+                                   1507 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1508 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1509 ;	genCall
+                                   1510 ;	genSend
+                                   1511 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1512 ;	genLabel
+                                   1513 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1514 ;	genEndFunction
+      000383 4Cr00r00         [ 3] 1515 	jmp	___memcpy
+                                   1516 ;	Raw cost for generated ic 10 : (1, 6.000000) count=1.000000
+                                   1517 ;------------------------------------------------------------
+                                   1518 ;Allocation info for local variables in function 'stdc_store8_bes_aligned32'
+                                   1519 ;------------------------------------------------------------
+                                   1520 ;value         Allocated with name '_stdc_store8_bes_aligned32_PARM_1'
+                                   1521 ;ptr           Allocated with name '_stdc_store8_bes_aligned32_PARM_2'
+                                   1522 ;------------------------------------------------------------
+                                   1523 ;	./../../include/stdbit.h: 450: __STDC_STORE8(64)
+                                   1524 ;	genLabel
+                                   1525 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1526 ;	-----------------------------------------
+                                   1527 ;	 function stdc_store8_bes_aligned32
+                                   1528 ;	-----------------------------------------
+                                   1529 ;	Register assignment is optimal.
+                                   1530 ;	Stack space usage: 0 bytes.
+      000386                       1531 _stdc_store8_bes_aligned32:
+                                   1532 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1533 ;	genCast
+                                   1534 ;	genCopy
+      000386 AEr67r00         [ 4] 1535 	ldx	(_stdc_store8_bes_aligned32_PARM_2 + 1)
+      000389 ADr66r00         [ 4] 1536 	lda	_stdc_store8_bes_aligned32_PARM_2
+                                   1537 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1538 ;	skipping iCode since result will be rematerialized
+                                   1539 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1540 ;	genCast
+                                   1541 ;	genCopy
+      00038C A0s00            [ 2] 1542 	ldy	#>_stdc_store8_bes_aligned32_PARM_1
+      00038E 8Cr01r00         [ 4] 1543 	sty	(___memcpy_PARM_2 + 1)
+      000391 A0r62            [ 2] 1544 	ldy	#_stdc_store8_bes_aligned32_PARM_1
+      000393 8Cr00r00         [ 4] 1545 	sty	___memcpy_PARM_2
+                                   1546 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1547 ;	genAssign
+                                   1548 ;	genAssignLit
+      000396 A0 04            [ 2] 1549 	ldy	#0x04
+      000398 8Cr00r00         [ 4] 1550 	sty	___memcpy_PARM_3
+      00039B 9Cr01r00         [ 4] 1551 	stz	(___memcpy_PARM_3 + 1)
+                                   1552 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1553 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1554 ;	genCall
+                                   1555 ;	genSend
+      00039E 20r00r00         [ 6] 1556 	jsr	___memcpy
+                                   1557 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1558 ;	genAssign
+                                   1559 ;	genCopy
+      0003A1 ADr67r00         [ 4] 1560 	lda	(_stdc_store8_bes_aligned32_PARM_2 + 1)
+      0003A4 8Dr01r00         [ 4] 1561 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      0003A7 ADr66r00         [ 4] 1562 	lda	_stdc_store8_bes_aligned32_PARM_2
+      0003AA 8Dr00r00         [ 4] 1563 	sta	_stdc_memreverse8_PARM_2
+                                   1564 ;	Raw cost for generated ic 10 : (12, 16.000000) count=1.000000
+                                   1565 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1566 ;	genCall
+                                   1567 ;	genSend
+      0003AD A2 00            [ 2] 1568 	ldx	#0x00
+      0003AF A9 04            [ 2] 1569 	lda	#0x04
+                                   1570 ;	Raw cost for generated ic 11 : (7, 10.000000) count=1.000000
+                                   1571 ;	genLabel
+                                   1572 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                   1573 ;	genEndFunction
+      0003B1 4Cr00r00         [ 3] 1574 	jmp	_stdc_memreverse8
+                                   1575 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                   1576 ;------------------------------------------------------------
+                                   1577 ;Allocation info for local variables in function 'stdc_store8_leu64'
+                                   1578 ;------------------------------------------------------------
+                                   1579 ;value         Allocated with name '_stdc_store8_leu64_PARM_1'
+                                   1580 ;ptr           Allocated with name '_stdc_store8_leu64_PARM_2'
+                                   1581 ;------------------------------------------------------------
+                                   1582 ;	./../../include/stdbit.h: 451: 
+                                   1583 ;	genLabel
+                                   1584 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1585 ;	-----------------------------------------
+                                   1586 ;	 function stdc_store8_leu64
+                                   1587 ;	-----------------------------------------
+                                   1588 ;	Register assignment is optimal.
+                                   1589 ;	Stack space usage: 0 bytes.
+      0003B4                       1590 _stdc_store8_leu64:
+                                   1591 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1592 ;	genCast
+                                   1593 ;	genCopy
+      0003B4 AEr71r00         [ 4] 1594 	ldx	(_stdc_store8_leu64_PARM_2 + 1)
+      0003B7 ADr70r00         [ 4] 1595 	lda	_stdc_store8_leu64_PARM_2
+                                   1596 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1597 ;	skipping iCode since result will be rematerialized
+                                   1598 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1599 ;	genCast
+                                   1600 ;	genCopy
+      0003BA A0s00            [ 2] 1601 	ldy	#>_stdc_store8_leu64_PARM_1
+      0003BC 8Cr01r00         [ 4] 1602 	sty	(___memcpy_PARM_2 + 1)
+      0003BF A0r68            [ 2] 1603 	ldy	#_stdc_store8_leu64_PARM_1
+      0003C1 8Cr00r00         [ 4] 1604 	sty	___memcpy_PARM_2
+                                   1605 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1606 ;	genAssign
+                                   1607 ;	genAssignLit
+      0003C4 A0 08            [ 2] 1608 	ldy	#0x08
+      0003C6 8Cr00r00         [ 4] 1609 	sty	___memcpy_PARM_3
+      0003C9 9Cr01r00         [ 4] 1610 	stz	(___memcpy_PARM_3 + 1)
+                                   1611 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1612 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1613 ;	genCall
+                                   1614 ;	genSend
+                                   1615 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1616 ;	genLabel
+                                   1617 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1618 ;	genEndFunction
+      0003CC 4Cr00r00         [ 3] 1619 	jmp	___memcpy
+                                   1620 ;	Raw cost for generated ic 10 : (1, 6.000000) count=1.000000
+                                   1621 ;------------------------------------------------------------
+                                   1622 ;Allocation info for local variables in function 'stdc_store8_beu64'
+                                   1623 ;------------------------------------------------------------
+                                   1624 ;value         Allocated with name '_stdc_store8_beu64_PARM_1'
+                                   1625 ;ptr           Allocated with name '_stdc_store8_beu64_PARM_2'
+                                   1626 ;------------------------------------------------------------
+                                   1627 ;	./../../include/stdbit.h: 451: __STDC_STORE8(64)
+                                   1628 ;	genLabel
+                                   1629 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1630 ;	-----------------------------------------
+                                   1631 ;	 function stdc_store8_beu64
+                                   1632 ;	-----------------------------------------
+                                   1633 ;	Register assignment is optimal.
+                                   1634 ;	Stack space usage: 0 bytes.
+      0003CF                       1635 _stdc_store8_beu64:
+                                   1636 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1637 ;	genCast
+                                   1638 ;	genCopy
+      0003CF AEr7Br00         [ 4] 1639 	ldx	(_stdc_store8_beu64_PARM_2 + 1)
+      0003D2 ADr7Ar00         [ 4] 1640 	lda	_stdc_store8_beu64_PARM_2
+                                   1641 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1642 ;	skipping iCode since result will be rematerialized
+                                   1643 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1644 ;	genCast
+                                   1645 ;	genCopy
+      0003D5 A0s00            [ 2] 1646 	ldy	#>_stdc_store8_beu64_PARM_1
+      0003D7 8Cr01r00         [ 4] 1647 	sty	(___memcpy_PARM_2 + 1)
+      0003DA A0r72            [ 2] 1648 	ldy	#_stdc_store8_beu64_PARM_1
+      0003DC 8Cr00r00         [ 4] 1649 	sty	___memcpy_PARM_2
+                                   1650 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1651 ;	genAssign
+                                   1652 ;	genAssignLit
+      0003DF A0 08            [ 2] 1653 	ldy	#0x08
+      0003E1 8Cr00r00         [ 4] 1654 	sty	___memcpy_PARM_3
+      0003E4 9Cr01r00         [ 4] 1655 	stz	(___memcpy_PARM_3 + 1)
+                                   1656 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1657 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1658 ;	genCall
+                                   1659 ;	genSend
+      0003E7 20r00r00         [ 6] 1660 	jsr	___memcpy
+                                   1661 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1662 ;	genAssign
+                                   1663 ;	genCopy
+      0003EA ADr7Br00         [ 4] 1664 	lda	(_stdc_store8_beu64_PARM_2 + 1)
+      0003ED 8Dr01r00         [ 4] 1665 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      0003F0 ADr7Ar00         [ 4] 1666 	lda	_stdc_store8_beu64_PARM_2
+      0003F3 8Dr00r00         [ 4] 1667 	sta	_stdc_memreverse8_PARM_2
+                                   1668 ;	Raw cost for generated ic 10 : (12, 16.000000) count=1.000000
+                                   1669 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1670 ;	genCall
+                                   1671 ;	genSend
+      0003F6 A2 00            [ 2] 1672 	ldx	#0x00
+      0003F8 A9 08            [ 2] 1673 	lda	#0x08
+                                   1674 ;	Raw cost for generated ic 11 : (7, 10.000000) count=1.000000
+                                   1675 ;	genLabel
+                                   1676 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                   1677 ;	genEndFunction
+      0003FA 4Cr00r00         [ 3] 1678 	jmp	_stdc_memreverse8
+                                   1679 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                   1680 ;------------------------------------------------------------
+                                   1681 ;Allocation info for local variables in function 'stdc_store8_leu_aligned64'
+                                   1682 ;------------------------------------------------------------
+                                   1683 ;value         Allocated with name '_stdc_store8_leu_aligned64_PARM_1'
+                                   1684 ;ptr           Allocated with name '_stdc_store8_leu_aligned64_PARM_2'
+                                   1685 ;------------------------------------------------------------
+                                   1686 ;	./../../include/stdbit.h: 451: 
+                                   1687 ;	genLabel
+                                   1688 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1689 ;	-----------------------------------------
+                                   1690 ;	 function stdc_store8_leu_aligned64
+                                   1691 ;	-----------------------------------------
+                                   1692 ;	Register assignment is optimal.
+                                   1693 ;	Stack space usage: 0 bytes.
+      0003FD                       1694 _stdc_store8_leu_aligned64:
+                                   1695 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1696 ;	genCast
+                                   1697 ;	genCopy
+      0003FD AEr85r00         [ 4] 1698 	ldx	(_stdc_store8_leu_aligned64_PARM_2 + 1)
+      000400 ADr84r00         [ 4] 1699 	lda	_stdc_store8_leu_aligned64_PARM_2
+                                   1700 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1701 ;	skipping iCode since result will be rematerialized
+                                   1702 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1703 ;	genCast
+                                   1704 ;	genCopy
+      000403 A0s00            [ 2] 1705 	ldy	#>_stdc_store8_leu_aligned64_PARM_1
+      000405 8Cr01r00         [ 4] 1706 	sty	(___memcpy_PARM_2 + 1)
+      000408 A0r7C            [ 2] 1707 	ldy	#_stdc_store8_leu_aligned64_PARM_1
+      00040A 8Cr00r00         [ 4] 1708 	sty	___memcpy_PARM_2
+                                   1709 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1710 ;	genAssign
+                                   1711 ;	genAssignLit
+      00040D A0 08            [ 2] 1712 	ldy	#0x08
+      00040F 8Cr00r00         [ 4] 1713 	sty	___memcpy_PARM_3
+      000412 9Cr01r00         [ 4] 1714 	stz	(___memcpy_PARM_3 + 1)
+                                   1715 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1716 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1717 ;	genCall
+                                   1718 ;	genSend
+                                   1719 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1720 ;	genLabel
+                                   1721 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1722 ;	genEndFunction
+      000415 4Cr00r00         [ 3] 1723 	jmp	___memcpy
+                                   1724 ;	Raw cost for generated ic 10 : (1, 6.000000) count=1.000000
+                                   1725 ;------------------------------------------------------------
+                                   1726 ;Allocation info for local variables in function 'stdc_store8_beu_aligned64'
+                                   1727 ;------------------------------------------------------------
+                                   1728 ;value         Allocated with name '_stdc_store8_beu_aligned64_PARM_1'
+                                   1729 ;ptr           Allocated with name '_stdc_store8_beu_aligned64_PARM_2'
+                                   1730 ;------------------------------------------------------------
+                                   1731 ;	./../../include/stdbit.h: 451: __STDC_STORE8(64)
+                                   1732 ;	genLabel
+                                   1733 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1734 ;	-----------------------------------------
+                                   1735 ;	 function stdc_store8_beu_aligned64
+                                   1736 ;	-----------------------------------------
+                                   1737 ;	Register assignment is optimal.
+                                   1738 ;	Stack space usage: 0 bytes.
+      000418                       1739 _stdc_store8_beu_aligned64:
+                                   1740 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1741 ;	genCast
+                                   1742 ;	genCopy
+      000418 AEr8Fr00         [ 4] 1743 	ldx	(_stdc_store8_beu_aligned64_PARM_2 + 1)
+      00041B ADr8Er00         [ 4] 1744 	lda	_stdc_store8_beu_aligned64_PARM_2
+                                   1745 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1746 ;	skipping iCode since result will be rematerialized
+                                   1747 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1748 ;	genCast
+                                   1749 ;	genCopy
+      00041E A0s00            [ 2] 1750 	ldy	#>_stdc_store8_beu_aligned64_PARM_1
+      000420 8Cr01r00         [ 4] 1751 	sty	(___memcpy_PARM_2 + 1)
+      000423 A0r86            [ 2] 1752 	ldy	#_stdc_store8_beu_aligned64_PARM_1
+      000425 8Cr00r00         [ 4] 1753 	sty	___memcpy_PARM_2
+                                   1754 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1755 ;	genAssign
+                                   1756 ;	genAssignLit
+      000428 A0 08            [ 2] 1757 	ldy	#0x08
+      00042A 8Cr00r00         [ 4] 1758 	sty	___memcpy_PARM_3
+      00042D 9Cr01r00         [ 4] 1759 	stz	(___memcpy_PARM_3 + 1)
+                                   1760 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1761 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1762 ;	genCall
+                                   1763 ;	genSend
+      000430 20r00r00         [ 6] 1764 	jsr	___memcpy
+                                   1765 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1766 ;	genAssign
+                                   1767 ;	genCopy
+      000433 ADr8Fr00         [ 4] 1768 	lda	(_stdc_store8_beu_aligned64_PARM_2 + 1)
+      000436 8Dr01r00         [ 4] 1769 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      000439 ADr8Er00         [ 4] 1770 	lda	_stdc_store8_beu_aligned64_PARM_2
+      00043C 8Dr00r00         [ 4] 1771 	sta	_stdc_memreverse8_PARM_2
+                                   1772 ;	Raw cost for generated ic 10 : (12, 16.000000) count=1.000000
+                                   1773 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1774 ;	genCall
+                                   1775 ;	genSend
+      00043F A2 00            [ 2] 1776 	ldx	#0x00
+      000441 A9 08            [ 2] 1777 	lda	#0x08
+                                   1778 ;	Raw cost for generated ic 11 : (7, 10.000000) count=1.000000
+                                   1779 ;	genLabel
+                                   1780 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                   1781 ;	genEndFunction
+      000443 4Cr00r00         [ 3] 1782 	jmp	_stdc_memreverse8
+                                   1783 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                   1784 ;------------------------------------------------------------
+                                   1785 ;Allocation info for local variables in function 'stdc_store8_les64'
+                                   1786 ;------------------------------------------------------------
+                                   1787 ;value         Allocated with name '_stdc_store8_les64_PARM_1'
+                                   1788 ;ptr           Allocated with name '_stdc_store8_les64_PARM_2'
+                                   1789 ;------------------------------------------------------------
+                                   1790 ;	./../../include/stdbit.h: 451: 
+                                   1791 ;	genLabel
+                                   1792 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1793 ;	-----------------------------------------
+                                   1794 ;	 function stdc_store8_les64
+                                   1795 ;	-----------------------------------------
+                                   1796 ;	Register assignment is optimal.
+                                   1797 ;	Stack space usage: 0 bytes.
+      000446                       1798 _stdc_store8_les64:
+                                   1799 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1800 ;	genCast
+                                   1801 ;	genCopy
+      000446 AEr99r00         [ 4] 1802 	ldx	(_stdc_store8_les64_PARM_2 + 1)
+      000449 ADr98r00         [ 4] 1803 	lda	_stdc_store8_les64_PARM_2
+                                   1804 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1805 ;	skipping iCode since result will be rematerialized
+                                   1806 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1807 ;	genCast
+                                   1808 ;	genCopy
+      00044C A0s00            [ 2] 1809 	ldy	#>_stdc_store8_les64_PARM_1
+      00044E 8Cr01r00         [ 4] 1810 	sty	(___memcpy_PARM_2 + 1)
+      000451 A0r90            [ 2] 1811 	ldy	#_stdc_store8_les64_PARM_1
+      000453 8Cr00r00         [ 4] 1812 	sty	___memcpy_PARM_2
+                                   1813 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1814 ;	genAssign
+                                   1815 ;	genAssignLit
+      000456 A0 08            [ 2] 1816 	ldy	#0x08
+      000458 8Cr00r00         [ 4] 1817 	sty	___memcpy_PARM_3
+      00045B 9Cr01r00         [ 4] 1818 	stz	(___memcpy_PARM_3 + 1)
+                                   1819 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1820 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1821 ;	genCall
+                                   1822 ;	genSend
+                                   1823 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1824 ;	genLabel
+                                   1825 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1826 ;	genEndFunction
+      00045E 4Cr00r00         [ 3] 1827 	jmp	___memcpy
+                                   1828 ;	Raw cost for generated ic 10 : (1, 6.000000) count=1.000000
+                                   1829 ;------------------------------------------------------------
+                                   1830 ;Allocation info for local variables in function 'stdc_store8_bes64'
+                                   1831 ;------------------------------------------------------------
+                                   1832 ;value         Allocated with name '_stdc_store8_bes64_PARM_1'
+                                   1833 ;ptr           Allocated with name '_stdc_store8_bes64_PARM_2'
+                                   1834 ;------------------------------------------------------------
+                                   1835 ;	./../../include/stdbit.h: 451: __STDC_STORE8(64)
+                                   1836 ;	genLabel
+                                   1837 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1838 ;	-----------------------------------------
+                                   1839 ;	 function stdc_store8_bes64
+                                   1840 ;	-----------------------------------------
+                                   1841 ;	Register assignment is optimal.
+                                   1842 ;	Stack space usage: 0 bytes.
+      000461                       1843 _stdc_store8_bes64:
+                                   1844 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1845 ;	genCast
+                                   1846 ;	genCopy
+      000461 AErA3r00         [ 4] 1847 	ldx	(_stdc_store8_bes64_PARM_2 + 1)
+      000464 ADrA2r00         [ 4] 1848 	lda	_stdc_store8_bes64_PARM_2
+                                   1849 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1850 ;	skipping iCode since result will be rematerialized
+                                   1851 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1852 ;	genCast
+                                   1853 ;	genCopy
+      000467 A0s00            [ 2] 1854 	ldy	#>_stdc_store8_bes64_PARM_1
+      000469 8Cr01r00         [ 4] 1855 	sty	(___memcpy_PARM_2 + 1)
+      00046C A0r9A            [ 2] 1856 	ldy	#_stdc_store8_bes64_PARM_1
+      00046E 8Cr00r00         [ 4] 1857 	sty	___memcpy_PARM_2
+                                   1858 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1859 ;	genAssign
+                                   1860 ;	genAssignLit
+      000471 A0 08            [ 2] 1861 	ldy	#0x08
+      000473 8Cr00r00         [ 4] 1862 	sty	___memcpy_PARM_3
+      000476 9Cr01r00         [ 4] 1863 	stz	(___memcpy_PARM_3 + 1)
+                                   1864 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1865 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1866 ;	genCall
+                                   1867 ;	genSend
+      000479 20r00r00         [ 6] 1868 	jsr	___memcpy
+                                   1869 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1870 ;	genAssign
+                                   1871 ;	genCopy
+      00047C ADrA3r00         [ 4] 1872 	lda	(_stdc_store8_bes64_PARM_2 + 1)
+      00047F 8Dr01r00         [ 4] 1873 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      000482 ADrA2r00         [ 4] 1874 	lda	_stdc_store8_bes64_PARM_2
+      000485 8Dr00r00         [ 4] 1875 	sta	_stdc_memreverse8_PARM_2
+                                   1876 ;	Raw cost for generated ic 10 : (12, 16.000000) count=1.000000
+                                   1877 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1878 ;	genCall
+                                   1879 ;	genSend
+      000488 A2 00            [ 2] 1880 	ldx	#0x00
+      00048A A9 08            [ 2] 1881 	lda	#0x08
+                                   1882 ;	Raw cost for generated ic 11 : (7, 10.000000) count=1.000000
+                                   1883 ;	genLabel
+                                   1884 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                   1885 ;	genEndFunction
+      00048C 4Cr00r00         [ 3] 1886 	jmp	_stdc_memreverse8
+                                   1887 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                   1888 ;------------------------------------------------------------
+                                   1889 ;Allocation info for local variables in function 'stdc_store8_les_aligned64'
+                                   1890 ;------------------------------------------------------------
+                                   1891 ;value         Allocated with name '_stdc_store8_les_aligned64_PARM_1'
+                                   1892 ;ptr           Allocated with name '_stdc_store8_les_aligned64_PARM_2'
+                                   1893 ;------------------------------------------------------------
+                                   1894 ;	./../../include/stdbit.h: 451: 
+                                   1895 ;	genLabel
+                                   1896 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1897 ;	-----------------------------------------
+                                   1898 ;	 function stdc_store8_les_aligned64
+                                   1899 ;	-----------------------------------------
+                                   1900 ;	Register assignment is optimal.
+                                   1901 ;	Stack space usage: 0 bytes.
+      00048F                       1902 _stdc_store8_les_aligned64:
+                                   1903 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1904 ;	genCast
+                                   1905 ;	genCopy
+      00048F AErADr00         [ 4] 1906 	ldx	(_stdc_store8_les_aligned64_PARM_2 + 1)
+      000492 ADrACr00         [ 4] 1907 	lda	_stdc_store8_les_aligned64_PARM_2
+                                   1908 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1909 ;	skipping iCode since result will be rematerialized
+                                   1910 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1911 ;	genCast
+                                   1912 ;	genCopy
+      000495 A0s00            [ 2] 1913 	ldy	#>_stdc_store8_les_aligned64_PARM_1
+      000497 8Cr01r00         [ 4] 1914 	sty	(___memcpy_PARM_2 + 1)
+      00049A A0rA4            [ 2] 1915 	ldy	#_stdc_store8_les_aligned64_PARM_1
+      00049C 8Cr00r00         [ 4] 1916 	sty	___memcpy_PARM_2
+                                   1917 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1918 ;	genAssign
+                                   1919 ;	genAssignLit
+      00049F A0 08            [ 2] 1920 	ldy	#0x08
+      0004A1 8Cr00r00         [ 4] 1921 	sty	___memcpy_PARM_3
+      0004A4 9Cr01r00         [ 4] 1922 	stz	(___memcpy_PARM_3 + 1)
+                                   1923 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1924 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1925 ;	genCall
+                                   1926 ;	genSend
+                                   1927 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1928 ;	genLabel
+                                   1929 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1930 ;	genEndFunction
+      0004A7 4Cr00r00         [ 3] 1931 	jmp	___memcpy
+                                   1932 ;	Raw cost for generated ic 10 : (1, 6.000000) count=1.000000
+                                   1933 ;------------------------------------------------------------
+                                   1934 ;Allocation info for local variables in function 'stdc_store8_bes_aligned64'
+                                   1935 ;------------------------------------------------------------
+                                   1936 ;value         Allocated with name '_stdc_store8_bes_aligned64_PARM_1'
+                                   1937 ;ptr           Allocated with name '_stdc_store8_bes_aligned64_PARM_2'
+                                   1938 ;------------------------------------------------------------
+                                   1939 ;	./../../include/stdbit.h: 451: __STDC_STORE8(64)
+                                   1940 ;	genLabel
+                                   1941 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                   1942 ;	-----------------------------------------
+                                   1943 ;	 function stdc_store8_bes_aligned64
+                                   1944 ;	-----------------------------------------
+                                   1945 ;	Register assignment is optimal.
+                                   1946 ;	Stack space usage: 0 bytes.
+      0004AA                       1947 _stdc_store8_bes_aligned64:
+                                   1948 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                   1949 ;	genCast
+                                   1950 ;	genCopy
+      0004AA AErB7r00         [ 4] 1951 	ldx	(_stdc_store8_bes_aligned64_PARM_2 + 1)
+      0004AD ADrB6r00         [ 4] 1952 	lda	_stdc_store8_bes_aligned64_PARM_2
+                                   1953 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                   1954 ;	skipping iCode since result will be rematerialized
+                                   1955 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                   1956 ;	genCast
+                                   1957 ;	genCopy
+      0004B0 A0s00            [ 2] 1958 	ldy	#>_stdc_store8_bes_aligned64_PARM_1
+      0004B2 8Cr01r00         [ 4] 1959 	sty	(___memcpy_PARM_2 + 1)
+      0004B5 A0rAE            [ 2] 1960 	ldy	#_stdc_store8_bes_aligned64_PARM_1
+      0004B7 8Cr00r00         [ 4] 1961 	sty	___memcpy_PARM_2
+                                   1962 ;	Raw cost for generated ic 4 : (10, 12.000000) count=1.000000
+                                   1963 ;	genAssign
+                                   1964 ;	genAssignLit
+      0004BA A0 08            [ 2] 1965 	ldy	#0x08
+      0004BC 8Cr00r00         [ 4] 1966 	sty	___memcpy_PARM_3
+      0004BF 9Cr01r00         [ 4] 1967 	stz	(___memcpy_PARM_3 + 1)
+                                   1968 ;	Raw cost for generated ic 7 : (8, 10.000000) count=1.000000
+                                   1969 ;	Raw cost for generated ic 5 : (0, 0.000000) count=1.000000
+                                   1970 ;	genCall
+                                   1971 ;	genSend
+      0004C2 20r00r00         [ 6] 1972 	jsr	___memcpy
+                                   1973 ;	Raw cost for generated ic 8 : (3, 6.000000) count=1.000000
+                                   1974 ;	genAssign
+                                   1975 ;	genCopy
+      0004C5 ADrB7r00         [ 4] 1976 	lda	(_stdc_store8_bes_aligned64_PARM_2 + 1)
+      0004C8 8Dr01r00         [ 4] 1977 	sta	(_stdc_memreverse8_PARM_2 + 1)
+      0004CB ADrB6r00         [ 4] 1978 	lda	_stdc_store8_bes_aligned64_PARM_2
+      0004CE 8Dr00r00         [ 4] 1979 	sta	_stdc_memreverse8_PARM_2
+                                   1980 ;	Raw cost for generated ic 10 : (12, 16.000000) count=1.000000
+                                   1981 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                   1982 ;	genCall
+                                   1983 ;	genSend
+      0004D1 A2 00            [ 2] 1984 	ldx	#0x00
+      0004D3 A9 08            [ 2] 1985 	lda	#0x08
+                                   1986 ;	Raw cost for generated ic 11 : (7, 10.000000) count=1.000000
+                                   1987 ;	genLabel
+                                   1988 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                   1989 ;	genEndFunction
+      0004D5 4Cr00r00         [ 3] 1990 	jmp	_stdc_memreverse8
+                                   1991 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                   1992 	.area CODE
+                                   1993 	.area RODATA
+                                   1994 	.area XINIT
+                                   1995 	.area CABS    (ABS)

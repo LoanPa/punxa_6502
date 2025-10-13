@@ -1,0 +1,212 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module _memset
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _memset
+                                     27 ;--------------------------------------------------------
+                                     28 ; ZP ram data
+                                     29 ;--------------------------------------------------------
+                                     30 	.area ZP      (PAG)
+                                     31 ;--------------------------------------------------------
+                                     32 ; overlayable items in ram
+                                     33 ;--------------------------------------------------------
+                                     34 ;--------------------------------------------------------
+                                     35 ; uninitialized external ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area BSS
+                                     38 ;--------------------------------------------------------
+                                     39 ; absolute external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area DABS    (ABS)
+                                     42 ;--------------------------------------------------------
+                                     43 ; initialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area DATA
+                                     46 ;--------------------------------------------------------
+                                     47 ; global & static initialisations
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 	.area GSINIT
+                                     51 	.area GSFINAL
+                                     52 	.area GSINIT
+                                     53 ;--------------------------------------------------------
+                                     54 ; Home
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area _CODE
+                                     58 ;--------------------------------------------------------
+                                     59 ; code
+                                     60 ;--------------------------------------------------------
+                                     61 	.area CODE
+                                     62 ;------------------------------------------------------------
+                                     63 ;Allocation info for local variables in function 'memset'
+                                     64 ;------------------------------------------------------------
+                                     65 ;c             Allocated to stack - sp +11 +1 
+                                     66 ;n             Allocated to stack - sp +12 +2 
+                                     67 ;s             Allocated to stack - sp +7 +2 
+                                     68 ;sz            Allocated to stack - sp +5 +2 
+                                     69 ;dst           Allocated to registers 
+                                     70 ;data          Allocated to registers y 
+                                     71 ;sloc0         Allocated to stack - sp +3 +2 
+                                     72 ;sloc1         Allocated to stack - sp +1 +2 
+                                     73 ;------------------------------------------------------------
+                                     74 ;	../_memset.c: 42: void *memset (void *s, unsigned char c, size_t n)
+                                     75 ;	genLabel
+                                     76 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     77 ;	-----------------------------------------
+                                     78 ;	 function memset
+                                     79 ;	-----------------------------------------
+                                     80 ;	Register assignment is optimal.
+                                     81 ;	Stack space usage: 8 bytes.
+      000000                         82 _memset:
+                                     83 ;	genReceive: size=2
+                                     84 ;	pushreg: ofs=1
+      000000 85*00            [ 3]   85 	sta	*(REGTEMP+0)
+      000002 8A               [ 2]   86 	txa
+      000003 48               [ 3]   87 	pha
+      000004 A5*00            [ 3]   88 	lda	*(REGTEMP+0)
+                                     89 ;	pushreg: ofs=0
+      000006 48               [ 3]   90 	pha
+                                     91 ;	  adjustStack : cycles stk:18  incdec:16  adc:12
+      000007 BA               [ 2]   92 	tsx
+      000008 8A               [ 2]   93 	txa
+      000009 18               [ 2]   94 	clc
+      00000A 69 FA            [ 2]   95 	adc	#0xfa
+      00000C AA               [ 2]   96 	tax
+      00000D 9A               [ 2]   97 	txs
+                                     98 ;	Raw cost for generated ic 1 : (14, 26.000000) count=1.000000
+                                     99 ;	skipping generated iCode
+                                    100 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                    101 ;	../_memset.c: 144: register size_t sz = n;
+                                    102 ;	genAssign
+                                    103 ;	genCopy
+      00000E BD 0D 01         [ 5]  104 	lda	0x10d,x
+      000011 9D 06 01         [ 5]  105 	sta	0x106,x
+      000014 BD 0C 01         [ 5]  106 	lda	0x10c,x
+      000017 9D 05 01         [ 5]  107 	sta	0x105,x
+                                    108 ;	Raw cost for generated ic 3 : (12, 18.000000) count=1.000000
+                                    109 ;	../_memset.c: 145: if (sz != 0)
+                                    110 ;	genIfx
+      00001A BD 0D 01         [ 5]  111 	lda	0x10d,x
+      00001D 1D 0C 01         [ 5]  112 	ora	0x10c,x
+                                    113 ;	genIfxJump : z
+      000020 F0 59            [ 4]  114 	beq	00105$
+                                    115 ;	Raw cost for generated ic 4 : (11, 13.600000) count=1.000000
+                                    116 ;	../_memset.c: 147: register char *dst = s;
+                                    117 ;	genCast
+                                    118 ;	genCopy
+      000022 BD 08 01         [ 5]  119 	lda	0x108,x
+      000025 9D 04 01         [ 5]  120 	sta	0x104,x
+      000028 BD 07 01         [ 5]  121 	lda	0x107,x
+      00002B 9D 03 01         [ 5]  122 	sta	0x103,x
+                                    123 ;	Raw cost for generated ic 7 : (12, 18.000000) count=0.750000
+                                    124 ;	../_memset.c: 148: register char data = (char)c;
+                                    125 ;	genAssign
+                                    126 ;	genCopy
+      00002E BD 0B 01         [ 5]  127 	lda	0x10b,x
+      000031 A8               [ 2]  128 	tay
+                                    129 ;	Raw cost for generated ic 9 : (4, 6.000000) count=0.750000
+                                    130 ;	../_memset.c: 149: do {
+                                    131 ;	genAssign
+                                    132 ;	genCopy
+      000032 BD 06 01         [ 5]  133 	lda	0x106,x
+      000035 9D 02 01         [ 5]  134 	sta	0x102,x
+      000038 BD 05 01         [ 5]  135 	lda	0x105,x
+      00003B 9D 01 01         [ 5]  136 	sta	0x101,x
+                                    137 ;	Raw cost for generated ic 29 : (12, 18.000000) count=0.750000
+                                    138 ;	genLabel
+      00003E                        139 00101$:
+                                    140 ;	Raw cost for generated ic 10 : (0, 0.000000) count=2.999997
+                                    141 ;	../_memset.c: 150: *dst++ = data;
+                                    142 ;	genPointerSet
+      00003E 84*00            [ 3]  143 	sty	*(REGTEMP+0)
+                                    144 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000040 BA               [ 2]  145 	tsx
+      000041 BD 03 01         [ 5]  146 	lda	0x103,x
+      000044 85*00            [ 3]  147 	sta	*(DPTR+0)
+      000046 BD 04 01         [ 5]  148 	lda	0x104,x
+      000049 85*01            [ 3]  149 	sta	*(DPTR+1)
+      00004B A4*00            [ 3]  150 	ldy	*(REGTEMP+0)
+      00004D 98               [ 2]  151 	tya
+      00004E A0 00            [ 2]  152 	ldy	#0x00
+      000050 91*00            [ 6]  153 	sta	[DPTR],y
+      000052 A4*00            [ 3]  154 	ldy	*(REGTEMP+0)
+                                    155 ;	Raw cost for generated ic 14 : (22, 35.000000) count=2.999997
+                                    156 ;	genPlus
+                                    157 ;	  genPlusInc
+      000054 BD 03 01         [ 5]  158 	lda	0x103,x
+      000057 18               [ 2]  159 	clc
+      000058 69 01            [ 2]  160 	adc	#0x01
+      00005A 9D 03 01         [ 5]  161 	sta	0x103,x
+      00005D BD 04 01         [ 5]  162 	lda	0x104,x
+      000060 69 00            [ 2]  163 	adc	#0x00
+      000062 9D 04 01         [ 5]  164 	sta	0x104,x
+                                    165 ;	Raw cost for generated ic 12 : (17, 24.000000) count=2.999997
+                                    166 ;	../_memset.c: 151: } while (--sz);
+                                    167 ;	genMinus
+                                    168 ;	  genMinusDec - size=2  icount=1
+      000065 BD 01 01         [ 5]  169 	lda	0x101,x
+      000068 38               [ 2]  170 	sec
+      000069 E9 01            [ 2]  171 	sbc	#0x01
+      00006B 9D 01 01         [ 5]  172 	sta	0x101,x
+      00006E BD 02 01         [ 5]  173 	lda	0x102,x
+      000071 E9 00            [ 2]  174 	sbc	#0x00
+      000073 9D 02 01         [ 5]  175 	sta	0x102,x
+                                    176 ;	Raw cost for generated ic 16 : (17, 24.000000) count=2.999997
+                                    177 ;	genIfx
+      000076 1D 01 01         [ 5]  178 	ora	0x101,x
+                                    179 ;	genIfxJump : z
+      000079 D0 C3            [ 4]  180 	bne	00101$
+                                    181 ;	Raw cost for generated ic 18 : (8, 9.600000) count=2.999997
+                                    182 ;	genLabel
+      00007B                        183 00105$:
+                                    184 ;	Raw cost for generated ic 21 : (0, 0.000000) count=0.999999
+                                    185 ;	../_memset.c: 153: return s;
+                                    186 ;	genRet
+      00007B BA               [ 2]  187 	tsx
+      00007C BD 08 01         [ 5]  188 	lda	0x108,x
+      00007F 85*00            [ 3]  189 	sta	*(REGTEMP+0)
+      000081 BD 07 01         [ 5]  190 	lda	0x107,x
+                                    191 ;	Raw cost for generated ic 22 : (11, 16.000000) count=0.999999
+                                    192 ;	genLabel
+                                    193 ;	Raw cost for generated ic 23 : (0, 0.000000) count=0.999999
+                                    194 ;	../_memset.c: 154: }
+                                    195 ;	genEndFunction
+                                    196 ;	  adjustStack : cycles stk:38  incdec:26  adc:24
+      000084 A6*00            [ 3]  197 	ldx	*(REGTEMP+0)
+      000086 85*01            [ 3]  198 	sta	*(REGTEMP+1)
+      000088 BA               [ 2]  199 	tsx
+      000089 8A               [ 2]  200 	txa
+      00008A 18               [ 2]  201 	clc
+      00008B 69 08            [ 2]  202 	adc	#0x08
+      00008D AA               [ 2]  203 	tax
+      00008E 9A               [ 2]  204 	txs
+      00008F A5*01            [ 3]  205 	lda	*(REGTEMP+1)
+      000091 A6*00            [ 3]  206 	ldx	*(REGTEMP+0)
+      000093 60               [ 6]  207 	rts
+                                    208 ;	Raw cost for generated ic 24 : (16, 30.000000) count=0.999999
+                                    209 	.area CODE
+                                    210 	.area RODATA
+                                    211 	.area XINIT
+                                    212 	.area CABS    (ABS)

@@ -1,0 +1,112 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _fslt.s - routine for floating point comparison
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module _fslt
+                                     30 
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl ___fslt
+                                     35 
+                                     36 ;--------------------------------------------------------
+                                     37 ; local aliases
+                                     38 ;--------------------------------------------------------
+                                     39 	.define res0  "___SDCC_m6502_ret0"
+                                     40 	.define res1  "___SDCC_m6502_ret1"
+                                     41 	.define res2  "___SDCC_m6502_ret2"
+                                     42 	.define res3  "___SDCC_m6502_ret3"
+                                     43 	.define s1    "___SDCC_m6502_ret4"
+                                     44 	.define exp1  "___SDCC_m6502_ret5"
+                                     45 	.define s2    "___SDCC_m6502_ret6"
+                                     46 	.define exp2  "___SDCC_m6502_ret7"
+                                     47 
+                                     48 ;--------------------------------------------------------
+                                     49 ; code
+                                     50 ;--------------------------------------------------------
+                                     51 	.area CODE
+                                     52 ;------------------------------------------------------------
+                                     53 
+      000000                         54 ___fslt:
+      000000 A0 00            [ 2]   55 	ldy	#0x00
+      000002 84*00            [ 3]   56 	sty	*res0
+      000004 20r00r00         [ 6]   57 	jsr 	___fs_unpack_2P
+                                     58 
+      000007 A5*00            [ 3]   59 	lda 	*exp1
+      000009 05*00            [ 3]   60 	ora 	*exp2
+      00000B D0 0E            [ 4]   61 	bne 	not_denorm
+      00000D 05*00            [ 3]   62 	ora	*(___fslt_PARM_1 + 0)
+      00000F 05*00            [ 3]   63 	ora	*(___fslt_PARM_2 + 0)
+      000011 05*01            [ 3]   64 	ora	*(___fslt_PARM_1 + 1)
+      000013 05*01            [ 3]   65 	ora	*(___fslt_PARM_2 + 1)
+      000015 05*02            [ 3]   66 	ora	*(___fslt_PARM_1 + 2)
+      000017 05*02            [ 3]   67 	ora	*(___fslt_PARM_2 + 2)
+      000019 F0 0C            [ 4]   68 	beq 	ret
+      00001B                         69 not_denorm:
+      00001B A5*00            [ 3]   70 	lda	*s1
+      00001D 45*00            [ 3]   71 	eor 	*s2
+      00001F F0 07            [ 4]   72 	beq 	same_sign
+      000021 A5*00            [ 3]   73 	lda 	*s1
+      000023 F0 02            [ 4]   74 	beq 	ret
+      000025 A9 01            [ 2]   75 	lda 	#0x01
+      000027                         76 ret:
+      000027 60               [ 6]   77 	rts
+                                     78 
+      000028                         79 same_sign:
+      000028 A5*00            [ 3]   80 	lda 	*s1
+      00002A F0 02            [ 4]   81 	beq 	both_pos
+      00002C E6*00            [ 5]   82 	inc 	*res0
+      00002E                         83 both_pos:
+      00002E 38               [ 2]   84 	sec
+      00002F A5*00            [ 3]   85 	lda	*___fslt_PARM_1
+      000031 E5*00            [ 3]   86 	sbc	*___fslt_PARM_2
+      000033 85*00            [ 3]   87 	sta	*___fslt_PARM_1
+      000035 A5*01            [ 3]   88 	lda	*(___fslt_PARM_1 + 1)
+      000037 E5*01            [ 3]   89 	sbc	*(___fslt_PARM_2 + 1)
+      000039 85*01            [ 3]   90 	sta	*(___fslt_PARM_1 + 1)
+      00003B A5*02            [ 3]   91 	lda	*(___fslt_PARM_1 + 2)
+      00003D E5*02            [ 3]   92 	sbc	*(___fslt_PARM_2 + 2)
+      00003F 85*02            [ 3]   93 	sta	*(___fslt_PARM_1 + 2)
+      000041 A5*03            [ 3]   94 	lda	*(___fslt_PARM_1 + 3)
+      000043 E5*03            [ 3]   95 	sbc	*(___fslt_PARM_2 + 3)
+      000045 85*03            [ 3]   96 	sta	*(___fslt_PARM_1 + 3)
+      000047 50 04            [ 4]   97 	bvc	00150$
+      000049 10 04            [ 4]   98 	bpl	00149$
+      00004B 30 03            [ 4]   99 	bmi	00109$
+      00004D                        100 00150$:
+      00004D 10 01            [ 4]  101 	bpl	00109$
+      00004F                        102 00149$:
+      00004F C8               [ 2]  103 	iny
+      000050                        104 00109$:
+      000050 A5*00            [ 3]  105 	lda	*___fslt_PARM_1
+      000052 05*01            [ 3]  106 	ora	*(___fslt_PARM_1 + 1)
+      000054 05*02            [ 3]  107 	ora	*(___fslt_PARM_1 + 2)
+      000056 05*03            [ 3]  108 	ora	*(___fslt_PARM_1 + 3)
+      000058 F0 CD            [ 4]  109 	beq 	ret
+      00005A 98               [ 2]  110 	tya
+      00005B 45*00            [ 3]  111 	eor 	*res0
+      00005D 60               [ 6]  112 	rts

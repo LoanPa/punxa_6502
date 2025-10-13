@@ -1,0 +1,160 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module mbrlen
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _mbrtowc
+                                     27 	.globl _mbrlen_PARM_3
+                                     28 	.globl _mbrlen_PARM_2
+                                     29 	.globl _mbrlen
+                                     30 ;--------------------------------------------------------
+                                     31 ; ZP ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area ZP      (PAG)
+                                     34 ;--------------------------------------------------------
+                                     35 ; overlayable items in ram
+                                     36 ;--------------------------------------------------------
+                                     37 ;--------------------------------------------------------
+                                     38 ; uninitialized external ram data
+                                     39 ;--------------------------------------------------------
+                                     40 	.area BSS
+      000000                         41 _mbrlen_PARM_2:
+      000000                         42 	.ds 2
+      000002                         43 _mbrlen_PARM_3:
+      000002                         44 	.ds 2
+      000004                         45 _mbrlen_s_10000_15:
+      000004                         46 	.ds 2
+      000006                         47 _mbrlen_sps_10000_16:
+      000006                         48 	.ds 3
+                                     49 ;--------------------------------------------------------
+                                     50 ; absolute external ram data
+                                     51 ;--------------------------------------------------------
+                                     52 	.area DABS    (ABS)
+                                     53 ;--------------------------------------------------------
+                                     54 ; initialized external ram data
+                                     55 ;--------------------------------------------------------
+                                     56 	.area DATA
+                                     57 ;--------------------------------------------------------
+                                     58 ; global & static initialisations
+                                     59 ;--------------------------------------------------------
+                                     60 	.area _CODE
+                                     61 	.area GSINIT
+                                     62 	.area GSFINAL
+                                     63 	.area GSINIT
+                                     64 ;--------------------------------------------------------
+                                     65 ; Home
+                                     66 ;--------------------------------------------------------
+                                     67 	.area _CODE
+                                     68 	.area _CODE
+                                     69 ;--------------------------------------------------------
+                                     70 ; code
+                                     71 ;--------------------------------------------------------
+                                     72 	.area CODE
+                                     73 ;------------------------------------------------------------
+                                     74 ;Allocation info for local variables in function 'mbrlen'
+                                     75 ;------------------------------------------------------------
+                                     76 ;n             Allocated with name '_mbrlen_PARM_2'
+                                     77 ;ps            Allocated with name '_mbrlen_PARM_3'
+                                     78 ;s             Allocated with name '_mbrlen_s_10000_15'
+                                     79 ;sps           Allocated with name '_mbrlen_sps_10000_16'
+                                     80 ;------------------------------------------------------------
+                                     81 ;	../mbrlen.c: 31: size_t mbrlen(const char *restrict s, size_t n, mbstate_t *restrict ps)
+                                     82 ;	genLabel
+                                     83 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     84 ;	-----------------------------------------
+                                     85 ;	 function mbrlen
+                                     86 ;	-----------------------------------------
+                                     87 ;	Register assignment is optimal.
+                                     88 ;	Stack space usage: 0 bytes.
+      000000                         89 _mbrlen:
+                                     90 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     91 ;	genReceive
+      000000 8Dr04r00         [ 4]   92 	sta	_mbrlen_s_10000_15
+      000003 8Er05r00         [ 4]   93 	stx	(_mbrlen_s_10000_15 + 1)
+                                     94 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                     95 ;	../mbrlen.c: 35: return(mbrtowc(0, s, n, ps ? ps : &sps));
+                                     96 ;	genIfx
+      000006 ADr03r00         [ 4]   97 	lda	(_mbrlen_PARM_3 + 1)
+      000009 0Dr02r00         [ 4]   98 	ora	_mbrlen_PARM_3
+                                     99 ;	genIfxJump : z
+      00000C F0 09            [ 4]  100 	beq	00103$
+                                    101 ;	Raw cost for generated ic 3 : (11, 13.600000) count=1.000000
+                                    102 ;	genAssign
+                                    103 ;	genCopy
+      00000E AEr03r00         [ 4]  104 	ldx	(_mbrlen_PARM_3 + 1)
+      000011 ADr02r00         [ 4]  105 	lda	_mbrlen_PARM_3
+                                    106 ;	Raw cost for generated ic 4 : (6, 8.000000) count=0.750000
+                                    107 ;	genGoto
+      000014 4Cr1Br00         [ 3]  108 	jmp	00104$
+                                    109 ;	Raw cost for generated ic 5 : (3, 3.000000) count=0.750000
+                                    110 ;	genLabel
+      000017                        111 00103$:
+                                    112 ;	Raw cost for generated ic 6 : (0, 0.000000) count=0.250000
+                                    113 ;	skipping iCode since result will be rematerialized
+                                    114 ;	Raw cost for generated ic 7 : (0, 0.000000) count=0.250000
+                                    115 ;	genCast
+                                    116 ;	genCopy
+      000017 A2s00            [ 2]  117 	ldx	#>_mbrlen_sps_10000_16
+      000019 A9r06            [ 2]  118 	lda	#_mbrlen_sps_10000_16
+                                    119 ;	Raw cost for generated ic 8 : (4, 4.000000) count=0.250000
+                                    120 ;	genLabel
+      00001B                        121 00104$:
+                                    122 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    123 ;	genAssign
+                                    124 ;	genCopy
+      00001B ACr05r00         [ 4]  125 	ldy	(_mbrlen_s_10000_15 + 1)
+      00001E 8Cr01r00         [ 4]  126 	sty	(_mbrtowc_PARM_2 + 1)
+      000021 ACr04r00         [ 4]  127 	ldy	_mbrlen_s_10000_15
+      000024 8Cr00r00         [ 4]  128 	sty	_mbrtowc_PARM_2
+                                    129 ;	Raw cost for generated ic 12 : (12, 16.000000) count=1.000000
+                                    130 ;	genAssign
+                                    131 ;	genCopy
+      000027 ACr01r00         [ 4]  132 	ldy	(_mbrlen_PARM_2 + 1)
+      00002A 8Cr01r00         [ 4]  133 	sty	(_mbrtowc_PARM_3 + 1)
+      00002D ACr00r00         [ 4]  134 	ldy	_mbrlen_PARM_2
+      000030 8Cr00r00         [ 4]  135 	sty	_mbrtowc_PARM_3
+                                    136 ;	Raw cost for generated ic 13 : (12, 16.000000) count=1.000000
+                                    137 ;	genAssign
+                                    138 ;	genCopy
+      000033 8Dr00r00         [ 4]  139 	sta	_mbrtowc_PARM_4
+      000036 8Er01r00         [ 4]  140 	stx	(_mbrtowc_PARM_4 + 1)
+                                    141 ;	Raw cost for generated ic 14 : (6, 8.000000) count=1.000000
+                                    142 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.000000
+                                    143 ;	genCall
+                                    144 ;	genSend
+      000039 A2 00            [ 2]  145 	ldx	#0x00
+      00003B 8A               [ 2]  146 	txa
+                                    147 ;	assignResultValue
+                                    148 ;	Raw cost for generated ic 15 : (6, 10.000000) count=1.000000
+                                    149 ;	genRet
+                                    150 ;	Raw cost for generated ic 16 : (0, 0.000000) count=1.000000
+                                    151 ;	genLabel
+                                    152 ;	Raw cost for generated ic 17 : (0, 0.000000) count=1.000000
+                                    153 ;	../mbrlen.c: 36: }
+                                    154 ;	genEndFunction
+      00003C 4Cr00r00         [ 3]  155 	jmp	_mbrtowc
+                                    156 ;	Raw cost for generated ic 18 : (1, 6.000000) count=1.000000
+                                    157 	.area CODE
+                                    158 	.area RODATA
+                                    159 	.area XINIT
+                                    160 	.area CABS    (ABS)

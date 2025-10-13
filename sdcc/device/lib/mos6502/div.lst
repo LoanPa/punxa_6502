@@ -1,0 +1,69 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   div.s - implementation on std C library div
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module div
+                                     30 	
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl _div
+                                     35 
+                                     36 ;--------------------------------------------------------
+                                     37 ; local aliases
+                                     38 ;--------------------------------------------------------
+                                     39 	.define res "___SDCC_m6502_ret0"
+                                     40 	.define rem "___SDCC_m6502_ret2"
+                                     41 	.define s1  "___SDCC_m6502_ret4"
+                                     42 	.define s2  "___SDCC_m6502_ret5"
+                                     43 
+                                     44 ;--------------------------------------------------------
+                                     45 ; code
+                                     46 ;--------------------------------------------------------
+                                     47 	.area CODE
+                                     48 	
+      000000                         49 _div:
+      000000 20r00r00         [ 6]   50 	jsr	___sdivmod16
+      000003 A4*00            [ 3]   51 	ldy	*s1
+      000005 10 0B            [ 4]   52 	bpl	rempos
+      000007 A5*00            [ 3]   53 	lda	*rem+0
+      000009 A6*01            [ 3]   54 	ldx	*rem+1
+      00000B 20r00r00         [ 6]   55 	jsr 	___negax
+      00000E 85*00            [ 3]   56 	sta *rem+0
+      000010 86*01            [ 3]   57 	stx *rem+1
+      000012                         58 rempos:
+      000012 A5*00            [ 3]   59 	lda	*res+0
+      000014 A6*01            [ 3]   60 	ldx	*res+1
+      000016 48               [ 3]   61 	pha
+      000017 A5*00            [ 3]   62 	lda	*s1
+      000019 45*00            [ 3]   63 	eor	*s2
+      00001B 10 04            [ 4]   64 	bpl	pos
+      00001D 68               [ 4]   65 	pla
+      00001E 4Cr00r00         [ 3]   66 	jmp 	___negax
+      000021                         67 pos:
+      000021 68               [ 4]   68 	pla
+      000022 60               [ 6]   69 	rts

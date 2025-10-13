@@ -1,0 +1,129 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module call_once
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl _call_once_PARM_2
+                                     28 	.globl _call_once
+                                     29 ;--------------------------------------------------------
+                                     30 ; ZP ram data
+                                     31 ;--------------------------------------------------------
+                                     32 	.area ZP      (PAG)
+                                     33 ;--------------------------------------------------------
+                                     34 ; overlayable items in ram
+                                     35 ;--------------------------------------------------------
+                                     36 ;--------------------------------------------------------
+                                     37 ; uninitialized external ram data
+                                     38 ;--------------------------------------------------------
+                                     39 	.area BSS
+      000000                         40 _call_once_PARM_2:
+      000000                         41 	.ds 2
+      000002                         42 _call_once_flag_10000_42:
+      000002                         43 	.ds 2
+                                     44 ;--------------------------------------------------------
+                                     45 ; absolute external ram data
+                                     46 ;--------------------------------------------------------
+                                     47 	.area DABS    (ABS)
+                                     48 ;--------------------------------------------------------
+                                     49 ; initialized external ram data
+                                     50 ;--------------------------------------------------------
+                                     51 	.area DATA
+                                     52 ;--------------------------------------------------------
+                                     53 ; global & static initialisations
+                                     54 ;--------------------------------------------------------
+                                     55 	.area _CODE
+                                     56 	.area GSINIT
+                                     57 	.area GSFINAL
+                                     58 	.area GSINIT
+                                     59 ;--------------------------------------------------------
+                                     60 ; Home
+                                     61 ;--------------------------------------------------------
+                                     62 	.area _CODE
+                                     63 	.area _CODE
+                                     64 ;--------------------------------------------------------
+                                     65 ; code
+                                     66 ;--------------------------------------------------------
+                                     67 	.area CODE
+                                     68 ;------------------------------------------------------------
+                                     69 ;Allocation info for local variables in function 'call_once'
+                                     70 ;------------------------------------------------------------
+                                     71 ;func          Allocated with name '_call_once_PARM_2'
+                                     72 ;flag          Allocated with name '_call_once_flag_10000_42'
+                                     73 ;------------------------------------------------------------
+                                     74 ;	../call_once.c: 36: void call_once(_Bool *flag, void (*func)(void))
+                                     75 ;	genLabel
+                                     76 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     77 ;	-----------------------------------------
+                                     78 ;	 function call_once
+                                     79 ;	-----------------------------------------
+                                     80 ;	Register assignment is optimal.
+                                     81 ;	Stack space usage: 0 bytes.
+      000000                         82 _call_once:
+                                     83 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     84 ;	genReceive
+      000000 8Dr02r00         [ 4]   85 	sta	_call_once_flag_10000_42
+      000003 8Er03r00         [ 4]   86 	stx	(_call_once_flag_10000_42 + 1)
+                                     87 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                     88 ;	../call_once.c: 38: if (!*flag)
+                                     89 ;	genPointerGet
+                                     90 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000006 85*00            [ 3]   91 	sta	*(DPTR+0)
+      000008 86*01            [ 3]   92 	stx	*(DPTR+1)
+      00000A A0 00            [ 2]   93 	ldy	#0x00
+      00000C B1*00            [ 6]   94 	lda	[DPTR],y
+                                     95 ;	Raw cost for generated ic 4 : (8, 13.000000) count=1.000000
+                                     96 ;	genIfx
+                                     97 ;	genIfxJump : z
+      00000E D0 1D            [ 4]   98 	bne	00103$
+                                     99 ;	Raw cost for generated ic 5 : (5, 5.600000) count=1.000000
+                                    100 ;	../call_once.c: 40: func();
+                                    101 ;	genPcall
+      000010 ADr00r00         [ 4]  102 	lda	_call_once_PARM_2
+      000013 85*00            [ 3]  103 	sta	*(REGTEMP+0)
+      000015 ADr01r00         [ 4]  104 	lda	(_call_once_PARM_2 + 1)
+      000018 85*01            [ 3]  105 	sta	*(REGTEMP+1)
+      00001A 20r00r00         [ 6]  106 	jsr	__sdcc_indirect_jsr
+                                    107 ;	Raw cost for generated ic 8 : (13, 20.000000) count=0.750000
+                                    108 ;	../call_once.c: 41: *flag = true;
+                                    109 ;	genPointerSet
+                                    110 ;	  setupDPTR - off=0 remat=(null) savea=0
+      00001D AEr02r00         [ 4]  111 	ldx	_call_once_flag_10000_42
+      000020 86*00            [ 3]  112 	stx	*(DPTR+0)
+      000022 AEr03r00         [ 4]  113 	ldx	(_call_once_flag_10000_42 + 1)
+      000025 86*01            [ 3]  114 	stx	*(DPTR+1)
+      000027 A9 01            [ 2]  115 	lda	#0x01
+      000029 A0 00            [ 2]  116 	ldy	#0x00
+      00002B 91*00            [ 6]  117 	sta	[DPTR],y
+                                    118 ;	Raw cost for generated ic 10 : (16, 24.000000) count=0.750000
+                                    119 ;	genLabel
+      00002D                        120 00103$:
+                                    121 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                    122 ;	../call_once.c: 43: }
+                                    123 ;	genEndFunction
+      00002D 60               [ 6]  124 	rts
+                                    125 ;	Raw cost for generated ic 13 : (1, 6.000000) count=1.000000
+                                    126 	.area CODE
+                                    127 	.area RODATA
+                                    128 	.area XINIT
+                                    129 	.area CABS    (ABS)

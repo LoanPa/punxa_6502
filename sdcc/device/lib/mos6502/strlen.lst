@@ -1,0 +1,63 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _strlen.s - standard C library function
+                                      3 ;
+                                      4 ;   Copyright (C) 1998, Ullrich von Bassewitz
+                                      5 ;   Copyright (C) 2023, Gabriele Gorla
+                                      6 ;
+                                      7 ;   This library is free software; you can redistribute it and/or modify it
+                                      8 ;   under the terms of the GNU General Public License as published by the
+                                      9 ;   Free Software Foundation; either version 2, or (at your option) any
+                                     10 ;   later version.
+                                     11 ;
+                                     12 ;   This library is distributed in the hope that it will be useful,
+                                     13 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     14 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     15 ;   GNU General Public License for more details.
+                                     16 ;
+                                     17 ;   You should have received a copy of the GNU General Public License
+                                     18 ;   along with this library; see the file COPYING. If not, write to the
+                                     19 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     20 ;   MA 02110-1301, USA.
+                                     21 ;
+                                     22 ;   As a special exception, if you link this library with other files,
+                                     23 ;   some of which are compiled with SDCC, to produce an executable,
+                                     24 ;   this library does not by itself cause the resulting executable to
+                                     25 ;   be covered by the GNU General Public License. This exception does
+                                     26 ;   not however invalidate any other reasons why the executable file
+                                     27 ;   might be covered by the GNU General Public License.
+                                     28 ;-------------------------------------------------------------------------
+                                     29 
+                                     30 	.module _strlen
+                                     31 
+                                     32 ;--------------------------------------------------------
+                                     33 ; exported symbols
+                                     34 ;--------------------------------------------------------
+                                     35 	.globl _strlen
+                                     36 
+                                     37 ;--------------------------------------------------------
+                                     38 ; local aliases
+                                     39 ;--------------------------------------------------------
+                                     40 	.define _src "DPTR"
+                                     41 	
+                                     42 ;--------------------------------------------------------
+                                     43 ; code
+                                     44 ;--------------------------------------------------------
+                                     45 	.area CODE
+                                     46 
+      000000                         47 _strlen:
+      000000 85*00            [ 3]   48 	sta	*_src+0
+      000002 86*01            [ 3]   49 	stx	*_src+1
+                                     50 
+      000004 A0 00            [ 2]   51 	ldy	#0x00
+      000006 A2 00            [ 2]   52 	ldx	#0x00
+      000008                         53 loop:
+      000008 B1*00            [ 6]   54 	lda	[_src],y
+      00000A F0 08            [ 4]   55 	beq	end
+      00000C C8               [ 2]   56 	iny
+      00000D D0 F9            [ 4]   57 	bne	loop
+      00000F E6*01            [ 5]   58 	inc	*_src+1
+      000011 E8               [ 2]   59 	inx
+      000012 D0 F4            [ 4]   60 	bne	loop
+      000014                         61 end:
+      000014 98               [ 2]   62 	tya
+      000015 60               [ 6]   63 	rts

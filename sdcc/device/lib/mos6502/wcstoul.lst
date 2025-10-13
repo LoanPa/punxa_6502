@@ -1,0 +1,1675 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module wcstoul
+                                      6 	
+                                      7 	.optsdcc -mmos6502
+                                      8 
+                                      9 ;--------------------------------------------------------
+                                     10 ;  Ordering of segments for the linker.
+                                     11 ;--------------------------------------------------------
+                                     12 	.area ZP      (PAG)
+                                     13 	.area OSEG    (PAG, OVR)
+                                     14 	.area _CODE
+                                     15 	.area GSINIT
+                                     16 	.area GSFINAL
+                                     17 	.area CODE
+                                     18 	.area RODATA
+                                     19 	.area XINIT
+                                     20 	.area _DATA
+                                     21 	.area DATA
+                                     22 	.area BSS
+                                     23 ;--------------------------------------------------------
+                                     24 ; Public variables in this module
+                                     25 ;--------------------------------------------------------
+                                     26 	.globl _wcsncmp
+                                     27 	.globl _wcstoul_PARM_3
+                                     28 	.globl _wcstoul_PARM_2
+                                     29 	.globl _wcstoul
+                                     30 ;--------------------------------------------------------
+                                     31 ; ZP ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area ZP      (PAG)
+      000000                         34 _wcstoul_sloc0_1_0:
+      000000                         35 	.ds 1
+      000001                         36 _wcstoul_sloc1_1_0:
+      000001                         37 	.ds 2
+      000003                         38 _wcstoul_sloc2_1_0:
+      000003                         39 	.ds 4
+      000007                         40 _wcstoul_sloc3_1_0:
+      000007                         41 	.ds 8
+      00000F                         42 _wcstoul_sloc4_1_0:
+      00000F                         43 	.ds 8
+                                     44 ;--------------------------------------------------------
+                                     45 ; overlayable items in ram
+                                     46 ;--------------------------------------------------------
+                                     47 ;--------------------------------------------------------
+                                     48 ; uninitialized external ram data
+                                     49 ;--------------------------------------------------------
+                                     50 	.area BSS
+      000000                         51 __isdigit_PARM_1:
+      000000                         52 	.ds 4
+      000004                         53 __isdigit_PARM_2:
+      000004                         54 	.ds 1
+      000005                         55 _wcstoul_PARM_2:
+      000005                         56 	.ds 2
+      000007                         57 _wcstoul_PARM_3:
+      000007                         58 	.ds 2
+      000009                         59 _wcstoul_nptr_10000_163:
+      000009                         60 	.ds 2
+      00000B                         61 _wcstoul_ptr_10000_164:
+      00000B                         62 	.ds 2
+      00000D                         63 _wcstoul_ret_10000_164:
+      00000D                         64 	.ds 4
+      000011                         65 _wcstoul_range_error_10000_164:
+      000011                         66 	.ds 1
+      000012                         67 _wcstoul_neg_10000_164:
+      000012                         68 	.ds 1
+      000013                         69 _wcstoul_b_10000_164:
+      000013                         70 	.ds 1
+      000014                         71 _wcstoul_digit_30000_181:
+      000014                         72 	.ds 1
+      000015                         73 _wcstoul_result_60000_215:
+      000015                         74 	.ds 8
+      00001D                         75 _wcstoul_result_60000_263:
+      00001D                         76 	.ds 8
+                                     77 ;--------------------------------------------------------
+                                     78 ; absolute external ram data
+                                     79 ;--------------------------------------------------------
+                                     80 	.area DABS    (ABS)
+                                     81 ;--------------------------------------------------------
+                                     82 ; initialized external ram data
+                                     83 ;--------------------------------------------------------
+                                     84 	.area DATA
+                                     85 ;--------------------------------------------------------
+                                     86 ; global & static initialisations
+                                     87 ;--------------------------------------------------------
+                                     88 	.area _CODE
+                                     89 	.area GSINIT
+                                     90 	.area GSFINAL
+                                     91 	.area GSINIT
+                                     92 ;--------------------------------------------------------
+                                     93 ; Home
+                                     94 ;--------------------------------------------------------
+                                     95 	.area _CODE
+                                     96 	.area _CODE
+                                     97 ;--------------------------------------------------------
+                                     98 ; code
+                                     99 ;--------------------------------------------------------
+                                    100 	.area CODE
+                                    101 ;------------------------------------------------------------
+                                    102 ;Allocation info for local variables in function '_isdigit'
+                                    103 ;------------------------------------------------------------
+                                    104 ;c             Allocated with name '__isdigit_PARM_1'
+                                    105 ;base          Allocated with name '__isdigit_PARM_2'
+                                    106 ;v             Allocated to registers a 
+                                    107 ;------------------------------------------------------------
+                                    108 ;	../wcstoul.c: 42: static signed char _isdigit(const wchar_t c, unsigned char base)
+                                    109 ;	genLabel
+                                    110 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    111 ;	-----------------------------------------
+                                    112 ;	 function _isdigit
+                                    113 ;	-----------------------------------------
+                                    114 ;	Register assignment is optimal.
+                                    115 ;	Stack space usage: 0 bytes.
+      000000                        116 __isdigit:
+                                    117 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    118 ;	../wcstoul.c: 46: if (c >= L'0' && c <= L'9')
+                                    119 ;	genCmp
+      000000 ADr00r00         [ 4]  120 	lda	__isdigit_PARM_1
+      000003 38               [ 2]  121 	sec
+      000004 E9 30            [ 2]  122 	sbc	#0x30
+      000006 ADr01r00         [ 4]  123 	lda	(__isdigit_PARM_1 + 1)
+      000009 E9 00            [ 2]  124 	sbc	#0x00
+      00000B ADr02r00         [ 4]  125 	lda	(__isdigit_PARM_1 + 2)
+      00000E E9 00            [ 2]  126 	sbc	#0x00
+      000010 ADr03r00         [ 4]  127 	lda	(__isdigit_PARM_1 + 3)
+      000013 E9 00            [ 2]  128 	sbc	#0x00
+      000015 90 20            [ 4]  129 	bcc	00110$
+                                    130 ;	Raw cost for generated ic 2 : (26, 31.600000) count=1.000000
+                                    131 ;	skipping generated iCode
+                                    132 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                    133 ;	genCmp
+      000017 A9 39            [ 2]  134 	lda	#0x39
+      000019 38               [ 2]  135 	sec
+      00001A EDr00r00         [ 4]  136 	sbc	__isdigit_PARM_1
+      00001D A9 00            [ 2]  137 	lda	#0x00
+      00001F EDr01r00         [ 4]  138 	sbc	(__isdigit_PARM_1 + 1)
+      000022 A9 00            [ 2]  139 	lda	#0x00
+      000024 EDr02r00         [ 4]  140 	sbc	(__isdigit_PARM_1 + 2)
+      000027 A9 00            [ 2]  141 	lda	#0x00
+      000029 EDr03r00         [ 4]  142 	sbc	(__isdigit_PARM_1 + 3)
+      00002C 90 09            [ 4]  143 	bcc	00110$
+                                    144 ;	Raw cost for generated ic 6 : (26, 31.600000) count=0.750000
+                                    145 ;	skipping generated iCode
+                                    146 ;	Raw cost for generated ic 7 : (0, 0.000000) count=0.750000
+                                    147 ;	../wcstoul.c: 47: v = c - L'0';
+                                    148 ;	genCast
+                                    149 ;	genCopy
+      00002E ADr00r00         [ 4]  150 	lda	__isdigit_PARM_1
+                                    151 ;	Raw cost for generated ic 10 : (3, 4.000000) count=0.562500
+                                    152 ;	genMinus
+                                    153 ;	  genMinusDec - size=1  icount=48
+      000031 38               [ 2]  154 	sec
+      000032 E9 30            [ 2]  155 	sbc	#0x30
+                                    156 ;	Raw cost for generated ic 11 : (3, 4.000000) count=0.562500
+                                    157 ;	genGoto
+      000034 4CrA8r00         [ 3]  158 	jmp	00111$
+                                    159 ;	Raw cost for generated ic 13 : (3, 3.000000) count=0.562500
+                                    160 ;	genLabel
+      000037                        161 00110$:
+                                    162 ;	Raw cost for generated ic 14 : (0, 0.000000) count=0.437500
+                                    163 ;	../wcstoul.c: 48: else if (c >= L'a' && c <= L'z')
+                                    164 ;	genCmp
+      000037 ADr00r00         [ 4]  165 	lda	__isdigit_PARM_1
+      00003A 38               [ 2]  166 	sec
+      00003B E9 61            [ 2]  167 	sbc	#0x61
+      00003D ADr01r00         [ 4]  168 	lda	(__isdigit_PARM_1 + 1)
+      000040 E9 00            [ 2]  169 	sbc	#0x00
+      000042 ADr02r00         [ 4]  170 	lda	(__isdigit_PARM_1 + 2)
+      000045 E9 00            [ 2]  171 	sbc	#0x00
+      000047 ADr03r00         [ 4]  172 	lda	(__isdigit_PARM_1 + 3)
+      00004A E9 00            [ 2]  173 	sbc	#0x00
+      00004C 90 20            [ 4]  174 	bcc	00106$
+                                    175 ;	Raw cost for generated ic 15 : (26, 31.600000) count=0.437500
+                                    176 ;	skipping generated iCode
+                                    177 ;	Raw cost for generated ic 16 : (0, 0.000000) count=0.437500
+                                    178 ;	genCmp
+      00004E A9 7A            [ 2]  179 	lda	#0x7a
+      000050 38               [ 2]  180 	sec
+      000051 EDr00r00         [ 4]  181 	sbc	__isdigit_PARM_1
+      000054 A9 00            [ 2]  182 	lda	#0x00
+      000056 EDr01r00         [ 4]  183 	sbc	(__isdigit_PARM_1 + 1)
+      000059 A9 00            [ 2]  184 	lda	#0x00
+      00005B EDr02r00         [ 4]  185 	sbc	(__isdigit_PARM_1 + 2)
+      00005E A9 00            [ 2]  186 	lda	#0x00
+      000060 EDr03r00         [ 4]  187 	sbc	(__isdigit_PARM_1 + 3)
+      000063 90 09            [ 4]  188 	bcc	00106$
+                                    189 ;	Raw cost for generated ic 19 : (26, 31.600000) count=0.328125
+                                    190 ;	skipping generated iCode
+                                    191 ;	Raw cost for generated ic 20 : (0, 0.000000) count=0.328125
+                                    192 ;	../wcstoul.c: 49: v = c - L'a' + 10;
+                                    193 ;	genCast
+                                    194 ;	genCopy
+      000065 ADr00r00         [ 4]  195 	lda	__isdigit_PARM_1
+                                    196 ;	Raw cost for generated ic 23 : (3, 4.000000) count=0.246094
+                                    197 ;	genCast
+                                    198 ;	genCopy
+                                    199 ;	Raw cost for generated ic 24 : (0, 0.000000) count=0.246094
+                                    200 ;	genPlus
+                                    201 ;	  genPlusInc
+      000068 18               [ 2]  202 	clc
+      000069 69 A9            [ 2]  203 	adc	#0xa9
+                                    204 ;	Raw cost for generated ic 25 : (3, 4.000000) count=0.246094
+                                    205 ;	genGoto
+      00006B 4CrA8r00         [ 3]  206 	jmp	00111$
+                                    207 ;	Raw cost for generated ic 27 : (3, 3.000000) count=0.246094
+                                    208 ;	genLabel
+      00006E                        209 00106$:
+                                    210 ;	Raw cost for generated ic 28 : (0, 0.000000) count=0.191406
+                                    211 ;	../wcstoul.c: 50: else if (c >= L'A' && c <= L'Z')
+                                    212 ;	genCmp
+      00006E ADr00r00         [ 4]  213 	lda	__isdigit_PARM_1
+      000071 38               [ 2]  214 	sec
+      000072 E9 41            [ 2]  215 	sbc	#0x41
+      000074 ADr01r00         [ 4]  216 	lda	(__isdigit_PARM_1 + 1)
+      000077 E9 00            [ 2]  217 	sbc	#0x00
+      000079 ADr02r00         [ 4]  218 	lda	(__isdigit_PARM_1 + 2)
+      00007C E9 00            [ 2]  219 	sbc	#0x00
+      00007E ADr03r00         [ 4]  220 	lda	(__isdigit_PARM_1 + 3)
+      000081 E9 00            [ 2]  221 	sbc	#0x00
+      000083 90 20            [ 4]  222 	bcc	00102$
+                                    223 ;	Raw cost for generated ic 29 : (26, 31.600000) count=0.191406
+                                    224 ;	skipping generated iCode
+                                    225 ;	Raw cost for generated ic 30 : (0, 0.000000) count=0.191406
+                                    226 ;	genCmp
+      000085 A9 5A            [ 2]  227 	lda	#0x5a
+      000087 38               [ 2]  228 	sec
+      000088 EDr00r00         [ 4]  229 	sbc	__isdigit_PARM_1
+      00008B A9 00            [ 2]  230 	lda	#0x00
+      00008D EDr01r00         [ 4]  231 	sbc	(__isdigit_PARM_1 + 1)
+      000090 A9 00            [ 2]  232 	lda	#0x00
+      000092 EDr02r00         [ 4]  233 	sbc	(__isdigit_PARM_1 + 2)
+      000095 A9 00            [ 2]  234 	lda	#0x00
+      000097 EDr03r00         [ 4]  235 	sbc	(__isdigit_PARM_1 + 3)
+      00009A 90 09            [ 4]  236 	bcc	00102$
+                                    237 ;	Raw cost for generated ic 33 : (26, 31.600000) count=0.143555
+                                    238 ;	skipping generated iCode
+                                    239 ;	Raw cost for generated ic 34 : (0, 0.000000) count=0.143555
+                                    240 ;	../wcstoul.c: 51: v = c - L'A' + 10;
+                                    241 ;	genCast
+                                    242 ;	genCopy
+      00009C ADr00r00         [ 4]  243 	lda	__isdigit_PARM_1
+                                    244 ;	Raw cost for generated ic 37 : (3, 4.000000) count=0.107666
+                                    245 ;	genCast
+                                    246 ;	genCopy
+                                    247 ;	Raw cost for generated ic 38 : (0, 0.000000) count=0.107666
+                                    248 ;	genPlus
+                                    249 ;	  genPlusInc
+      00009F 18               [ 2]  250 	clc
+      0000A0 69 C9            [ 2]  251 	adc	#0xc9
+                                    252 ;	Raw cost for generated ic 39 : (3, 4.000000) count=0.107666
+                                    253 ;	genGoto
+      0000A2 4CrA8r00         [ 3]  254 	jmp	00111$
+                                    255 ;	Raw cost for generated ic 41 : (3, 3.000000) count=0.107666
+                                    256 ;	genLabel
+      0000A5                        257 00102$:
+                                    258 ;	Raw cost for generated ic 42 : (0, 0.000000) count=0.083740
+                                    259 ;	../wcstoul.c: 53: return (-1);
+                                    260 ;	genRet
+      0000A5 A9 FF            [ 2]  261 	lda	#0xff
+      0000A7 60               [ 6]  262 	rts
+                                    263 ;	Raw cost for generated ic 43 : (5, 5.000000) count=0.083740
+                                    264 ;	genLabel
+      0000A8                        265 00111$:
+                                    266 ;	Raw cost for generated ic 46 : (0, 0.000000) count=1.000000
+                                    267 ;	../wcstoul.c: 55: if (v >= base)
+                                    268 ;	genCmp
+      0000A8 CDr04r00         [ 4]  269 	cmp	__isdigit_PARM_2
+      0000AB 90 02            [ 4]  270 	bcc	00114$
+                                    271 ;	Raw cost for generated ic 47 : (8, 9.600000) count=1.000000
+                                    272 ;	skipping generated iCode
+                                    273 ;	Raw cost for generated ic 48 : (0, 0.000000) count=1.000000
+                                    274 ;	../wcstoul.c: 56: return (-1);
+                                    275 ;	genRet
+      0000AD A9 FF            [ 2]  276 	lda	#0xff
+                                    277 ;	Raw cost for generated ic 51 : (5, 5.000000) count=0.750000
+                                    278 ;	genLabel
+                                    279 ;	Raw cost for generated ic 52 : (0, 0.000000) count=1.000000
+                                    280 ;	../wcstoul.c: 58: return (v);
+                                    281 ;	genRet
+                                    282 ;	Raw cost for generated ic 53 : (0, 0.000000) count=1.000000
+                                    283 ;	genLabel
+                                    284 ;	Raw cost for generated ic 54 : (0, 0.000000) count=1.000000
+                                    285 ;	../wcstoul.c: 59: }
+                                    286 ;	genEndFunction
+      0000AF                        287 00114$:
+      0000AF 60               [ 6]  288 	rts
+                                    289 ;	Raw cost for generated ic 55 : (1, 6.000000) count=1.000000
+                                    290 ;------------------------------------------------------------
+                                    291 ;Allocation info for local variables in function 'wcstoul'
+                                    292 ;------------------------------------------------------------
+                                    293 ;sloc0         Allocated with name '_wcstoul_sloc0_1_0'
+                                    294 ;sloc1         Allocated with name '_wcstoul_sloc1_1_0'
+                                    295 ;sloc2         Allocated with name '_wcstoul_sloc2_1_0'
+                                    296 ;sloc3         Allocated with name '_wcstoul_sloc3_1_0'
+                                    297 ;sloc4         Allocated with name '_wcstoul_sloc4_1_0'
+                                    298 ;endptr        Allocated with name '_wcstoul_PARM_2'
+                                    299 ;base          Allocated with name '_wcstoul_PARM_3'
+                                    300 ;nptr          Allocated with name '_wcstoul_nptr_10000_163'
+                                    301 ;__200000005   Allocated to registers 
+                                    302 ;ptr           Allocated with name '_wcstoul_ptr_10000_164'
+                                    303 ;ret           Allocated with name '_wcstoul_ret_10000_164'
+                                    304 ;range_error   Allocated with name '_wcstoul_range_error_10000_164'
+                                    305 ;neg           Allocated with name '_wcstoul_neg_10000_164'
+                                    306 ;b             Allocated with name '_wcstoul_b_10000_164'
+                                    307 ;__200000006   Allocated with name '_wcstoul___200000006_20000_186'
+                                    308 ;c             Allocated with name '_wcstoul_c_30000_187'
+                                    309 ;__400000128   Allocated to registers a 
+                                    310 ;__400000123   Allocated with name '_wcstoul___400000123_40000_181'
+                                    311 ;__400000118   Allocated with name '_wcstoul___400000118_40000_181'
+                                    312 ;__400000113   Allocated with name '_wcstoul___400000113_40000_181'
+                                    313 ;__400000108   Allocated with name '_wcstoul___400000108_40000_181'
+                                    314 ;__400000103   Allocated with name '_wcstoul___400000103_40000_181'
+                                    315 ;__400000098   Allocated with name '_wcstoul___400000098_40000_181'
+                                    316 ;__400000093   Allocated with name '_wcstoul___400000093_40000_181'
+                                    317 ;__400000088   Allocated with name '_wcstoul___400000088_40000_181'
+                                    318 ;__400000083   Allocated with name '_wcstoul___400000083_40000_181'
+                                    319 ;__400000078   Allocated with name '_wcstoul___400000078_40000_181'
+                                    320 ;__400000073   Allocated with name '_wcstoul___400000073_40000_181'
+                                    321 ;__400000068   Allocated with name '_wcstoul___400000068_40000_181'
+                                    322 ;__400000063   Allocated with name '_wcstoul___400000063_40000_181'
+                                    323 ;__400000058   Allocated with name '_wcstoul___400000058_40000_181'
+                                    324 ;__400000053   Allocated with name '_wcstoul___400000053_40000_181'
+                                    325 ;__400000048   Allocated to registers a 
+                                    326 ;__400000043   Allocated with name '_wcstoul___400000043_40000_181'
+                                    327 ;__400000038   Allocated with name '_wcstoul___400000038_40000_181'
+                                    328 ;__400000033   Allocated with name '_wcstoul___400000033_40000_181'
+                                    329 ;__400000028   Allocated with name '_wcstoul___400000028_40000_181'
+                                    330 ;__400000023   Allocated with name '_wcstoul___400000023_40000_181'
+                                    331 ;__400000018   Allocated with name '_wcstoul___400000018_40000_181'
+                                    332 ;__400000013   Allocated with name '_wcstoul___400000013_40000_181'
+                                    333 ;__400000008   Allocated with name '_wcstoul___400000008_40000_181'
+                                    334 ;digit         Allocated with name '_wcstoul_digit_30000_181'
+                                    335 ;__400000009   Allocated with name '_wcstoul___400000009_40000_189'
+                                    336 ;__400000010   Allocated with name '_wcstoul___400000010_40000_189'
+                                    337 ;__400000011   Allocated with name '_wcstoul___400000011_40000_189'
+                                    338 ;r             Allocated with name '_wcstoul_r_50000_190'
+                                    339 ;a             Allocated with name '_wcstoul_a_50000_190'
+                                    340 ;b             Allocated with name '_wcstoul_b_50000_190'
+                                    341 ;result        Allocated with name '_wcstoul_result_60000_191'
+                                    342 ;__400000014   Allocated with name '_wcstoul___400000014_40000_192'
+                                    343 ;__400000015   Allocated with name '_wcstoul___400000015_40000_192'
+                                    344 ;__400000016   Allocated with name '_wcstoul___400000016_40000_192'
+                                    345 ;r             Allocated with name '_wcstoul_r_50000_193'
+                                    346 ;a             Allocated with name '_wcstoul_a_50000_193'
+                                    347 ;b             Allocated with name '_wcstoul_b_50000_193'
+                                    348 ;result        Allocated with name '_wcstoul_result_60000_194'
+                                    349 ;__400000019   Allocated with name '_wcstoul___400000019_40000_195'
+                                    350 ;__400000020   Allocated with name '_wcstoul___400000020_40000_195'
+                                    351 ;__400000021   Allocated with name '_wcstoul___400000021_40000_195'
+                                    352 ;r             Allocated with name '_wcstoul_r_50000_196'
+                                    353 ;a             Allocated with name '_wcstoul_a_50000_196'
+                                    354 ;b             Allocated with name '_wcstoul_b_50000_196'
+                                    355 ;result        Allocated with name '_wcstoul_result_60000_197'
+                                    356 ;__400000024   Allocated with name '_wcstoul___400000024_40000_198'
+                                    357 ;__400000025   Allocated with name '_wcstoul___400000025_40000_198'
+                                    358 ;__400000026   Allocated with name '_wcstoul___400000026_40000_198'
+                                    359 ;r             Allocated with name '_wcstoul_r_50000_199'
+                                    360 ;a             Allocated with name '_wcstoul_a_50000_199'
+                                    361 ;b             Allocated with name '_wcstoul_b_50000_199'
+                                    362 ;result        Allocated with name '_wcstoul_result_60000_200'
+                                    363 ;__400000029   Allocated with name '_wcstoul___400000029_40000_201'
+                                    364 ;__400000030   Allocated with name '_wcstoul___400000030_40000_201'
+                                    365 ;__400000031   Allocated with name '_wcstoul___400000031_40000_201'
+                                    366 ;r             Allocated with name '_wcstoul_r_50000_202'
+                                    367 ;a             Allocated with name '_wcstoul_a_50000_202'
+                                    368 ;b             Allocated with name '_wcstoul_b_50000_202'
+                                    369 ;result        Allocated with name '_wcstoul_result_60000_203'
+                                    370 ;__400000034   Allocated with name '_wcstoul___400000034_40000_204'
+                                    371 ;__400000035   Allocated with name '_wcstoul___400000035_40000_204'
+                                    372 ;__400000036   Allocated with name '_wcstoul___400000036_40000_204'
+                                    373 ;r             Allocated with name '_wcstoul_r_50000_205'
+                                    374 ;a             Allocated with name '_wcstoul_a_50000_205'
+                                    375 ;b             Allocated with name '_wcstoul_b_50000_205'
+                                    376 ;result        Allocated with name '_wcstoul_result_60000_206'
+                                    377 ;__400000039   Allocated with name '_wcstoul___400000039_40000_207'
+                                    378 ;__400000040   Allocated with name '_wcstoul___400000040_40000_207'
+                                    379 ;__400000041   Allocated with name '_wcstoul___400000041_40000_207'
+                                    380 ;r             Allocated with name '_wcstoul_r_50000_208'
+                                    381 ;a             Allocated with name '_wcstoul_a_50000_208'
+                                    382 ;b             Allocated with name '_wcstoul_b_50000_208'
+                                    383 ;result        Allocated with name '_wcstoul_result_60000_209'
+                                    384 ;__400000044   Allocated with name '_wcstoul___400000044_40000_210'
+                                    385 ;__400000045   Allocated with name '_wcstoul___400000045_40000_210'
+                                    386 ;__400000046   Allocated with name '_wcstoul___400000046_40000_210'
+                                    387 ;r             Allocated with name '_wcstoul_r_50000_211'
+                                    388 ;a             Allocated with name '_wcstoul_a_50000_211'
+                                    389 ;b             Allocated with name '_wcstoul_b_50000_211'
+                                    390 ;result        Allocated with name '_wcstoul_result_60000_212'
+                                    391 ;__400000049   Allocated to registers 
+                                    392 ;__400000050   Allocated with name '_wcstoul___400000050_40000_213'
+                                    393 ;__400000051   Allocated with name '_wcstoul___400000051_40000_213'
+                                    394 ;r             Allocated to registers 
+                                    395 ;a             Allocated with name '_wcstoul_a_50000_214'
+                                    396 ;b             Allocated with name '_wcstoul_b_50000_214'
+                                    397 ;result        Allocated with name '_wcstoul_result_60000_215'
+                                    398 ;__400000054   Allocated with name '_wcstoul___400000054_40000_216'
+                                    399 ;__400000055   Allocated with name '_wcstoul___400000055_40000_216'
+                                    400 ;__400000056   Allocated with name '_wcstoul___400000056_40000_216'
+                                    401 ;r             Allocated with name '_wcstoul_r_50000_217'
+                                    402 ;a             Allocated with name '_wcstoul_a_50000_217'
+                                    403 ;b             Allocated with name '_wcstoul_b_50000_217'
+                                    404 ;result        Allocated with name '_wcstoul_result_60000_218'
+                                    405 ;__400000059   Allocated with name '_wcstoul___400000059_40000_219'
+                                    406 ;__400000060   Allocated with name '_wcstoul___400000060_40000_219'
+                                    407 ;__400000061   Allocated with name '_wcstoul___400000061_40000_219'
+                                    408 ;r             Allocated with name '_wcstoul_r_50000_220'
+                                    409 ;a             Allocated with name '_wcstoul_a_50000_220'
+                                    410 ;b             Allocated with name '_wcstoul_b_50000_220'
+                                    411 ;result        Allocated with name '_wcstoul_result_60000_221'
+                                    412 ;__400000064   Allocated with name '_wcstoul___400000064_40000_222'
+                                    413 ;__400000065   Allocated with name '_wcstoul___400000065_40000_222'
+                                    414 ;__400000066   Allocated with name '_wcstoul___400000066_40000_222'
+                                    415 ;r             Allocated with name '_wcstoul_r_50000_223'
+                                    416 ;a             Allocated with name '_wcstoul_a_50000_223'
+                                    417 ;b             Allocated with name '_wcstoul_b_50000_223'
+                                    418 ;result        Allocated with name '_wcstoul_result_60000_224'
+                                    419 ;__400000069   Allocated with name '_wcstoul___400000069_40000_225'
+                                    420 ;__400000070   Allocated with name '_wcstoul___400000070_40000_225'
+                                    421 ;__400000071   Allocated with name '_wcstoul___400000071_40000_225'
+                                    422 ;r             Allocated with name '_wcstoul_r_50000_226'
+                                    423 ;a             Allocated with name '_wcstoul_a_50000_226'
+                                    424 ;b             Allocated with name '_wcstoul_b_50000_226'
+                                    425 ;result        Allocated with name '_wcstoul_result_60000_227'
+                                    426 ;__400000074   Allocated with name '_wcstoul___400000074_40000_228'
+                                    427 ;__400000075   Allocated with name '_wcstoul___400000075_40000_228'
+                                    428 ;__400000076   Allocated with name '_wcstoul___400000076_40000_228'
+                                    429 ;r             Allocated with name '_wcstoul_r_50000_229'
+                                    430 ;a             Allocated with name '_wcstoul_a_50000_229'
+                                    431 ;b             Allocated with name '_wcstoul_b_50000_229'
+                                    432 ;result        Allocated with name '_wcstoul_result_60000_230'
+                                    433 ;__400000079   Allocated with name '_wcstoul___400000079_40000_231'
+                                    434 ;__400000080   Allocated with name '_wcstoul___400000080_40000_231'
+                                    435 ;__400000081   Allocated with name '_wcstoul___400000081_40000_231'
+                                    436 ;r             Allocated with name '_wcstoul_r_50000_232'
+                                    437 ;a             Allocated with name '_wcstoul_a_50000_232'
+                                    438 ;b             Allocated with name '_wcstoul_b_50000_232'
+                                    439 ;result        Allocated with name '_wcstoul_result_60000_233'
+                                    440 ;__400000084   Allocated with name '_wcstoul___400000084_40000_234'
+                                    441 ;__400000085   Allocated with name '_wcstoul___400000085_40000_234'
+                                    442 ;__400000086   Allocated with name '_wcstoul___400000086_40000_234'
+                                    443 ;r             Allocated with name '_wcstoul_r_50000_235'
+                                    444 ;a             Allocated with name '_wcstoul_a_50000_235'
+                                    445 ;b             Allocated with name '_wcstoul_b_50000_235'
+                                    446 ;result        Allocated with name '_wcstoul_result_60000_236'
+                                    447 ;__400000089   Allocated with name '_wcstoul___400000089_40000_237'
+                                    448 ;__400000090   Allocated with name '_wcstoul___400000090_40000_237'
+                                    449 ;__400000091   Allocated with name '_wcstoul___400000091_40000_237'
+                                    450 ;r             Allocated with name '_wcstoul_r_50000_238'
+                                    451 ;a             Allocated with name '_wcstoul_a_50000_238'
+                                    452 ;b             Allocated with name '_wcstoul_b_50000_238'
+                                    453 ;result        Allocated with name '_wcstoul_result_60000_239'
+                                    454 ;__400000094   Allocated with name '_wcstoul___400000094_40000_240'
+                                    455 ;__400000095   Allocated with name '_wcstoul___400000095_40000_240'
+                                    456 ;__400000096   Allocated with name '_wcstoul___400000096_40000_240'
+                                    457 ;r             Allocated with name '_wcstoul_r_50000_241'
+                                    458 ;a             Allocated with name '_wcstoul_a_50000_241'
+                                    459 ;b             Allocated with name '_wcstoul_b_50000_241'
+                                    460 ;result        Allocated with name '_wcstoul_result_60000_242'
+                                    461 ;__400000099   Allocated with name '_wcstoul___400000099_40000_243'
+                                    462 ;__400000100   Allocated with name '_wcstoul___400000100_40000_243'
+                                    463 ;__400000101   Allocated with name '_wcstoul___400000101_40000_243'
+                                    464 ;r             Allocated with name '_wcstoul_r_50000_244'
+                                    465 ;a             Allocated with name '_wcstoul_a_50000_244'
+                                    466 ;b             Allocated with name '_wcstoul_b_50000_244'
+                                    467 ;result        Allocated with name '_wcstoul_result_60000_245'
+                                    468 ;__400000104   Allocated with name '_wcstoul___400000104_40000_246'
+                                    469 ;__400000105   Allocated with name '_wcstoul___400000105_40000_246'
+                                    470 ;__400000106   Allocated with name '_wcstoul___400000106_40000_246'
+                                    471 ;r             Allocated with name '_wcstoul_r_50000_247'
+                                    472 ;a             Allocated with name '_wcstoul_a_50000_247'
+                                    473 ;b             Allocated with name '_wcstoul_b_50000_247'
+                                    474 ;result        Allocated with name '_wcstoul_result_60000_248'
+                                    475 ;__400000109   Allocated with name '_wcstoul___400000109_40000_249'
+                                    476 ;__400000110   Allocated with name '_wcstoul___400000110_40000_249'
+                                    477 ;__400000111   Allocated with name '_wcstoul___400000111_40000_249'
+                                    478 ;r             Allocated with name '_wcstoul_r_50000_250'
+                                    479 ;a             Allocated with name '_wcstoul_a_50000_250'
+                                    480 ;b             Allocated with name '_wcstoul_b_50000_250'
+                                    481 ;result        Allocated with name '_wcstoul_result_60000_251'
+                                    482 ;__400000114   Allocated with name '_wcstoul___400000114_40000_252'
+                                    483 ;__400000115   Allocated with name '_wcstoul___400000115_40000_252'
+                                    484 ;__400000116   Allocated with name '_wcstoul___400000116_40000_252'
+                                    485 ;r             Allocated with name '_wcstoul_r_50000_253'
+                                    486 ;a             Allocated with name '_wcstoul_a_50000_253'
+                                    487 ;b             Allocated with name '_wcstoul_b_50000_253'
+                                    488 ;result        Allocated with name '_wcstoul_result_60000_254'
+                                    489 ;__400000119   Allocated with name '_wcstoul___400000119_40000_255'
+                                    490 ;__400000120   Allocated with name '_wcstoul___400000120_40000_255'
+                                    491 ;__400000121   Allocated with name '_wcstoul___400000121_40000_255'
+                                    492 ;r             Allocated with name '_wcstoul_r_50000_256'
+                                    493 ;a             Allocated with name '_wcstoul_a_50000_256'
+                                    494 ;b             Allocated with name '_wcstoul_b_50000_256'
+                                    495 ;result        Allocated with name '_wcstoul_result_60000_257'
+                                    496 ;__400000124   Allocated with name '_wcstoul___400000124_40000_258'
+                                    497 ;__400000125   Allocated with name '_wcstoul___400000125_40000_258'
+                                    498 ;__400000126   Allocated with name '_wcstoul___400000126_40000_258'
+                                    499 ;r             Allocated with name '_wcstoul_r_50000_259'
+                                    500 ;a             Allocated with name '_wcstoul_a_50000_259'
+                                    501 ;b             Allocated with name '_wcstoul_b_50000_259'
+                                    502 ;result        Allocated with name '_wcstoul_result_60000_260'
+                                    503 ;__400000129   Allocated to registers 
+                                    504 ;__400000130   Allocated with name '_wcstoul___400000130_40000_261'
+                                    505 ;__400000131   Allocated with name '_wcstoul___400000131_40000_261'
+                                    506 ;r             Allocated to registers 
+                                    507 ;a             Allocated with name '_wcstoul_a_50000_262'
+                                    508 ;b             Allocated with name '_wcstoul_b_50000_262'
+                                    509 ;result        Allocated with name '_wcstoul_result_60000_263'
+                                    510 ;------------------------------------------------------------
+                                    511 ;	../wcstoul.c: 63: unsigned long int wcstoul(const wchar_t *nptr, wchar_t **endptr, int base)
+                                    512 ;	genLabel
+                                    513 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                    514 ;	-----------------------------------------
+                                    515 ;	 function wcstoul
+                                    516 ;	-----------------------------------------
+                                    517 ;	Register assignment might be sub-optimal.
+                                    518 ;	Stack space usage: 0 bytes.
+      0000B0                        519 _wcstoul:
+                                    520 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                    521 ;	genReceive
+      0000B0 8Dr09r00         [ 4]  522 	sta	_wcstoul_nptr_10000_163
+      0000B3 8Er0Ar00         [ 4]  523 	stx	(_wcstoul_nptr_10000_163 + 1)
+                                    524 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                    525 ;	../wcstoul.c: 67: bool range_error = false;
+                                    526 ;	genAssign
+                                    527 ;	genAssignLit
+      0000B6 A0 00            [ 2]  528 	ldy	#0x00
+      0000B8 84*00            [ 3]  529 	sty	*_wcstoul_sloc0_1_0
+                                    530 ;	Raw cost for generated ic 4 : (4, 5.000000) count=1.000000
+                                    531 ;	../wcstoul.c: 68: bool neg = false;
+                                    532 ;	genAssign
+                                    533 ;	genAssignLit
+      0000BA 8Cr12r00         [ 4]  534 	sty	_wcstoul_neg_10000_164
+                                    535 ;	Raw cost for generated ic 5 : (3, 4.000000) count=1.000000
+                                    536 ;	../wcstoul.c: 69: unsigned char b = base;
+                                    537 ;	genCast
+                                    538 ;	genCopy
+      0000BD ADr07r00         [ 4]  539 	lda	_wcstoul_PARM_3
+      0000C0 8Dr13r00         [ 4]  540 	sta	_wcstoul_b_10000_164
+                                    541 ;	Raw cost for generated ic 6 : (6, 8.000000) count=1.000000
+                                    542 ;	../wcstoul.c: 71: while (iswblank (*ptr))
+                                    543 ;	genAssign
+                                    544 ;	genCopy
+      0000C3 8A               [ 2]  545 	txa
+      0000C4 85*02            [ 3]  546 	sta	*(_wcstoul_sloc1_1_0 + 1)
+      0000C6 ADr09r00         [ 4]  547 	lda	_wcstoul_nptr_10000_163
+      0000C9 85*01            [ 3]  548 	sta	*_wcstoul_sloc1_1_0
+                                    549 ;	Raw cost for generated ic 281 : (8, 12.000000) count=1.000000
+                                    550 ;	genLabel
+      0000CB                        551 00101$:
+                                    552 ;	Raw cost for generated ic 8 : (0, 0.000000) count=5.333324
+                                    553 ;	genPointerGet
+      0000CB A0 00            [ 2]  554 	ldy	#0x00
+      0000CD B1*01            [ 6]  555 	lda	[*_wcstoul_sloc1_1_0],y
+      0000CF 85*03            [ 3]  556 	sta	*_wcstoul_sloc2_1_0
+      0000D1 C8               [ 2]  557 	iny
+      0000D2 B1*01            [ 6]  558 	lda	[*_wcstoul_sloc1_1_0],y
+      0000D4 85*04            [ 3]  559 	sta	*(_wcstoul_sloc2_1_0 + 1)
+      0000D6 C8               [ 2]  560 	iny
+      0000D7 B1*01            [ 6]  561 	lda	[*_wcstoul_sloc1_1_0],y
+      0000D9 85*05            [ 3]  562 	sta	*(_wcstoul_sloc2_1_0 + 2)
+      0000DB C8               [ 2]  563 	iny
+      0000DC B1*01            [ 6]  564 	lda	[*_wcstoul_sloc1_1_0],y
+      0000DE 85*06            [ 3]  565 	sta	*(_wcstoul_sloc2_1_0 + 3)
+                                    566 ;	Raw cost for generated ic 10 : (21, 40.000000) count=5.333324
+                                    567 ;	./../../include/wchar.h: 63: return ((wchar_t)c == L' ' || (wchar_t)c == L'\t');
+                                    568 ;	genCmpEQorNE
+      0000E0 A5*03            [ 3]  569 	lda	*_wcstoul_sloc2_1_0
+      0000E2 C9 20            [ 2]  570 	cmp	#0x20
+      0000E4 D0 0C            [ 4]  571 	bne	00315$
+      0000E6 A5*04            [ 3]  572 	lda	*(_wcstoul_sloc2_1_0 + 1)
+      0000E8 D0 08            [ 4]  573 	bne	00315$
+      0000EA A5*05            [ 3]  574 	lda	*(_wcstoul_sloc2_1_0 + 2)
+      0000EC D0 04            [ 4]  575 	bne	00315$
+      0000EE A5*06            [ 3]  576 	lda	*(_wcstoul_sloc2_1_0 + 3)
+      0000F0 F0 12            [ 4]  577 	beq	00172$
+      0000F2                        578 00315$:
+                                    579 ;	Raw cost for generated ic 13 : (30, 36.400002) count=5.333324
+                                    580 ;	skipping generated iCode
+                                    581 ;	Raw cost for generated ic 14 : (0, 0.000000) count=5.333324
+                                    582 ;	genCmpEQorNE
+      0000F2 A5*03            [ 3]  583 	lda	*_wcstoul_sloc2_1_0
+      0000F4 C9 09            [ 2]  584 	cmp	#0x09
+      0000F6 D0 1A            [ 4]  585 	bne	00197$
+      0000F8 A5*04            [ 3]  586 	lda	*(_wcstoul_sloc2_1_0 + 1)
+      0000FA D0 16            [ 4]  587 	bne	00197$
+      0000FC A5*05            [ 3]  588 	lda	*(_wcstoul_sloc2_1_0 + 2)
+      0000FE D0 12            [ 4]  589 	bne	00197$
+      000100 A5*06            [ 3]  590 	lda	*(_wcstoul_sloc2_1_0 + 3)
+      000102 D0 0E            [ 4]  591 	bne	00197$
+                                    592 ;	Raw cost for generated ic 15 : (30, 36.400002) count=3.999992
+                                    593 ;	skipping generated iCode
+                                    594 ;	Raw cost for generated ic 16 : (0, 0.000000) count=3.999992
+                                    595 ;	genLabel
+      000104                        596 00172$:
+                                    597 ;	Raw cost for generated ic 20 : (0, 0.000000) count=4.333324
+                                    598 ;	../wcstoul.c: 72: ptr++;
+                                    599 ;	genPlus
+                                    600 ;	  genPlusInc
+      000104 A5*01            [ 3]  601 	lda	*_wcstoul_sloc1_1_0
+      000106 18               [ 2]  602 	clc
+      000107 69 04            [ 2]  603 	adc	#0x04
+      000109 85*01            [ 3]  604 	sta	*_wcstoul_sloc1_1_0
+      00010B 90 BE            [ 4]  605 	bcc	00101$
+      00010D E6*02            [ 5]  606 	inc	*(_wcstoul_sloc1_1_0 + 1)
+                                    607 ;	Raw cost for generated ic 31 : (11, 17.600000) count=4.333324
+                                    608 ;	genGoto
+      00010F 4CrCBr00         [ 3]  609 	jmp	00101$
+                                    610 ;	Raw cost for generated ic 33 : (3, 3.000000) count=4.333324
+                                    611 ;	genLabel
+      000112                        612 00197$:
+                                    613 ;	Raw cost for generated ic 282 : (0, 0.000000) count=0.999997
+                                    614 ;	genAssign
+                                    615 ;	genCopy
+      000112 A5*02            [ 3]  616 	lda	*(_wcstoul_sloc1_1_0 + 1)
+      000114 8Dr0Cr00         [ 4]  617 	sta	(_wcstoul_ptr_10000_164 + 1)
+      000117 A5*01            [ 3]  618 	lda	*_wcstoul_sloc1_1_0
+      000119 8Dr0Br00         [ 4]  619 	sta	_wcstoul_ptr_10000_164
+                                    620 ;	Raw cost for generated ic 283 : (10, 14.000000) count=0.999997
+                                    621 ;	../wcstoul.c: 75: switch(*ptr)
+                                    622 ;	genPointerGet
+      00011C A0 00            [ 2]  623 	ldy	#0x00
+      00011E B1*01            [ 6]  624 	lda	[*_wcstoul_sloc1_1_0],y
+      000120 85*03            [ 3]  625 	sta	*_wcstoul_sloc2_1_0
+      000122 C8               [ 2]  626 	iny
+      000123 B1*01            [ 6]  627 	lda	[*_wcstoul_sloc1_1_0],y
+      000125 85*04            [ 3]  628 	sta	*(_wcstoul_sloc2_1_0 + 1)
+      000127 C8               [ 2]  629 	iny
+      000128 B1*01            [ 6]  630 	lda	[*_wcstoul_sloc1_1_0],y
+      00012A 85*05            [ 3]  631 	sta	*(_wcstoul_sloc2_1_0 + 2)
+      00012C C8               [ 2]  632 	iny
+      00012D B1*01            [ 6]  633 	lda	[*_wcstoul_sloc1_1_0],y
+      00012F 85*06            [ 3]  634 	sta	*(_wcstoul_sloc2_1_0 + 3)
+                                    635 ;	Raw cost for generated ic 36 : (21, 40.000000) count=0.999997
+                                    636 ;	genCmpEQorNE
+      000131 A5*03            [ 3]  637 	lda	*_wcstoul_sloc2_1_0
+      000133 C9 2B            [ 2]  638 	cmp	#0x2b
+      000135 D0 0C            [ 4]  639 	bne	00325$
+      000137 A5*04            [ 3]  640 	lda	*(_wcstoul_sloc2_1_0 + 1)
+      000139 D0 08            [ 4]  641 	bne	00325$
+      00013B A5*05            [ 3]  642 	lda	*(_wcstoul_sloc2_1_0 + 2)
+      00013D D0 04            [ 4]  643 	bne	00325$
+      00013F A5*06            [ 3]  644 	lda	*(_wcstoul_sloc2_1_0 + 3)
+      000141 F0 17            [ 4]  645 	beq	00105$
+      000143                        646 00325$:
+                                    647 ;	Raw cost for generated ic 37 : (30, 36.400002) count=0.999997
+                                    648 ;	skipping generated iCode
+                                    649 ;	Raw cost for generated ic 38 : (0, 0.000000) count=0.999997
+                                    650 ;	genCmpEQorNE
+      000143 A5*03            [ 3]  651 	lda	*_wcstoul_sloc2_1_0
+      000145 C9 2D            [ 2]  652 	cmp	#0x2d
+      000147 D0 1F            [ 4]  653 	bne	00106$
+      000149 A5*04            [ 3]  654 	lda	*(_wcstoul_sloc2_1_0 + 1)
+      00014B D0 1B            [ 4]  655 	bne	00106$
+      00014D A5*05            [ 3]  656 	lda	*(_wcstoul_sloc2_1_0 + 2)
+      00014F D0 17            [ 4]  657 	bne	00106$
+      000151 A5*06            [ 3]  658 	lda	*(_wcstoul_sloc2_1_0 + 3)
+      000153 D0 13            [ 4]  659 	bne	00106$
+                                    660 ;	Raw cost for generated ic 39 : (30, 36.400002) count=0.749996
+                                    661 ;	skipping generated iCode
+                                    662 ;	Raw cost for generated ic 40 : (0, 0.000000) count=0.749996
+                                    663 ;	../wcstoul.c: 78: neg = true;
+                                    664 ;	genAssign
+                                    665 ;	genAssignLit
+      000155 A2 01            [ 2]  666 	ldx	#0x01
+      000157 8Er12r00         [ 4]  667 	stx	_wcstoul_neg_10000_164
+                                    668 ;	Raw cost for generated ic 43 : (5, 6.000000) count=0.562496
+                                    669 ;	../wcstoul.c: 79: case L'+':
+                                    670 ;	genLabel
+      00015A                        671 00105$:
+                                    672 ;	Raw cost for generated ic 44 : (0, 0.000000) count=0.812494
+                                    673 ;	../wcstoul.c: 80: ptr++;
+                                    674 ;	genPlus
+                                    675 ;	  genPlusInc
+      00015A ADr0Br00         [ 4]  676 	lda	_wcstoul_ptr_10000_164
+      00015D 18               [ 2]  677 	clc
+      00015E 69 04            [ 2]  678 	adc	#0x04
+      000160 8Dr0Br00         [ 4]  679 	sta	_wcstoul_ptr_10000_164
+      000163 90 03            [ 4]  680 	bcc	00333$
+      000165 EEr0Cr00         [ 6]  681 	inc	(_wcstoul_ptr_10000_164 + 1)
+      000168                        682 00333$:
+                                    683 ;	Raw cost for generated ic 46 : (14, 20.600000) count=0.812494
+                                    684 ;	../wcstoul.c: 81: }
+                                    685 ;	genLabel
+      000168                        686 00106$:
+                                    687 ;	Raw cost for generated ic 48 : (0, 0.000000) count=0.999993
+                                    688 ;	../wcstoul.c: 84: if (!b)
+                                    689 ;	genIfx
+      000168 ADr13r00         [ 4]  690 	lda	_wcstoul_b_10000_164
+                                    691 ;	genIfxJump : z
+      00016B F0 03            [ 4]  692 	beq	00335$
+      00016D 4Cr7Fr02         [ 3]  693 	jmp	00128$
+      000170                        694 00335$:
+                                    695 ;	Raw cost for generated ic 49 : (8, 9.600000) count=0.999993
+                                    696 ;	../wcstoul.c: 86: if (!wcsncmp (ptr, L"0x", 2) || !wcsncmp (ptr, L"0X", 2))
+                                    697 ;	skipping iCode since result will be rematerialized
+                                    698 ;	Raw cost for generated ic 52 : (0, 0.000000) count=0.749995
+                                    699 ;	genCast
+                                    700 ;	genCopy
+      000170 A9s00            [ 2]  701 	lda	#>___str_0
+      000172 8Dr01r00         [ 4]  702 	sta	(_wcsncmp_PARM_2 + 1)
+      000175 A9r00            [ 2]  703 	lda	#___str_0
+      000177 8Dr00r00         [ 4]  704 	sta	_wcsncmp_PARM_2
+                                    705 ;	Raw cost for generated ic 53 : (10, 12.000000) count=0.749995
+                                    706 ;	genAssign
+                                    707 ;	genAssignLit
+      00017A A2 02            [ 2]  708 	ldx	#0x02
+      00017C 8Er00r00         [ 4]  709 	stx	_wcsncmp_PARM_3
+      00017F A0 00            [ 2]  710 	ldy	#0x00
+      000181 8Cr01r00         [ 4]  711 	sty	(_wcsncmp_PARM_3 + 1)
+                                    712 ;	Raw cost for generated ic 56 : (10, 12.000000) count=0.749995
+                                    713 ;	Raw cost for generated ic 54 : (0, 0.000000) count=0.749995
+                                    714 ;	genCall
+                                    715 ;	genSend
+      000184 AEr0Cr00         [ 4]  716 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      000187 ADr0Br00         [ 4]  717 	lda	_wcstoul_ptr_10000_164
+      00018A 20r00r00         [ 6]  718 	jsr	_wcsncmp
+                                    719 ;	assignResultValue
+                                    720 ;	Raw cost for generated ic 57 : (9, 14.000000) count=0.749995
+                                    721 ;	genIfx
+      00018D C9 00            [ 2]  722 	cmp	#0x00
+                                    723 ;	genIfxJump : z
+      00018F D0 04            [ 4]  724 	bne	00337$
+      000191 E0 00            [ 2]  725 	cpx	#0x00
+      000193 F0 25            [ 4]  726 	beq	00114$
+      000195                        727 00337$:
+                                    728 ;	Raw cost for generated ic 58 : (11, 12.200000) count=0.749995
+                                    729 ;	skipping iCode since result will be rematerialized
+                                    730 ;	Raw cost for generated ic 61 : (0, 0.000000) count=0.562496
+                                    731 ;	genCast
+                                    732 ;	genCopy
+      000195 A9s00            [ 2]  733 	lda	#>___str_1
+      000197 8Dr01r00         [ 4]  734 	sta	(_wcsncmp_PARM_2 + 1)
+      00019A A9r0C            [ 2]  735 	lda	#___str_1
+      00019C 8Dr00r00         [ 4]  736 	sta	_wcsncmp_PARM_2
+                                    737 ;	Raw cost for generated ic 62 : (10, 12.000000) count=0.562496
+                                    738 ;	genAssign
+                                    739 ;	genAssignLit
+      00019F A2 02            [ 2]  740 	ldx	#0x02
+      0001A1 8Er00r00         [ 4]  741 	stx	_wcsncmp_PARM_3
+      0001A4 A0 00            [ 2]  742 	ldy	#0x00
+      0001A6 8Cr01r00         [ 4]  743 	sty	(_wcsncmp_PARM_3 + 1)
+                                    744 ;	Raw cost for generated ic 65 : (10, 12.000000) count=0.562496
+                                    745 ;	Raw cost for generated ic 63 : (0, 0.000000) count=0.562496
+                                    746 ;	genCall
+                                    747 ;	genSend
+      0001A9 AEr0Cr00         [ 4]  748 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      0001AC ADr0Br00         [ 4]  749 	lda	_wcstoul_ptr_10000_164
+      0001AF 20r00r00         [ 6]  750 	jsr	_wcsncmp
+                                    751 ;	assignResultValue
+                                    752 ;	Raw cost for generated ic 66 : (9, 14.000000) count=0.562496
+                                    753 ;	genIfx
+      0001B2 C9 00            [ 2]  754 	cmp	#0x00
+                                    755 ;	genIfxJump : z
+      0001B4 D0 1A            [ 4]  756 	bne	00115$
+      0001B6 E0 00            [ 2]  757 	cpx	#0x00
+      0001B8 D0 16            [ 4]  758 	bne	00115$
+                                    759 ;	Raw cost for generated ic 67 : (11, 12.200000) count=0.562496
+                                    760 ;	genLabel
+      0001BA                        761 00114$:
+                                    762 ;	Raw cost for generated ic 69 : (0, 0.000000) count=0.609371
+                                    763 ;	../wcstoul.c: 88: b = 16;
+                                    764 ;	genAssign
+                                    765 ;	genAssignLit
+      0001BA A2 10            [ 2]  766 	ldx	#0x10
+      0001BC 8Er13r00         [ 4]  767 	stx	_wcstoul_b_10000_164
+                                    768 ;	Raw cost for generated ic 70 : (5, 6.000000) count=0.609371
+                                    769 ;	../wcstoul.c: 89: ptr += 2;
+                                    770 ;	genPlus
+                                    771 ;	  genPlusInc
+      0001BF ADr0Br00         [ 4]  772 	lda	_wcstoul_ptr_10000_164
+      0001C2 18               [ 2]  773 	clc
+      0001C3 69 08            [ 2]  774 	adc	#0x08
+      0001C5 8Dr0Br00         [ 4]  775 	sta	_wcstoul_ptr_10000_164
+      0001C8 90 03            [ 4]  776 	bcc	00340$
+      0001CA EEr0Cr00         [ 6]  777 	inc	(_wcstoul_ptr_10000_164 + 1)
+      0001CD                        778 00340$:
+                                    779 ;	Raw cost for generated ic 71 : (14, 20.600000) count=0.609371
+                                    780 ;	genGoto
+      0001CD 4Cr40r03         [ 3]  781 	jmp	00129$
+                                    782 ;	Raw cost for generated ic 73 : (3, 3.000000) count=0.609371
+                                    783 ;	genLabel
+      0001D0                        784 00115$:
+                                    785 ;	Raw cost for generated ic 74 : (0, 0.000000) count=0.140623
+                                    786 ;	../wcstoul.c: 91: else if (!wcsncmp (ptr, L"0b", 2) || !wcsncmp (ptr, L"0B", 2))
+                                    787 ;	skipping iCode since result will be rematerialized
+                                    788 ;	Raw cost for generated ic 75 : (0, 0.000000) count=0.140623
+                                    789 ;	genCast
+                                    790 ;	genCopy
+      0001D0 A9s00            [ 2]  791 	lda	#>___str_2
+      0001D2 8Dr01r00         [ 4]  792 	sta	(_wcsncmp_PARM_2 + 1)
+      0001D5 A9r18            [ 2]  793 	lda	#___str_2
+      0001D7 8Dr00r00         [ 4]  794 	sta	_wcsncmp_PARM_2
+                                    795 ;	Raw cost for generated ic 76 : (10, 12.000000) count=0.140623
+                                    796 ;	genAssign
+                                    797 ;	genAssignLit
+      0001DA A2 02            [ 2]  798 	ldx	#0x02
+      0001DC 8Er00r00         [ 4]  799 	stx	_wcsncmp_PARM_3
+      0001DF A0 00            [ 2]  800 	ldy	#0x00
+      0001E1 8Cr01r00         [ 4]  801 	sty	(_wcsncmp_PARM_3 + 1)
+                                    802 ;	Raw cost for generated ic 79 : (10, 12.000000) count=0.140623
+                                    803 ;	Raw cost for generated ic 77 : (0, 0.000000) count=0.140623
+                                    804 ;	genCall
+                                    805 ;	genSend
+      0001E4 AEr0Cr00         [ 4]  806 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      0001E7 ADr0Br00         [ 4]  807 	lda	_wcstoul_ptr_10000_164
+      0001EA 20r00r00         [ 6]  808 	jsr	_wcsncmp
+                                    809 ;	assignResultValue
+                                    810 ;	Raw cost for generated ic 80 : (9, 14.000000) count=0.140623
+                                    811 ;	genIfx
+      0001ED C9 00            [ 2]  812 	cmp	#0x00
+                                    813 ;	genIfxJump : z
+      0001EF D0 04            [ 4]  814 	bne	00342$
+      0001F1 E0 00            [ 2]  815 	cpx	#0x00
+      0001F3 F0 25            [ 4]  816 	beq	00110$
+      0001F5                        817 00342$:
+                                    818 ;	Raw cost for generated ic 81 : (11, 12.200000) count=0.140623
+                                    819 ;	skipping iCode since result will be rematerialized
+                                    820 ;	Raw cost for generated ic 84 : (0, 0.000000) count=0.105467
+                                    821 ;	genCast
+                                    822 ;	genCopy
+      0001F5 A9s00            [ 2]  823 	lda	#>___str_3
+      0001F7 8Dr01r00         [ 4]  824 	sta	(_wcsncmp_PARM_2 + 1)
+      0001FA A9r24            [ 2]  825 	lda	#___str_3
+      0001FC 8Dr00r00         [ 4]  826 	sta	_wcsncmp_PARM_2
+                                    827 ;	Raw cost for generated ic 85 : (10, 12.000000) count=0.105467
+                                    828 ;	genAssign
+                                    829 ;	genAssignLit
+      0001FF A2 02            [ 2]  830 	ldx	#0x02
+      000201 8Er00r00         [ 4]  831 	stx	_wcsncmp_PARM_3
+      000204 A0 00            [ 2]  832 	ldy	#0x00
+      000206 8Cr01r00         [ 4]  833 	sty	(_wcsncmp_PARM_3 + 1)
+                                    834 ;	Raw cost for generated ic 88 : (10, 12.000000) count=0.105467
+                                    835 ;	Raw cost for generated ic 86 : (0, 0.000000) count=0.105467
+                                    836 ;	genCall
+                                    837 ;	genSend
+      000209 AEr0Cr00         [ 4]  838 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      00020C ADr0Br00         [ 4]  839 	lda	_wcstoul_ptr_10000_164
+      00020F 20r00r00         [ 6]  840 	jsr	_wcsncmp
+                                    841 ;	assignResultValue
+                                    842 ;	Raw cost for generated ic 89 : (9, 14.000000) count=0.105467
+                                    843 ;	genIfx
+      000212 C9 00            [ 2]  844 	cmp	#0x00
+                                    845 ;	genIfxJump : z
+      000214 D0 1A            [ 4]  846 	bne	00111$
+      000216 E0 00            [ 2]  847 	cpx	#0x00
+      000218 D0 16            [ 4]  848 	bne	00111$
+                                    849 ;	Raw cost for generated ic 90 : (11, 12.200000) count=0.105467
+                                    850 ;	genLabel
+      00021A                        851 00110$:
+                                    852 ;	Raw cost for generated ic 92 : (0, 0.000000) count=0.114256
+                                    853 ;	../wcstoul.c: 93: b = 2;
+                                    854 ;	genAssign
+                                    855 ;	genAssignLit
+      00021A A2 02            [ 2]  856 	ldx	#0x02
+      00021C 8Er13r00         [ 4]  857 	stx	_wcstoul_b_10000_164
+                                    858 ;	Raw cost for generated ic 93 : (5, 6.000000) count=0.114256
+                                    859 ;	../wcstoul.c: 94: ptr += 2;
+                                    860 ;	genPlus
+                                    861 ;	  genPlusInc
+      00021F ADr0Br00         [ 4]  862 	lda	_wcstoul_ptr_10000_164
+      000222 18               [ 2]  863 	clc
+      000223 69 08            [ 2]  864 	adc	#0x08
+      000225 8Dr0Br00         [ 4]  865 	sta	_wcstoul_ptr_10000_164
+      000228 90 03            [ 4]  866 	bcc	00345$
+      00022A EEr0Cr00         [ 6]  867 	inc	(_wcstoul_ptr_10000_164 + 1)
+      00022D                        868 00345$:
+                                    869 ;	Raw cost for generated ic 94 : (14, 20.600000) count=0.114256
+                                    870 ;	genGoto
+      00022D 4Cr40r03         [ 3]  871 	jmp	00129$
+                                    872 ;	Raw cost for generated ic 96 : (3, 3.000000) count=0.114256
+                                    873 ;	genLabel
+      000230                        874 00111$:
+                                    875 ;	Raw cost for generated ic 97 : (0, 0.000000) count=0.020970
+                                    876 ;	../wcstoul.c: 96: else if (*ptr == L'0')
+                                    877 ;	genPointerGet
+                                    878 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000230 AEr0Br00         [ 4]  879 	ldx	_wcstoul_ptr_10000_164
+      000233 86*00            [ 3]  880 	stx	*(DPTR+0)
+      000235 AEr0Cr00         [ 4]  881 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      000238 86*01            [ 3]  882 	stx	*(DPTR+1)
+      00023A A0 00            [ 2]  883 	ldy	#0x00
+      00023C B1*00            [ 6]  884 	lda	[DPTR],y
+      00023E 85*03            [ 3]  885 	sta	*_wcstoul_sloc2_1_0
+      000240 C8               [ 2]  886 	iny
+      000241 B1*00            [ 6]  887 	lda	[DPTR],y
+      000243 85*04            [ 3]  888 	sta	*(_wcstoul_sloc2_1_0 + 1)
+      000245 C8               [ 2]  889 	iny
+      000246 B1*00            [ 6]  890 	lda	[DPTR],y
+      000248 85*05            [ 3]  891 	sta	*(_wcstoul_sloc2_1_0 + 2)
+      00024A C8               [ 2]  892 	iny
+      00024B B1*00            [ 6]  893 	lda	[DPTR],y
+      00024D 85*06            [ 3]  894 	sta	*(_wcstoul_sloc2_1_0 + 3)
+                                    895 ;	Raw cost for generated ic 99 : (31, 54.000000) count=0.020970
+                                    896 ;	genCmpEQorNE
+      00024F A5*03            [ 3]  897 	lda	*_wcstoul_sloc2_1_0
+      000251 C9 30            [ 2]  898 	cmp	#0x30
+      000253 D0 22            [ 4]  899 	bne	00108$
+      000255 A5*04            [ 3]  900 	lda	*(_wcstoul_sloc2_1_0 + 1)
+      000257 D0 1E            [ 4]  901 	bne	00108$
+      000259 A5*05            [ 3]  902 	lda	*(_wcstoul_sloc2_1_0 + 2)
+      00025B D0 1A            [ 4]  903 	bne	00108$
+      00025D A5*06            [ 3]  904 	lda	*(_wcstoul_sloc2_1_0 + 3)
+      00025F D0 16            [ 4]  905 	bne	00108$
+                                    906 ;	Raw cost for generated ic 100 : (30, 36.400002) count=0.020970
+                                    907 ;	skipping generated iCode
+                                    908 ;	Raw cost for generated ic 101 : (0, 0.000000) count=0.020970
+                                    909 ;	../wcstoul.c: 98: b = 8;
+                                    910 ;	genAssign
+                                    911 ;	genAssignLit
+      000261 A2 08            [ 2]  912 	ldx	#0x08
+      000263 8Er13r00         [ 4]  913 	stx	_wcstoul_b_10000_164
+                                    914 ;	Raw cost for generated ic 104 : (5, 6.000000) count=0.015727
+                                    915 ;	../wcstoul.c: 99: ptr++;
+                                    916 ;	genPlus
+                                    917 ;	  genPlusInc
+      000266 ADr0Br00         [ 4]  918 	lda	_wcstoul_ptr_10000_164
+      000269 18               [ 2]  919 	clc
+      00026A 69 04            [ 2]  920 	adc	#0x04
+      00026C 8Dr0Br00         [ 4]  921 	sta	_wcstoul_ptr_10000_164
+      00026F 90 03            [ 4]  922 	bcc	00351$
+      000271 EEr0Cr00         [ 6]  923 	inc	(_wcstoul_ptr_10000_164 + 1)
+      000274                        924 00351$:
+                                    925 ;	Raw cost for generated ic 106 : (14, 20.600000) count=0.015727
+                                    926 ;	genGoto
+      000274 4Cr40r03         [ 3]  927 	jmp	00129$
+                                    928 ;	Raw cost for generated ic 108 : (3, 3.000000) count=0.015727
+                                    929 ;	genLabel
+      000277                        930 00108$:
+                                    931 ;	Raw cost for generated ic 109 : (0, 0.000000) count=0.000000
+                                    932 ;	../wcstoul.c: 102: b = 10;
+                                    933 ;	genAssign
+                                    934 ;	genAssignLit
+      000277 A2 0A            [ 2]  935 	ldx	#0x0a
+      000279 8Er13r00         [ 4]  936 	stx	_wcstoul_b_10000_164
+                                    937 ;	Raw cost for generated ic 110 : (5, 6.000000) count=0.000000
+                                    938 ;	genGoto
+      00027C 4Cr40r03         [ 3]  939 	jmp	00129$
+                                    940 ;	Raw cost for generated ic 114 : (3, 3.000000) count=0.000000
+                                    941 ;	genLabel
+      00027F                        942 00128$:
+                                    943 ;	Raw cost for generated ic 115 : (0, 0.000000) count=0.249997
+                                    944 ;	../wcstoul.c: 105: else if (b == 16 && (!wcsncmp (ptr, L"0x", 2) || !wcsncmp (ptr, L"0X", 2)))
+                                    945 ;	genCmpEQorNE
+      00027F ADr13r00         [ 4]  946 	lda	_wcstoul_b_10000_164
+      000282 C9 10            [ 2]  947 	cmp	#0x10
+      000284 D0 5B            [ 4]  948 	bne	00123$
+                                    949 ;	Raw cost for generated ic 116 : (10, 11.600000) count=0.249997
+                                    950 ;	skipping generated iCode
+                                    951 ;	Raw cost for generated ic 117 : (0, 0.000000) count=0.249997
+                                    952 ;	skipping iCode since result will be rematerialized
+                                    953 ;	Raw cost for generated ic 120 : (0, 0.000000) count=0.187496
+                                    954 ;	genCast
+                                    955 ;	genCopy
+      000286 A9s00            [ 2]  956 	lda	#>___str_0
+      000288 8Dr01r00         [ 4]  957 	sta	(_wcsncmp_PARM_2 + 1)
+      00028B A9r00            [ 2]  958 	lda	#___str_0
+      00028D 8Dr00r00         [ 4]  959 	sta	_wcsncmp_PARM_2
+                                    960 ;	Raw cost for generated ic 121 : (10, 12.000000) count=0.187496
+                                    961 ;	genAssign
+                                    962 ;	genAssignLit
+      000290 A2 02            [ 2]  963 	ldx	#0x02
+      000292 8Er00r00         [ 4]  964 	stx	_wcsncmp_PARM_3
+      000295 A0 00            [ 2]  965 	ldy	#0x00
+      000297 8Cr01r00         [ 4]  966 	sty	(_wcsncmp_PARM_3 + 1)
+                                    967 ;	Raw cost for generated ic 124 : (10, 12.000000) count=0.187496
+                                    968 ;	Raw cost for generated ic 122 : (0, 0.000000) count=0.187496
+                                    969 ;	genCall
+                                    970 ;	genSend
+      00029A AEr0Cr00         [ 4]  971 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      00029D ADr0Br00         [ 4]  972 	lda	_wcstoul_ptr_10000_164
+      0002A0 20r00r00         [ 6]  973 	jsr	_wcsncmp
+                                    974 ;	assignResultValue
+                                    975 ;	Raw cost for generated ic 125 : (9, 14.000000) count=0.187496
+                                    976 ;	genIfx
+      0002A3 C9 00            [ 2]  977 	cmp	#0x00
+                                    978 ;	genIfxJump : z
+      0002A5 D0 04            [ 4]  979 	bne	00354$
+      0002A7 E0 00            [ 2]  980 	cpx	#0x00
+      0002A9 F0 25            [ 4]  981 	beq	00122$
+      0002AB                        982 00354$:
+                                    983 ;	Raw cost for generated ic 126 : (11, 12.200000) count=0.187496
+                                    984 ;	skipping iCode since result will be rematerialized
+                                    985 ;	Raw cost for generated ic 129 : (0, 0.000000) count=0.140622
+                                    986 ;	genCast
+                                    987 ;	genCopy
+      0002AB A9s00            [ 2]  988 	lda	#>___str_1
+      0002AD 8Dr01r00         [ 4]  989 	sta	(_wcsncmp_PARM_2 + 1)
+      0002B0 A9r0C            [ 2]  990 	lda	#___str_1
+      0002B2 8Dr00r00         [ 4]  991 	sta	_wcsncmp_PARM_2
+                                    992 ;	Raw cost for generated ic 130 : (10, 12.000000) count=0.140622
+                                    993 ;	genAssign
+                                    994 ;	genAssignLit
+      0002B5 A2 02            [ 2]  995 	ldx	#0x02
+      0002B7 8Er00r00         [ 4]  996 	stx	_wcsncmp_PARM_3
+      0002BA A0 00            [ 2]  997 	ldy	#0x00
+      0002BC 8Cr01r00         [ 4]  998 	sty	(_wcsncmp_PARM_3 + 1)
+                                    999 ;	Raw cost for generated ic 133 : (10, 12.000000) count=0.140622
+                                   1000 ;	Raw cost for generated ic 131 : (0, 0.000000) count=0.140622
+                                   1001 ;	genCall
+                                   1002 ;	genSend
+      0002BF AEr0Cr00         [ 4] 1003 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      0002C2 ADr0Br00         [ 4] 1004 	lda	_wcstoul_ptr_10000_164
+      0002C5 20r00r00         [ 6] 1005 	jsr	_wcsncmp
+                                   1006 ;	assignResultValue
+                                   1007 ;	Raw cost for generated ic 134 : (9, 14.000000) count=0.140622
+                                   1008 ;	genIfx
+      0002C8 C9 00            [ 2] 1009 	cmp	#0x00
+                                   1010 ;	genIfxJump : z
+      0002CA D0 15            [ 4] 1011 	bne	00123$
+      0002CC E0 00            [ 2] 1012 	cpx	#0x00
+      0002CE D0 11            [ 4] 1013 	bne	00123$
+                                   1014 ;	Raw cost for generated ic 135 : (11, 12.200000) count=0.140622
+                                   1015 ;	genLabel
+      0002D0                       1016 00122$:
+                                   1017 ;	Raw cost for generated ic 137 : (0, 0.000000) count=0.152341
+                                   1018 ;	../wcstoul.c: 106: ptr += 2;
+                                   1019 ;	genPlus
+                                   1020 ;	  genPlusInc
+      0002D0 ADr0Br00         [ 4] 1021 	lda	_wcstoul_ptr_10000_164
+      0002D3 18               [ 2] 1022 	clc
+      0002D4 69 08            [ 2] 1023 	adc	#0x08
+      0002D6 8Dr0Br00         [ 4] 1024 	sta	_wcstoul_ptr_10000_164
+      0002D9 90 65            [ 4] 1025 	bcc	00129$
+      0002DB EEr0Cr00         [ 6] 1026 	inc	(_wcstoul_ptr_10000_164 + 1)
+                                   1027 ;	Raw cost for generated ic 138 : (14, 20.600000) count=0.152341
+                                   1028 ;	genGoto
+      0002DE 4Cr40r03         [ 3] 1029 	jmp	00129$
+                                   1030 ;	Raw cost for generated ic 140 : (3, 3.000000) count=0.152341
+                                   1031 ;	genLabel
+      0002E1                       1032 00123$:
+                                   1033 ;	Raw cost for generated ic 141 : (0, 0.000000) count=0.097654
+                                   1034 ;	../wcstoul.c: 107: else if (b == 2 && (!wcsncmp (ptr, L"0b", 2) || !wcsncmp (ptr, L"0B", 2)))
+                                   1035 ;	genCmpEQorNE
+      0002E1 ADr13r00         [ 4] 1036 	lda	_wcstoul_b_10000_164
+      0002E4 C9 02            [ 2] 1037 	cmp	#0x02
+      0002E6 D0 58            [ 4] 1038 	bne	00129$
+                                   1039 ;	Raw cost for generated ic 142 : (10, 11.600000) count=0.097654
+                                   1040 ;	skipping generated iCode
+                                   1041 ;	Raw cost for generated ic 143 : (0, 0.000000) count=0.097654
+                                   1042 ;	skipping iCode since result will be rematerialized
+                                   1043 ;	Raw cost for generated ic 146 : (0, 0.000000) count=0.073241
+                                   1044 ;	genCast
+                                   1045 ;	genCopy
+      0002E8 A9s00            [ 2] 1046 	lda	#>___str_2
+      0002EA 8Dr01r00         [ 4] 1047 	sta	(_wcsncmp_PARM_2 + 1)
+      0002ED A9r18            [ 2] 1048 	lda	#___str_2
+      0002EF 8Dr00r00         [ 4] 1049 	sta	_wcsncmp_PARM_2
+                                   1050 ;	Raw cost for generated ic 147 : (10, 12.000000) count=0.073241
+                                   1051 ;	genAssign
+                                   1052 ;	genAssignLit
+      0002F2 A2 02            [ 2] 1053 	ldx	#0x02
+      0002F4 8Er00r00         [ 4] 1054 	stx	_wcsncmp_PARM_3
+      0002F7 A0 00            [ 2] 1055 	ldy	#0x00
+      0002F9 8Cr01r00         [ 4] 1056 	sty	(_wcsncmp_PARM_3 + 1)
+                                   1057 ;	Raw cost for generated ic 150 : (10, 12.000000) count=0.073241
+                                   1058 ;	Raw cost for generated ic 148 : (0, 0.000000) count=0.073241
+                                   1059 ;	genCall
+                                   1060 ;	genSend
+      0002FC AEr0Cr00         [ 4] 1061 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      0002FF ADr0Br00         [ 4] 1062 	lda	_wcstoul_ptr_10000_164
+      000302 20r00r00         [ 6] 1063 	jsr	_wcsncmp
+                                   1064 ;	assignResultValue
+                                   1065 ;	Raw cost for generated ic 151 : (9, 14.000000) count=0.073241
+                                   1066 ;	genIfx
+      000305 C9 00            [ 2] 1067 	cmp	#0x00
+                                   1068 ;	genIfxJump : z
+      000307 D0 04            [ 4] 1069 	bne	00360$
+      000309 E0 00            [ 2] 1070 	cpx	#0x00
+      00030B F0 25            [ 4] 1071 	beq	00118$
+      00030D                       1072 00360$:
+                                   1073 ;	Raw cost for generated ic 152 : (11, 12.200000) count=0.073241
+                                   1074 ;	skipping iCode since result will be rematerialized
+                                   1075 ;	Raw cost for generated ic 155 : (0, 0.000000) count=0.054931
+                                   1076 ;	genCast
+                                   1077 ;	genCopy
+      00030D A9s00            [ 2] 1078 	lda	#>___str_3
+      00030F 8Dr01r00         [ 4] 1079 	sta	(_wcsncmp_PARM_2 + 1)
+      000312 A9r24            [ 2] 1080 	lda	#___str_3
+      000314 8Dr00r00         [ 4] 1081 	sta	_wcsncmp_PARM_2
+                                   1082 ;	Raw cost for generated ic 156 : (10, 12.000000) count=0.054931
+                                   1083 ;	genAssign
+                                   1084 ;	genAssignLit
+      000317 A2 02            [ 2] 1085 	ldx	#0x02
+      000319 8Er00r00         [ 4] 1086 	stx	_wcsncmp_PARM_3
+      00031C A0 00            [ 2] 1087 	ldy	#0x00
+      00031E 8Cr01r00         [ 4] 1088 	sty	(_wcsncmp_PARM_3 + 1)
+                                   1089 ;	Raw cost for generated ic 159 : (10, 12.000000) count=0.054931
+                                   1090 ;	Raw cost for generated ic 157 : (0, 0.000000) count=0.054931
+                                   1091 ;	genCall
+                                   1092 ;	genSend
+      000321 AEr0Cr00         [ 4] 1093 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      000324 ADr0Br00         [ 4] 1094 	lda	_wcstoul_ptr_10000_164
+      000327 20r00r00         [ 6] 1095 	jsr	_wcsncmp
+                                   1096 ;	assignResultValue
+                                   1097 ;	Raw cost for generated ic 160 : (9, 14.000000) count=0.054931
+                                   1098 ;	genIfx
+      00032A C9 00            [ 2] 1099 	cmp	#0x00
+                                   1100 ;	genIfxJump : z
+      00032C D0 12            [ 4] 1101 	bne	00129$
+      00032E E0 00            [ 2] 1102 	cpx	#0x00
+      000330 D0 0E            [ 4] 1103 	bne	00129$
+                                   1104 ;	Raw cost for generated ic 161 : (11, 12.200000) count=0.054931
+                                   1105 ;	genLabel
+      000332                       1106 00118$:
+                                   1107 ;	Raw cost for generated ic 163 : (0, 0.000000) count=0.059508
+                                   1108 ;	../wcstoul.c: 108: ptr += 2;
+                                   1109 ;	genPlus
+                                   1110 ;	  genPlusInc
+      000332 ADr0Br00         [ 4] 1111 	lda	_wcstoul_ptr_10000_164
+      000335 18               [ 2] 1112 	clc
+      000336 69 08            [ 2] 1113 	adc	#0x08
+      000338 8Dr0Br00         [ 4] 1114 	sta	_wcstoul_ptr_10000_164
+      00033B 90 03            [ 4] 1115 	bcc	00363$
+      00033D EEr0Cr00         [ 6] 1116 	inc	(_wcstoul_ptr_10000_164 + 1)
+      000340                       1117 00363$:
+                                   1118 ;	Raw cost for generated ic 164 : (14, 20.600000) count=0.059508
+                                   1119 ;	genLabel
+      000340                       1120 00129$:
+                                   1121 ;	Raw cost for generated ic 168 : (0, 0.000000) count=0.989349
+                                   1122 ;	../wcstoul.c: 111: if (_isdigit (*ptr, b) < 0)
+                                   1123 ;	genPointerGet
+                                   1124 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000340 AEr0Br00         [ 4] 1125 	ldx	_wcstoul_ptr_10000_164
+      000343 86*00            [ 3] 1126 	stx	*(DPTR+0)
+      000345 AEr0Cr00         [ 4] 1127 	ldx	(_wcstoul_ptr_10000_164 + 1)
+      000348 86*01            [ 3] 1128 	stx	*(DPTR+1)
+      00034A A0 00            [ 2] 1129 	ldy	#0x00
+      00034C B1*00            [ 6] 1130 	lda	[DPTR],y
+      00034E 8Dr00r00         [ 4] 1131 	sta	__isdigit_PARM_1
+      000351 C8               [ 2] 1132 	iny
+      000352 B1*00            [ 6] 1133 	lda	[DPTR],y
+      000354 8Dr01r00         [ 4] 1134 	sta	(__isdigit_PARM_1 + 1)
+      000357 C8               [ 2] 1135 	iny
+      000358 B1*00            [ 6] 1136 	lda	[DPTR],y
+      00035A 8Dr02r00         [ 4] 1137 	sta	(__isdigit_PARM_1 + 2)
+      00035D C8               [ 2] 1138 	iny
+      00035E B1*00            [ 6] 1139 	lda	[DPTR],y
+      000360 8Dr03r00         [ 4] 1140 	sta	(__isdigit_PARM_1 + 3)
+                                   1141 ;	Raw cost for generated ic 170 : (35, 58.000000) count=0.989349
+                                   1142 ;	genAssign
+                                   1143 ;	genCopy
+      000363 ADr13r00         [ 4] 1144 	lda	_wcstoul_b_10000_164
+      000366 8Dr04r00         [ 4] 1145 	sta	__isdigit_PARM_2
+                                   1146 ;	Raw cost for generated ic 172 : (6, 8.000000) count=0.989349
+                                   1147 ;	genCall
+      000369 20r00r00         [ 6] 1148 	jsr	__isdigit
+                                   1149 ;	assignResultValue
+      00036C 85*03            [ 3] 1150 	sta	*_wcstoul_sloc2_1_0
+                                   1151 ;	Raw cost for generated ic 173 : (5, 9.000000) count=0.989349
+                                   1152 ;	genCmp
+      00036E 24*03            [ 3] 1153 	bit	*_wcstoul_sloc2_1_0
+      000370 10 27            [ 4] 1154 	bpl	00133$
+                                   1155 ;	Raw cost for generated ic 174 : (7, 8.600000) count=0.989349
+                                   1156 ;	skipping generated iCode
+                                   1157 ;	Raw cost for generated ic 175 : (0, 0.000000) count=0.989349
+                                   1158 ;	../wcstoul.c: 113: if (endptr)
+                                   1159 ;	genIfx
+      000372 ADr06r00         [ 4] 1160 	lda	(_wcstoul_PARM_2 + 1)
+      000375 0Dr05r00         [ 4] 1161 	ora	_wcstoul_PARM_2
+                                   1162 ;	genIfxJump : z
+      000378 F0 17            [ 4] 1163 	beq	00131$
+                                   1164 ;	Raw cost for generated ic 178 : (11, 13.600000) count=0.742012
+                                   1165 ;	../wcstoul.c: 114: *endptr = (wchar_t*)nptr;
+                                   1166 ;	genAssign
+                                   1167 ;	genCopy
+      00037A AEr06r00         [ 4] 1168 	ldx	(_wcstoul_PARM_2 + 1)
+      00037D ADr05r00         [ 4] 1169 	lda	_wcstoul_PARM_2
+                                   1170 ;	Raw cost for generated ic 181 : (6, 8.000000) count=0.556509
+                                   1171 ;	genPointerSet
+                                   1172 ;	  setupDPTR - off=0 remat=(null) savea=0
+      000380 85*00            [ 3] 1173 	sta	*(DPTR+0)
+      000382 86*01            [ 3] 1174 	stx	*(DPTR+1)
+      000384 ADr09r00         [ 4] 1175 	lda	_wcstoul_nptr_10000_163
+      000387 A0 00            [ 2] 1176 	ldy	#0x00
+      000389 91*00            [ 6] 1177 	sta	[DPTR],y
+      00038B ADr0Ar00         [ 4] 1178 	lda	(_wcstoul_nptr_10000_163 + 1)
+      00038E C8               [ 2] 1179 	iny
+      00038F 91*00            [ 6] 1180 	sta	[DPTR],y
+                                   1181 ;	Raw cost for generated ic 182 : (17, 30.000000) count=0.556509
+                                   1182 ;	genLabel
+      000391                       1183 00131$:
+                                   1184 ;	Raw cost for generated ic 183 : (0, 0.000000) count=0.742012
+                                   1185 ;	../wcstoul.c: 115: return (0);
+                                   1186 ;	genRet
+      000391 A9 00            [ 2] 1187 	lda	#0x00
+      000393 AA               [ 2] 1188 	tax
+      000394 85*00            [ 3] 1189 	sta	*___SDCC_m6502_ret2
+      000396 85*00            [ 3] 1190 	sta	*___SDCC_m6502_ret3
+      000398 60               [ 6] 1191 	rts
+                                   1192 ;	Raw cost for generated ic 184 : (10, 13.000000) count=0.742012
+                                   1193 ;	genLabel
+      000399                       1194 00133$:
+                                   1195 ;	Raw cost for generated ic 185 : (0, 0.000000) count=0.989349
+                                   1196 ;	../wcstoul.c: 118: for (ret = 0;; ptr++)
+                                   1197 ;	genAssign
+                                   1198 ;	genAssignLit
+      000399 A0 00            [ 2] 1199 	ldy	#0x00
+      00039B 8Cr0Dr00         [ 4] 1200 	sty	_wcstoul_ret_10000_164
+      00039E 8Cr0Er00         [ 4] 1201 	sty	(_wcstoul_ret_10000_164 + 1)
+      0003A1 8Cr0Fr00         [ 4] 1202 	sty	(_wcstoul_ret_10000_164 + 2)
+      0003A4 8Cr10r00         [ 4] 1203 	sty	(_wcstoul_ret_10000_164 + 3)
+                                   1204 ;	Raw cost for generated ic 186 : (14, 18.000000) count=0.989349
+                                   1205 ;	genAssign
+                                   1206 ;	genCopy
+      0003A7 ADr0Cr00         [ 4] 1207 	lda	(_wcstoul_ptr_10000_164 + 1)
+      0003AA 85*04            [ 3] 1208 	sta	*(_wcstoul_sloc2_1_0 + 1)
+      0003AC ADr0Br00         [ 4] 1209 	lda	_wcstoul_ptr_10000_164
+      0003AF 85*03            [ 3] 1210 	sta	*_wcstoul_sloc2_1_0
+                                   1211 ;	Raw cost for generated ic 284 : (10, 14.000000) count=0.989349
+                                   1212 ;	genLabel
+      0003B1                       1213 00167$:
+                                   1214 ;	Raw cost for generated ic 187 : (0, 0.000000) count=3.958003
+                                   1215 ;	../wcstoul.c: 120: signed char digit = _isdigit (*ptr, b);
+                                   1216 ;	genPointerGet
+      0003B1 A0 00            [ 2] 1217 	ldy	#0x00
+      0003B3 B1*03            [ 6] 1218 	lda	[*_wcstoul_sloc2_1_0],y
+      0003B5 8Dr00r00         [ 4] 1219 	sta	__isdigit_PARM_1
+      0003B8 C8               [ 2] 1220 	iny
+      0003B9 B1*03            [ 6] 1221 	lda	[*_wcstoul_sloc2_1_0],y
+      0003BB 8Dr01r00         [ 4] 1222 	sta	(__isdigit_PARM_1 + 1)
+      0003BE C8               [ 2] 1223 	iny
+      0003BF B1*03            [ 6] 1224 	lda	[*_wcstoul_sloc2_1_0],y
+      0003C1 8Dr02r00         [ 4] 1225 	sta	(__isdigit_PARM_1 + 2)
+      0003C4 C8               [ 2] 1226 	iny
+      0003C5 B1*03            [ 6] 1227 	lda	[*_wcstoul_sloc2_1_0],y
+      0003C7 8Dr03r00         [ 4] 1228 	sta	(__isdigit_PARM_1 + 3)
+                                   1229 ;	Raw cost for generated ic 189 : (25, 44.000000) count=3.958003
+                                   1230 ;	genAssign
+                                   1231 ;	genCopy
+      0003CA ADr13r00         [ 4] 1232 	lda	_wcstoul_b_10000_164
+      0003CD 8Dr04r00         [ 4] 1233 	sta	__isdigit_PARM_2
+                                   1234 ;	Raw cost for generated ic 191 : (6, 8.000000) count=3.958003
+                                   1235 ;	genCall
+      0003D0 20r00r00         [ 6] 1236 	jsr	__isdigit
+                                   1237 ;	assignResultValue
+      0003D3 8Dr14r00         [ 4] 1238 	sta	_wcstoul_digit_30000_181
+                                   1239 ;	Raw cost for generated ic 192 : (6, 10.000000) count=3.958003
+                                   1240 ;	../wcstoul.c: 122: if (digit < 0)
+                                   1241 ;	genCmp
+      0003D6 2Cr14r00         [ 4] 1242 	bit	_wcstoul_digit_30000_181
+      0003D9 10 03            [ 4] 1243 	bpl	00367$
+      0003DB 4CrC2r05         [ 3] 1244 	jmp	00136$
+      0003DE                       1245 00367$:
+                                   1246 ;	Raw cost for generated ic 194 : (8, 9.600000) count=3.958003
+                                   1247 ;	skipping generated iCode
+                                   1248 ;	Raw cost for generated ic 195 : (0, 0.000000) count=3.958003
+                                   1249 ;	../wcstoul.c: 126: range_error |= ckd_mul (&ret, ret, b);
+                                   1250 ;	genCast
+                                   1251 ;	genCopy
+      0003DE A0 00            [ 2] 1252 	ldy	#0x00
+      0003E0 8Cr07r00         [ 4] 1253 	sty	(__mullonglong_PARM_2 + 7)
+      0003E3 8Cr06r00         [ 4] 1254 	sty	(__mullonglong_PARM_2 + 6)
+      0003E6 8Cr05r00         [ 4] 1255 	sty	(__mullonglong_PARM_2 + 5)
+      0003E9 8Cr04r00         [ 4] 1256 	sty	(__mullonglong_PARM_2 + 4)
+      0003EC 8Cr03r00         [ 4] 1257 	sty	(__mullonglong_PARM_2 + 3)
+      0003EF 8Cr02r00         [ 4] 1258 	sty	(__mullonglong_PARM_2 + 2)
+      0003F2 8Cr01r00         [ 4] 1259 	sty	(__mullonglong_PARM_2 + 1)
+      0003F5 ADr13r00         [ 4] 1260 	lda	_wcstoul_b_10000_164
+      0003F8 8Dr00r00         [ 4] 1261 	sta	__mullonglong_PARM_2
+                                   1262 ;	Raw cost for generated ic 200 : (29, 38.000000) count=2.968654
+                                   1263 ;	genCast
+                                   1264 ;	genCopy
+      0003FB 8Cr07r00         [ 4] 1265 	sty	(__mullonglong_PARM_1 + 7)
+      0003FE 8Cr06r00         [ 4] 1266 	sty	(__mullonglong_PARM_1 + 6)
+      000401 8Cr05r00         [ 4] 1267 	sty	(__mullonglong_PARM_1 + 5)
+      000404 8Cr04r00         [ 4] 1268 	sty	(__mullonglong_PARM_1 + 4)
+      000407 ADr10r00         [ 4] 1269 	lda	(_wcstoul_ret_10000_164 + 3)
+      00040A 8Dr03r00         [ 4] 1270 	sta	(__mullonglong_PARM_1 + 3)
+      00040D ADr0Fr00         [ 4] 1271 	lda	(_wcstoul_ret_10000_164 + 2)
+      000410 8Dr02r00         [ 4] 1272 	sta	(__mullonglong_PARM_1 + 2)
+      000413 ADr0Er00         [ 4] 1273 	lda	(_wcstoul_ret_10000_164 + 1)
+      000416 8Dr01r00         [ 4] 1274 	sta	(__mullonglong_PARM_1 + 1)
+      000419 ADr0Dr00         [ 4] 1275 	lda	_wcstoul_ret_10000_164
+      00041C 8Dr00r00         [ 4] 1276 	sta	__mullonglong_PARM_1
+                                   1277 ;	Raw cost for generated ic 202 : (36, 48.000000) count=2.968654
+                                   1278 ;	skipping iCode since result will be rematerialized
+                                   1279 ;	Raw cost for generated ic 204 : (0, 0.000000) count=2.968654
+                                   1280 ;	skipping iCode since result will be rematerialized
+                                   1281 ;	Raw cost for generated ic 205 : (0, 0.000000) count=2.968654
+                                   1282 ;	skipping iCode since result will be rematerialized
+                                   1283 ;	Raw cost for generated ic 206 : (0, 0.000000) count=2.968654
+                                   1284 ;	./../../include/stdckdint.h: 77: inline _Bool __ckd_mul_ulong __CKD_DEFAULT_IMPL(unsigned long, *)
+                                   1285 ;	genCall
+      00041F 20r00r00         [ 6] 1286 	jsr	__mullonglong
+                                   1287 ;	assignResultValue
+      000422 85*07            [ 3] 1288 	sta	*_wcstoul_sloc3_1_0
+      000424 86*08            [ 3] 1289 	stx	*(_wcstoul_sloc3_1_0 + 1)
+      000426 A5*00            [ 3] 1290 	lda	*___SDCC_m6502_ret2
+      000428 85*09            [ 3] 1291 	sta	*(_wcstoul_sloc3_1_0 + 2)
+      00042A A5*00            [ 3] 1292 	lda	*___SDCC_m6502_ret3
+      00042C 85*0A            [ 3] 1293 	sta	*(_wcstoul_sloc3_1_0 + 3)
+      00042E A5*00            [ 3] 1294 	lda	*___SDCC_m6502_ret4
+      000430 85*0B            [ 3] 1295 	sta	*(_wcstoul_sloc3_1_0 + 4)
+      000432 A5*00            [ 3] 1296 	lda	*___SDCC_m6502_ret5
+      000434 85*0C            [ 3] 1297 	sta	*(_wcstoul_sloc3_1_0 + 5)
+      000436 A5*00            [ 3] 1298 	lda	*___SDCC_m6502_ret6
+      000438 85*0D            [ 3] 1299 	sta	*(_wcstoul_sloc3_1_0 + 6)
+      00043A A5*00            [ 3] 1300 	lda	*___SDCC_m6502_ret7
+      00043C 85*0E            [ 3] 1301 	sta	*(_wcstoul_sloc3_1_0 + 7)
+                                   1302 ;	Raw cost for generated ic 295 : (31, 48.000000) count=2.968654
+                                   1303 ;	genAssign
+                                   1304 ;	genCopy
+      00043E 8Dr1Cr00         [ 4] 1305 	sta	(_wcstoul_result_60000_215 + 7)
+      000441 A5*0D            [ 3] 1306 	lda	*(_wcstoul_sloc3_1_0 + 6)
+      000443 8Dr1Br00         [ 4] 1307 	sta	(_wcstoul_result_60000_215 + 6)
+      000446 A5*0C            [ 3] 1308 	lda	*(_wcstoul_sloc3_1_0 + 5)
+      000448 8Dr1Ar00         [ 4] 1309 	sta	(_wcstoul_result_60000_215 + 5)
+      00044B A5*0B            [ 3] 1310 	lda	*(_wcstoul_sloc3_1_0 + 4)
+      00044D 8Dr19r00         [ 4] 1311 	sta	(_wcstoul_result_60000_215 + 4)
+      000450 A5*0A            [ 3] 1312 	lda	*(_wcstoul_sloc3_1_0 + 3)
+      000452 8Dr18r00         [ 4] 1313 	sta	(_wcstoul_result_60000_215 + 3)
+      000455 A5*09            [ 3] 1314 	lda	*(_wcstoul_sloc3_1_0 + 2)
+      000457 8Dr17r00         [ 4] 1315 	sta	(_wcstoul_result_60000_215 + 2)
+      00045A 8A               [ 2] 1316 	txa
+      00045B 8Dr16r00         [ 4] 1317 	sta	(_wcstoul_result_60000_215 + 1)
+      00045E A5*07            [ 3] 1318 	lda	*_wcstoul_sloc3_1_0
+      000460 8Dr15r00         [ 4] 1319 	sta	_wcstoul_result_60000_215
+                                   1320 ;	Raw cost for generated ic 211 : (37, 52.000000) count=2.968654
+                                   1321 ;	genCast
+                                   1322 ;	genCopy
+      000463 8A               [ 2] 1323 	txa
+      000464 85*08            [ 3] 1324 	sta	*(_wcstoul_sloc3_1_0 + 1)
+                                   1325 ;	Raw cost for generated ic 213 : (15, 23.000000) count=2.968654
+                                   1326 ;	genPointerSet
+                                   1327 ;	genDataPointerSet
+      000466 A5*0A            [ 3] 1328 	lda	*(_wcstoul_sloc3_1_0 + 3)
+      000468 8Dr10r00         [ 4] 1329 	sta	(_wcstoul_ret_10000_164 + 3)
+      00046B A5*09            [ 3] 1330 	lda	*(_wcstoul_sloc3_1_0 + 2)
+      00046D 8Dr0Fr00         [ 4] 1331 	sta	(_wcstoul_ret_10000_164 + 2)
+      000470 A5*08            [ 3] 1332 	lda	*(_wcstoul_sloc3_1_0 + 1)
+      000472 8Dr0Er00         [ 4] 1333 	sta	(_wcstoul_ret_10000_164 + 1)
+      000475 A5*07            [ 3] 1334 	lda	*_wcstoul_sloc3_1_0
+      000477 8Dr0Dr00         [ 4] 1335 	sta	_wcstoul_ret_10000_164
+                                   1336 ;	Raw cost for generated ic 214 : (20, 28.000000) count=2.968654
+                                   1337 ;	genCast
+                                   1338 ;	genCopy
+      00047A A0 00            [ 2] 1339 	ldy	#0x00
+      00047C 84*0E            [ 3] 1340 	sty	*(_wcstoul_sloc3_1_0 + 7)
+      00047E 84*0D            [ 3] 1341 	sty	*(_wcstoul_sloc3_1_0 + 6)
+      000480 84*0C            [ 3] 1342 	sty	*(_wcstoul_sloc3_1_0 + 5)
+      000482 84*0B            [ 3] 1343 	sty	*(_wcstoul_sloc3_1_0 + 4)
+      000484 A5*07            [ 3] 1344 	lda	*_wcstoul_sloc3_1_0
+                                   1345 ;	Raw cost for generated ic 217 : (26, 38.000000) count=2.968654
+                                   1346 ;	genCmpEQorNE
+      000486 CDr15r00         [ 4] 1347 	cmp	_wcstoul_result_60000_215
+      000489 D0 31            [ 4] 1348 	bne	00369$
+      00048B A5*08            [ 3] 1349 	lda	*(_wcstoul_sloc3_1_0 + 1)
+      00048D CDr16r00         [ 4] 1350 	cmp	(_wcstoul_result_60000_215 + 1)
+      000490 D0 2A            [ 4] 1351 	bne	00369$
+      000492 A5*09            [ 3] 1352 	lda	*(_wcstoul_sloc3_1_0 + 2)
+      000494 CDr17r00         [ 4] 1353 	cmp	(_wcstoul_result_60000_215 + 2)
+      000497 D0 23            [ 4] 1354 	bne	00369$
+      000499 A5*0A            [ 3] 1355 	lda	*(_wcstoul_sloc3_1_0 + 3)
+      00049B CDr18r00         [ 4] 1356 	cmp	(_wcstoul_result_60000_215 + 3)
+      00049E D0 1C            [ 4] 1357 	bne	00369$
+      0004A0 A5*0B            [ 3] 1358 	lda	*(_wcstoul_sloc3_1_0 + 4)
+      0004A2 CDr19r00         [ 4] 1359 	cmp	(_wcstoul_result_60000_215 + 4)
+      0004A5 D0 15            [ 4] 1360 	bne	00369$
+      0004A7 A5*0C            [ 3] 1361 	lda	*(_wcstoul_sloc3_1_0 + 5)
+      0004A9 CDr1Ar00         [ 4] 1362 	cmp	(_wcstoul_result_60000_215 + 5)
+      0004AC D0 0E            [ 4] 1363 	bne	00369$
+      0004AE A5*0D            [ 3] 1364 	lda	*(_wcstoul_sloc3_1_0 + 6)
+      0004B0 CDr1Br00         [ 4] 1365 	cmp	(_wcstoul_result_60000_215 + 6)
+      0004B3 D0 07            [ 4] 1366 	bne	00369$
+      0004B5 A5*0E            [ 3] 1367 	lda	*(_wcstoul_sloc3_1_0 + 7)
+      0004B7 CDr1Cr00         [ 4] 1368 	cmp	(_wcstoul_result_60000_215 + 7)
+      0004BA F0 04            [ 4] 1369 	beq	00377$
+      0004BC                       1370 00369$:
+      0004BC 98               [ 2] 1371 	tya
+      0004BD 4CrC2r04         [ 3] 1372 	jmp	00376$
+      0004C0                       1373 00377$:
+      0004C0 A9 01            [ 2] 1374 	lda	#0x01
+      0004C2                       1375 00376$:
+                                   1376 ;	Raw cost for generated ic 218 : (81, 101.799995) count=2.968654
+                                   1377 ;	genNot
+      0004C2 49 01            [ 2] 1378 	eor	#0x01
+                                   1379 ;	Raw cost for generated ic 219 : (2, 2.000000) count=2.968654
+                                   1380 ;	../wcstoul.c: 126: range_error |= ckd_mul (&ret, ret, b);
+                                   1381 ;	genOr
+      0004C4 05*00            [ 3] 1382 	ora	*_wcstoul_sloc0_1_0
+      0004C6 8Dr11r00         [ 4] 1383 	sta	_wcstoul_range_error_10000_164
+                                   1384 ;	Raw cost for generated ic 223 : (5, 7.000000) count=2.968654
+                                   1385 ;	../wcstoul.c: 127: range_error |= ckd_add (&ret, ret, digit);
+                                   1386 ;	genCast
+      0004C9 ADr14r00         [ 4] 1387 	lda	_wcstoul_digit_30000_181
+      0004CC 85*07            [ 3] 1388 	sta	*_wcstoul_sloc3_1_0
+      0004CE 0A               [ 2] 1389 	asl	a
+      0004CF 98               [ 2] 1390 	tya
+      0004D0 69 FF            [ 2] 1391 	adc	#0xff
+      0004D2 49 FF            [ 2] 1392 	eor	#0xff
+      0004D4 85*08            [ 3] 1393 	sta	*(_wcstoul_sloc3_1_0 + 1)
+      0004D6 85*09            [ 3] 1394 	sta	*(_wcstoul_sloc3_1_0 + 2)
+      0004D8 85*0A            [ 3] 1395 	sta	*(_wcstoul_sloc3_1_0 + 3)
+      0004DA 85*0B            [ 3] 1396 	sta	*(_wcstoul_sloc3_1_0 + 4)
+      0004DC 85*0C            [ 3] 1397 	sta	*(_wcstoul_sloc3_1_0 + 5)
+      0004DE 85*0D            [ 3] 1398 	sta	*(_wcstoul_sloc3_1_0 + 6)
+      0004E0 85*0E            [ 3] 1399 	sta	*(_wcstoul_sloc3_1_0 + 7)
+                                   1400 ;	Raw cost for generated ic 225 : (25, 36.000000) count=2.968654
+                                   1401 ;	genCast
+                                   1402 ;	genCopy
+      0004E2 84*16            [ 3] 1403 	sty	*(_wcstoul_sloc4_1_0 + 7)
+      0004E4 84*15            [ 3] 1404 	sty	*(_wcstoul_sloc4_1_0 + 6)
+      0004E6 84*14            [ 3] 1405 	sty	*(_wcstoul_sloc4_1_0 + 5)
+      0004E8 84*13            [ 3] 1406 	sty	*(_wcstoul_sloc4_1_0 + 4)
+      0004EA ADr10r00         [ 4] 1407 	lda	(_wcstoul_ret_10000_164 + 3)
+      0004ED 85*12            [ 3] 1408 	sta	*(_wcstoul_sloc4_1_0 + 3)
+      0004EF ADr0Fr00         [ 4] 1409 	lda	(_wcstoul_ret_10000_164 + 2)
+      0004F2 85*11            [ 3] 1410 	sta	*(_wcstoul_sloc4_1_0 + 2)
+      0004F4 ADr0Er00         [ 4] 1411 	lda	(_wcstoul_ret_10000_164 + 1)
+      0004F7 85*10            [ 3] 1412 	sta	*(_wcstoul_sloc4_1_0 + 1)
+      0004F9 ADr0Dr00         [ 4] 1413 	lda	_wcstoul_ret_10000_164
+                                   1414 ;	Raw cost for generated ic 227 : (28, 40.000000) count=2.968654
+                                   1415 ;	skipping iCode since result will be rematerialized
+                                   1416 ;	Raw cost for generated ic 231 : (0, 0.000000) count=2.968654
+                                   1417 ;	./../../include/stdckdint.h: 59: inline _Bool __ckd_add_ulong __CKD_DEFAULT_IMPL(unsigned long, +)
+                                   1418 ;	genPlus
+      0004FC 85*0F            [ 3] 1419 	sta	*_wcstoul_sloc4_1_0
+      0004FE 18               [ 2] 1420 	clc
+      0004FF 65*07            [ 3] 1421 	adc	*_wcstoul_sloc3_1_0
+      000501 85*0F            [ 3] 1422 	sta	*_wcstoul_sloc4_1_0
+      000503 A5*10            [ 3] 1423 	lda	*(_wcstoul_sloc4_1_0 + 1)
+      000505 65*08            [ 3] 1424 	adc	*(_wcstoul_sloc3_1_0 + 1)
+      000507 85*10            [ 3] 1425 	sta	*(_wcstoul_sloc4_1_0 + 1)
+      000509 A5*11            [ 3] 1426 	lda	*(_wcstoul_sloc4_1_0 + 2)
+      00050B 65*09            [ 3] 1427 	adc	*(_wcstoul_sloc3_1_0 + 2)
+      00050D 85*11            [ 3] 1428 	sta	*(_wcstoul_sloc4_1_0 + 2)
+      00050F A5*12            [ 3] 1429 	lda	*(_wcstoul_sloc4_1_0 + 3)
+      000511 65*0A            [ 3] 1430 	adc	*(_wcstoul_sloc3_1_0 + 3)
+      000513 85*12            [ 3] 1431 	sta	*(_wcstoul_sloc4_1_0 + 3)
+      000515 A5*13            [ 3] 1432 	lda	*(_wcstoul_sloc4_1_0 + 4)
+      000517 65*0B            [ 3] 1433 	adc	*(_wcstoul_sloc3_1_0 + 4)
+      000519 85*13            [ 3] 1434 	sta	*(_wcstoul_sloc4_1_0 + 4)
+      00051B A5*14            [ 3] 1435 	lda	*(_wcstoul_sloc4_1_0 + 5)
+      00051D 65*0C            [ 3] 1436 	adc	*(_wcstoul_sloc3_1_0 + 5)
+      00051F 85*14            [ 3] 1437 	sta	*(_wcstoul_sloc4_1_0 + 5)
+      000521 A5*15            [ 3] 1438 	lda	*(_wcstoul_sloc4_1_0 + 6)
+      000523 65*0D            [ 3] 1439 	adc	*(_wcstoul_sloc3_1_0 + 6)
+      000525 85*15            [ 3] 1440 	sta	*(_wcstoul_sloc4_1_0 + 6)
+      000527 A5*16            [ 3] 1441 	lda	*(_wcstoul_sloc4_1_0 + 7)
+      000529 65*0E            [ 3] 1442 	adc	*(_wcstoul_sloc3_1_0 + 7)
+      00052B 85*16            [ 3] 1443 	sta	*(_wcstoul_sloc4_1_0 + 7)
+                                   1444 ;	Raw cost for generated ic 235 : (49, 74.000000) count=2.968654
+                                   1445 ;	genAssign
+                                   1446 ;	genCopy
+      00052D 8Dr24r00         [ 4] 1447 	sta	(_wcstoul_result_60000_263 + 7)
+      000530 A5*15            [ 3] 1448 	lda	*(_wcstoul_sloc4_1_0 + 6)
+      000532 8Dr23r00         [ 4] 1449 	sta	(_wcstoul_result_60000_263 + 6)
+      000535 A5*14            [ 3] 1450 	lda	*(_wcstoul_sloc4_1_0 + 5)
+      000537 8Dr22r00         [ 4] 1451 	sta	(_wcstoul_result_60000_263 + 5)
+      00053A A5*13            [ 3] 1452 	lda	*(_wcstoul_sloc4_1_0 + 4)
+      00053C 8Dr21r00         [ 4] 1453 	sta	(_wcstoul_result_60000_263 + 4)
+      00053F A5*12            [ 3] 1454 	lda	*(_wcstoul_sloc4_1_0 + 3)
+      000541 8Dr20r00         [ 4] 1455 	sta	(_wcstoul_result_60000_263 + 3)
+      000544 A5*11            [ 3] 1456 	lda	*(_wcstoul_sloc4_1_0 + 2)
+      000546 8Dr1Fr00         [ 4] 1457 	sta	(_wcstoul_result_60000_263 + 2)
+      000549 A5*10            [ 3] 1458 	lda	*(_wcstoul_sloc4_1_0 + 1)
+      00054B 8Dr1Er00         [ 4] 1459 	sta	(_wcstoul_result_60000_263 + 1)
+      00054E A5*0F            [ 3] 1460 	lda	*_wcstoul_sloc4_1_0
+      000550 8Dr1Dr00         [ 4] 1461 	sta	_wcstoul_result_60000_263
+                                   1462 ;	Raw cost for generated ic 236 : (38, 53.000000) count=2.968654
+                                   1463 ;	genCast
+                                   1464 ;	genCopy
+                                   1465 ;	Raw cost for generated ic 238 : (16, 24.000000) count=2.968654
+                                   1466 ;	genPointerSet
+                                   1467 ;	genDataPointerSet
+      000553 A5*12            [ 3] 1468 	lda	*(_wcstoul_sloc4_1_0 + 3)
+      000555 8Dr10r00         [ 4] 1469 	sta	(_wcstoul_ret_10000_164 + 3)
+      000558 A5*11            [ 3] 1470 	lda	*(_wcstoul_sloc4_1_0 + 2)
+      00055A 8Dr0Fr00         [ 4] 1471 	sta	(_wcstoul_ret_10000_164 + 2)
+      00055D A5*10            [ 3] 1472 	lda	*(_wcstoul_sloc4_1_0 + 1)
+      00055F 8Dr0Er00         [ 4] 1473 	sta	(_wcstoul_ret_10000_164 + 1)
+      000562 A5*0F            [ 3] 1474 	lda	*_wcstoul_sloc4_1_0
+      000564 8Dr0Dr00         [ 4] 1475 	sta	_wcstoul_ret_10000_164
+                                   1476 ;	Raw cost for generated ic 239 : (20, 28.000000) count=2.968654
+                                   1477 ;	genCast
+                                   1478 ;	genCopy
+      000567 84*16            [ 3] 1479 	sty	*(_wcstoul_sloc4_1_0 + 7)
+      000569 84*15            [ 3] 1480 	sty	*(_wcstoul_sloc4_1_0 + 6)
+      00056B 84*14            [ 3] 1481 	sty	*(_wcstoul_sloc4_1_0 + 5)
+      00056D 84*13            [ 3] 1482 	sty	*(_wcstoul_sloc4_1_0 + 4)
+      00056F A5*0F            [ 3] 1483 	lda	*_wcstoul_sloc4_1_0
+                                   1484 ;	Raw cost for generated ic 242 : (24, 36.000000) count=2.968654
+                                   1485 ;	genCmpEQorNE
+      000571 CDr1Dr00         [ 4] 1486 	cmp	_wcstoul_result_60000_263
+      000574 D0 31            [ 4] 1487 	bne	00380$
+      000576 A5*10            [ 3] 1488 	lda	*(_wcstoul_sloc4_1_0 + 1)
+      000578 CDr1Er00         [ 4] 1489 	cmp	(_wcstoul_result_60000_263 + 1)
+      00057B D0 2A            [ 4] 1490 	bne	00380$
+      00057D A5*11            [ 3] 1491 	lda	*(_wcstoul_sloc4_1_0 + 2)
+      00057F CDr1Fr00         [ 4] 1492 	cmp	(_wcstoul_result_60000_263 + 2)
+      000582 D0 23            [ 4] 1493 	bne	00380$
+      000584 A5*12            [ 3] 1494 	lda	*(_wcstoul_sloc4_1_0 + 3)
+      000586 CDr20r00         [ 4] 1495 	cmp	(_wcstoul_result_60000_263 + 3)
+      000589 D0 1C            [ 4] 1496 	bne	00380$
+      00058B A5*13            [ 3] 1497 	lda	*(_wcstoul_sloc4_1_0 + 4)
+      00058D CDr21r00         [ 4] 1498 	cmp	(_wcstoul_result_60000_263 + 4)
+      000590 D0 15            [ 4] 1499 	bne	00380$
+      000592 A5*14            [ 3] 1500 	lda	*(_wcstoul_sloc4_1_0 + 5)
+      000594 CDr22r00         [ 4] 1501 	cmp	(_wcstoul_result_60000_263 + 5)
+      000597 D0 0E            [ 4] 1502 	bne	00380$
+      000599 A5*15            [ 3] 1503 	lda	*(_wcstoul_sloc4_1_0 + 6)
+      00059B CDr23r00         [ 4] 1504 	cmp	(_wcstoul_result_60000_263 + 6)
+      00059E D0 07            [ 4] 1505 	bne	00380$
+      0005A0 A5*16            [ 3] 1506 	lda	*(_wcstoul_sloc4_1_0 + 7)
+      0005A2 CDr24r00         [ 4] 1507 	cmp	(_wcstoul_result_60000_263 + 7)
+      0005A5 F0 04            [ 4] 1508 	beq	00388$
+      0005A7                       1509 00380$:
+      0005A7 98               [ 2] 1510 	tya
+      0005A8 4CrADr05         [ 3] 1511 	jmp	00387$
+      0005AB                       1512 00388$:
+      0005AB A9 01            [ 2] 1513 	lda	#0x01
+      0005AD                       1514 00387$:
+                                   1515 ;	Raw cost for generated ic 243 : (81, 101.799995) count=2.968654
+                                   1516 ;	genNot
+      0005AD 49 01            [ 2] 1517 	eor	#0x01
+                                   1518 ;	Raw cost for generated ic 244 : (2, 2.000000) count=2.968654
+                                   1519 ;	../wcstoul.c: 127: range_error |= ckd_add (&ret, ret, digit);
+                                   1520 ;	genOr
+      0005AF 0Dr11r00         [ 4] 1521 	ora	_wcstoul_range_error_10000_164
+      0005B2 85*00            [ 3] 1522 	sta	*_wcstoul_sloc0_1_0
+                                   1523 ;	Raw cost for generated ic 248 : (5, 7.000000) count=2.968654
+                                   1524 ;	../wcstoul.c: 118: for (ret = 0;; ptr++)
+                                   1525 ;	genPlus
+                                   1526 ;	  genPlusInc
+      0005B4 A5*03            [ 3] 1527 	lda	*_wcstoul_sloc2_1_0
+      0005B6 18               [ 2] 1528 	clc
+      0005B7 69 04            [ 2] 1529 	adc	#0x04
+      0005B9 85*03            [ 3] 1530 	sta	*_wcstoul_sloc2_1_0
+      0005BB 90 02            [ 4] 1531 	bcc	00390$
+      0005BD E6*04            [ 5] 1532 	inc	*(_wcstoul_sloc2_1_0 + 1)
+      0005BF                       1533 00390$:
+                                   1534 ;	Raw cost for generated ic 252 : (11, 17.600000) count=2.968654
+                                   1535 ;	genGoto
+      0005BF 4CrB1r03         [ 3] 1536 	jmp	00167$
+                                   1537 ;	Raw cost for generated ic 254 : (3, 3.000000) count=2.968654
+                                   1538 ;	genLabel
+      0005C2                       1539 00136$:
+                                   1540 ;	Raw cost for generated ic 255 : (0, 0.000000) count=0.989619
+                                   1541 ;	../wcstoul.c: 138: if (endptr)
+                                   1542 ;	genIfx
+      0005C2 ADr06r00         [ 4] 1543 	lda	(_wcstoul_PARM_2 + 1)
+      0005C5 0Dr05r00         [ 4] 1544 	ora	_wcstoul_PARM_2
+                                   1545 ;	genIfxJump : z
+      0005C8 F0 15            [ 4] 1546 	beq	00138$
+                                   1547 ;	Raw cost for generated ic 256 : (11, 13.600000) count=0.989619
+                                   1548 ;	../wcstoul.c: 139: *endptr = (wchar_t*)ptr;
+                                   1549 ;	genAssign
+                                   1550 ;	genCopy
+      0005CA AEr06r00         [ 4] 1551 	ldx	(_wcstoul_PARM_2 + 1)
+      0005CD ADr05r00         [ 4] 1552 	lda	_wcstoul_PARM_2
+                                   1553 ;	Raw cost for generated ic 259 : (6, 8.000000) count=0.742214
+                                   1554 ;	genPointerSet
+                                   1555 ;	  setupDPTR - off=0 remat=(null) savea=0
+      0005D0 85*00            [ 3] 1556 	sta	*(DPTR+0)
+      0005D2 86*01            [ 3] 1557 	stx	*(DPTR+1)
+      0005D4 A5*03            [ 3] 1558 	lda	*_wcstoul_sloc2_1_0
+      0005D6 A0 00            [ 2] 1559 	ldy	#0x00
+      0005D8 91*00            [ 6] 1560 	sta	[DPTR],y
+      0005DA A5*04            [ 3] 1561 	lda	*(_wcstoul_sloc2_1_0 + 1)
+      0005DC C8               [ 2] 1562 	iny
+      0005DD 91*00            [ 6] 1563 	sta	[DPTR],y
+                                   1564 ;	Raw cost for generated ic 260 : (15, 28.000000) count=0.742214
+                                   1565 ;	genLabel
+      0005DF                       1566 00138$:
+                                   1567 ;	Raw cost for generated ic 261 : (0, 0.000000) count=0.989619
+                                   1568 ;	../wcstoul.c: 141: if (range_error)
+                                   1569 ;	genIfx
+      0005DF A5*00            [ 3] 1570 	lda	*_wcstoul_sloc0_1_0
+                                   1571 ;	genIfxJump : z
+      0005E1 F0 12            [ 4] 1572 	beq	00140$
+                                   1573 ;	Raw cost for generated ic 262 : (7, 8.600000) count=0.989619
+                                   1574 ;	../wcstoul.c: 143: errno = ERANGE;
+                                   1575 ;	genAssign
+                                   1576 ;	genAssignLit
+      0005E3 A2 22            [ 2] 1577 	ldx	#0x22
+      0005E5 8Er00r00         [ 4] 1578 	stx	_errno
+      0005E8 A0 00            [ 2] 1579 	ldy	#0x00
+      0005EA 8Cr01r00         [ 4] 1580 	sty	(_errno + 1)
+                                   1581 ;	Raw cost for generated ic 266 : (10, 12.000000) count=0.742214
+                                   1582 ;	../wcstoul.c: 144: return (ULONG_MAX);
+                                   1583 ;	genRet
+      0005ED A9 FF            [ 2] 1584 	lda	#0xff
+      0005EF AA               [ 2] 1585 	tax
+      0005F0 85*00            [ 3] 1586 	sta	*___SDCC_m6502_ret2
+      0005F2 85*00            [ 3] 1587 	sta	*___SDCC_m6502_ret3
+      0005F4 60               [ 6] 1588 	rts
+                                   1589 ;	Raw cost for generated ic 267 : (10, 13.000000) count=0.742214
+                                   1590 ;	genLabel
+      0005F5                       1591 00140$:
+                                   1592 ;	Raw cost for generated ic 268 : (0, 0.000000) count=0.989619
+                                   1593 ;	../wcstoul.c: 147: return (neg ? -ret : ret);
+                                   1594 ;	genIfx
+      0005F5 ADr12r00         [ 4] 1595 	lda	_wcstoul_neg_10000_164
+                                   1596 ;	genIfxJump : z
+      0005F8 F0 20            [ 4] 1597 	beq	00174$
+                                   1598 ;	Raw cost for generated ic 269 : (8, 9.600000) count=0.989619
+                                   1599 ;	genUminus
+      0005FA A9 00            [ 2] 1600 	lda	#0x00
+      0005FC 38               [ 2] 1601 	sec
+      0005FD EDr0Dr00         [ 4] 1602 	sbc	_wcstoul_ret_10000_164
+      000600 85*0F            [ 3] 1603 	sta	*_wcstoul_sloc4_1_0
+      000602 A9 00            [ 2] 1604 	lda	#0x00
+      000604 EDr0Er00         [ 4] 1605 	sbc	(_wcstoul_ret_10000_164 + 1)
+      000607 85*10            [ 3] 1606 	sta	*(_wcstoul_sloc4_1_0 + 1)
+      000609 A9 00            [ 2] 1607 	lda	#0x00
+      00060B EDr0Fr00         [ 4] 1608 	sbc	(_wcstoul_ret_10000_164 + 2)
+      00060E 85*11            [ 3] 1609 	sta	*(_wcstoul_sloc4_1_0 + 2)
+      000610 A9 00            [ 2] 1610 	lda	#0x00
+      000612 EDr10r00         [ 4] 1611 	sbc	(_wcstoul_ret_10000_164 + 3)
+      000615 85*12            [ 3] 1612 	sta	*(_wcstoul_sloc4_1_0 + 3)
+                                   1613 ;	Raw cost for generated ic 270 : (29, 38.000000) count=0.742214
+                                   1614 ;	genGoto
+      000617 4Cr2Er06         [ 3] 1615 	jmp	00175$
+                                   1616 ;	Raw cost for generated ic 272 : (3, 3.000000) count=0.742214
+                                   1617 ;	genLabel
+      00061A                       1618 00174$:
+                                   1619 ;	Raw cost for generated ic 273 : (0, 0.000000) count=0.247550
+                                   1620 ;	genAssign
+                                   1621 ;	genCopy
+      00061A ADr10r00         [ 4] 1622 	lda	(_wcstoul_ret_10000_164 + 3)
+      00061D 85*12            [ 3] 1623 	sta	*(_wcstoul_sloc4_1_0 + 3)
+      00061F ADr0Fr00         [ 4] 1624 	lda	(_wcstoul_ret_10000_164 + 2)
+      000622 85*11            [ 3] 1625 	sta	*(_wcstoul_sloc4_1_0 + 2)
+      000624 ADr0Er00         [ 4] 1626 	lda	(_wcstoul_ret_10000_164 + 1)
+      000627 85*10            [ 3] 1627 	sta	*(_wcstoul_sloc4_1_0 + 1)
+      000629 ADr0Dr00         [ 4] 1628 	lda	_wcstoul_ret_10000_164
+      00062C 85*0F            [ 3] 1629 	sta	*_wcstoul_sloc4_1_0
+                                   1630 ;	Raw cost for generated ic 274 : (20, 28.000000) count=0.247550
+                                   1631 ;	genLabel
+      00062E                       1632 00175$:
+                                   1633 ;	Raw cost for generated ic 275 : (0, 0.000000) count=0.989765
+                                   1634 ;	genRet
+      00062E A5*12            [ 3] 1635 	lda	*(_wcstoul_sloc4_1_0 + 3)
+      000630 85*00            [ 3] 1636 	sta	*___SDCC_m6502_ret3
+      000632 A5*11            [ 3] 1637 	lda	*(_wcstoul_sloc4_1_0 + 2)
+      000634 85*00            [ 3] 1638 	sta	*___SDCC_m6502_ret2
+      000636 A6*10            [ 3] 1639 	ldx	*(_wcstoul_sloc4_1_0 + 1)
+      000638 A5*0F            [ 3] 1640 	lda	*_wcstoul_sloc4_1_0
+                                   1641 ;	Raw cost for generated ic 276 : (12, 18.000000) count=0.989765
+                                   1642 ;	genLabel
+                                   1643 ;	Raw cost for generated ic 277 : (0, 0.000000) count=0.989765
+                                   1644 ;	../wcstoul.c: 148: }
+                                   1645 ;	genEndFunction
+      00063A 60               [ 6] 1646 	rts
+                                   1647 ;	Raw cost for generated ic 278 : (1, 6.000000) count=0.989765
+                                   1648 	.area CODE
+                                   1649 	.area RODATA
+                                   1650 	.area RODATA
+      000000                       1651 ___str_0:
+      000000 30 00 00 00           1652 	.byte 48,0,0,0
+      000004 78 00 00 00           1653 	.byte 120,0,0,0
+      000008 00 00 00 00           1654 	.byte 0,0,0,0
+                                   1655 	.area CODE
+                                   1656 	.area RODATA
+      00000C                       1657 ___str_1:
+      00000C 30 00 00 00           1658 	.byte 48,0,0,0
+      000010 58 00 00 00           1659 	.byte 88,0,0,0
+      000014 00 00 00 00           1660 	.byte 0,0,0,0
+                                   1661 	.area CODE
+                                   1662 	.area RODATA
+      000018                       1663 ___str_2:
+      000018 30 00 00 00           1664 	.byte 48,0,0,0
+      00001C 62 00 00 00           1665 	.byte 98,0,0,0
+      000020 00 00 00 00           1666 	.byte 0,0,0,0
+                                   1667 	.area CODE
+                                   1668 	.area RODATA
+      000024                       1669 ___str_3:
+      000024 30 00 00 00           1670 	.byte 48,0,0,0
+      000028 42 00 00 00           1671 	.byte 66,0,0,0
+      00002C 00 00 00 00           1672 	.byte 0,0,0,0
+                                   1673 	.area CODE
+                                   1674 	.area XINIT
+                                   1675 	.area CABS    (ABS)

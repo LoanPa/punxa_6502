@@ -105,6 +105,8 @@ __endasm;
     SAVE_FLAGS(); \
     verify_flags(r, FLAGS(n, z, d, c, v));
     
+
+    
 #define TEST_DEC(b, r, n, z, d, c, v)        __asm \
         clc \
         dec b \
@@ -113,7 +115,26 @@ __endasm;
     __endasm; \
     SAVE_FLAGS(); \
     verify_flags(r, FLAGS(n, z, d, c, v));
+    
+// X value, expected result, n, z, d, c, v
+#define TEST_INX(xv, r, n, z, d, c, v)        __asm \
+        clc \
+        ldx xv \
+        inx \
+        stx _actual \
+    __endasm; \
+    SAVE_FLAGS(); \
+    verify_flags(r, FLAGS(n, z, d, c, v));
 
+    #define TEST_DEX(xv, r, n, z, d, c, v)        __asm \
+        clc \
+        ldx xv\
+        dex \
+        stx _actual \
+    __endasm; \
+    SAVE_FLAGS(); \
+    verify_flags(r, FLAGS(n, z, d, c, v)); 
+    
 #define TEST_ADCX(a, b, xv, r, n, z, d, c, v)        __asm \
         clc \
         lda a \

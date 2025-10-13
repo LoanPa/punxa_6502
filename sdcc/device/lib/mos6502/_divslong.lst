@@ -1,0 +1,106 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _divslong.s - routine for 32 bit signed long division
+                                      3 ;
+                                      4 ;   Copyright (C) 1998, Ullrich von Bassewitz
+                                      5 ;   Copyright (C) 2022, Gabriele Gorla
+                                      6 ;
+                                      7 ;   This library is free software; you can redistribute it and/or modify it
+                                      8 ;   under the terms of the GNU General Public License as published by the
+                                      9 ;   Free Software Foundation; either version 2, or (at your option) any
+                                     10 ;   later version.
+                                     11 ;
+                                     12 ;   This library is distributed in the hope that it will be useful,
+                                     13 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     14 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     15 ;   GNU General Public License for more details.
+                                     16 ;
+                                     17 ;   You should have received a copy of the GNU General Public License
+                                     18 ;   along with this library; see the file COPYING. If not, write to the
+                                     19 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     20 ;   MA 02110-1301, USA.
+                                     21 ;
+                                     22 ;   As a special exception, if you link this library with other files,
+                                     23 ;   some of which are compiled with SDCC, to produce an executable,
+                                     24 ;   this library does not by itself cause the resulting executable to
+                                     25 ;   be covered by the GNU General Public License. This exception does
+                                     26 ;   not however invalidate any other reasons why the executable file
+                                     27 ;   might be covered by the GNU General Public License.
+                                     28 ;-------------------------------------------------------------------------
+                                     29 
+                                     30 	.module _divslong
+                                     31 
+                                     32 ;--------------------------------------------------------
+                                     33 ; exported symbols
+                                     34 ;--------------------------------------------------------
+                                     35 	.globl __divslong
+                                     36 	.globl ___sdivmod32
+                                     37 
+                                     38 ;--------------------------------------------------------
+                                     39 ; local aliases
+                                     40 ;--------------------------------------------------------
+                                     41 	.define res0 "__divslong_PARM_1+0"
+                                     42 	.define res1 "__divslong_PARM_1+1"
+                                     43 	.define res2 "___SDCC_m6502_ret2"
+                                     44 	.define res3 "___SDCC_m6502_ret3"
+                                     45 	.define den  "__divslong_PARM_2"
+                                     46 	.define rem  "___SDCC_m6502_ret4"
+                                     47 	.define s1   "___SDCC_m6502_ret0"
+                                     48 	.define s2   "___SDCC_m6502_ret1"
+                                     49 
+                                     50 ;--------------------------------------------------------
+                                     51 ; code
+                                     52 ;--------------------------------------------------------
+                                     53 	.area CODE
+      000000                         54 __divslong:
+      000000 20r27r00         [ 6]   55 	jsr	___sdivmod32
+      000003 A5*00            [ 3]   56 	lda	*s1
+      000005 45*00            [ 3]   57 	eor	*s2
+      000007 10 19            [ 4]   58 	bpl	pos
+                                     59 ; neg res
+      000009 38               [ 2]   60 	sec
+      00000A A9 00            [ 2]   61 	lda	#0x00
+      00000C E5*00            [ 3]   62 	sbc	*res0
+      00000E A8               [ 2]   63 	tay
+      00000F A9 00            [ 2]   64 	lda	#0x00
+      000011 E5*01            [ 3]   65 	sbc	*res1
+      000013 AA               [ 2]   66 	tax
+      000014 A9 00            [ 2]   67 	lda	#0x00
+      000016 E5*00            [ 3]   68 	sbc	*res2
+      000018 85*00            [ 3]   69 	sta	*res2
+      00001A A9 00            [ 2]   70 	lda	#0x00
+      00001C E5*00            [ 3]   71 	sbc	*res3
+      00001E 85*00            [ 3]   72 	sta	*res3
+      000020 98               [ 2]   73 	tya
+      000021 60               [ 6]   74 	rts
+      000022                         75 pos:
+      000022 A5*00            [ 3]   76 	lda	*res0
+      000024 A6*01            [ 3]   77 	ldx	*res1
+      000026 60               [ 6]   78 	rts
+                                     79 
+      000027                         80 ___sdivmod32:
+      000027 A5*03            [ 3]   81 	lda	*__divslong_PARM_1+3
+      000029 85*00            [ 3]   82 	sta	*s1
+      00002B 10 05            [ 4]   83 	bpl 	pos1
+      00002D A0 00            [ 2]   84 	ldy	#0
+      00002F 20r40r00         [ 6]   85 	jsr	___neg_div32_param
+      000032                         86 pos1:
+      000032 A5*03            [ 3]   87 	lda	*__divslong_PARM_2+3
+      000034 85*00            [ 3]   88 	sta	*s2
+      000036 10 05            [ 4]   89 	bpl 	pos2
+      000038 A0 04            [ 2]   90 	ldy	#4
+      00003A 20r40r00         [ 6]   91 	jsr	___neg_div32_param
+      00003D                         92 pos2:
+      00003D 4Cr00r00         [ 3]   93 	jmp 	___udivmod32
+                                     94 
+      000040                         95 ___neg_div32_param:
+      000040 38               [ 2]   96 	sec
+      000041 A2 04            [ 2]   97 	ldx	#0x04
+      000043                         98 loop:
+      000043 A9 00            [ 2]   99 	lda	#0x00
+      000045 F9r00r00         [ 5]  100 	sbc	*__divslong_PARM_1+0,y
+      000048 99r00r00         [ 5]  101 	sta	*__divslong_PARM_1+0,y
+      00004B C8               [ 2]  102 	iny
+      00004C CA               [ 2]  103 	dex
+      00004D D0 F4            [ 4]  104 	bne loop
+      00004F 60               [ 6]  105 	rts
+                                    106 

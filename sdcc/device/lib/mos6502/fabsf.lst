@@ -1,0 +1,58 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   fabsf.s - routine for floating point addition
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module fabsf
+                                     30 	
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl _fabsf
+                                     35 
+                                     36 ;--------------------------------------------------------
+                                     37 ; local aliases
+                                     38 ;--------------------------------------------------------
+                                     39 
+                                     40 	.define res2  "___SDCC_m6502_ret2"
+                                     41 	.define res3  "___SDCC_m6502_ret3"
+                                     42 		
+                                     43 ;--------------------------------------------------------
+                                     44 ; code
+                                     45 ;--------------------------------------------------------
+                                     46 	.area CODE
+                                     47 ;------------------------------------------------------------
+                                     48 
+      000000                         49 _fabsf:
+      000000 A5*03            [ 3]   50 	lda	*_fabsf_PARM_1+3
+      000002 29 7F            [ 2]   51 	and	#0x7f
+      000004 8Dr00r00         [ 4]   52 	sta	res3
+      000007 A5*02            [ 3]   53 	lda	*_fabsf_PARM_1+2
+      000009 8Dr00r00         [ 4]   54 	sta	res2
+      00000C A6*01            [ 3]   55 	ldx	*(_fabsf_PARM_1 + 1)
+      00000E A5*00            [ 3]   56 	lda	*(_fabsf_PARM_1 + 0)
+      000010 60               [ 6]   57 	rts
+                                     58 

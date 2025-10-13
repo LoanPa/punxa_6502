@@ -1,0 +1,87 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _strrchar.s - standard C library function
+                                      3 ;
+                                      4 ;   Copyright (C) 2025, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 	.module _strrchr
+                                     29 	
+                                     30 ;--------------------------------------------------------
+                                     31 ; exported symbols
+                                     32 ;--------------------------------------------------------
+                                     33 	.globl _strrchr_PARM_2
+                                     34 	.globl _strrchr
+                                     35 
+                                     36 ;--------------------------------------------------------
+                                     37 ; overlayable function parameters in zero page
+                                     38 ;--------------------------------------------------------
+                                     39 	.area	OSEG    (PAG, OVR)
+      000000                         40 _strrchr_PARM_2:
+      000000                         41 	.ds 2
+                                     42 
+                                     43 ;--------------------------------------------------------
+                                     44 ; code
+                                     45 ;--------------------------------------------------------
+                                     46 	.area CODE
+                                     47 
+      000000                         48 _strrchr:
+      000000 20r00r00         [ 6]   49 	jsr _strlen
+                                     50     ; strlen is in xy
+                                     51     ; ptr to end of string is in DPTR+y
+      000003 A9 00            [ 2]   52     lda #0x00
+      000005 CDr00r00         [ 4]   53     cmp _strrchr_PARM_2
+      000008 F0 1E            [ 4]   54     beq found    
+      00000A C0 00            [ 2]   55     cpy #0x00
+      00000C D0 04            [ 4]   56     bne skip_zero
+      00000E E0 00            [ 2]   57     cpx #0x00
+      000010 F0 12            [ 4]   58     beq not_found
+      000012                         59 skip_zero:
+      000012 E8               [ 2]   60     inx
+                                     61 ;    inc *DPTR+1
+      000013                         62 loop:
+      000013 88               [ 2]   63     dey
+      000014 B1*00            [ 6]   64     lda [DPTR],y
+      000016 CDr00r00         [ 4]   65     cmp _strrchr_PARM_2
+      000019 F0 0D            [ 4]   66     beq found
+      00001B C0 00            [ 2]   67     cpy #0x00
+      00001D D0 F4            [ 4]   68     bne loop
+      00001F C6*01            [ 5]   69     dec *DPTR+1
+      000021 CA               [ 2]   70     dex
+      000022 D0 EF            [ 4]   71     bne loop
+                                     72 
+      000024                         73 not_found:
+      000024 A9 00            [ 2]   74 	lda	#0x00
+      000026 AA               [ 2]   75 	tax
+      000027 60               [ 6]   76 	rts
+                                     77 	
+      000028                         78 found:
+      000028 98               [ 2]   79     tya
+      000029 A6*01            [ 3]   80     ldx *DPTR+1
+      00002B 18               [ 2]   81     clc
+      00002C 65*00            [ 3]   82     adc *DPTR+0
+      00002E 90 01            [ 4]   83     bcc no_carry
+      000030 E8               [ 2]   84     inx
+      000031                         85 no_carry:
+      000031 60               [ 6]   86 	rts
+                                     87 	

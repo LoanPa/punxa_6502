@@ -1,0 +1,113 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   setjmp.s - source file for ANSI routines setjmp & longjmp
+                                      3 ;
+                                      4 ;   Copyright (C) 2020, Steven Hugg. hugg@efasterlight.com
+                                      5 ;   Copyright (C) 2023-25, Gabriele Gorla
+                                      6 ;
+                                      7 ;   This library is free software; you can redistribute it and/or modify it
+                                      8 ;   under the terms of the GNU General Public License as published by the
+                                      9 ;   Free Software Foundation; either version 2, or (at your option) any
+                                     10 ;   later version.
+                                     11 ;
+                                     12 ;   This library is distributed in the hope that it will be useful,
+                                     13 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     14 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     15 ;   GNU General Public License for more details.
+                                     16 ;
+                                     17 ;   You should have received a copy of the GNU General Public License
+                                     18 ;   along with this library; see the file COPYING. If not, write to the
+                                     19 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     20 ;   MA 02110-1301, USA.
+                                     21 ;
+                                     22 ;   As a special exception, if you link this library with other files,
+                                     23 ;   some of which are compiled with SDCC, to produce an executable,
+                                     24 ;   this library does not by itself cause the resulting executable to
+                                     25 ;   be covered by the GNU General Public License. This exception does
+                                     26 ;   not however invalidate any other reasons why the executable file
+                                     27 ;   might be covered by the GNU General Public License.
+                                     28 ;-------------------------------------------------------------------------
+                                     29 
+                                     30 	.module _setjmp
+                                     31 
+                                     32 ;--------------------------------------------------------
+                                     33 ; exported symbols
+                                     34 ;--------------------------------------------------------
+                                     35 	.globl ___setjmp
+                                     36         .globl _longjmp
+                                     37         .globl _longjmp_PARM_2
+                                     38 	
+                                     39 ;--------------------------------------------------------
+                                     40 ; overlayable function parameters in zero page
+                                     41 ;--------------------------------------------------------
+                                     42 	.area	OSEG    (PAG, OVR)
+      000000                         43 _longjmp_PARM_2:
+      000000                         44         .ds 2
+                                     45 
+                                     46 ;--------------------------------------------------------
+                                     47 ; local aliases
+                                     48 ;--------------------------------------------------------
+                                     49 	.define ptr "DPTR"
+                                     50 	.define rv "_longjmp_PARM_2"
+                                     51 
+                                     52 ;--------------------------------------------------------
+                                     53 ; code
+                                     54 ;--------------------------------------------------------
+                                     55         .area CODE
+                                     56 
+                                     57 ;------------------------------------------------------------
+                                     58 ; int __setjmp (jmp_buf buf)
+                                     59 ;------------------------------------------------------------
+                                     60 
+      000000                         61 ___setjmp:
+      000000 86*01            [ 3]   62         stx	*(ptr + 1)		; msb(buf)
+      000002 85*00            [ 3]   63         sta	*(ptr + 0)		; lsb(buf)
+                                     64 
+                                     65         ; save stack pointer
+      000004 BA               [ 2]   66         tsx
+      000005 A0 00            [ 2]   67         ldy	#0
+      000007 8A               [ 2]   68         txa
+      000008 91*00            [ 6]   69         sta	[ptr],y
+                                     70 
+                                     71         ; save return address
+      00000A BD 01 01         [ 5]   72         lda	0x101,x
+      00000D C8               [ 2]   73         iny
+      00000E 91*00            [ 6]   74         sta	[ptr],y
+      000010 BD 02 01         [ 5]   75         lda	0x102,x
+      000013 C8               [ 2]   76         iny
+      000014 91*00            [ 6]   77         sta	[ptr],y
+                                     78 
+                                     79         ; return 0
+      000016 A9 00            [ 2]   80         lda	#0
+      000018 AA               [ 2]   81         tax
+      000019 60               [ 6]   82         rts
+                                     83 
+                                     84 ;------------------------------------------------------------
+                                     85 ; int longjmp (jmp_buf buf, int rv)
+                                     86 ;------------------------------------------------------------
+                                     87 
+      00001A                         88 _longjmp:
+      00001A 86*01            [ 3]   89         stx	*(ptr + 1)		; msb(buf)
+      00001C 85*00            [ 3]   90         sta	*(ptr + 0)		; lsb(buf)
+                                     91 
+                                     92         ; restore stack pointer
+      00001E A0 00            [ 2]   93         ldy	#0
+      000020 B1*00            [ 6]   94         lda	[ptr],y
+      000022 AA               [ 2]   95         tax
+      000023 9A               [ 2]   96         txs
+                                     97 
+                                     98         ; set return address
+      000024 C8               [ 2]   99         iny
+      000025 B1*00            [ 6]  100         lda	[ptr],y
+      000027 9D 01 01         [ 5]  101         sta	0x101,x
+      00002A C8               [ 2]  102         iny
+      00002B B1*00            [ 6]  103         lda	[ptr],y
+      00002D 9D 02 01         [ 5]  104         sta	0x102,x
+                                    105 
+                                    106 ; return rv ? rv : 1;
+      000030 A5*00            [ 3]  107         lda	*(rv + 0)
+      000032 A6*01            [ 3]  108         ldx	*(rv + 1)
+      000034 05*01            [ 3]  109         ora	*(rv + 1)
+      000036 D0 02            [ 4]  110         bne	ret
+      000038 A9 01            [ 2]  111         lda	#0x01
+      00003A                        112 ret:
+      00003A 60               [ 6]  113         rts

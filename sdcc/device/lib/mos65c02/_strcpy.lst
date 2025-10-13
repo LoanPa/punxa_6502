@@ -1,0 +1,73 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   _strcpy.s - standard C library function
+                                      3 ;
+                                      4 ;   Copyright (C) 1998, Ullrich von Bassewitz
+                                      5 ;   Copyright (C) 2022, Gabriele Gorla
+                                      6 ;
+                                      7 ;   This library is free software; you can redistribute it and/or modify it
+                                      8 ;   under the terms of the GNU General Public License as published by the
+                                      9 ;   Free Software Foundation; either version 2, or (at your option) any
+                                     10 ;   later version.
+                                     11 ;
+                                     12 ;   This library is distributed in the hope that it will be useful,
+                                     13 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     14 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     15 ;   GNU General Public License for more details.
+                                     16 ;
+                                     17 ;   You should have received a copy of the GNU General Public License
+                                     18 ;   along with this library; see the file COPYING. If not, write to the
+                                     19 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     20 ;   MA 02110-1301, USA.
+                                     21 ;
+                                     22 ;   As a special exception, if you link this library with other files,
+                                     23 ;   some of which are compiled with SDCC, to produce an executable,
+                                     24 ;   this library does not by itself cause the resulting executable to
+                                     25 ;   be covered by the GNU General Public License. This exception does
+                                     26 ;   not however invalidate any other reasons why the executable file
+                                     27 ;   might be covered by the GNU General Public License.
+                                     28 ;-------------------------------------------------------------------------
+                                     29 
+                                     30 	.module _strcpy
+                                     31 
+                                     32 ;--------------------------------------------------------
+                                     33 ; exported symbols
+                                     34 ;--------------------------------------------------------
+                                     35 	.globl _strcpy_PARM_2
+                                     36 	.globl _strcpy
+                                     37 
+                                     38 ;--------------------------------------------------------
+                                     39 ; overlayable function parameters in zero page
+                                     40 ;--------------------------------------------------------
+                                     41 	.area	OSEG    (PAG, OVR)
+      000000                         42 _strcpy_PARM_2:
+      000000                         43 	.ds 2
+                                     44 
+                                     45 ;--------------------------------------------------------
+                                     46 ; local aliases
+                                     47 ;--------------------------------------------------------
+                                     48 	.define _src "_strcpy_PARM_2"
+                                     49 	.define _dst "DPTR"
+                                     50 	
+                                     51 ;--------------------------------------------------------
+                                     52 ; code
+                                     53 ;--------------------------------------------------------
+                                     54 	.area CODE
+                                     55 
+      000000                         56 _strcpy:
+      000000 85*00            [ 3]   57 	sta	*_dst+0
+      000002 86*01            [ 3]   58 	stx	*_dst+1
+                                     59 
+      000004 A0 00            [ 2]   60 	ldy	#0
+      000006                         61 cpy_loop:
+      000006 B1*00            [ 6]   62 	lda	[_src],y
+      000008 91*00            [ 6]   63 	sta	[_dst],y
+      00000A F0 09            [ 4]   64 	beq	end
+      00000C C8               [ 2]   65 	iny
+      00000D D0 F7            [ 4]   66 	bne	cpy_loop
+      00000F E6*01            [ 5]   67 	inc	*_src+1
+      000011 E6*01            [ 5]   68 	inc	*_dst+1
+      000013 D0 F1            [ 4]   69 	bne	cpy_loop
+                                     70 ;	jmp	cpy_loop
+      000015                         71 end:
+      000015 A5*00            [ 3]   72 	lda	*_dst+0
+      000017 60               [ 6]   73 	rts

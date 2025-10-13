@@ -1,0 +1,138 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module strxfrm
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl _strlen
+                                     28 	.globl _strncpy
+                                     29 	.globl _strxfrm_PARM_3
+                                     30 	.globl _strxfrm_PARM_2
+                                     31 	.globl _strxfrm
+                                     32 ;--------------------------------------------------------
+                                     33 ; ZP ram data
+                                     34 ;--------------------------------------------------------
+                                     35 	.area ZP      (PAG)
+                                     36 ;--------------------------------------------------------
+                                     37 ; overlayable items in ram
+                                     38 ;--------------------------------------------------------
+                                     39 ;--------------------------------------------------------
+                                     40 ; uninitialized external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area BSS
+      000000                         43 _strxfrm_PARM_2:
+      000000                         44 	.ds 2
+      000002                         45 _strxfrm_PARM_3:
+      000002                         46 	.ds 2
+                                     47 ;--------------------------------------------------------
+                                     48 ; absolute external ram data
+                                     49 ;--------------------------------------------------------
+                                     50 	.area DABS    (ABS)
+                                     51 ;--------------------------------------------------------
+                                     52 ; initialized external ram data
+                                     53 ;--------------------------------------------------------
+                                     54 	.area DATA
+                                     55 ;--------------------------------------------------------
+                                     56 ; global & static initialisations
+                                     57 ;--------------------------------------------------------
+                                     58 	.area _CODE
+                                     59 	.area GSINIT
+                                     60 	.area GSFINAL
+                                     61 	.area GSINIT
+                                     62 ;--------------------------------------------------------
+                                     63 ; Home
+                                     64 ;--------------------------------------------------------
+                                     65 	.area _CODE
+                                     66 	.area _CODE
+                                     67 ;--------------------------------------------------------
+                                     68 ; code
+                                     69 ;--------------------------------------------------------
+                                     70 	.area CODE
+                                     71 ;------------------------------------------------------------
+                                     72 ;Allocation info for local variables in function 'strxfrm'
+                                     73 ;------------------------------------------------------------
+                                     74 ;src           Allocated with name '_strxfrm_PARM_2'
+                                     75 ;n             Allocated with name '_strxfrm_PARM_3'
+                                     76 ;dest          Allocated to registers a x 
+                                     77 ;------------------------------------------------------------
+                                     78 ;	../strxfrm.c: 31: size_t strxfrm(char *dest, const char *src, size_t n)
+                                     79 ;	genLabel
+                                     80 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     81 ;	-----------------------------------------
+                                     82 ;	 function strxfrm
+                                     83 ;	-----------------------------------------
+                                     84 ;	Register assignment is optimal.
+                                     85 ;	Stack space usage: 0 bytes.
+      000000                         86 _strxfrm:
+                                     87 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     88 ;	genReceive
+                                     89 ;	Raw cost for generated ic 2 : (0, 0.000000) count=1.000000
+                                     90 ;	../strxfrm.c: 33: strncpy(dest, src, n);
+                                     91 ;	genAssign
+                                     92 ;	genCopy
+      000000 ACr01r00         [ 4]   93 	ldy	(_strxfrm_PARM_2 + 1)
+      000003 8Cr01r00         [ 4]   94 	sty	(_strncpy_PARM_2 + 1)
+      000006 ACr00r00         [ 4]   95 	ldy	_strxfrm_PARM_2
+      000009 8Cr00r00         [ 4]   96 	sty	_strncpy_PARM_2
+                                     97 ;	Raw cost for generated ic 4 : (12, 16.000000) count=1.000000
+                                     98 ;	genAssign
+                                     99 ;	genCopy
+      00000C ACr03r00         [ 4]  100 	ldy	(_strxfrm_PARM_3 + 1)
+      00000F 8Cr01r00         [ 4]  101 	sty	(_strncpy_PARM_3 + 1)
+      000012 ACr02r00         [ 4]  102 	ldy	_strxfrm_PARM_3
+      000015 8Cr00r00         [ 4]  103 	sty	_strncpy_PARM_3
+                                    104 ;	Raw cost for generated ic 5 : (12, 16.000000) count=1.000000
+                                    105 ;	Raw cost for generated ic 3 : (0, 0.000000) count=1.000000
+                                    106 ;	genCall
+                                    107 ;	genSend
+      000018 20r00r00         [ 6]  108 	jsr	_strncpy
+                                    109 ;	Raw cost for generated ic 6 : (3, 6.000000) count=1.000000
+                                    110 ;	../strxfrm.c: 34: return(strlen(src) + 1);
+                                    111 ;	Raw cost for generated ic 7 : (0, 0.000000) count=1.000000
+                                    112 ;	genCall
+                                    113 ;	genSend
+      00001B AEr01r00         [ 4]  114 	ldx	(_strxfrm_PARM_2 + 1)
+      00001E ADr00r00         [ 4]  115 	lda	_strxfrm_PARM_2
+      000021 20r00r00         [ 6]  116 	jsr	_strlen
+                                    117 ;	assignResultValue
+                                    118 ;	Raw cost for generated ic 8 : (9, 14.000000) count=1.000000
+                                    119 ;	genPlus
+                                    120 ;	  genPlusInc
+      000024 18               [ 2]  121 	clc
+      000025 69 01            [ 3]  122 	adc	#0x01
+      000027 90 01            [ 4]  123 	bcc	00103$
+      000029 E8               [ 2]  124 	inx
+      00002A                        125 00103$:
+                                    126 ;	Raw cost for generated ic 9 : (6, 8.600000) count=1.000000
+                                    127 ;	genRet
+                                    128 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    129 ;	genLabel
+                                    130 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.000000
+                                    131 ;	../strxfrm.c: 35: }
+                                    132 ;	genEndFunction
+      00002A 60               [ 6]  133 	rts
+                                    134 ;	Raw cost for generated ic 12 : (1, 6.000000) count=1.000000
+                                    135 	.area CODE
+                                    136 	.area RODATA
+                                    137 	.area XINIT
+                                    138 	.area CABS    (ABS)

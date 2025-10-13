@@ -1,0 +1,286 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module _divslong
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl __divslong_PARM_2
+                                     28 	.globl __divslong_PARM_1
+                                     29 	.globl __divslong
+                                     30 ;--------------------------------------------------------
+                                     31 ; ZP ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area ZP      (PAG)
+      000000                         34 __divslong_sloc0_1_0:
+      000000                         35 	.ds 4
+      000004                         36 __divslong_sloc1_1_0:
+      000004                         37 	.ds 1
+      000005                         38 __divslong_sloc2_1_0:
+      000005                         39 	.ds 4
+                                     40 ;--------------------------------------------------------
+                                     41 ; overlayable items in ram
+                                     42 ;--------------------------------------------------------
+                                     43 ;--------------------------------------------------------
+                                     44 ; uninitialized external ram data
+                                     45 ;--------------------------------------------------------
+                                     46 	.area BSS
+      000000                         47 __divslong_PARM_1:
+      000000                         48 	.ds 4
+      000004                         49 __divslong_PARM_2:
+      000004                         50 	.ds 4
+                                     51 ;--------------------------------------------------------
+                                     52 ; absolute external ram data
+                                     53 ;--------------------------------------------------------
+                                     54 	.area DABS    (ABS)
+                                     55 ;--------------------------------------------------------
+                                     56 ; initialized external ram data
+                                     57 ;--------------------------------------------------------
+                                     58 	.area DATA
+                                     59 ;--------------------------------------------------------
+                                     60 ; global & static initialisations
+                                     61 ;--------------------------------------------------------
+                                     62 	.area _CODE
+                                     63 	.area GSINIT
+                                     64 	.area GSFINAL
+                                     65 	.area GSINIT
+                                     66 ;--------------------------------------------------------
+                                     67 ; Home
+                                     68 ;--------------------------------------------------------
+                                     69 	.area _CODE
+                                     70 	.area _CODE
+                                     71 ;--------------------------------------------------------
+                                     72 ; code
+                                     73 ;--------------------------------------------------------
+                                     74 	.area CODE
+                                     75 ;------------------------------------------------------------
+                                     76 ;Allocation info for local variables in function '_divslong'
+                                     77 ;------------------------------------------------------------
+                                     78 ;sloc0         Allocated with name '__divslong_sloc0_1_0'
+                                     79 ;sloc1         Allocated with name '__divslong_sloc1_1_0'
+                                     80 ;sloc2         Allocated with name '__divslong_sloc2_1_0'
+                                     81 ;x             Allocated with name '__divslong_PARM_1'
+                                     82 ;y             Allocated with name '__divslong_PARM_2'
+                                     83 ;r             Allocated with name '__divslong_r_10000_2'
+                                     84 ;------------------------------------------------------------
+                                     85 ;	../_divslong.c: 259: _divslong (long x, long y) __SDCC_NONBANKED
+                                     86 ;	genLabel
+                                     87 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     88 ;	-----------------------------------------
+                                     89 ;	 function _divslong
+                                     90 ;	-----------------------------------------
+                                     91 ;	Register assignment is optimal.
+                                     92 ;	Stack space usage: 0 bytes.
+      000000                         93 __divslong:
+                                     94 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     95 ;	../_divslong.c: 263: r = (unsigned long)(x < 0 ? -x : x) / (unsigned long)(y < 0 ? -y : y);
+                                     96 ;	genCmp
+      000000 2Cr03r00         [ 4]   97 	bit	(__divslong_PARM_1 + 3)
+      000003 30 04            [ 4]   98 	bmi	00128$
+      000005 A9 00            [ 2]   99 	lda	#0x00
+      000007 80 02            [ 4]  100 	bra	00129$
+      000009                        101 00128$:
+      000009 A9 01            [ 2]  102 	lda	#0x01
+      00000B                        103 00129$:
+      00000B AA               [ 2]  104 	tax
+                                    105 ;	Raw cost for generated ic 2 : (12, 15.200001) count=1.000000
+                                    106 ;	genIfx
+                                    107 ;	genIfxJump : z
+      00000C F0 20            [ 4]  108 	beq	00106$
+                                    109 ;	Raw cost for generated ic 3 : (5, 5.600000) count=1.000000
+                                    110 ;	genUminus
+      00000E A9 00            [ 2]  111 	lda	#0x00
+      000010 38               [ 2]  112 	sec
+      000011 EDr00r00         [ 5]  113 	sbc	__divslong_PARM_1
+      000014 85*00            [ 3]  114 	sta	*__divslong_sloc0_1_0
+      000016 A9 00            [ 2]  115 	lda	#0x00
+      000018 EDr01r00         [ 5]  116 	sbc	(__divslong_PARM_1 + 1)
+      00001B 85*01            [ 3]  117 	sta	*(__divslong_sloc0_1_0 + 1)
+      00001D A9 00            [ 2]  118 	lda	#0x00
+      00001F EDr02r00         [ 5]  119 	sbc	(__divslong_PARM_1 + 2)
+      000022 85*02            [ 3]  120 	sta	*(__divslong_sloc0_1_0 + 2)
+      000024 A9 00            [ 2]  121 	lda	#0x00
+      000026 EDr03r00         [ 5]  122 	sbc	(__divslong_PARM_1 + 3)
+      000029 85*03            [ 3]  123 	sta	*(__divslong_sloc0_1_0 + 3)
+                                    124 ;	Raw cost for generated ic 4 : (29, 38.000000) count=0.750000
+                                    125 ;	genGoto
+      00002B 4Cr42r00         [ 3]  126 	jmp	00107$
+                                    127 ;	Raw cost for generated ic 6 : (3, 3.000000) count=0.750000
+                                    128 ;	genLabel
+      00002E                        129 00106$:
+                                    130 ;	Raw cost for generated ic 7 : (0, 0.000000) count=0.250000
+                                    131 ;	genAssign
+                                    132 ;	genCopy
+      00002E ADr03r00         [ 4]  133 	lda	(__divslong_PARM_1 + 3)
+      000031 85*03            [ 3]  134 	sta	*(__divslong_sloc0_1_0 + 3)
+      000033 ADr02r00         [ 4]  135 	lda	(__divslong_PARM_1 + 2)
+      000036 85*02            [ 3]  136 	sta	*(__divslong_sloc0_1_0 + 2)
+      000038 ADr01r00         [ 4]  137 	lda	(__divslong_PARM_1 + 1)
+      00003B 85*01            [ 3]  138 	sta	*(__divslong_sloc0_1_0 + 1)
+      00003D ADr00r00         [ 4]  139 	lda	__divslong_PARM_1
+      000040 85*00            [ 3]  140 	sta	*__divslong_sloc0_1_0
+                                    141 ;	Raw cost for generated ic 8 : (20, 28.000000) count=0.250000
+                                    142 ;	genLabel
+      000042                        143 00107$:
+                                    144 ;	Raw cost for generated ic 9 : (0, 0.000000) count=1.000000
+                                    145 ;	genCast
+                                    146 ;	genCopy
+                                    147 ;	Raw cost for generated ic 10 : (0, 0.000000) count=1.000000
+                                    148 ;	genCmp
+      000042 2Cr07r00         [ 4]  149 	bit	(__divslong_PARM_2 + 3)
+      000045 30 04            [ 4]  150 	bmi	00132$
+      000047 A9 00            [ 2]  151 	lda	#0x00
+      000049 80 02            [ 4]  152 	bra	00133$
+      00004B                        153 00132$:
+      00004B A9 01            [ 2]  154 	lda	#0x01
+      00004D                        155 00133$:
+      00004D 85*04            [ 3]  156 	sta	*__divslong_sloc1_1_0
+                                    157 ;	Raw cost for generated ic 11 : (13, 16.200001) count=1.000000
+                                    158 ;	genIfx
+      00004F C9 00            [ 2]  159 	cmp	#0x00
+                                    160 ;	genIfxJump : z
+      000051 F0 20            [ 4]  161 	beq	00108$
+                                    162 ;	Raw cost for generated ic 12 : (7, 7.600000) count=1.000000
+                                    163 ;	genUminus
+      000053 A9 00            [ 2]  164 	lda	#0x00
+      000055 38               [ 2]  165 	sec
+      000056 EDr04r00         [ 5]  166 	sbc	__divslong_PARM_2
+      000059 85*05            [ 3]  167 	sta	*__divslong_sloc2_1_0
+      00005B A9 00            [ 2]  168 	lda	#0x00
+      00005D EDr05r00         [ 5]  169 	sbc	(__divslong_PARM_2 + 1)
+      000060 85*06            [ 3]  170 	sta	*(__divslong_sloc2_1_0 + 1)
+      000062 A9 00            [ 2]  171 	lda	#0x00
+      000064 EDr06r00         [ 5]  172 	sbc	(__divslong_PARM_2 + 2)
+      000067 85*07            [ 3]  173 	sta	*(__divslong_sloc2_1_0 + 2)
+      000069 A9 00            [ 2]  174 	lda	#0x00
+      00006B EDr07r00         [ 5]  175 	sbc	(__divslong_PARM_2 + 3)
+      00006E 85*08            [ 3]  176 	sta	*(__divslong_sloc2_1_0 + 3)
+                                    177 ;	Raw cost for generated ic 13 : (29, 38.000000) count=0.750000
+                                    178 ;	genGoto
+      000070 4Cr87r00         [ 3]  179 	jmp	00109$
+                                    180 ;	Raw cost for generated ic 15 : (3, 3.000000) count=0.750000
+                                    181 ;	genLabel
+      000073                        182 00108$:
+                                    183 ;	Raw cost for generated ic 16 : (0, 0.000000) count=0.250000
+                                    184 ;	genAssign
+                                    185 ;	genCopy
+      000073 ADr07r00         [ 4]  186 	lda	(__divslong_PARM_2 + 3)
+      000076 85*08            [ 3]  187 	sta	*(__divslong_sloc2_1_0 + 3)
+      000078 ADr06r00         [ 4]  188 	lda	(__divslong_PARM_2 + 2)
+      00007B 85*07            [ 3]  189 	sta	*(__divslong_sloc2_1_0 + 2)
+      00007D ADr05r00         [ 4]  190 	lda	(__divslong_PARM_2 + 1)
+      000080 85*06            [ 3]  191 	sta	*(__divslong_sloc2_1_0 + 1)
+      000082 ADr04r00         [ 4]  192 	lda	__divslong_PARM_2
+      000085 85*05            [ 3]  193 	sta	*__divslong_sloc2_1_0
+                                    194 ;	Raw cost for generated ic 17 : (20, 28.000000) count=0.250000
+                                    195 ;	genLabel
+      000087                        196 00109$:
+                                    197 ;	Raw cost for generated ic 18 : (0, 0.000000) count=1.000000
+                                    198 ;	genCast
+                                    199 ;	genCopy
+      000087 A5*08            [ 3]  200 	lda	*(__divslong_sloc2_1_0 + 3)
+      000089 8Dr03r00         [ 4]  201 	sta	(__divulong_PARM_2 + 3)
+      00008C A5*07            [ 3]  202 	lda	*(__divslong_sloc2_1_0 + 2)
+      00008E 8Dr02r00         [ 4]  203 	sta	(__divulong_PARM_2 + 2)
+      000091 A5*06            [ 3]  204 	lda	*(__divslong_sloc2_1_0 + 1)
+      000093 8Dr01r00         [ 4]  205 	sta	(__divulong_PARM_2 + 1)
+      000096 A5*05            [ 3]  206 	lda	*__divslong_sloc2_1_0
+      000098 8Dr00r00         [ 4]  207 	sta	__divulong_PARM_2
+                                    208 ;	Raw cost for generated ic 19 : (20, 28.000000) count=1.000000
+                                    209 ;	genAssign
+                                    210 ;	genCopy
+      00009B A5*03            [ 3]  211 	lda	*(__divslong_sloc0_1_0 + 3)
+      00009D 8Dr03r00         [ 4]  212 	sta	(__divulong_PARM_1 + 3)
+      0000A0 A5*02            [ 3]  213 	lda	*(__divslong_sloc0_1_0 + 2)
+      0000A2 8Dr02r00         [ 4]  214 	sta	(__divulong_PARM_1 + 2)
+      0000A5 A5*01            [ 3]  215 	lda	*(__divslong_sloc0_1_0 + 1)
+      0000A7 8Dr01r00         [ 4]  216 	sta	(__divulong_PARM_1 + 1)
+      0000AA A5*00            [ 3]  217 	lda	*__divslong_sloc0_1_0
+      0000AC 8Dr00r00         [ 4]  218 	sta	__divulong_PARM_1
+                                    219 ;	Raw cost for generated ic 36 : (20, 28.000000) count=1.000000
+                                    220 ;	../_divslong.c: 264: if ((x < 0) ^ (y < 0))
+                                    221 ;	genCall
+      0000AF DA               [ 3]  222 	phx
+      0000B0 20r00r00         [ 6]  223 	jsr	__divulong
+                                    224 ;	assignResultValue
+      0000B3 85*05            [ 3]  225 	sta	*__divslong_sloc2_1_0
+      0000B5 86*06            [ 3]  226 	stx	*(__divslong_sloc2_1_0 + 1)
+      0000B7 A5*00            [ 3]  227 	lda	*___SDCC_m6502_ret2
+      0000B9 85*07            [ 3]  228 	sta	*(__divslong_sloc2_1_0 + 2)
+      0000BB A5*00            [ 3]  229 	lda	*___SDCC_m6502_ret3
+      0000BD 85*08            [ 3]  230 	sta	*(__divslong_sloc2_1_0 + 3)
+      0000BF FA               [ 4]  231 	plx
+                                    232 ;	Raw cost for generated ic 38 : (17, 31.000000) count=1.000000
+                                    233 ;	genXor
+      0000C0 8A               [ 2]  234 	txa
+      0000C1 45*04            [ 3]  235 	eor	*__divslong_sloc1_1_0
+                                    236 ;	genIfxJump : z
+      0000C3 F0 24            [ 4]  237 	beq	00102$
+                                    238 ;	Raw cost for generated ic 24 : (8, 10.600000) count=1.000000
+                                    239 ;	skipping generated iCode
+                                    240 ;	Raw cost for generated ic 25 : (0, 0.000000) count=1.000000
+                                    241 ;	../_divslong.c: 265: return -r;
+                                    242 ;	genUminus
+      0000C5 A9 00            [ 2]  243 	lda	#0x00
+      0000C7 38               [ 2]  244 	sec
+      0000C8 E5*05            [ 4]  245 	sbc	*__divslong_sloc2_1_0
+      0000CA 85*00            [ 3]  246 	sta	*__divslong_sloc0_1_0
+      0000CC A9 00            [ 2]  247 	lda	#0x00
+      0000CE E5*06            [ 4]  248 	sbc	*(__divslong_sloc2_1_0 + 1)
+      0000D0 85*01            [ 3]  249 	sta	*(__divslong_sloc0_1_0 + 1)
+      0000D2 A9 00            [ 2]  250 	lda	#0x00
+      0000D4 E5*07            [ 4]  251 	sbc	*(__divslong_sloc2_1_0 + 2)
+      0000D6 85*02            [ 3]  252 	sta	*(__divslong_sloc0_1_0 + 2)
+      0000D8 A9 00            [ 2]  253 	lda	#0x00
+      0000DA E5*08            [ 4]  254 	sbc	*(__divslong_sloc2_1_0 + 3)
+      0000DC 85*03            [ 3]  255 	sta	*(__divslong_sloc0_1_0 + 3)
+                                    256 ;	Raw cost for generated ic 28 : (25, 34.000000) count=0.750000
+                                    257 ;	genRet
+      0000DE 85*00            [ 3]  258 	sta	*___SDCC_m6502_ret3
+      0000E0 A5*02            [ 3]  259 	lda	*(__divslong_sloc0_1_0 + 2)
+      0000E2 85*00            [ 3]  260 	sta	*___SDCC_m6502_ret2
+      0000E4 A6*01            [ 3]  261 	ldx	*(__divslong_sloc0_1_0 + 1)
+      0000E6 A5*00            [ 3]  262 	lda	*__divslong_sloc0_1_0
+      0000E8 60               [ 6]  263 	rts
+                                    264 ;	Raw cost for generated ic 29 : (13, 18.000000) count=0.750000
+                                    265 ;	genLabel
+      0000E9                        266 00102$:
+                                    267 ;	Raw cost for generated ic 31 : (0, 0.000000) count=1.000000
+                                    268 ;	../_divslong.c: 267: return r;
+                                    269 ;	genRet
+      0000E9 A5*08            [ 3]  270 	lda	*(__divslong_sloc2_1_0 + 3)
+      0000EB 85*00            [ 3]  271 	sta	*___SDCC_m6502_ret3
+      0000ED A5*07            [ 3]  272 	lda	*(__divslong_sloc2_1_0 + 2)
+      0000EF 85*00            [ 3]  273 	sta	*___SDCC_m6502_ret2
+      0000F1 A6*06            [ 3]  274 	ldx	*(__divslong_sloc2_1_0 + 1)
+      0000F3 A5*05            [ 3]  275 	lda	*__divslong_sloc2_1_0
+                                    276 ;	Raw cost for generated ic 32 : (12, 18.000000) count=1.000000
+                                    277 ;	genLabel
+                                    278 ;	Raw cost for generated ic 34 : (0, 0.000000) count=1.000000
+                                    279 ;	../_divslong.c: 268: }
+                                    280 ;	genEndFunction
+      0000F5 60               [ 6]  281 	rts
+                                    282 ;	Raw cost for generated ic 35 : (1, 6.000000) count=1.000000
+                                    283 	.area CODE
+                                    284 	.area RODATA
+                                    285 	.area XINIT
+                                    286 	.area CABS    (ABS)

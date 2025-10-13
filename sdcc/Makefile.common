@@ -1,0 +1,129 @@
+#
+#
+#
+.DELETE_ON_ERROR:
+
+all:
+
+# Version
+PACKAGE         = sdcc
+VERSION         = 4.5.10
+VERSIONHI       = 4
+VERSIONLO       = 5
+VERSIONP        = 10
+
+# Programs
+SHELL           = /bin/sh
+CC              =  gcc
+CPP             =  gcc -E
+CXX             =  g++
+AR              = ar
+RANLIB          = ranlib
+INSTALL         = /usr/bin/install -c
+YACC            = bison -y
+PYTHON          = /usr/bin/python3
+LEX             = flex
+AWK             = mawk
+STRIP           = strip
+MAKEDEP         = gcc -MM
+MAKEDEP_CXX     = g++ -MM
+prefix          = /usr/local
+exec_prefix     = ${prefix}
+bindir          = ${exec_prefix}/bin
+libdir          = ${exec_prefix}/lib
+datadir         = ${datarootdir}
+datarootdir     = ${prefix}/share
+includedir      = ${prefix}/include
+mandir          = ${datarootdir}/man
+man1dir         = $(mandir)/man1
+man2dir         = $(mandir)/man2
+infodir         = ${datarootdir}/info
+docdir          = ${datarootdir}/doc/${PACKAGE}
+DESTDIR         =
+
+include_dir_suffix = sdcc/include
+lib_dir_suffix     = sdcc/lib
+
+# Modules to enable/disable
+OPT_DISABLE_AVR         = 1
+OPT_DISABLE_DS390       = 1
+OPT_DISABLE_DS400       = 1
+OPT_DISABLE_HC08        = 1
+OPT_DISABLE_S08         = 1
+OPT_DISABLE_MCS51       = 1
+OPT_DISABLE_PIC14       = 1
+OPT_DISABLE_PIC16       = 1
+OPT_DISABLE_XA51        = @OPT_DISABLE_XA51@
+OPT_DISABLE_Z80         = 1
+OPT_DISABLE_Z180        = 1
+OPT_DISABLE_R2K         = 1
+OPT_DISABLE_R2KA        = 1
+OPT_DISABLE_R3KA        = 1
+OPT_DISABLE_SM83        = 1
+OPT_DISABLE_TLCS90      = 1
+OPT_DISABLE_Z80N        = 1
+OPT_DISABLE_R800        = 1
+OPT_DISABLE_STM8        = 1
+OPT_DISABLE_PDK13       = 1
+OPT_DISABLE_PDK14       = 1
+OPT_DISABLE_PDK15       = 1
+OPT_DISABLE_PDK16       = 1
+OPT_DISABLE_MOS6502     = 0
+OPT_DISABLE_MOS65C02    = 0
+OPT_DISABLE_F8          = 1
+OPT_DISABLE_F8L         = 0
+
+OPT_ENABLE_DOC          = 0
+
+OPT_DISABLE_DEVICE_LIB  = 0
+OPT_DISABLE_PACKIHX     = 0
+OPT_DISABLE_SDBINUTILS  = 0
+OPT_DISABLE_SDCPP       = 0
+OPT_DISABLE_UCSIM       = 0
+OPT_DISABLE_NON_FREE    = 0
+
+SLIB                    = $(top_builddir)/support/util
+
+EXEEXT          = 
+transform       = s,x,x,
+
+# Flags
+
+DEFS           += $(subs -DHAVE_CONFIG_H,,-DHAVE_CONFIG_H)
+CPPFLAGS       +=  $(INCLUDEFLAGS) -I. -I$(top_builddir) -I$(srcdir)/$(SLIB) -I$(srcdir)
+CFLAGS         += -pipe -ggdb -I /usr/include/ -Wall -Wno-parentheses
+CXXFLAGS       += -pipe -ggdb -g -O2
+LDFLAGS        += 
+
+EXTRALIBS      += 
+
+# Shared settings between all the sub Makefiles
+# Done here so that we don't have to start a Make from the top levelport
+# directory.
+
+# Library compilation options
+CLEANSPEC = *.lst *.asm *.sym *~ *.cdb *.dep *.rul
+
+OBJ = $(SOURCES:.c=.o) $(CXXSOURCES:.cc=.o)
+
+# for historical reasons, dependencies are mixed up, and then split by extension.
+# (fix later).
+DEPENDENCIES_ = $(PREBUILD) Makefile $(SOURCES) $(ASSOURCES) $(CXXSOURCES) $(SLIBSOURCES) $(SPECIAL)
+DEPENDENCIES_CC = $(filter %.c,${DEPENDENCIES_})
+DEPENDENCIES_CXX = $(filter %.cc,${DEPENDENCIES_})
+
+dep: Makefile.dep
+Makefile.depcc: $(DEPENDENCIES_)
+	( test -z "${DEPENDENCIES_CC}" || $(MAKEDEP) $(CPPFLAGS) $(filter %.c,$^) ) > $@
+
+Makefile.depcxx: $(DEPENDENCIES_)
+	( test -z "${DEPENDENCIES_CXX}" || $(MAKEDEP_CXX) $(CPPFLAGS) $(filter %.cc,$^) ) > $@
+
+Makefile.dep: Makefile.depcc Makefile.depcxx
+	cat Makefile.depcc Makefile.depcxx > $@
+
+# don't include Makefile.dep for the listed targets:
+ifeq "$(findstring $(MAKECMDGOALS),uninstall check installcheck installdirs checkconf \
+                                   clean distclean mostlyclean realclean)" ""
+  -include Makefile.dep
+endif

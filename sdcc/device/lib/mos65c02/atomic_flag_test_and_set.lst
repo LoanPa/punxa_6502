@@ -1,0 +1,126 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module atomic_flag_test_and_set
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl _atomic_flag_test_and_set
+                                     28 ;--------------------------------------------------------
+                                     29 ; ZP ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area ZP      (PAG)
+                                     32 ;--------------------------------------------------------
+                                     33 ; overlayable items in ram
+                                     34 ;--------------------------------------------------------
+                                     35 	.area	OSEG    (PAG, OVR)
+      000000                         36 _atomic_flag_test_and_set_sloc0_1_0:
+      000000                         37 	.ds 2
+                                     38 ;--------------------------------------------------------
+                                     39 ; uninitialized external ram data
+                                     40 ;--------------------------------------------------------
+                                     41 	.area BSS
+      000000                         42 _atomic_flag_test_and_set_object_10000_4:
+      000000                         43 	.ds 2
+                                     44 ;--------------------------------------------------------
+                                     45 ; absolute external ram data
+                                     46 ;--------------------------------------------------------
+                                     47 	.area DABS    (ABS)
+                                     48 ;--------------------------------------------------------
+                                     49 ; initialized external ram data
+                                     50 ;--------------------------------------------------------
+                                     51 	.area DATA
+                                     52 ;--------------------------------------------------------
+                                     53 ; global & static initialisations
+                                     54 ;--------------------------------------------------------
+                                     55 	.area _CODE
+                                     56 	.area GSINIT
+                                     57 	.area GSFINAL
+                                     58 	.area GSINIT
+                                     59 ;--------------------------------------------------------
+                                     60 ; Home
+                                     61 ;--------------------------------------------------------
+                                     62 	.area _CODE
+                                     63 	.area _CODE
+                                     64 ;--------------------------------------------------------
+                                     65 ; code
+                                     66 ;--------------------------------------------------------
+                                     67 	.area CODE
+                                     68 ;------------------------------------------------------------
+                                     69 ;Allocation info for local variables in function 'atomic_flag_test_and_set'
+                                     70 ;------------------------------------------------------------
+                                     71 ;object        Allocated with name '_atomic_flag_test_and_set_object_10000_4'
+                                     72 ;t             Allocated to registers x 
+                                     73 ;sloc0         Allocated with name '_atomic_flag_test_and_set_sloc0_1_0'
+                                     74 ;------------------------------------------------------------
+                                     75 ;	atomic_flag_test_and_set.c: 31: _Bool atomic_flag_test_and_set(volatile atomic_flag *object)
+                                     76 ;	genLabel
+                                     77 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     78 ;	-----------------------------------------
+                                     79 ;	 function atomic_flag_test_and_set
+                                     80 ;	-----------------------------------------
+                                     81 ;	Register assignment is optimal.
+                                     82 ;	Stack space usage: 0 bytes.
+      000000                         83 _atomic_flag_test_and_set:
+                                     84 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     85 ;	genReceive
+      000000 8Dr00r00         [ 4]   86 	sta	_atomic_flag_test_and_set_object_10000_4
+      000003 8Er01r00         [ 4]   87 	stx	(_atomic_flag_test_and_set_object_10000_4 + 1)
+                                     88 ;	Raw cost for generated ic 2 : (6, 8.000000) count=1.000000
+                                     89 ;	atomic_flag_test_and_set.c: 34: t=object->flag;
+                                     90 ;	genAssign
+                                     91 ;	genCopy
+      000006 85*00            [ 3]   92 	sta	*_atomic_flag_test_and_set_sloc0_1_0
+      000008 86*01            [ 3]   93 	stx	*(_atomic_flag_test_and_set_sloc0_1_0 + 1)
+                                     94 ;	Raw cost for generated ic 3 : (4, 6.000000) count=1.000000
+                                     95 ;	genPointerGet
+      00000A A0 00            [ 2]   96 	ldy	#0x00
+      00000C B1*00            [ 6]   97 	lda	[*_atomic_flag_test_and_set_sloc0_1_0],y
+      00000E AA               [ 2]   98 	tax
+                                     99 ;	Raw cost for generated ic 5 : (5, 9.000000) count=1.000000
+                                    100 ;	atomic_flag_test_and_set.c: 35: object->flag=0;
+                                    101 ;	genPointerSet
+      00000F 98               [ 2]  102 	tya
+      000010 91*00            [ 6]  103 	sta	[*_atomic_flag_test_and_set_sloc0_1_0],y
+                                    104 ;	Raw cost for generated ic 9 : (3, 8.000000) count=1.000000
+                                    105 ;	atomic_flag_test_and_set.c: 36: return t^0x01;
+                                    106 ;	genXor
+      000012 8A               [ 2]  107 	txa
+      000013 49 01            [ 2]  108 	eor	#0x01
+                                    109 ;	Raw cost for generated ic 10 : (3, 4.000000) count=1.000000
+                                    110 ;	genCast
+      000015 F0 02            [ 4]  111 	beq	00104$
+      000017 A9 01            [ 2]  112 	lda	#0x01
+      000019                        113 00104$:
+                                    114 ;	Raw cost for generated ic 11 : (4, 4.600000) count=1.000000
+                                    115 ;	genRet
+                                    116 ;	Raw cost for generated ic 12 : (0, 0.000000) count=1.000000
+                                    117 ;	genLabel
+                                    118 ;	Raw cost for generated ic 13 : (0, 0.000000) count=1.000000
+                                    119 ;	atomic_flag_test_and_set.c: 37: }
+                                    120 ;	genEndFunction
+      000019 60               [ 6]  121 	rts
+                                    122 ;	Raw cost for generated ic 14 : (1, 6.000000) count=1.000000
+                                    123 	.area CODE
+                                    124 	.area RODATA
+                                    125 	.area XINIT
+                                    126 	.area CABS    (ABS)

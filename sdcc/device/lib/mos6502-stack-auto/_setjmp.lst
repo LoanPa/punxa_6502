@@ -1,0 +1,121 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   setjmp.s - source file for ANSI routines setjmp & longjmp
+                                      3 ;
+                                      4 ;   Copyright (C) 2020, Steven Hugg. hugg@efasterlight.com
+                                      5 ;   Copyright (C) 2025, Gabriele Gorla
+                                      6 ;
+                                      7 ;   This library is free software; you can redistribute it and/or modify it
+                                      8 ;   under the terms of the GNU General Public License as published by the
+                                      9 ;   Free Software Foundation; either version 2, or (at your option) any
+                                     10 ;   later version.
+                                     11 ;
+                                     12 ;   This library is distributed in the hope that it will be useful,
+                                     13 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     14 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     15 ;   GNU General Public License for more details.
+                                     16 ;
+                                     17 ;   You should have received a copy of the GNU General Public License
+                                     18 ;   along with this library; see the file COPYING. If not, write to the
+                                     19 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     20 ;   MA 02110-1301, USA.
+                                     21 ;
+                                     22 ;   As a special exception, if you link this library with other files,
+                                     23 ;   some of which are compiled with SDCC, to produce an executable,
+                                     24 ;   this library does not by itself cause the resulting executable to
+                                     25 ;   be covered by the GNU General Public License. This exception does
+                                     26 ;   not however invalidate any other reasons why the executable file
+                                     27 ;   might be covered by the GNU General Public License.
+                                     28 ;-------------------------------------------------------------------------
+                                     29 
+                                     30 	.module _setjmp
+                                     31 
+                                     32 ;--------------------------------------------------------
+                                     33 ; exported symbols
+                                     34 ;--------------------------------------------------------
+                                     35 	.globl ___setjmp    ; 
+                                     36         .globl _longjmp
+                                     37 	
+                                     38 ;--------------------------------------------------------
+                                     39 ; overlayable function parameters in zero page
+                                     40 ;--------------------------------------------------------
+                                     41 	.area	OSEG    (PAG, OVR)
+      000000                         42 _longjmp_PARM_2:
+      000000                         43         .ds 2
+                                     44 
+                                     45 ;--------------------------------------------------------
+                                     46 ; local aliases
+                                     47 ;--------------------------------------------------------
+                                     48 	.define ptr "DPTR"
+                                     49 	.define rv "_longjmp_PARM_2"
+                                     50 
+                                     51 ;--------------------------------------------------------
+                                     52 ; code
+                                     53 ;--------------------------------------------------------
+                                     54         .area CODE
+                                     55 
+                                     56 ;------------------------------------------------------------
+                                     57 ; int __setjmp (jmp_buf buf)
+                                     58 ;------------------------------------------------------------
+                                     59 
+      000000                         60 ___setjmp:
+      000000 86*01            [ 3]   61         stx	*(ptr + 1)		; msb(buf)
+      000002 85*00            [ 3]   62         sta	*(ptr + 0)		; lsb(buf)
+                                     63 
+                                     64         ; save stack pointer
+      000004 BA               [ 2]   65         tsx
+      000005 A0 00            [ 2]   66         ldy	#0
+      000007 8A               [ 2]   67         txa
+      000008 91*00            [ 6]   68         sta	[ptr],y
+                                     69 
+                                     70         ; save return address
+      00000A BD 01 01         [ 5]   71         lda	0x101,x
+      00000D C8               [ 2]   72         iny
+      00000E 91*00            [ 6]   73         sta	[ptr],y
+      000010 BD 02 01         [ 5]   74         lda	0x102,x
+      000013 C8               [ 2]   75         iny
+      000014 91*00            [ 6]   76         sta	[ptr],y
+                                     77 
+                                     78         ; return 0
+      000016 A9 00            [ 2]   79         lda	#0
+      000018 AA               [ 2]   80         tax
+      000019 60               [ 6]   81         rts
+                                     82 
+                                     83 ;------------------------------------------------------------
+                                     84 ; int longjmp (jmp_buf buf, int rv)
+                                     85 ;------------------------------------------------------------
+                                     86 
+      00001A                         87 _longjmp:
+      00001A 86*01            [ 3]   88         stx	*(ptr + 1)		; msb(buf)
+      00001C 85*00            [ 3]   89         sta	*(ptr + 0)		; lsb(buf)
+                                     90 
+                                     91         ; discard return address
+      00001E 68               [ 4]   92 		pla
+      00001F 68               [ 4]   93 		pla
+                                     94 		; save return value
+      000020 68               [ 4]   95         pla
+      000021 85*00            [ 3]   96         sta *(rv + 0)
+      000023 68               [ 4]   97         pla
+      000024 85*01            [ 3]   98         sta *(rv + 1)
+                                     99 
+                                    100         ; restore stack pointer
+      000026 A0 00            [ 2]  101         ldy	#0
+      000028 B1*00            [ 6]  102         lda	[ptr],y
+      00002A AA               [ 2]  103         tax
+      00002B 9A               [ 2]  104         txs
+                                    105 
+                                    106         ; set return address
+      00002C C8               [ 2]  107         iny
+      00002D B1*00            [ 6]  108         lda	[ptr],y
+      00002F 9D 01 01         [ 5]  109         sta	0x101,x
+      000032 C8               [ 2]  110         iny
+      000033 B1*00            [ 6]  111         lda	[ptr],y
+      000035 9D 02 01         [ 5]  112         sta	0x102,x
+                                    113 
+                                    114 ; return rv ? rv : 1;
+      000038 A5*00            [ 3]  115         lda *(rv + 0)
+      00003A A6*01            [ 3]  116         ldx *(rv + 1)
+      00003C 05*01            [ 3]  117         ora *(rv + 1)
+      00003E D0 02            [ 4]  118         bne 0001$
+      000040 A9 01            [ 2]  119         lda	#0x01
+      000042                        120 0001$:
+      000042 60               [ 6]  121         rts

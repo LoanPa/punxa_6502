@@ -1,0 +1,149 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler
+                                      3 ; Version 4.5.10 #15691 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module cosf
+                                      6 	
+      000000                          7 	.r65c02
+                                      8 	.optsdcc -mmos65c02
+                                      9 
+                                     10 ;--------------------------------------------------------
+                                     11 ;  Ordering of segments for the linker.
+                                     12 ;--------------------------------------------------------
+                                     13 	.area ZP      (PAG)
+                                     14 	.area OSEG    (PAG, OVR)
+                                     15 	.area _CODE
+                                     16 	.area GSINIT
+                                     17 	.area GSFINAL
+                                     18 	.area CODE
+                                     19 	.area RODATA
+                                     20 	.area XINIT
+                                     21 	.area _DATA
+                                     22 	.area DATA
+                                     23 	.area BSS
+                                     24 ;--------------------------------------------------------
+                                     25 ; Public variables in this module
+                                     26 ;--------------------------------------------------------
+                                     27 	.globl _sincosf
+                                     28 	.globl _cosf_PARM_1
+                                     29 	.globl _cosf
+                                     30 ;--------------------------------------------------------
+                                     31 ; ZP ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area ZP      (PAG)
+      000000                         34 _cosf_sloc0_1_0:
+      000000                         35 	.ds 4
+                                     36 ;--------------------------------------------------------
+                                     37 ; overlayable items in ram
+                                     38 ;--------------------------------------------------------
+                                     39 ;--------------------------------------------------------
+                                     40 ; uninitialized external ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area BSS
+      000000                         43 _cosf_PARM_1:
+      000000                         44 	.ds 4
+                                     45 ;--------------------------------------------------------
+                                     46 ; absolute external ram data
+                                     47 ;--------------------------------------------------------
+                                     48 	.area DABS    (ABS)
+                                     49 ;--------------------------------------------------------
+                                     50 ; initialized external ram data
+                                     51 ;--------------------------------------------------------
+                                     52 	.area DATA
+                                     53 ;--------------------------------------------------------
+                                     54 ; global & static initialisations
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _CODE
+                                     57 	.area GSINIT
+                                     58 	.area GSFINAL
+                                     59 	.area GSINIT
+                                     60 ;--------------------------------------------------------
+                                     61 ; Home
+                                     62 ;--------------------------------------------------------
+                                     63 	.area _CODE
+                                     64 	.area _CODE
+                                     65 ;--------------------------------------------------------
+                                     66 ; code
+                                     67 ;--------------------------------------------------------
+                                     68 	.area CODE
+                                     69 ;------------------------------------------------------------
+                                     70 ;Allocation info for local variables in function 'cosf'
+                                     71 ;------------------------------------------------------------
+                                     72 ;sloc0         Allocated with name '_cosf_sloc0_1_0'
+                                     73 ;x             Allocated with name '_cosf_PARM_1'
+                                     74 ;------------------------------------------------------------
+                                     75 ;	../cosf.c: 36: float cosf(float x) _FLOAT_FUNC_REENTRANT
+                                     76 ;	genLabel
+                                     77 ;	Raw cost for generated ic 0 : (0, 0.000000) count=1.000000
+                                     78 ;	-----------------------------------------
+                                     79 ;	 function cosf
+                                     80 ;	-----------------------------------------
+                                     81 ;	Register assignment is optimal.
+                                     82 ;	Stack space usage: 0 bytes.
+      000000                         83 _cosf:
+                                     84 ;	Raw cost for generated ic 1 : (0, 0.000000) count=1.000000
+                                     85 ;	../cosf.c: 38: if (x==0.0) return 1.0;
+                                     86 ;	genIfx
+      000000 ADr03r00         [ 4]   87 	lda	(_cosf_PARM_1 + 3)
+      000003 29 7F            [ 2]   88 	and	#0x7F
+      000005 0Dr02r00         [ 4]   89 	ora	(_cosf_PARM_1 + 2)
+      000008 0Dr01r00         [ 4]   90 	ora	(_cosf_PARM_1 + 1)
+      00000B 0Dr00r00         [ 4]   91 	ora	_cosf_PARM_1
+                                     92 ;	genIfxJump : z
+      00000E D0 0C            [ 4]   93 	bne	00102$
+                                     94 ;	Raw cost for generated ic 2 : (19, 23.600000) count=1.000000
+                                     95 ;	genRet
+      000010 A9 00            [ 2]   96 	lda	#0x00
+      000012 AA               [ 2]   97 	tax
+      000013 A0 80            [ 2]   98 	ldy	#0x80
+      000015 84*00            [ 3]   99 	sty	*___SDCC_m6502_ret2
+      000017 A0 3F            [ 2]  100 	ldy	#0x3f
+      000019 84*00            [ 3]  101 	sty	*___SDCC_m6502_ret3
+      00001B 60               [ 6]  102 	rts
+                                    103 ;	Raw cost for generated ic 5 : (14, 17.000000) count=0.750000
+                                    104 ;	genLabel
+      00001C                        105 00102$:
+                                    106 ;	Raw cost for generated ic 6 : (0, 0.000000) count=1.000000
+                                    107 ;	../cosf.c: 39: return sincosf(x, 1);
+                                    108 ;	genAssign
+                                    109 ;	genCopy
+      00001C ADr03r00         [ 4]  110 	lda	(_cosf_PARM_1 + 3)
+      00001F 8Dr03r00         [ 4]  111 	sta	(_sincosf_PARM_1 + 3)
+      000022 ADr02r00         [ 4]  112 	lda	(_cosf_PARM_1 + 2)
+      000025 8Dr02r00         [ 4]  113 	sta	(_sincosf_PARM_1 + 2)
+      000028 ADr01r00         [ 4]  114 	lda	(_cosf_PARM_1 + 1)
+      00002B 8Dr01r00         [ 4]  115 	sta	(_sincosf_PARM_1 + 1)
+      00002E ADr00r00         [ 4]  116 	lda	_cosf_PARM_1
+      000031 8Dr00r00         [ 4]  117 	sta	_sincosf_PARM_1
+                                    118 ;	Raw cost for generated ic 7 : (24, 32.000000) count=1.000000
+                                    119 ;	genAssign
+                                    120 ;	genAssignLit
+      000034 A2 01            [ 2]  121 	ldx	#0x01
+      000036 8Er00r00         [ 4]  122 	stx	_sincosf_PARM_2
+                                    123 ;	Raw cost for generated ic 8 : (5, 6.000000) count=1.000000
+                                    124 ;	genCall
+      000039 20r00r00         [ 6]  125 	jsr	_sincosf
+                                    126 ;	assignResultValue
+      00003C 85*00            [ 3]  127 	sta	*_cosf_sloc0_1_0
+      00003E 86*01            [ 3]  128 	stx	*(_cosf_sloc0_1_0 + 1)
+      000040 A5*00            [ 3]  129 	lda	*___SDCC_m6502_ret2
+      000042 85*02            [ 3]  130 	sta	*(_cosf_sloc0_1_0 + 2)
+      000044 A5*00            [ 3]  131 	lda	*___SDCC_m6502_ret3
+      000046 85*03            [ 3]  132 	sta	*(_cosf_sloc0_1_0 + 3)
+                                    133 ;	Raw cost for generated ic 9 : (15, 24.000000) count=1.000000
+                                    134 ;	genRet
+      000048 85*00            [ 3]  135 	sta	*___SDCC_m6502_ret3
+      00004A A5*02            [ 3]  136 	lda	*(_cosf_sloc0_1_0 + 2)
+      00004C 85*00            [ 3]  137 	sta	*___SDCC_m6502_ret2
+      00004E A5*00            [ 3]  138 	lda	*_cosf_sloc0_1_0
+                                    139 ;	Raw cost for generated ic 10 : (8, 12.000000) count=1.000000
+                                    140 ;	genLabel
+                                    141 ;	Raw cost for generated ic 11 : (0, 0.000000) count=1.000000
+                                    142 ;	../cosf.c: 40: }
+                                    143 ;	genEndFunction
+      000050 60               [ 6]  144 	rts
+                                    145 ;	Raw cost for generated ic 12 : (1, 6.000000) count=1.000000
+                                    146 	.area CODE
+                                    147 	.area RODATA
+                                    148 	.area XINIT
+                                    149 	.area CABS    (ABS)

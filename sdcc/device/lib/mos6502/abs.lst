@@ -1,0 +1,57 @@
+                                      1 ;-------------------------------------------------------------------------
+                                      2 ;   abs.s - standard C library function
+                                      3 ;
+                                      4 ;   Copyright (C) 2023, Gabriele Gorla
+                                      5 ;
+                                      6 ;   This library is free software; you can redistribute it and/or modify it
+                                      7 ;   under the terms of the GNU General Public License as published by the
+                                      8 ;   Free Software Foundation; either version 2, or (at your option) any
+                                      9 ;   later version.
+                                     10 ;
+                                     11 ;   This library is distributed in the hope that it will be useful,
+                                     12 ;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+                                     13 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                                     14 ;   GNU General Public License for more details.
+                                     15 ;
+                                     16 ;   You should have received a copy of the GNU General Public License
+                                     17 ;   along with this library; see the file COPYING. If not, write to the
+                                     18 ;   Free Software Foundation, 51 Franklin Street, Fifth Floor, Boston,
+                                     19 ;   MA 02110-1301, USA.
+                                     20 ;
+                                     21 ;   As a special exception, if you link this library with other files,
+                                     22 ;   some of which are compiled with SDCC, to produce an executable,
+                                     23 ;   this library does not by itself cause the resulting executable to
+                                     24 ;   be covered by the GNU General Public License. This exception does
+                                     25 ;   not however invalidate any other reasons why the executable file
+                                     26 ;   might be covered by the GNU General Public License.
+                                     27 ;-------------------------------------------------------------------------
+                                     28 
+                                     29 	.module _abs
+                                     30 
+                                     31 ;--------------------------------------------------------
+                                     32 ; exported symbols
+                                     33 ;--------------------------------------------------------
+                                     34 	.globl _abs
+                                     35 	.globl ___negax
+                                     36 
+                                     37 ;--------------------------------------------------------
+                                     38 ; code
+                                     39 ;--------------------------------------------------------
+                                     40 
+                                     41 	.area CODE
+      000000                         42 _abs:
+      000000 E0 00            [ 2]   43 	cpx #0x00
+      000002 10 0D            [ 4]   44 	bpl skip
+      000004                         45 ___negax:
+      000004 38               [ 2]   46   	sec
+      000005 49 FF            [ 2]   47 	eor #0xff
+      000007 69 00            [ 2]   48 	adc #0x00
+      000009 48               [ 3]   49 	pha
+      00000A 8A               [ 2]   50 	txa
+      00000B 49 FF            [ 2]   51 	eor #0xff
+      00000D 69 00            [ 2]   52 	adc #0x00
+      00000F AA               [ 2]   53 	tax
+      000010 68               [ 4]   54 	pla
+      000011                         55 skip:
+      000011 60               [ 6]   56 	rts
+                                     57 
