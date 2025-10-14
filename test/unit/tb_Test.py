@@ -77,4 +77,4 @@ def buildHw(model):
     
     
 buildHw('sc')
-
+punxa_6502.interactive_commands.tests()

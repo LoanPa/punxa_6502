@@ -76,7 +76,25 @@ __endasm;
     __endasm; \
     VERIFY(r); 
     
-    
+ #define TEST_LDA_Y(a, yv, r)     __asm \
+    ldy yv \
+    lda a, y \
+    sta _actual \
+    __endasm; \
+    VERIFY(r);    
+
+#define TEST_LDX_Y(a, yv, r)     __asm \
+    ldy yv \
+    ldx a, y \
+    stx _actual \
+    __endasm; \
+    VERIFY(r);    
+
+#define TEST_LDA_IND_X(ptr_lo, x_reg, r) \
+    LDA_IND_X(ptr_lo, x_reg);     __asm \
+    sta _actual \
+    __endasm; \
+    VERIFY(r);
 
 #define TEST_ADC(a, b, r, n, z, d, c, v)        __asm \
         clc \

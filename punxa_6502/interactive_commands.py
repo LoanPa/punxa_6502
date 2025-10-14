@@ -104,7 +104,7 @@ def tests():
             else:
                 failed+=1
                 failedTotal += 1
-                print("-> Failed test number", test_number)
+                print("-> Failed test number", test_number, "<-")
             if(test_status == 0):
                 break
         test_block = memory.readByte(TEST_BLOCK_ADDRESS)

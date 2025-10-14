@@ -71,6 +71,8 @@ void test_misc(void);
 void test_failed(void);
 void test_passed(void);
 void verify(uint8_t expected);
+void verify_flags(uint8_t expected, uint8_t ef);
+void start_test_block(void);
 void verify_mem(uint16_t paddr, uint8_t expected);
 void verify_zp(uint8_t paddr, uint8_t expected);
 
@@ -162,7 +164,7 @@ void verify_flags(uint8_t expected, uint8_t ef)
         test_passed();
 }
 
-void start_test_block()
+void start_test_block(void)
 {
     test_block ++;
     test_num = 0;
@@ -226,27 +228,21 @@ void test_load(void)
     TEST_LDY_X(#0x00, #0x01, _abs_x_var, #0x23);    // 0x0D
     
     // 6. Absolute,Y - LDA abs,Y (with offset)
-    __asm 
-    ldy #00
-    lda _abs_y_var,y
-    sta _actual
-    __endasm; 
-    verify(0x33); // 0x0E
+    abs_y_var = 0x33;
+    TEST_LDA_Y(_abs_y_var, #00, #0x33);             // 0x0E
+    TEST_LDX_Y(_abs_y_var, #00, #0x33);             // 0x0F
 
-    __asm
-    ldy #00
-    ldx _abs_y_var,y
-    stx _actual
-    __endasm; 
-    verify(0x33); // 0x0F
     
     // 7. (Indirect,X) - LDA (ind,X)
+    
     LDA_IND_X(_ind_x_addr_lo, 0);
     __asm
     sta _actual
     __endasm; 
     verify(0x22); // 0x10
     
+   // TEST_LDA_IND_X(_ind_x_addr_lo, 0, #0x22); // 0x10
+
     // 8. (Indirect),Y - LDA (ind),Y
     abs_y_var = 0x33;
     LDA_IND_Y(_ind_y_addr_lo, 0);
@@ -326,10 +322,9 @@ void test_store(void)
         sty _abs_store
     __endasm;
     verify_mem(abs_store, 0x33);    // 0x1B
-    //TODO: canviar sabotatge!!!! canviar el 0x77 per 0x44
     // 5. Absolute , X
     __asm
-        lda #0x77
+        lda #0x44
         ldx #0x01
         sta _abs_store,x
     __endasm;
