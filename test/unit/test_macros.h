@@ -20,6 +20,11 @@ __endasm;
     .db 0x61, ptr_lo         ; Opcode for ADC (zp,X) \
 __endasm;
 
+#define SBC_IND_X(ptr_lo, x_reg) __asm \
+    ldx x_reg                 ; Set X offset \
+    .db 0xE1, ptr_lo         ; Opcode for SBC (zp,X) \
+__endasm;
+
 #define LDA_IND_Y(ptr_lo, y_reg) __asm \
     ldy y_reg                 ; Set Y offset \
     .db 0xB1, ptr_lo         ; Opcode for LDA (zp),Y \
@@ -28,6 +33,11 @@ __endasm;
 #define ADC_IND_Y(ptr_lo, y_reg) __asm \
     ldy y_reg                 ; Set Y offset \
     .db 0x71, ptr_lo         ; Opcode for ADC (zp),Y \
+__endasm;
+
+#define SBC_IND_Y(ptr_lo, y_reg) __asm \
+    ldy y_reg                 ; Set Y offset \
+    .db 0xF1, ptr_lo         ; Opcode for SBC (zp),Y \
 __endasm;
 
 #define VERIFY(a) __asm \
@@ -123,8 +133,6 @@ __endasm;
     SAVE_FLAGS(); \
     verify_flags(r, FLAGS(n, z, d, c, v));
     
-
-    
 #define TEST_DEC(b, r, n, z, d, c, v)        __asm \
         clc \
         dec b \
@@ -144,14 +152,34 @@ __endasm;
     SAVE_FLAGS(); \
     verify_flags(r, FLAGS(n, z, d, c, v));
 
-    #define TEST_DEX(xv, r, n, z, d, c, v)        __asm \
+// Y value, expected result, n, z, d, c, v
+#define TEST_INY(yv, r, n, z, d, c, v)        __asm \
         clc \
-        ldx xv\
+        ldy yv \
+        iny \
+        sty _actual \
+    __endasm; \
+    SAVE_FLAGS(); \
+    verify_flags(r, FLAGS(n, z, d, c, v));
+
+
+#define TEST_DEX(xv, r, n, z, d, c, v)        __asm \
+        clc \
+        ldx xv \
         dex \
         stx _actual \
     __endasm; \
     SAVE_FLAGS(); \
     verify_flags(r, FLAGS(n, z, d, c, v)); 
+
+#define TEST_DEY(yv, r, n, z, d, c, v)        __asm \
+        clc \
+        ldy yv \
+        dey \
+        sty _actual \
+    __endasm; \
+    SAVE_FLAGS(); \
+    verify_flags(r, FLAGS(n, z, d, c, v));
     
 #define TEST_ADCX(a, b, xv, r, n, z, d, c, v)        __asm \
         clc \
@@ -173,6 +201,23 @@ __endasm;
     SAVE_FLAGS(); \
     verify_flags(r, FLAGS(n, z, d, c, v));
 
+#define TEST_INCX(b, xv, r, n, z, d, c, v)        __asm \
+        ldx xv \
+        inc b,x \
+        lda b,x \
+        sta _actual \
+    __endasm; \
+    SAVE_FLAGS(); \
+    verify_flags(r, FLAGS(n, z, d, c, v));
+
+#define TEST_DECX(b, xv, r, n, z, d, c, v)        __asm \
+        ldx xv \
+        dec b,x \
+        lda b,x \
+        sta _actual \
+    __endasm; \
+    SAVE_FLAGS(); \
+    verify_flags(r, FLAGS(n, z, d, c, v));
 
 #define TEST_ADCY(a, b, yv, r, n, z, d, c, v)        __asm \
         clc \
@@ -193,4 +238,4 @@ __endasm;
     __endasm; \
     SAVE_FLAGS(); \
     verify_flags(r, FLAGS(n, z, d, c, v));
-    
+

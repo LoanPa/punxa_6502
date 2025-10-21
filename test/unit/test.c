@@ -57,6 +57,7 @@ __at (TEST_NUM) uint16_t test_num;
 __at (TEST_STATUS) uint8_t test_status;
 __at (TEST_BLOCK) uint8_t test_block;
 
+
 // Function prototypes
 void test_load(void);
 void test_store(void);
@@ -103,7 +104,7 @@ void main(void) {
     test_store();
     start_test_block();
     test_arithmetic();
-    test_status = 0; // Temporarily disable status to skip remaining tests
+    test_status = 0; // Temporarily  skip remaining tests
     start_test_block();
     test_logical();
     start_test_block();
@@ -362,26 +363,26 @@ void test_arithmetic(void)
     
     // ---- ADC (Add with Carry) ----
     // 1. Immediate
-    TEST_ADC(#0x01, #0x02, 0x03, 0, 0, 0, 0, 0);    // 0x20
-    TEST_ADC(#0x7F, #0x01, 0x80, 1, 0, 0, 0, 1);    // 0x21
+    TEST_ADC(#0x01, #0x02, 0x03, 0, 0, 0, 0, 0);    // 0x01
+    TEST_ADC(#0x7F, #0x01, 0x80, 1, 0, 0, 0, 1);    // 0x02
     
     // 2. Zero Page
-    TEST_ADC(#0x10, _zp_var, 0x52, 0, 0, 0, 0, 0);  // 0x22
+    TEST_ADC(#0x10, _zp_var, 0x52, 0, 0, 0, 0, 0);  // 0x03
     
     // 3. Zero Page,X
     zp_var2 = 0x42;
-    TEST_ADCX(#0x10, _zp_var, #0x01, 0x52, 0, 0, 0, 0, 0);  // 0x23
+    TEST_ADCX(#0x10, _zp_var, #0x01, 0x52, 0, 0, 0, 0, 0);  // 0x04
 
     // 4. Absolute
-    TEST_ADC(#0x10, _abs_var, 0x21, 0, 0, 0, 0, 0);         // 0x24
+    TEST_ADC(#0x10, _abs_var, 0x21, 0, 0, 0, 0, 0);         // 0x05
     
     // 5. Absolute,X
     abs_x_var2 = 0x22;
-    TEST_ADCX(#0x10,  _abs_x_var, #0x01, 0x32, 0, 0, 0, 0, 0);  // 0x25
+    TEST_ADCX(#0x10,  _abs_x_var, #0x01, 0x32, 0, 0, 0, 0, 0);  // 0x06
     
     // 6. Absolute,Y
     abs_y_var2 = 0x33;
-    TEST_ADCY(#0x10, _abs_y_var, #0x01, 0x43, 0, 0, 0, 0, 0);   // 0x26
+    TEST_ADCY(#0x10, _abs_y_var, #0x01, 0x43, 0, 0, 0, 0, 0);   // 0x07
     
     // 7. (Indirect,X)
     __asm
@@ -393,7 +394,7 @@ void test_arithmetic(void)
         sta _actual
     __endasm;
     SAVE_FLAGS();
-    verify_flags(0x32, FLAGS(0, 0, 0, 0, 0));                   // 0x27
+    verify_flags(0x32, FLAGS(0, 0, 0, 0, 0));                   // 0x08
     
     // 8. (Indirect),Y
     __asm
@@ -405,7 +406,7 @@ void test_arithmetic(void)
         sta _actual
     __endasm;
     SAVE_FLAGS();
-    verify_flags(0x43, FLAGS(0, 0, 0, 0, 0));                   // 0x28
+    verify_flags(0x43, FLAGS(0, 0, 0, 0, 0));                   // 0x09
     
     // Test carry flag behavior
     __asm
@@ -415,7 +416,7 @@ void test_arithmetic(void)
         sta _actual
     __endasm;
     SAVE_FLAGS();
-    verify_flags(0x01, FLAGS(0, 0, 0, 1, 0));                   // 0x29
+    verify_flags(0x01, FLAGS(0, 0, 0, 1, 0));                   // 0x0A
     
     // Test decimal mode (BCD arithmetic)
     __asm
@@ -429,43 +430,91 @@ void test_arithmetic(void)
     __asm 
         cld             // Clear decimal mode
     __endasm;
-    verify_flags(0x20, FLAGS(0, 0, 1, 0, 0));                   // 0x2A
+    verify_flags(0x20, FLAGS(0, 0, 1, 0, 0));                   // 0x0B
          
     // flags = FLAGS(n,z,d,c,v) 
              
     // ---- SBC (Subtract with Carry) ----
     // 1. Immediate
-    TEST_SBC(#0x03, #0x01, 0x02, 0, 0, 0, 1, 0);                // 0x2B
-    TEST_SBC(#0x80, #0x01, 0x7F, 0, 0, 0, 1, 1);                // 0x2C
-    TEST_SBC(#0x00, #0x01, 0xFF, 1, 0, 0, 0, 0);                // 0x2D
+    TEST_SBC(#0x03, #0x01, 0x02, 0, 0, 0, 1, 0);                // 0x0C
+    TEST_SBC(#0x80, #0x01, 0x7F, 0, 0, 0, 1, 1);                // 0x0D
+    TEST_SBC(#0x00, #0x01, 0xFF, 1, 0, 0, 0, 0);                // 0x0E
     
     // 2. Zero Page
-    TEST_SBC(#0x10, _zp_var, 0xCE, 1, 0, 0, 0, 0);              // 0x2E
+    TEST_SBC(#0x10, _zp_var, 0xCE, 1, 0, 0, 0, 0);              // 0x0F
     
     // 3. Zero Page,X
     zp_var2 = 0x12;
-    TEST_SBCX(#0x10, _zp_var, #0x01, 0xFE, 1, 0, 0, 0, 0);  // 0x23
+    TEST_SBCX(#0x10, _zp_var, #0x01, 0xFE, 1, 0, 0, 0, 0);  // 0x10
 
     // 4. Absolute
-    TEST_SBC(#0x10, _abs_var, 0xFF, 1, 0, 0, 0, 0);         // 0x24
+    TEST_SBC(#0x10, _abs_var, 0xFF, 1, 0, 0, 0, 0);         // 0x11
     
     // 5. Absolute,X
     abs_x_var2 = 0x22;
-    TEST_SBCX(#0x10,  _abs_x_var, #0x01, 0xEE, 1, 0, 0, 0, 0);  // 0x25
+    TEST_SBCX(#0x10, _abs_x_var, #0x01, 0xEE, 1, 0, 0, 0, 0);  // 0x12
     
     // 6. Absolute,Y
     abs_y_var2 = 0x33;
-    TEST_SBCY(#0x10, _abs_y_var, #0x01, 0xDD, 1, 0, 0, 0, 0);   // 0x26
-                
+    TEST_SBCY(#0x10, _abs_y_var, #0x01, 0xDD, 1, 0, 0, 0, 0);   // 0x13
+
+    // 7. (Indirect,X)
+      __asm
+        sec
+        lda #0x23
+    __endasm;
+        SBC_IND_X(_ind_x_addr_lo, 0);
+    __asm
+        sta _actual
+    __endasm;
+    SAVE_FLAGS();
+    verify_flags(0x01, FLAGS(0, 0, 0, 1, 0));                // 0x14
+    
+    abs_y_var = 0x22;    
+    // 8. (Indirect),Y
+      __asm
+        sec
+        lda #0x23
+    __endasm;
+        SBC_IND_Y(_ind_y_addr_lo, 0);
+    __asm
+        sta _actual
+    __endasm;
+    SAVE_FLAGS();
+    verify_flags(0x01, FLAGS(0, 0, 0, 1, 0));                // 0x15
+    
     // ---- INC/DEC (Memory) ----
     // 1. Immediate not supported
     // 2. Zero Page
-    TEST_INC(_zp_var, 0x43, 0, 0, 0, 0, 0);              // 0x27
-    TEST_DEC(_zp_var, 0x42, 0, 0, 0, 0, 0);              // 0x28
+    TEST_INC(_zp_var, 0x43, 0, 0, 0, 0, 0);              // 0x16
+    TEST_DEC(_zp_var, 0x42, 0, 0, 0, 0, 0);              // 0x17
 
+    // 3. Zero Page,X
+    zp_var = 0x20;
+    zp_var2 = 0x42;
+
+    TEST_INCX(_zp_var, #0x01, 0x43, 0, 0, 0, 0, 0);      // 0x18
+    zp_var2 = 0x43;
+    TEST_DECX(_zp_var, #0x01, 0x42, 0, 0, 0, 0, 0);      // 0x19
+    // 4. Absolute
+    TEST_INC(_abs_var, 0x12, 0, 0, 0, 0, 0);            // 0x1A
+    TEST_DEC(_abs_var, 0x11, 0, 0, 0, 0, 0);            // 0x1B
+    // 5. Absolute,X
+    abs_x_var = 0x22;
+    TEST_INCX(_abs_x_var, #0x01, 0x23, 0, 0, 0, 0, 0);  // 0x1C
+    
+    TEST_DECX(_abs_x_var, #0x01, 0x22, 0, 0, 0, 0, 0);  // 0x1D
+    
+   
     // ---- INX/DEX (X Register) ----
-    TEST_INX(#0x02, 0x03, 0, 0, 0, 0, 0);
+    TEST_INX(#0x02, 0x03, 0, 0, 0, 0, 0);               // 0x1E
+    TEST_DEX(#0x03, 0x02, 0, 0, 0, 0, 0);               // 0x1F
+    
     // ---- INY/DEY (Y Register) ----
+    TEST_INY(#0x02, 0x03, 0, 0, 0, 0, 0);               // 0x20
+    TEST_DEY(#0x03, 0x02, 0, 0, 0, 0, 0);               // 0x21
+
+
 
     
 }

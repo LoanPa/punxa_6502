@@ -104,7 +104,7 @@ def tests():
             else:
                 failed+=1
                 failedTotal += 1
-                print("-> Failed test number", test_number, "<-")
+                print("-> Failed test number", test_number, hex(test_number), "<-")
             if(test_status == 0):
                 break
         test_block = memory.readByte(TEST_BLOCK_ADDRESS)
@@ -144,4 +144,7 @@ def info():
     print()
     print("Test status: ", end='')
     byte(address=0x2004)
+    print()
+    print("Peek: ", end='')
+    byte(address=0x2006)
     print()
